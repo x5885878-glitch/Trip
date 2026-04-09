@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>紐西蘭蜜月旅遊</title>
+<title>紐西蘭蜜月</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'PingFang TC','Noto Sans TC',sans-serif;background:#0d0f18;color:#e8e8ec}
@@ -24,17 +24,27 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .dtab:not(.on) .dn{color:var(--muted)}
 #main{flex:1;position:relative;overflow:hidden}
 #map{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-#scroll{position:absolute;inset:0;overflow-y:scroll;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;z-index:200}
+#scroll{position:absolute;inset:0;overflow-y:scroll;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;z-index:200;transition:transform .3s ease}
 #scroll::-webkit-scrollbar{display:none}
 #spacer{height:38vh}
 #cards{padding:0 12px 80px}
+#app.map-focus #scroll{transform:translateY(calc(100% - 160px))}
+#map-overlay{display:none;position:absolute;inset:0;z-index:150}
+#app.map-focus #map-overlay{display:block}
+#legend{position:absolute;bottom:16px;right:12px;background:rgba(6,8,18,0.88);border:1px solid var(--border);border-radius:10px;padding:8px 10px;z-index:500;backdrop-filter:blur(6px);transition:bottom .3s}
+#app.map-focus #legend{bottom:170px}
+.leg{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.7);margin-bottom:4px}
+.leg:last-child{margin-bottom:0}
+.legdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+#map-hint{display:none;position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(6,8,18,0.85);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:11px;color:rgba(255,255,255,.7);z-index:500;backdrop-filter:blur(6px);white-space:nowrap}
+#app.map-focus #map-hint{display:block}
 .rgn{display:inline-flex;align-items:center;gap:6px;background:rgba(6,8,18,0.88);border:1px solid var(--border);border-radius:20px;padding:5px 13px;margin-bottom:12px;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em;backdrop-filter:blur(8px)}
 .rgn-dot{width:6px;height:6px;border-radius:50%;background:var(--pink);flex-shrink:0}
 .card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:18px;overflow:hidden;backdrop-filter:blur(12px);cursor:pointer;transition:border-color .2s}
 .card.active{border-color:rgba(232,82,122,.6)}
-.card-photo{width:100%;height:0;overflow:hidden;transition:height .35s ease}
+.card-photo{width:100%;height:0;overflow:hidden;transition:height .3s}
 .card.active .card-photo{height:130px}
-.card-photo img{width:100%;height:130px;object-fit:cover;display:block;background:#1a1d2a}
+.card-photo img{width:100%;height:130px;object-fit:cover;display:block}
 .card-body{padding:12px 14px}
 .card-time{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:3px}
 .card-title-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
@@ -42,19 +52,15 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .card-title{font-size:15px;font-weight:700;color:#fff;line-height:1.3;flex:1}
 .card-arrow{font-size:12px;color:var(--muted);transition:transform .3s;flex-shrink:0}
 .card.active .card-arrow{transform:rotate(180deg)}
-.card-note{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:8px}
 .card-detail{display:none}
 .card.active .card-detail{display:block}
+.card-note{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:8px}
 .tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}
 .tag{font-size:10px;padding:3px 8px;border-radius:12px;font-weight:700}
 .tg{background:rgba(37,201,122,.15);color:var(--green);border:1px solid rgba(37,201,122,.3)}
 .tb{background:rgba(77,166,255,.15);color:var(--blue);border:1px solid rgba(77,166,255,.3)}
 .tp{background:rgba(232,82,122,.15);color:var(--pink);border:1px solid rgba(232,82,122,.3)}
 .to{background:rgba(240,165,0,.15);color:var(--gold);border:1px solid rgba(240,165,0,.3)}
-.subs{border-top:1px solid var(--border);padding-top:8px;margin-top:4px}
-.stitle{font-size:10px;color:var(--gold);font-weight:700;margin-bottom:5px}
-.si{font-size:11px;color:var(--muted);padding:3px 0 3px 10px;position:relative;line-height:1.45}
-.si::before{content:"·";color:var(--pink);position:absolute;left:0}
 .btnav{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:6px 14px;border-radius:20px;background:#0f1e40;border:1px solid #2960ad;color:#7ab8ff;font-size:11px;font-weight:700;text-decoration:none}
 .badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;margin-bottom:6px}
 .b-ok{background:rgba(37,201,122,.2);color:var(--green);border:1px solid rgba(37,201,122,.35)}
@@ -68,10 +74,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .toggle{display:flex;background:#0d0f18;border:1px solid var(--border);border-radius:20px;overflow:hidden}
 .topt{padding:5px 13px;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted)}
 .topt.on{background:var(--gold);color:#150f00}
-#legend{position:absolute;bottom:16px;right:12px;background:rgba(6,8,18,0.88);border:1px solid var(--border);border-radius:10px;padding:8px 10px;z-index:500;backdrop-filter:blur(6px)}
-.leg{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.7);margin-bottom:4px}
-.leg:last-child{margin-bottom:0}
-.legdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+#loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:999;background:#0d0f18}
+#loading .spin{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--pink);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loading p{font-size:13px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -79,13 +85,15 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
   <div id="hdr">
     <div class="hdr-row">
       <span style="font-size:20px">🥝</span>
-      <div><div class="hdr-title">紐西蘭蜜月旅遊</div><div class="hdr-sub">9晚10天・Queenstown / Tekapo / Auckland・2人</div></div>
+      <div><div class="hdr-title">紐西蘭蜜月旅遊</div><div class="hdr-sub">Queenstown / Tekapo / Auckland・2人</div></div>
       <div class="cd" id="cd">計算中</div>
     </div>
   </div>
   <div id="dtabs"></div>
   <div id="main">
     <div id="map"></div>
+    <div id="map-hint">地圖模式・點下方卡片返回行程</div>
+    <div id="map-overlay" onclick="exitMapFocus()"></div>
     <div id="legend">
       <div class="leg"><div class="legdot" style="background:#25c97a"></div>餐飲</div>
       <div class="leg"><div class="legdot" style="background:#e8527a"></div>觀光</div>
@@ -96,129 +104,266 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
       <div id="spacer"></div>
       <div id="cards"></div>
     </div>
+    <div id="loading"><div class="spin"></div><p>載入行程中...</p></div>
   </div>
 </div>
 
 <script>
-const P={
-  skyline:"https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=600&q=80",
-  burger:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80",
-  glenorchy:"https://images.unsplash.com/photo-1609766418204-94aae0ecfdfc?w=600&q=80",
-  wedding:"https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
-  milford:"https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&q=80",
-  skydive:"https://images.unsplash.com/photo-1601024445121-e5b82f020549?w=600&q=80",
-  shotover:"https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80",
-  onsen:"https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
-  winery:"https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=600&q=80",
-  mtcook:"https://images.unsplash.com/photo-1507041957456-9c397ce39c97?w=600&q=80",
-  heli:"https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?w=600&q=80",
-  tekapo:"https://images.unsplash.com/photo-1548032885-b5e38734688a?w=600&q=80",
-  stars:"https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80",
-  skytower:"https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=600&q=80",
-  waitomo:"https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80",
-  hobbiton:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
-  airport:"https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80",
-  hooker:"https://images.unsplash.com/photo-1589802829985-817e51171b92?w=600&q=80",
-  resto:"https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
-  church:"https://images.unsplash.com/photo-1548032885-b5e38734688a?w=600&q=80",
+// ── 設定 ──────────────────────────────────────────
+const SHEET_ID = '1rHJswHyumsR2sk7-m6iyKBSSAHsTF58BtCJeNITX8QU';
+const GMKEY   = 'AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U';
+
+// 根據地點名稱自動對應座標
+const COORDS = {
+  '皇后鎮機場':       {lat:-45.021,lng:168.740},
+  '皇后鎮':          {lat:-45.031,lng:168.663},
+  '皇后鎮市區':       {lat:-45.031,lng:168.661},
+  'Shotover 峽谷':   {lat:-45.005,lng:168.717},
+  '格林諾奇':        {lat:-45.034,lng:168.376},
+  '格林諾奇→皇后鎮': {lat:-45.031,lng:168.661},
+  '皇后鎮→格林諾奇': {lat:-45.034,lng:168.376},
+  '皇后鎮→米佛峽灣': {lat:-44.641,lng:167.897},
+  '米佛峽灣':        {lat:-44.641,lng:167.897},
+  '米佛峽灣→皇后鎮': {lat:-45.031,lng:168.661},
+  'Arthurs Point':   {lat:-45.005,lng:168.707},
+  'Gibbston Valley': {lat:-45.064,lng:168.813},
+  '皇后鎮→Gibbston': {lat:-45.064,lng:168.813},
+  '皇后鎮→庫克山':   {lat:-43.737,lng:170.101},
+  '庫克山國家公園':   {lat:-43.526,lng:170.194},
+  '庫克山':          {lat:-43.737,lng:170.101},
+  '庫克山→蒂卡波':   {lat:-44.005,lng:170.478},
+  '蒂卡波湖':        {lat:-44.005,lng:170.478},
+  '蒂卡波':          {lat:-44.007,lng:170.479},
+  '皇后鎮機場':       {lat:-45.021,lng:168.740},
+  '蒂卡波→皇后鎮':   {lat:-45.021,lng:168.740},
+  '奧克蘭':          {lat:-36.851,lng:174.765},
+  '奧克蘭機場區':     {lat:-37.008,lng:174.785},
+  '奧克蘭碼頭':       {lat:-36.840,lng:174.769},
+  '奧克蘭市區':       {lat:-36.851,lng:174.765},
+  '奧克蘭→Waitomo':  {lat:-38.259,lng:175.101},
+  'Waitomo':         {lat:-38.259,lng:175.101},
+  'Waitomo→Matamata':{lat:-37.810,lng:175.774},
+  'Matamata':        {lat:-37.810,lng:175.774},
+  'Hobbiton':        {lat:-37.858,lng:175.682},
+  'Matamata→奧克蘭': {lat:-36.851,lng:174.765},
+  '桃園機場':        {lat:25.079,lng:121.234},
+  '路上':            null,
+  '途中':            null,
 };
 
-const DAYS=[
- {label:"第1天",dow:"五",emoji:"✈️",date:"7/24",region:"南島 — 皇后鎮 Queenstown",center:{lat:-45.031,lng:168.663},zoom:13,
-  items:[
-   {time:"13:30",title:"抵達皇后鎮・取租車",note:"NZ0619 落地・先 check in 放行李・Hertz 取車",tags:[{t:"✅ 已訂",c:"b-ok"},{t:"✈ 航班",c:"tb"}],photo:P.airport,ll:{lat:-45.021,lng:168.740},mk:"transport",loc:"Queenstown Airport New Zealand"},
-   {type:"tr",icon:"🚗",text:"前往市區 check in・約 20 分鐘"},
-   {time:"15:00–17:30",title:"Skyline Gondola + Luge 滑車",note:"登 Bob's Peak 俯瞰瓦卡蒂普湖・NZD $70–100/人",tags:[{t:"🔔 需預約",c:"b-need"},{t:"🏔 觀光",c:"tp"}],photo:P.skyline,subs:["登纜車俯瞰整個皇后鎮與湖泊","Luge 滑車可玩 2–3 趟各有不同難度"],ll:{lat:-45.028,lng:168.660},mk:"activity",loc:"Skyline Gondola Queenstown"},
-   {time:"19:00",title:"Fergburger",note:"皇后鎮最著名漢堡・18:30 前到避免大排長龍",tags:[{t:"🍔 晚餐",c:"tg"}],photo:P.burger,ll:{lat:-45.031,lng:168.661},mk:"food",loc:"Fergburger Queenstown"},
-  ]},
- {label:"第2天",dow:"六",emoji:"📸",date:"7/25",region:"南島 — 格林諾奇 Glenorchy",center:{lat:-45.034,lng:168.376},zoom:12,
-  items:[
-   {type:"tr",icon:"🚗",text:"07:30 出發・自駕格林諾奇・約 45 分鐘・早出發趁晨光"},
-   {time:"08:30–12:30",title:"婚紗拍攝（上午場）",note:"格林諾奇湖畔 + 牧場取景・晨光柔和・NZD $1,200–2,500",tags:[{t:"📸 婚紗",c:"tp"},{t:"🔔 需預約",c:"b-need"}],photo:P.glenorchy,subs:["推薦取景：Paradise Rd、湖畔棧橋、楊樹大道","小紅書搜「皇后鎮婚紗」尋找攝影師"],ll:{lat:-45.034,lng:168.376},mk:"activity",loc:"Glenorchy New Zealand"},
-   {time:"13:00–14:30",title:"The Kinloch Club 午餐",note:"鎮上唯一餐廳・漢堡與沙拉・順便換裝休息",tags:[{t:"🥗 午餐",c:"tg"}],photo:P.wedding,ll:{lat:-45.034,lng:168.377},mk:"food",loc:"Glenorchy New Zealand"},
-   {time:"15:00–17:00",title:"婚紗拍攝（下午場）",note:"下午光線偏暖・換景至湖邊棧橋或楊樹道路",tags:[{t:"📸 婚紗",c:"tp"}],photo:P.glenorchy,ll:{lat:-45.033,lng:168.375},mk:"activity",loc:"Glenorchy New Zealand"},
-   {type:"tr",icon:"🚗",text:"18:00 返回皇后鎮・約 45 分鐘"},
-   {time:"19:30",title:"Rata 慶祝晚餐",note:"Josh Emett 主廚・紐西蘭現代料理・婚紗日首選",tags:[{t:"🍽 晚餐",c:"tg"},{t:"🔔 需預約",c:"b-need"},{t:"📝 待定",c:"b-tbd"}],photo:P.resto,ll:{lat:-45.031,lng:168.661},mk:"food",loc:"Rata Restaurant Queenstown"},
-  ]},
- {label:"第3天",dow:"日",emoji:"🚢",date:"7/26",region:"南島 — 米佛峽灣 Milford Sound",center:{lat:-44.641,lng:167.897},zoom:10,
-  items:[
-   {type:"tr",icon:"🚗",text:"06:00 出發・自駕前往米佛峽灣・約 4 小時"},
-   {time:"10:30–12:30",title:"米佛峽灣遊船 Real Journeys",note:"世界自然遺產・冬季瀑布水量最豐沛・2小時遊覽",tags:[{t:"🚢 峽灣",c:"tb"},{t:"🔔 需預約",c:"b-need"}],photo:P.milford,subs:["冬季瀑布水量最大最壯觀","船上可看海豚、海豹、雨燕"],ll:{lat:-44.641,lng:167.897},mk:"activity",loc:"Milford Sound New Zealand"},
-   {type:"tr",icon:"🥪",text:"自備便當（強烈建議）・峽灣餐飲選擇非常有限"},
-   {type:"tr",icon:"🚗",text:"14:00 返回皇后鎮・約 4 小時"},
-   {time:"19:30",title:"Botswana Butchery",note:"皇后鎮頂級牛排館・湖景位・長途開車日犒賞",tags:[{t:"🍽 晚餐",c:"tg"},{t:"🔔 需預約",c:"b-need"},{t:"📝 待定",c:"b-tbd"}],photo:P.resto,ll:{lat:-45.031,lng:168.661},mk:"food",loc:"Botswana Butchery Queenstown"},
-  ]},
- {label:"第4天",dow:"一",emoji:"🪂",date:"7/27",region:"南島 — 皇后鎮 極限活動日",center:{lat:-45.031,lng:168.663},zoom:13,
-  altPlan:true,altLabel:"天氣差備案",
-  mainItems:[
-   {time:"09:00–12:00",title:"Nzone 高空跳傘",note:"15,000 英尺・NZD $399–499/人・Flexible 方案可免費改期",tags:[{t:"🪂 跳傘",c:"tp"},{t:"🔔 需預約",c:"b-need"}],photo:P.skydive,subs:["15,000 英尺可看到整個皇后鎮、峽灣遠景","Flexible 票種天氣差可免費改期"],ll:{lat:-45.028,lng:168.688},mk:"activity",loc:"NZONE Skydive Queenstown"},
-   {time:"12:30",title:"Fergburger 補能量",note:"跳傘後補充體力・或 Public Kitchen & Bar 湖景位",tags:[{t:"🍔 午餐",c:"tg"}],photo:P.burger,ll:{lat:-45.031,lng:168.661},mk:"food",loc:"Fergburger Queenstown"},
-   {time:"14:00–15:30",title:"Shotover Jet 噴射船",note:"時速 85km・360度急轉彎・NZD $169/人",tags:[{t:"🚤 噴射船",c:"tb"},{t:"🔔 需預約",c:"b-need"}],photo:P.shotover,subs:["時速85km貼岩壁飛馳","360度急轉彎是招牌動作"],ll:{lat:-45.005,lng:168.717},mk:"activity",loc:"Shotover Jet Queenstown"},
-   {time:"19:30",title:"慶功宴：Stratosfare / Amisfield",note:"Stratosfare 纜車景觀餐廳 NZD $109/人含纜車",tags:[{t:"🍽 晚餐",c:"tg"},{t:"🔔 需預約",c:"b-need"},{t:"📝 待定",c:"b-tbd"}],photo:P.resto,ll:{lat:-45.028,lng:168.660},mk:"food",loc:"Stratosfare Restaurant Queenstown"},
-  ],
-  altItems:[
-   {time:"10:00–12:30",title:"Onsen Hot Pools",note:"Arthurs Point 私人湯屋俯瞰峽谷・NZD $55–75/人",tags:[{t:"♨ 溫泉",c:"tp"},{t:"🔔 需預約",c:"b-need"}],photo:P.onsen,ll:{lat:-45.005,lng:168.707},mk:"activity",loc:"Onsen Hot Pools Queenstown"},
-   {time:"13:00",title:"Amisfield Winery Bistro",note:"酒莊農場午餐・中奧塔哥產地直送食材",tags:[{t:"🥗 午餐",c:"tg"},{t:"🔔 需預約",c:"b-need"}],photo:P.winery,ll:{lat:-45.064,lng:168.813},mk:"food",loc:"Amisfield Winery Queenstown"},
-   {time:"14:30–17:00",title:"Gibbston Valley 酒莊巡遊",note:"品嚐中奧塔哥黑皮諾・酒窖隧道參觀",tags:[{t:"🍷 酒莊",c:"tb"}],photo:P.winery,ll:{lat:-45.064,lng:168.813},mk:"activity",loc:"Gibbston Valley Winery New Zealand"},
-   {time:"19:30",title:"慶功宴（照常）",note:"Stratosfare 或湖邊高級餐廳",tags:[{t:"🍽 晚餐",c:"tg"},{t:"🔔 需預約",c:"b-need"}],photo:P.resto,ll:{lat:-45.028,lng:168.660},mk:"food",loc:"Stratosfare Queenstown"},
-  ]},
- {label:"第5天",dow:"二",emoji:"🏔",date:"7/28",region:"南島 — 庫克山 → 蒂卡波",center:{lat:-43.74,lng:170.10},zoom:10,
-  items:[
-   {type:"tr",icon:"🚗",text:"06:30 出發・自駕前往庫克山・約 3.5 小時"},
-   {time:"10:30–12:00",title:"塔斯曼冰川直升機體驗",note:"降落冰川上！NZD $450–600/人・天氣不佳備案：胡克山谷健行",tags:[{t:"🚁 直升機",c:"tp"},{t:"🔔 需預約",c:"b-need"}],photo:P.heli,subs:["紐西蘭最長冰川・全長27km","降落冰川上拍照感受冰封世界"],ll:{lat:-43.526,lng:170.194},mk:"activity",loc:"Tasman Glacier New Zealand"},
-   {time:"13:00",title:"Old Mountaineers' Café 午餐",note:"庫克山村唯一餐廳・三明治/熱食",tags:[{t:"🥗 午餐",c:"tg"}],photo:P.mtcook,ll:{lat:-43.737,lng:170.101},mk:"food",loc:"Mount Cook Village New Zealand"},
-   {time:"14:30",title:"胡克山谷健行（可選）",note:"1小時來回・遠眺庫克山",tags:[{t:"🥾 健行",c:"tb"}],photo:P.hooker,ll:{lat:-43.749,lng:170.089},mk:"activity",loc:"Hooker Valley Track New Zealand"},
-   {type:"tr",icon:"🚗",text:"自駕至蒂卡波湖・約 1 小時・途經普卡基湖停拍"},
-   {time:"17:00–19:00",title:"蒂卡波湖黃昏 + 善牧教堂",note:"寶石藍湖水・黃昏光線最美",tags:[{t:"📸 觀景",c:"tb"}],photo:P.church,subs:["善牧教堂黃昏人少","湖邊牧羊犬銅像打卡"],ll:{lat:-44.005,lng:170.478},mk:"activity",loc:"Lake Tekapo Church of Good Shepherd"},
-   {time:"19:30",title:"Kohan 日本餐廳",note:"湖景位・蒂卡波最知名餐廳",tags:[{t:"🍽 晚餐",c:"tg"},{t:"🔔 需預約",c:"b-need"},{t:"📝 待定",c:"b-tbd"}],photo:P.tekapo,ll:{lat:-44.007,lng:170.479},mk:"food",loc:"Kohan Restaurant Lake Tekapo"},
-   {time:"21:30–23:00",title:"Mt John Observatory 觀星",note:"Earth & Sky・NZD $175/人・7月冬季銀河最清晰",tags:[{t:"⭐ 觀星",c:"tp"},{t:"🔔 需預約",c:"b-need"}],photo:P.stars,subs:["暗空保護區・全球最佳觀星點之一","記得帶厚外套，氣溫接近零度"],ll:{lat:-44.006,lng:170.461},mk:"activity",loc:"Mount John Observatory Tekapo"},
-  ]},
- {label:"第6天",dow:"三",emoji:"🚀",date:"7/29",region:"南島 → 北島",center:{lat:-45.021,lng:168.740},zoom:12,
-  items:[
-   {time:"08:00",title:"蒂卡波早晨散步",note:"湖邊晨光極美・善牧教堂人少時段",tags:[{t:"☀ 晨景",c:"tb"}],photo:P.church,ll:{lat:-44.005,lng:170.478},mk:"activity",loc:"Lake Tekapo New Zealand"},
-   {type:"tr",icon:"🚗",text:"10:00 出發・自駕返回皇后鎮機場・約 2.5 小時"},
-   {time:"18:30",title:"皇后鎮 → 奧克蘭 NZ0618",note:"經濟艙 A320neo・1小時50分",tags:[{t:"✅ 已訂",c:"b-ok"},{t:"✈ 航班",c:"tb"}],photo:P.airport,ll:{lat:-45.021,lng:168.740},mk:"transport",loc:"Queenstown Airport New Zealand"},
-   {time:"20:20",title:"抵達奧克蘭 Check in",note:"推薦：Novotel / Pullman Auckland Airport",tags:[{t:"🏨 住宿",c:"tp"},{t:"📝 待定",c:"b-tbd"}],photo:P.skytower,ll:{lat:-37.008,lng:174.785},mk:"hotel",loc:"Auckland Airport New Zealand"},
-  ]},
- {label:"第7天",dow:"四",emoji:"🏙",date:"7/30",region:"北島 — 奧克蘭市區",center:{lat:-36.851,lng:174.765},zoom:13,
-  items:[
-   {time:"10:00–17:00",title:"奧克蘭市區自由行",note:"Sky Tower・碼頭帆船・Waiheke Island・Queen Street",tags:[{t:"🏙 觀光",c:"tp"}],photo:P.skytower,subs:["Sky Tower 328m 付費入場俯瞰全市","Waiheke Island 渡輪35分鐘・酒莊+海灘"],ll:{lat:-36.848,lng:174.763},mk:"activity",loc:"Sky Tower Auckland New Zealand"},
-   {time:"12:30",title:"Harbour Fish & Chips",note:"碼頭旁正宗紐式炸魚薯條",tags:[{t:"🥗 午餐",c:"tg"},{t:"📝 待定",c:"b-tbd"}],photo:P.burger,ll:{lat:-36.840,lng:174.769},mk:"food",loc:"Auckland Fish Market New Zealand"},
-   {time:"19:00",title:"Clooney / The French Café",note:"奧克蘭頂級 Fine Dining・旅程最後放鬆晚餐",tags:[{t:"🍽 晚餐",c:"tg"},{t:"🔔 需預約",c:"b-need"},{t:"📝 待定",c:"b-tbd"}],photo:P.resto,ll:{lat:-36.851,lng:174.765},mk:"food",loc:"Clooney Restaurant Auckland New Zealand"},
-  ]},
- {label:"第8天",dow:"五",emoji:"✨",date:"7/31",region:"北島 — Waitomo → Hobbiton",center:{lat:-38.259,lng:175.101},zoom:10,
-  items:[
-   {type:"tr",icon:"🚗",text:"07:00 出發・自駕前往 Waitomo・約 2.5 小時"},
-   {time:"09:30–11:00",title:"懷托摩螢火蟲洞",note:"搭船欣賞藍色螢火蟲・約 45 分鐘・建議選早上場",tags:[{t:"✨ 螢火蟲",c:"tp"},{t:"🔔 需預約",c:"b-need"}],photo:P.waitomo,subs:["洞穴內禁止拍照","數萬隻螢火蟲在洞頂發光如星空"],ll:{lat:-38.259,lng:175.101},mk:"activity",loc:"Waitomo Glowworm Caves New Zealand"},
-   {type:"tr",icon:"🚗",text:"自駕前往哈比村 Matamata・約 1 小時"},
-   {time:"12:30",title:"Matamata 鎮午餐",note:"Green Dragon Inn 或提前在鎮上吃",tags:[{t:"🥗 午餐",c:"tg"},{t:"📝 待定",c:"b-tbd"}],photo:P.hobbiton,ll:{lat:-37.810,lng:175.774},mk:"food",loc:"Matamata New Zealand"},
-   {time:"13:00–16:00",title:"Hobbiton 哈比村 普通話導覽",note:"提前官網預約！含一杯免費飲料・約 2 小時",tags:[{t:"🧙 哈比村",c:"tb"},{t:"🔔 需預約",c:"b-need"}],photo:P.hobbiton,subs:["官網普通話導覽每週日場（確認 7/31 場次）","Green Dragon Inn 可在村內享用飲料"],ll:{lat:-37.858,lng:175.682},mk:"activity",loc:"Hobbiton Movie Set Matamata New Zealand"},
-   {type:"tr",icon:"🚗",text:"16:30 自駕返回奧克蘭・約 2 小時"},
-  ]},
- {label:"第9天",dow:"六",emoji:"🏠",date:"8/1",region:"北島 — 奧克蘭 → 返回台灣",center:{lat:-37.008,lng:174.785},zoom:12,
-  items:[
-   {type:"tr",icon:"🚗",text:"06:30 前往奧克蘭國際機場・國際線建議提前 3 小時"},
-   {time:"09:40",title:"奧克蘭 → 台北 NZ0077",note:"豪華經濟艙 Boeing 787-9・11小時25分",tags:[{t:"✅ 已訂",c:"b-ok"},{t:"✈ 航班",c:"tb"}],photo:P.airport,ll:{lat:-37.008,lng:174.785},mk:"transport",loc:"Auckland International Airport New Zealand"},
-   {time:"17:05",title:"抵達桃園機場・回家！",note:"台灣時間 17:05・可提前安排接機",tags:[{t:"🏠 到家",c:"tp"}],photo:P.airport,ll:{lat:25.079,lng:121.234},mk:"transport",loc:"Taiwan Taoyuan International Airport"},
-  ]},
+// 類型 → 地圖 marker 顏色
+function mkType(type){
+  if(!type) return 'activity';
+  if(type.includes('晚餐')||type.includes('午餐')||type.includes('早餐')||type.includes('餐')) return 'food';
+  if(type.includes('住宿')) return 'hotel';
+  if(type.includes('出發')||type.includes('返回')||type.includes('前往')||type.includes('落地')||type.includes('航班')||type.includes('報到')) return 'transport';
+  return 'activity';
+}
+
+// 照片關鍵字對應
+const PHOTO_MAP = [
+  {keys:['機場','航班','落地','報到','桃園'],url:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80'},
+  {keys:['Skyline','Gondola','纜車','滑車'],url:'https://images.unsplash.com/photo-1589802829985-817e51171b92?w=600&q=80'},
+  {keys:['Fergburger','漢堡','Fish','Chips','輕食','便當'],url:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80'},
+  {keys:['婚紗','格林諾奇','Glenorchy'],url:'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80'},
+  {keys:['米佛','Milford','峽灣','遊船'],url:'https://images.unsplash.com/photo-1572375992501-4b0892d50c69?w=600&q=80'},
+  {keys:['跳傘','Nzone'],url:'https://images.unsplash.com/photo-1601024445121-e5b82f020549?w=600&q=80'},
+  {keys:['Shotover','噴射船'],url:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80'},
+  {keys:['溫泉','Onsen'],url:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80'},
+  {keys:['酒莊','Winery','Amisfield','Gibbston'],url:'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=600&q=80'},
+  {keys:['冰川','直升機','Tasman'],url:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80'},
+  {keys:['庫克山','Mountaineers','胡克','健行'],url:'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80'},
+  {keys:['蒂卡波','Tekapo','善牧','教堂','散步'],url:'https://images.unsplash.com/photo-1548032885-b5e38734688a?w=600&q=80'},
+  {keys:['觀星','Observatory','星'],url:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80'},
+  {keys:['Sky Tower','奧克蘭','Auckland','自由行'],url:'https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=600&q=80'},
+  {keys:['螢火蟲','Waitomo'],url:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80'},
+  {keys:['哈比','Hobbiton'],url:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600&q=80'},
+  {keys:['餐廳','晚餐','Rata','Botswana','Clooney','Fine','Dining','Kohan','Stratosfare'],url:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80'},
+  {keys:['咖啡','Café','早餐','Vudu','Run76'],url:'https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80'},
 ];
 
-const GMKEY='AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U';
-let cur=0,alt=false,gmap=null,gmMarkers=[],iobs=null,infoWin=null;
+function getPhoto(title, note){
+  const txt = (title||'') + ' ' + (note||'');
+  for(const p of PHOTO_MAP){
+    if(p.keys.some(k=>txt.includes(k))) return p.url;
+  }
+  return 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=600&q=80';
+}
 
-const diffD=Math.ceil((new Date('2026-07-24')-new Date())/864e5);
-document.getElementById('cd').textContent=diffD>0?`出發倒數 ${diffD} 天`:diffD===0?'今天出發！':'旅途中';
+// ── CSV 解析 ──────────────────────────────────────
+function parseCSV(text){
+  const lines = text.split('\n');
+  const rows = lines.map(l=>{
+    // handle quoted fields
+    const res=[];let cur='',inQ=false;
+    for(let i=0;i<l.length;i++){
+      const c=l[i];
+      if(c==='"'){inQ=!inQ;}
+      else if(c===','&&!inQ){res.push(cur.trim());cur='';}
+      else cur+=c;
+    }
+    res.push(cur.trim());
+    return res;
+  });
+  return rows;
+}
 
-const DARK_STYLE=[
+// Day center coords by region keyword
+const DAY_CENTERS = [
+  {keys:['皇后鎮','Queenstown'],center:{lat:-45.031,lng:168.663},zoom:13},
+  {keys:['格林諾奇','Glenorchy'],center:{lat:-45.034,lng:168.376},zoom:12},
+  {keys:['米佛','Milford'],center:{lat:-44.641,lng:167.897},zoom:10},
+  {keys:['極限','跳傘','噴射'],center:{lat:-45.031,lng:168.663},zoom:13},
+  {keys:['庫克山','蒂卡波','Tekapo'],center:{lat:-43.74,lng:170.10},zoom:10},
+  {keys:['南島','北島'],center:{lat:-45.021,lng:168.740},zoom:12},
+  {keys:['奧克蘭市區','Auckland'],center:{lat:-36.851,lng:174.765},zoom:13},
+  {keys:['Waitomo','Hobbiton','哈比'],center:{lat:-38.259,lng:175.101},zoom:10},
+  {keys:['返回台灣','桃園'],center:{lat:-37.008,lng:174.785},zoom:12},
+];
+
+function getDayCenter(region){
+  for(const d of DAY_CENTERS){
+    if(d.keys.some(k=>region.includes(k))) return {center:d.center,zoom:d.zoom};
+  }
+  return {center:{lat:-45.031,lng:168.663},zoom:12};
+}
+
+// Day emoji by index
+const DAY_EMOJIS=['✈️','📸','🚢','🪂','🏔','🚀','🏙','✨','🏠'];
+
+// ── Build DAYS structure from CSV rows ────────────
+function buildDays(rows){
+  const days=[];
+  let curDay=null, curDate='', curDow='', altSection=false;
+
+  for(let i=1;i<rows.length;i++){
+    const r=rows[i];
+    if(r.length<3) continue;
+
+    const [dateRaw,dow,time,type,activity,note,place,status]=r;
+
+    // Section header row (e.g. "南島 — 皇后鎮 ...")
+    if(dateRaw&&!dateRaw.match(/\d{4}\/\d/)&&dateRaw.trim()!=''){
+      // region header — skip, handled per-day
+      continue;
+    }
+
+    // Backup plan section
+    if(activity&&activity.includes('備案')&&!dateRaw){
+      altSection=true;
+      if(curDay) curDay.altItems=[];
+      continue;
+    }
+
+    // New date = new day
+    if(dateRaw&&dateRaw.match(/\d{4}\/\d/)){
+      altSection=false;
+      curDate=dateRaw;
+      curDow=dow||curDow;
+      // parse display date e.g. 2026/7/24 → 7/24
+      const dp=dateRaw.replace('2026/','');
+      const idx=days.length;
+      curDay={
+        label:`第${idx+1}天`,
+        dow:curDow,
+        emoji:DAY_EMOJIS[idx]||'📍',
+        date:dp,
+        region:'',
+        center:{lat:-45.031,lng:168.663},
+        zoom:13,
+        items:[],
+        altPlan:false,
+        altItems:[],
+        mainItems:null,
+      };
+      days.push(curDay);
+    }
+
+    if(!curDay) continue;
+
+    // Set region from place if not set (first meaningful place of the day)
+    if(!curDay.region && place && place.trim() && !place.includes('→')){
+      curDay.region=place.trim();
+      const dc=getDayCenter(place);
+      curDay.center=dc.center;curDay.zoom=dc.zoom;
+    }
+
+    if(!activity||!activity.trim()) continue;
+
+    const isTransport = type&&(type.includes('出發')||type.includes('返回')||type.includes('前往'));
+    const coord = COORDS[place]||COORDS[(place||'').split('→')[0]?.trim()]||null;
+    const mk = mkType(type);
+    const photo = getPhoto(activity,note);
+    const stat = status||'';
+    const tags=[];
+    if(stat.includes('已訂')) tags.push({t:'✅ 已訂',c:'b-ok'});
+    else if(stat.includes('需預約')) tags.push({t:'🔔 需預約',c:'b-need'});
+    else if(stat.includes('可選')) tags.push({t:'🔵 可選',c:'tb'});
+    if(type&&!type.includes('出發')&&!type.includes('返回')&&!type.includes('前往')){
+      const tc=type.includes('晚餐')||type.includes('午餐')||type.includes('早餐')?'tg':
+               type.includes('住宿')?'to':
+               type.includes('航班')||type.includes('落地')?'tb':'tp';
+      tags.push({t:type,c:tc});
+    }
+    if(stat.includes('待定')) tags.push({t:'📝 待定',c:'b-tbd'});
+
+    const item={
+      time:time||'',
+      title:activity,
+      note:note||'',
+      tags,
+      photo,
+      ll:coord,
+      mk,
+      loc:activity+' '+(place||'New Zealand'),
+    };
+
+    if(isTransport){
+      const trItem={type:'tr',icon:type.includes('出發')||type.includes('前往')?'🚗':type.includes('返回')?'🚗':type.includes('航班')?'✈️':'🚗',text:`${time?time+' ':''}${activity}${note?' — '+note:''}`};
+      if(altSection&&curDay.altItems) curDay.altItems.push(trItem);
+      else curDay.items.push(trItem);
+    } else {
+      if(altSection&&curDay.altItems){
+        curDay.altItems.push(item);
+        curDay.altPlan=true;
+      } else {
+        curDay.items.push(item);
+      }
+    }
+  }
+
+  // finalize altPlan days
+  days.forEach(d=>{
+    if(d.altPlan){
+      d.mainItems=d.items;
+      d.altLabel='天氣差備案';
+    }
+    if(!d.region) d.region=`第${days.indexOf(d)+1}天`;
+  });
+
+  return days.filter(d=>d.items.length>0||d.altItems?.length>0);
+}
+
+// ── App state ────────────────────────────────────
+let DAYS=[],cur=0,alt=false,gmap=null,gmMarkers=[],iobs=null,infoWin=null,mapFocus=false;
+
+// Countdown
+function updateCountdown(){
+  // Find first flight date from days
+  const target=new Date('2026-07-24');
+  const d=Math.ceil((target-new Date())/864e5);
+  document.getElementById('cd').textContent=d>0?`出發倒數 ${d} 天`:d===0?'今天出發！':'旅途中';
+}
+updateCountdown();
+
+// ── Google Maps ──────────────────────────────────
+const DARK=[
   {elementType:"geometry",stylers:[{color:"#1a1d2a"}]},
   {elementType:"labels.text.stroke",stylers:[{color:"#1a1d2a"}]},
   {elementType:"labels.text.fill",stylers:[{color:"#8b8fa8"}]},
-  {featureType:"administrative",elementType:"geometry",stylers:[{color:"#2e3147"}]},
   {featureType:"road",elementType:"geometry",stylers:[{color:"#2e3147"}]},
-  {featureType:"road",elementType:"geometry.stroke",stylers:[{color:"#1a1d2a"}]},
   {featureType:"road.highway",elementType:"geometry",stylers:[{color:"#3a3d55"}]},
   {featureType:"water",elementType:"geometry",stylers:[{color:"#0d1929"}]},
-  {featureType:"water",elementType:"labels.text.fill",stylers:[{color:"#4a6fa5"}]},
   {featureType:"poi",stylers:[{visibility:"off"}]},
   {featureType:"transit",stylers:[{visibility:"off"}]},
   {featureType:"landscape",elementType:"geometry",stylers:[{color:"#1a1d2a"}]},
@@ -226,27 +371,20 @@ const DARK_STYLE=[
 
 window.initGoogleMap=function(){
   gmap=new google.maps.Map(document.getElementById('map'),{
-    center:DAYS[0].center,zoom:DAYS[0].zoom,
-    styles:DARK_STYLE,
-    disableDefaultUI:true,
-    gestureHandling:'greedy',
+    center:{lat:-45.031,lng:168.663},zoom:13,
+    styles:DARK,disableDefaultUI:true,gestureHandling:'greedy',
   });
   infoWin=new google.maps.InfoWindow();
-  renderTabs();
-  renderCards();
+  loadSheet();
 };
 
 function mkColor(t){return{food:'#25c97a',activity:'#e8527a',transport:'#4da6ff',hotel:'#f0a500'}[t]||'#888';}
-
 function clearMarkers(){gmMarkers.forEach(m=>m.setMap(null));gmMarkers=[];}
-
 function addMarkers(items){
-  clearMarkers();
-  let n=1;
+  clearMarkers();let n=1;
   items.forEach(it=>{
-    if(!it.ll) return;
-    const idx=n++;
-    const c=mkColor(it.mk);
+    if(!it||!it.ll) return;
+    const idx=n++,c=mkColor(it.mk);
     const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><circle cx="14" cy="14" r="13" fill="${c}" stroke="rgba(255,255,255,0.5)" stroke-width="2"/><text x="14" y="19" text-anchor="middle" font-size="11" font-weight="bold" fill="white" font-family="Arial">${idx}</text></svg>`;
     const icon={url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg),scaledSize:new google.maps.Size(28,28),anchor:new google.maps.Point(14,14)};
     const m=new google.maps.Marker({position:it.ll,map:gmap,icon,title:it.title});
@@ -258,23 +396,33 @@ function addMarkers(items){
   });
 }
 
+function enterMapFocus(lat,lng){
+  mapFocus=true;
+  document.getElementById('app').classList.add('map-focus');
+  if(lat&&lng){gmap.panTo({lat,lng});gmap.setZoom(15);}
+}
+function exitMapFocus(){
+  mapFocus=false;
+  document.getElementById('app').classList.remove('map-focus');
+  document.querySelectorAll('.card.active').forEach(c=>c.classList.remove('active'));
+  const d=DAYS[cur];
+  if(d){gmap.panTo(d.center);gmap.setZoom(d.zoom);}
+}
 function toggleCard(el,lat,lng){
   const isOpen=el.classList.contains('active');
+  if(mapFocus&&isOpen){exitMapFocus();return;}
   document.querySelectorAll('.card.active').forEach(c=>c.classList.remove('active'));
   if(!isOpen){
     el.classList.add('active');
-    if(lat&&lng){gmap.panTo({lat,lng});gmap.setZoom(15);}
-  } else {
-    const d=DAYS[cur];
-    gmap.panTo(d.center);gmap.setZoom(d.zoom);
+    enterMapFocus(lat,lng);
+    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),50);
   }
 }
-
 function setupObs(){
   if(iobs)iobs.disconnect();
   iobs=new IntersectionObserver(entries=>{
     entries.forEach(e=>{
-      if(e.isIntersecting&&e.intersectionRatio>=0.6&&!document.querySelector('.card.active')){
+      if(e.isIntersecting&&e.intersectionRatio>=0.6&&!mapFocus){
         const lat=parseFloat(e.target.dataset.lat),lng=parseFloat(e.target.dataset.lng);
         if(lat&&lng){gmap.panTo({lat,lng});gmap.setZoom(14);}
       }
@@ -283,15 +431,14 @@ function setupObs(){
   document.querySelectorAll('#cards .card[data-lat]').forEach(c=>iobs.observe(c));
 }
 
+// ── Render ───────────────────────────────────────
 function badgeHtml(tags){
   const ok=tags.find(t=>t.c==='b-ok'),need=tags.find(t=>t.c==='b-need'),tbd=tags.find(t=>t.c==='b-tbd');
   return ok?`<span class="badge b-ok">✅ 已訂</span>`:need?`<span class="badge b-need">🔔 需預約</span>`:tbd?`<span class="badge b-tbd">📝 待定</span>`:'';
 }
-
 function cardHtml(it,idx){
   if(it.type==='tr') return `<div class="tr"><span class="tr-icon">${it.icon}</span><div class="tr-text">${it.text}</div></div>`;
-  const vis=it.tags.filter(t=>!['b-ok','b-need','b-tbd'].includes(t.c));
-  const sub=it.subs?`<div class="subs"><div class="stitle">📍 推薦資訊</div>${it.subs.map(s=>`<div class="si">${s}</div>`).join('')}</div>`:'';
+  const vis=(it.tags||[]).filter(t=>!['b-ok','b-need','b-tbd'].includes(t.c));
   const nav=it.loc?`<a class="btnav" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.loc)}" target="_blank" onclick="event.stopPropagation()">🗺 Google Maps 導航</a>`:'';
   const photo=it.photo?`<img src="${it.photo}" alt="${it.title}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:130px;object-fit:cover;display:block">`:'';
   const pos=it.ll?`data-lat="${it.ll.lat}" data-lng="${it.ll.lng}"`:'';
@@ -299,7 +446,7 @@ function cardHtml(it,idx){
   return `<div class="card" ${pos} onclick="toggleCard(this,${lat},${lng})">
     <div class="card-photo">${photo}</div>
     <div class="card-body">
-      ${badgeHtml(it.tags)}
+      ${badgeHtml(it.tags||[])}
       <div class="card-time">${it.time||''}</div>
       <div class="card-title-row">
         <div class="card-num">${idx}</div>
@@ -307,9 +454,9 @@ function cardHtml(it,idx){
         <div class="card-arrow">▼</div>
       </div>
       <div class="card-detail">
-        <div class="card-note">${it.note}</div>
+        <div class="card-note">${it.note||''}</div>
         <div class="tags">${vis.map(t=>`<span class="tag ${t.c}">${t.t}</span>`).join('')}</div>
-        ${sub}${nav}
+        ${nav}
       </div>
     </div>
   </div>`;
@@ -318,25 +465,41 @@ function cardHtml(it,idx){
 function renderTabs(){
   document.getElementById('dtabs').innerHTML=DAYS.map((d,i)=>`<div class="dtab ${i===cur?'on':''}" onclick="sel(${i})"><span class="de">${d.emoji}</span><span class="dn">${d.label}</span><span class="dd">${d.dow}・${d.date}</span></div>`).join('');
 }
-
 function renderCards(){
   const d=DAYS[cur];
+  if(!d) return;
   if(gmap){gmap.panTo(d.center);gmap.setZoom(d.zoom);}
   let h=`<div class="rgn"><div class="rgn-dot"></div>${d.region}</div>`;
   let items;
-  if(d.altPlan){
-    h+=`<div class="alt-bar"><span class="alt-lbl">⚡ 天氣備案切換</span><div class="toggle"><div class="topt ${!alt?'on':''}" onclick="event.stopPropagation();setAlt(false)">正案</div><div class="topt ${alt?'on':''}" onclick="event.stopPropagation();setAlt(true)">${d.altLabel}</div></div></div>`;
+  if(d.altPlan&&d.mainItems){
+    h+=`<div class="alt-bar"><span class="alt-lbl">⚡ 天氣備案切換</span><div class="toggle"><div class="topt ${!alt?'on':''}" onclick="event.stopPropagation();setAlt(false)">正案</div><div class="topt ${alt?'on':''}" onclick="event.stopPropagation();setAlt(true)">${d.altLabel||'備案'}</div></div></div>`;
     items=alt?d.altItems:d.mainItems;
   } else {items=d.items;}
   let idx=1;
-  items.forEach(it=>{h+=cardHtml(it,it.type==='tr'?'':idx++);});
+  (items||[]).forEach(it=>{h+=cardHtml(it,it.type==='tr'?'':idx++);});
   document.getElementById('cards').innerHTML=h;
   document.getElementById('scroll').scrollTop=0;
-  if(gmap){addMarkers(items);setTimeout(setupObs,200);}
+  if(gmap){addMarkers(items||[]);setTimeout(setupObs,200);}
 }
-
-function sel(i){cur=i;alt=false;renderTabs();renderCards();}
+function sel(i){if(mapFocus)exitMapFocus();cur=i;alt=false;renderTabs();renderCards();}
 function setAlt(v){alt=v;renderCards();}
+
+// ── Load from Google Sheets ───────────────────────
+async function loadSheet(){
+  const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+  try{
+    const res=await fetch(url);
+    if(!res.ok) throw new Error('fetch failed');
+    const text=await res.text();
+    const rows=parseCSV(text);
+    DAYS=buildDays(rows);
+    document.getElementById('loading').style.display='none';
+    renderTabs();
+    renderCards();
+  } catch(e){
+    document.getElementById('loading').innerHTML=`<p style="color:#ff6b6b;text-align:center;padding:20px">載入失敗<br><small>${e.message}</small><br><br><button onclick="loadSheet()" style="margin-top:8px;padding:8px 16px;border-radius:20px;background:var(--pink);border:none;color:#fff;cursor:pointer">重試</button></p>`;
+  }
+}
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&callback=initGoogleMap&language=zh-TW"></script>
 </body>
