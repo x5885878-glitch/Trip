@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>紐西蘭蜜月</title>
+<title>紐西蘭蜜月旅遊</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'PingFang TC','Noto Sans TC',sans-serif;background:#0d0f18;color:#e8e8ec}
@@ -110,7 +110,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 
 <script>
 // ── 設定 ──────────────────────────────────────────
-const SHEET_ID = '1rHJswHyumsR2sk7-m6iyKBSSAHsTF58BtCJeNITX8QU';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzbQpA87vF39HLZBBbJKznW_9fsvi22cqNAPjyvPGvoMUyAczUnmFCBZsto09xXziM7/exec';
 const GMKEY   = 'AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U';
 
 // 根據地點名稱自動對應座標
@@ -486,13 +486,12 @@ function setAlt(v){alt=v;renderCards();}
 
 // ── Load from Google Sheets ───────────────────────
 async function loadSheet(){
-  const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
   try{
-    const res=await fetch(url);
-    if(!res.ok) throw new Error('fetch failed');
-    const text=await res.text();
-    const rows=parseCSV(text);
-    DAYS=buildDays(rows);
+    const res=await fetch(APPS_SCRIPT_URL);
+    if(!res.ok) throw new Error('fetch failed '+res.status);
+    const data=await res.json();
+    // Apps Script returns 2D array directly
+    DAYS=buildDays(data);
     document.getElementById('loading').style.display='none';
     renderTabs();
     renderCards();
