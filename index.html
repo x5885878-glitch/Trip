@@ -485,19 +485,27 @@ function sel(i){if(mapFocus)exitMapFocus();cur=i;alt=false;renderTabs();renderCa
 function setAlt(v){alt=v;renderCards();}
 
 // ── Load from Google Sheets ───────────────────────
-async function loadSheet(){
-  try{
-    const res=await fetch(APPS_SCRIPT_URL);
-    if(!res.ok) throw new Error('fetch failed '+res.status);
-    const data=await res.json();
-    // Apps Script returns 2D array directly
-    DAYS=buildDays(data);
-    document.getElementById('loading').style.display='none';
-    renderTabs();
-    renderCards();
-  } catch(e){
-    document.getElementById('loading').innerHTML=`<p style="color:#ff6b6b;text-align:center;padding:20px">載入失敗<br><small>${e.message}</small><br><br><button onclick="loadSheet()" style="margin-top:8px;padding:8px 16px;border-radius:20px;background:var(--pink);border:none;color:#fff;cursor:pointer">重試</button></p>`;
-  }
+function loadSheet(){
+  // JSONP to bypass CORS
+  const cbName='_cb'+Date.now();
+  const script=document.createElement('script');
+  script.src=APPS_SCRIPT_URL+'?callback='+cbName;
+  script.onerror=()=>{
+    document.getElementById('loading').innerHTML=`<p style="color:#ff6b6b;text-align:center;padding:20px">載入失敗<br><small>網路錯誤</small><br><br><button onclick="loadSheet()" style="margin-top:8px;padding:8px 16px;border-radius:20px;background:var(--pink);border:none;color:#fff;cursor:pointer">重試</button></p>`;
+  };
+  window[cbName]=function(data){
+    delete window[cbName];
+    document.head.removeChild(script);
+    try{
+      DAYS=buildDays(data);
+      document.getElementById('loading').style.display='none';
+      renderTabs();
+      renderCards();
+    } catch(e){
+      document.getElementById('loading').innerHTML=`<p style="color:#ff6b6b;text-align:center;padding:20px">解析失敗<br><small>${e.message}</small><br><br><button onclick="loadSheet()" style="margin-top:8px;padding:8px 16px;border-radius:20px;background:var(--pink);border:none;color:#fff;cursor:pointer">重試</button></p>`;
+    }
+  };
+  document.head.appendChild(script);
 }
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&callback=initGoogleMap&language=zh-TW"></script>
