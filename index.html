@@ -5,430 +5,404 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>紐西蘭蜜月旅遊</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'PingFang TC','Noto Sans TC',sans-serif;background:#0d0f18;color:#e8e8ec}
-:root{--pink:#e8527a;--gold:#f0a500;--muted:#7a7d96;--green:#25c97a;--blue:#4da6ff;--border:rgba(255,255,255,0.09);--card:rgba(13,15,26,0.93)}
-#app{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto;overflow:hidden}
-#hdr{flex-shrink:0;background:#0d0f18;padding:12px 16px 8px;z-index:600;border-bottom:1px solid var(--border)}
-.hdr-row{display:flex;align-items:center;gap:8px}
+:root{--pink:#e8527a;--gold:#f0a500;--muted:#7a7d96;--green:#25c97a;--blue:#4da6ff;--border:rgba(255,255,255,0.09);--card:rgba(12,14,24,0.96);--hdr:56px;--tabs:64px;--sheet-peek:44vh}
+
+/* ── Layout ── */
+#app{position:fixed;inset:0;max-width:430px;margin:0 auto;overflow:hidden;background:#0d0f18}
+
+/* Header */
+#hdr{position:absolute;top:0;left:0;right:0;height:var(--hdr);background:rgba(10,12,20,0.92);padding:0 16px;display:flex;align-items:center;gap:8px;z-index:700;backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
 .hdr-title{font-size:15px;font-weight:700;color:#fff}
-.hdr-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.hdr-sub{font-size:10px;color:var(--muted)}
 .cd{margin-left:auto;background:rgba(232,82,122,.15);border:1px solid rgba(232,82,122,.35);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--pink);font-weight:700;white-space:nowrap}
-#dtabs{flex-shrink:0;display:flex;gap:7px;overflow-x:auto;padding:8px 14px;background:#0d0f18;scrollbar-width:none;z-index:600}
+
+/* Day tabs */
+#dtabs{position:absolute;top:var(--hdr);left:0;right:0;height:var(--tabs);display:flex;gap:7px;overflow-x:auto;padding:8px 12px;background:rgba(10,12,20,0.88);scrollbar-width:none;z-index:700;backdrop-filter:blur(10px);align-items:center}
 #dtabs::-webkit-scrollbar{display:none}
-.dtab{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 10px;border-radius:18px;background:#1a1d2a;border:1px solid var(--border);cursor:pointer;min-width:60px;transition:.15s}
+.dtab{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 10px;border-radius:18px;background:#1a1d2a;border:1px solid var(--border);cursor:pointer;min-width:58px;transition:all .15s}
 .dtab.on{background:var(--pink);border-color:var(--pink)}
-.dtab .de{font-size:14px;line-height:1}
+.dtab .de{font-size:13px;line-height:1}
 .dtab .dn{font-size:11px;font-weight:700;color:#fff}
 .dtab .dd{font-size:9px;color:rgba(255,255,255,.6)}
 .dtab:not(.on) .dn{color:var(--muted)}
-#main{flex:1;position:relative;overflow:hidden}
+
+/* Map — always full screen behind everything */
 #map{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-#scroll{position:absolute;inset:0;overflow-y:scroll;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;z-index:200;transition:transform .3s ease}
-#scroll::-webkit-scrollbar{display:none}
-#spacer{height:38vh}
-#cards{padding:0 12px 80px}
-#app.map-focus #scroll{transform:translateY(calc(100% - 160px))}
-#map-overlay{display:none;position:absolute;inset:0;z-index:150}
-#app.map-focus #map-overlay{display:block}
-#legend{position:absolute;bottom:16px;right:12px;background:rgba(6,8,18,0.88);border:1px solid var(--border);border-radius:10px;padding:8px 10px;z-index:500;backdrop-filter:blur(6px);transition:bottom .3s}
-#app.map-focus #legend{bottom:170px}
-.leg{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.7);margin-bottom:4px}
+
+/* Legend */
+#legend{position:absolute;right:10px;background:rgba(6,8,18,0.88);border:1px solid var(--border);border-radius:10px;padding:7px 9px;z-index:600;backdrop-filter:blur(6px);transition:bottom .35s ease}
+.leg{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.7);margin-bottom:3px}
 .leg:last-child{margin-bottom:0}
-.legdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-#map-hint{display:none;position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(6,8,18,0.85);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:11px;color:rgba(255,255,255,.7);z-index:500;backdrop-filter:blur(6px);white-space:nowrap}
-#app.map-focus #map-hint{display:block}
-.rgn{display:inline-flex;align-items:center;gap:6px;background:rgba(6,8,18,0.88);border:1px solid var(--border);border-radius:20px;padding:5px 13px;margin-bottom:12px;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em;backdrop-filter:blur(8px)}
+.legdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* ── Bottom Sheet ── */
+#sheet{position:absolute;left:0;right:0;bottom:0;z-index:500;transition:transform .35s cubic-bezier(.32,1,.22,1);will-change:transform;touch-action:none}
+/* Handle bar */
+#handle{height:28px;display:flex;align-items:center;justify-content:center;cursor:grab;flex-shrink:0}
+#handle-bar{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.25)}
+/* Sheet inner */
+#sheet-inner{background:rgba(10,12,22,0.97);border-radius:20px 20px 0 0;overflow:hidden;border-top:1px solid var(--border);backdrop-filter:blur(16px)}
+/* Region pill inside sheet */
+.rgn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border-radius:20px;padding:4px 12px;margin:8px 12px 4px;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em}
 .rgn-dot{width:6px;height:6px;border-radius:50%;background:var(--pink);flex-shrink:0}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:18px;overflow:hidden;backdrop-filter:blur(12px);cursor:pointer;transition:border-color .2s}
-.card.active{border-color:rgba(232,82,122,.6)}
-.card-photo{width:100%;height:0;overflow:hidden;transition:height .3s}
-.card.active .card-photo{height:130px}
-.card-photo img{width:100%;height:130px;object-fit:cover;display:block}
-.card-body{padding:12px 14px}
-.card-time{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:3px}
-.card-title-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
-.card-num{width:20px;height:20px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
-.card-title{font-size:15px;font-weight:700;color:#fff;line-height:1.3;flex:1}
-.card-arrow{font-size:12px;color:var(--muted);transition:transform .3s;flex-shrink:0}
+/* Cards scroll area */
+#cards-wrap{overflow-y:scroll;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 12px 40px}
+#cards-wrap::-webkit-scrollbar{display:none}
+
+/* Alt bar */
+.alt-bar{background:rgba(240,165,0,.07);border:1px solid rgba(240,165,0,.2);border-radius:12px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.alt-lbl{font-size:12px;color:var(--gold);font-weight:700}
+.toggle{display:flex;background:#0d0f18;border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.topt{padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted);transition:.15s}
+.topt.on{background:var(--gold);color:#150f00}
+
+/* ── Cards ── */
+.card{background:rgba(20,22,35,0.95);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;cursor:pointer;transition:border-color .2s,transform .15s}
+.card:active{transform:scale(0.99)}
+.card.active{border-color:rgba(232,82,122,.55)}
+/* Photo: hidden by default, shown when active */
+.card-photo{height:0;overflow:hidden;transition:height .3s ease}
+.card.active .card-photo{height:120px}
+.card-photo img{width:100%;height:120px;object-fit:cover;display:block}
+.card-body{padding:10px 13px 11px}
+.card-time{font-size:11px;font-weight:700;color:var(--gold);margin-bottom:2px}
+.card-row{display:flex;align-items:center;gap:8px}
+.card-num{width:19px;height:19px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.card-title{font-size:14px;font-weight:700;color:#fff;flex:1;line-height:1.3}
+.card-arrow{font-size:10px;color:var(--muted);transition:transform .3s;flex-shrink:0}
 .card.active .card-arrow{transform:rotate(180deg)}
-.card-detail{display:none}
+.card-detail{display:none;padding-top:8px}
 .card.active .card-detail{display:block}
-.card-note{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:8px}
-.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px}
-.tag{font-size:10px;padding:3px 8px;border-radius:12px;font-weight:700}
+.card-note{font-size:11px;color:var(--muted);line-height:1.55;margin-bottom:7px}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:5px}
+.tag{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700}
 .tg{background:rgba(37,201,122,.15);color:var(--green);border:1px solid rgba(37,201,122,.3)}
 .tb{background:rgba(77,166,255,.15);color:var(--blue);border:1px solid rgba(77,166,255,.3)}
 .tp{background:rgba(232,82,122,.15);color:var(--pink);border:1px solid rgba(232,82,122,.3)}
 .to{background:rgba(240,165,0,.15);color:var(--gold);border:1px solid rgba(240,165,0,.3)}
-.btnav{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:6px 14px;border-radius:20px;background:#0f1e40;border:1px solid #2960ad;color:#7ab8ff;font-size:11px;font-weight:700;text-decoration:none}
-.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;margin-bottom:6px}
-.b-ok{background:rgba(37,201,122,.2);color:var(--green);border:1px solid rgba(37,201,122,.35)}
-.b-need{background:rgba(240,165,0,.2);color:var(--gold);border:1px solid rgba(240,165,0,.35)}
-.b-tbd{background:rgba(122,125,150,.15);color:var(--muted);border:1px solid rgba(255,255,255,.1)}
-.tr{display:flex;align-items:flex-start;gap:10px;background:rgba(13,15,26,.7);border:1px dashed rgba(255,255,255,.06);border-radius:12px;padding:10px 14px;margin-bottom:18px}
-.tr-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-.tr-text{font-size:12px;color:var(--muted);line-height:1.5}
-.alt-bar{background:rgba(240,165,0,.07);border:1px solid rgba(240,165,0,.2);border-radius:12px;padding:9px 13px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
-.alt-lbl{font-size:12px;color:var(--gold);font-weight:700}
-.toggle{display:flex;background:#0d0f18;border:1px solid var(--border);border-radius:20px;overflow:hidden}
-.topt{padding:5px 13px;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted)}
-.topt.on{background:var(--gold);color:#150f00}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;margin-bottom:5px}
+.b-ok{background:rgba(37,201,122,.2);color:var(--green);border:1px solid rgba(37,201,122,.3)}
+.b-need{background:rgba(240,165,0,.2);color:var(--gold);border:1px solid rgba(240,165,0,.3)}
+.b-tbd{background:rgba(122,125,150,.15);color:var(--muted);border:1px solid rgba(255,255,255,.08)}
+.btnav{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:5px 12px;border-radius:18px;background:#0f1e40;border:1px solid #2960ad;color:#7ab8ff;font-size:11px;font-weight:700;text-decoration:none}
+
+/* Transport row */
+.tr{display:flex;align-items:flex-start;gap:9px;background:rgba(13,15,26,.6);border:1px dashed rgba(255,255,255,.06);border-radius:10px;padding:9px 12px;margin-bottom:10px}
+.tr-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+.tr-text{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* Loading */
 #loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:999;background:#0d0f18}
-#loading .spin{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--pink);border-radius:50%;animation:spin .8s linear infinite}
+.spin{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--pink);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-#loading p{font-size:13px;color:var(--muted)}
 </style>
 </head>
 <body>
 <div id="app">
   <div id="hdr">
-    <div class="hdr-row">
-      <span style="font-size:20px">🥝</span>
-      <div><div class="hdr-title">紐西蘭蜜月旅遊</div><div class="hdr-sub">Queenstown / Tekapo / Auckland・2人</div></div>
-      <div class="cd" id="cd">計算中</div>
-    </div>
+    <span style="font-size:20px">🥝</span>
+    <div><div class="hdr-title">紐西蘭蜜月旅遊</div><div class="hdr-sub">Queenstown / Tekapo / Auckland・2人</div></div>
+    <div class="cd" id="cd">計算中</div>
   </div>
   <div id="dtabs"></div>
-  <div id="main">
-    <div id="map"></div>
-    <div id="map-hint">地圖模式・點下方卡片返回行程</div>
-    <div id="map-overlay" onclick="exitMapFocus()"></div>
-    <div id="legend">
-      <div class="leg"><div class="legdot" style="background:#25c97a"></div>餐飲</div>
-      <div class="leg"><div class="legdot" style="background:#e8527a"></div>觀光</div>
-      <div class="leg"><div class="legdot" style="background:#4da6ff"></div>交通</div>
-      <div class="leg"><div class="legdot" style="background:#f0a500"></div>住宿</div>
-    </div>
-    <div id="scroll">
-      <div id="spacer"></div>
-      <div id="cards"></div>
-    </div>
-    <div id="loading"><div class="spin"></div><p>載入行程中...</p></div>
+  <div id="map"></div>
+  <div id="legend">
+    <div class="leg"><div class="legdot" style="background:#25c97a"></div>餐飲</div>
+    <div class="leg"><div class="legdot" style="background:#e8527a"></div>觀光</div>
+    <div class="leg"><div class="legdot" style="background:#4da6ff"></div>交通</div>
+    <div class="leg"><div class="legdot" style="background:#f0a500"></div>住宿</div>
   </div>
+  <div id="sheet">
+    <div id="sheet-inner">
+      <div id="handle"><div id="handle-bar"></div></div>
+      <div class="rgn"><div class="rgn-dot"></div><span id="rgn-text">載入中...</span></div>
+      <div id="cards-wrap"><div id="cards"></div></div>
+    </div>
+  </div>
+  <div id="loading"><div class="spin"></div><p style="font-size:13px;color:var(--muted)">載入行程中...</p></div>
 </div>
 
 <script>
-// ── 設定 ──────────────────────────────────────────
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzbQpA87vF39HLZBBbJKznW_9fsvi22cqNAPjyvPGvoMUyAczUnmFCBZsto09xXziM7/exec';
-const GMKEY   = 'AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U';
+const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzbQpA87vF39HLZBBbJKznW_9fsvi22cqNAPjyvPGvoMUyAczUnmFCBZsto09xXziM7/exec';
+const GMKEY='AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U';
 
-// 根據地點名稱自動對應座標
-const COORDS = {
-  '皇后鎮機場':       {lat:-45.021,lng:168.740},
-  '皇后鎮':          {lat:-45.031,lng:168.663},
-  '皇后鎮市區':       {lat:-45.031,lng:168.661},
-  'Shotover 峽谷':   {lat:-45.005,lng:168.717},
-  '格林諾奇':        {lat:-45.034,lng:168.376},
-  '格林諾奇→皇后鎮': {lat:-45.031,lng:168.661},
-  '皇后鎮→格林諾奇': {lat:-45.034,lng:168.376},
-  '皇后鎮→米佛峽灣': {lat:-44.641,lng:167.897},
-  '米佛峽灣':        {lat:-44.641,lng:167.897},
-  '米佛峽灣→皇后鎮': {lat:-45.031,lng:168.661},
-  'Arthurs Point':   {lat:-45.005,lng:168.707},
-  'Gibbston Valley': {lat:-45.064,lng:168.813},
-  '皇后鎮→Gibbston': {lat:-45.064,lng:168.813},
-  '皇后鎮→庫克山':   {lat:-43.737,lng:170.101},
-  '庫克山國家公園':   {lat:-43.526,lng:170.194},
-  '庫克山':          {lat:-43.737,lng:170.101},
-  '庫克山→蒂卡波':   {lat:-44.005,lng:170.478},
-  '蒂卡波湖':        {lat:-44.005,lng:170.478},
-  '蒂卡波':          {lat:-44.007,lng:170.479},
-  '皇后鎮機場':       {lat:-45.021,lng:168.740},
-  '蒂卡波→皇后鎮':   {lat:-45.021,lng:168.740},
-  '奧克蘭':          {lat:-36.851,lng:174.765},
-  '奧克蘭機場區':     {lat:-37.008,lng:174.785},
-  '奧克蘭碼頭':       {lat:-36.840,lng:174.769},
-  '奧克蘭市區':       {lat:-36.851,lng:174.765},
-  '奧克蘭→Waitomo':  {lat:-38.259,lng:175.101},
-  'Waitomo':         {lat:-38.259,lng:175.101},
-  'Waitomo→Matamata':{lat:-37.810,lng:175.774},
-  'Matamata':        {lat:-37.810,lng:175.774},
-  'Hobbiton':        {lat:-37.858,lng:175.682},
-  'Matamata→奧克蘭': {lat:-36.851,lng:174.765},
-  '桃園機場':        {lat:25.079,lng:121.234},
-  '路上':            null,
-  '途中':            null,
-};
+// ── Sheet geometry ──────────────────────────────
+const HDR=56,TABS=64,TOP_MARGIN=HDR+TABS;
+let sheetH=0,peekY=0,fullY=0,midY=0,curSheetY=0;
 
-// 類型 → 地圖 marker 顏色
-function mkType(type){
-  if(!type) return 'activity';
-  if(type.includes('晚餐')||type.includes('午餐')||type.includes('早餐')||type.includes('餐')) return 'food';
-  if(type.includes('住宿')) return 'hotel';
-  if(type.includes('出發')||type.includes('返回')||type.includes('前往')||type.includes('落地')||type.includes('航班')||type.includes('報到')) return 'transport';
-  return 'activity';
+function calcSheet(){
+  const app=document.getElementById('app');
+  sheetH=app.offsetHeight-TOP_MARGIN;
+  // Peek: show ~44% of screen
+  peekY=app.offsetHeight*0.44;
+  // Mid: show ~70%
+  midY=app.offsetHeight*0.22;
+  // Full: almost full (leave map strip at top)
+  fullY=TOP_MARGIN+8;
+  // cards-wrap height
+  document.getElementById('cards-wrap').style.maxHeight=(app.offsetHeight-peekY-70)+'px';
+  // legend position
+  document.getElementById('legend').style.bottom=(app.offsetHeight-peekY+8)+'px';
 }
 
-// 照片關鍵字對應
-const PHOTO_MAP = [
-  {keys:['機場','航班','落地','報到','桃園'],url:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80'},
+function setSheetY(y,animate=true){
+  const s=document.getElementById('sheet');
+  curSheetY=y;
+  s.style.transition=animate?'transform .35s cubic-bezier(.32,1,.22,1)':'none';
+  s.style.transform=`translateY(${y}px)`;
+  document.getElementById('legend').style.bottom=(window.innerHeight-y+8)+'px';
+}
+
+// ── Drag handle ─────────────────────────────────
+let dragStart=null,dragY0=0,velY=0,lastT=0,lastY=0;
+function initDrag(){
+  const handle=document.getElementById('handle');
+  const onDown=e=>{
+    dragStart=e.touches?e.touches[0].clientY:e.clientY;
+    dragY0=curSheetY;velY=0;lastT=Date.now();lastY=dragStart;
+    document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',onUp);
+    document.addEventListener('touchmove',onMove,{passive:false});document.addEventListener('touchend',onUp);
+  };
+  const onMove=e=>{
+    if(dragStart===null)return;
+    if(e.cancelable)e.preventDefault();
+    const y=e.touches?e.touches[0].clientY:e.clientY;
+    const now=Date.now();velY=(y-lastY)/(now-lastT||1)*16;lastY=y;lastT=now;
+    const dy=y-dragStart;
+    let ny=dragY0+dy;
+    ny=Math.max(fullY,Math.min(window.innerHeight,ny));
+    setSheetY(ny,false);
+  };
+  const onUp=()=>{
+    dragStart=null;
+    document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onUp);
+    document.removeEventListener('touchmove',onMove);document.removeEventListener('touchend',onUp);
+    // snap to nearest position based on velocity + current pos
+    const snaps=[fullY,midY,peekY];
+    let target=snaps.reduce((a,b)=>Math.abs(b-curSheetY)<Math.abs(a-curSheetY)?b:a);
+    if(velY>8) target=snaps[Math.min(snaps.indexOf(target)+1,snaps.length-1)];
+    if(velY<-8) target=snaps[Math.max(snaps.indexOf(target)-1,0)];
+    setSheetY(target);
+  };
+  handle.addEventListener('mousedown',onDown);
+  handle.addEventListener('touchstart',onDown,{passive:true});
+}
+
+// ── Coords ──────────────────────────────────────
+const COORDS={
+  '皇后鎮機場':{lat:-45.021,lng:168.740},'皇后鎮':{lat:-45.031,lng:168.663},
+  '皇后鎮市區':{lat:-45.031,lng:168.661},'Shotover 峽谷':{lat:-45.005,lng:168.717},
+  '格林諾奇':{lat:-45.034,lng:168.376},'米佛峽灣':{lat:-44.641,lng:167.897},
+  'Arthurs Point':{lat:-45.005,lng:168.707},'Gibbston Valley':{lat:-45.064,lng:168.813},
+  '庫克山國家公園':{lat:-43.526,lng:170.194},'庫克山':{lat:-43.737,lng:170.101},
+  '蒂卡波湖':{lat:-44.005,lng:170.478},'蒂卡波':{lat:-44.007,lng:170.479},
+  '奧克蘭':{lat:-36.851,lng:174.765},'奧克蘭機場區':{lat:-37.008,lng:174.785},
+  '奧克蘭碼頭':{lat:-36.840,lng:174.769},'奧克蘭市區':{lat:-36.851,lng:174.765},
+  'Waitomo':{lat:-38.259,lng:175.101},'Matamata':{lat:-37.810,lng:175.774},
+  'Hobbiton':{lat:-37.858,lng:175.682},'桃園機場':{lat:25.079,lng:121.234},
+};
+const DAY_CENTERS=[
+  {keys:['格林諾奇'],c:{lat:-45.034,lng:168.376},z:12},
+  {keys:['米佛'],c:{lat:-44.641,lng:167.897},z:10},
+  {keys:['庫克山','蒂卡波'],c:{lat:-43.74,lng:170.10},z:10},
+  {keys:['Waitomo','Hobbiton','哈比'],c:{lat:-38.259,lng:175.101},z:10},
+  {keys:['奧克蘭'],c:{lat:-36.851,lng:174.765},z:13},
+  {keys:['皇后鎮','Queenstown'],c:{lat:-45.031,lng:168.663},z:13},
+  {keys:['台灣','桃園'],c:{lat:-37.008,lng:174.785},z:12},
+];
+function getDayCenter(r){for(const d of DAY_CENTERS)if(d.keys.some(k=>r.includes(k)))return{center:d.c,zoom:d.z};return{center:{lat:-45.031,lng:168.663},zoom:12};}
+function getCoord(place){if(!place)return null;const p=place.split('→')[0].trim();return COORDS[p]||COORDS[place]||null;}
+
+// ── Photos via Google Places ─────────────────────
+const PLACE_PHOTO_CACHE={};
+const FALLBACK_PHOTOS=[
+  {keys:['機場','航班','落地','桃園'],url:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80'},
   {keys:['Skyline','Gondola','纜車','滑車'],url:'https://images.unsplash.com/photo-1589802829985-817e51171b92?w=600&q=80'},
-  {keys:['Fergburger','漢堡','Fish','Chips','輕食','便當'],url:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80'},
-  {keys:['婚紗','格林諾奇','Glenorchy'],url:'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80'},
+  {keys:['Fergburger','漢堡','Fish','Chips','輕食'],url:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80'},
+  {keys:['婚紗','格林諾奇'],url:'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80'},
   {keys:['米佛','Milford','峽灣','遊船'],url:'https://images.unsplash.com/photo-1572375992501-4b0892d50c69?w=600&q=80'},
   {keys:['跳傘','Nzone'],url:'https://images.unsplash.com/photo-1601024445121-e5b82f020549?w=600&q=80'},
   {keys:['Shotover','噴射船'],url:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80'},
   {keys:['溫泉','Onsen'],url:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80'},
   {keys:['酒莊','Winery','Amisfield','Gibbston'],url:'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=600&q=80'},
-  {keys:['冰川','直升機','Tasman'],url:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80'},
-  {keys:['庫克山','Mountaineers','胡克','健行'],url:'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80'},
+  {keys:['冰川','直升機'],url:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80'},
+  {keys:['庫克山','胡克','健行'],url:'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80'},
   {keys:['蒂卡波','Tekapo','善牧','教堂','散步'],url:'https://images.unsplash.com/photo-1548032885-b5e38734688a?w=600&q=80'},
-  {keys:['觀星','Observatory','星'],url:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80'},
+  {keys:['觀星','Observatory'],url:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80'},
   {keys:['Sky Tower','奧克蘭','Auckland','自由行'],url:'https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=600&q=80'},
   {keys:['螢火蟲','Waitomo'],url:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80'},
   {keys:['哈比','Hobbiton'],url:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600&q=80'},
-  {keys:['餐廳','晚餐','Rata','Botswana','Clooney','Fine','Dining','Kohan','Stratosfare'],url:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80'},
+  {keys:['餐廳','晚餐','Rata','Botswana','Clooney','Kohan','Stratosfare'],url:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80'},
   {keys:['咖啡','Café','早餐','Vudu','Run76'],url:'https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80'},
 ];
-
-function getPhoto(title, note){
-  const txt = (title||'') + ' ' + (note||'');
-  for(const p of PHOTO_MAP){
-    if(p.keys.some(k=>txt.includes(k))) return p.url;
-  }
+function getFallbackPhoto(title,note){
+  const t=(title||'')+' '+(note||'');
+  for(const p of FALLBACK_PHOTOS)if(p.keys.some(k=>t.includes(k)))return p.url;
   return 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=600&q=80';
 }
 
-// ── CSV 解析 ──────────────────────────────────────
-function parseCSV(text){
-  const lines = text.split('\n');
-  const rows = lines.map(l=>{
-    // handle quoted fields
-    const res=[];let cur='',inQ=false;
-    for(let i=0;i<l.length;i++){
-      const c=l[i];
-      if(c==='"'){inQ=!inQ;}
-      else if(c===','&&!inQ){res.push(cur.trim());cur='';}
-      else cur+=c;
-    }
-    res.push(cur.trim());
-    return res;
+// Fetch Google Places photo for a location name
+async function fetchPlacePhoto(query){
+  if(PLACE_PHOTO_CACHE[query])return PLACE_PHOTO_CACHE[query];
+  try{
+    // Places API text search
+    const url=`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(query)}&inputtype=textquery&fields=photos&key=${GMKEY}`;
+    // Can't call Places API directly from browser due to CORS — use photo_reference approach via img src trick
+    // Instead use Places JS SDK which is already loaded with the Maps API
+    return null; // will be handled by initPlacesPhoto after map loads
+  }catch{return null;}
+}
+
+// Use Places service to get photo
+let placesService=null;
+function getPlacesPhoto(query,callback){
+  if(!placesService||!window.google){callback(null);return;}
+  const req={query,fields:['photos']};
+  placesService.findPlaceFromQuery(req,(results,status)=>{
+    if(status===google.maps.places.PlacesServiceStatus.OK&&results[0]?.photos?.[0]){
+      const ref=results[0].photos[0];
+      const url=ref.getUrl({maxWidth:600,maxHeight:300});
+      callback(url);
+    } else callback(null);
   });
-  return rows;
 }
 
-// Day center coords by region keyword
-const DAY_CENTERS = [
-  {keys:['皇后鎮','Queenstown'],center:{lat:-45.031,lng:168.663},zoom:13},
-  {keys:['格林諾奇','Glenorchy'],center:{lat:-45.034,lng:168.376},zoom:12},
-  {keys:['米佛','Milford'],center:{lat:-44.641,lng:167.897},zoom:10},
-  {keys:['極限','跳傘','噴射'],center:{lat:-45.031,lng:168.663},zoom:13},
-  {keys:['庫克山','蒂卡波','Tekapo'],center:{lat:-43.74,lng:170.10},zoom:10},
-  {keys:['南島','北島'],center:{lat:-45.021,lng:168.740},zoom:12},
-  {keys:['奧克蘭市區','Auckland'],center:{lat:-36.851,lng:174.765},zoom:13},
-  {keys:['Waitomo','Hobbiton','哈比'],center:{lat:-38.259,lng:175.101},zoom:10},
-  {keys:['返回台灣','桃園'],center:{lat:-37.008,lng:174.785},zoom:12},
-];
-
-function getDayCenter(region){
-  for(const d of DAY_CENTERS){
-    if(d.keys.some(k=>region.includes(k))) return {center:d.center,zoom:d.zoom};
-  }
-  return {center:{lat:-45.031,lng:168.663},zoom:12};
+// ── Data build ───────────────────────────────────
+function mkType(type){
+  if(!type)return'activity';
+  if(/晚餐|午餐|早餐|餐/.test(type))return'food';
+  if(/住宿/.test(type))return'hotel';
+  if(/出發|返回|前往|落地|航班|報到/.test(type))return'transport';
+  return'activity';
 }
-
-// Day emoji by index
 const DAY_EMOJIS=['✈️','📸','🚢','🪂','🏔','🚀','🏙','✨','🏠'];
-
-// ── Build DAYS structure from CSV rows ────────────
 function buildDays(rows){
-  const days=[];
-  let curDay=null, curDate='', curDow='', altSection=false;
-
+  const days=[];let curDay=null,altSection=false;
   for(let i=1;i<rows.length;i++){
     const r=rows[i];
-    if(r.length<3) continue;
-
+    if(r.length<3)continue;
     const [dateRaw,dow,time,type,activity,note,place,status]=r;
-
-    // Section header row (e.g. "南島 — 皇后鎮 ...")
-    if(dateRaw&&!dateRaw.match(/\d{4}\/\d/)&&dateRaw.trim()!=''){
-      // region header — skip, handled per-day
-      continue;
-    }
-
-    // Backup plan section
-    if(activity&&activity.includes('備案')&&!dateRaw){
-      altSection=true;
-      if(curDay) curDay.altItems=[];
-      continue;
-    }
-
-    // New date = new day
-    if(dateRaw&&dateRaw.match(/\d{4}\/\d/)){
+    if(!dateRaw&&activity&&activity.includes('備案')&&!type){altSection=true;if(curDay)curDay.altItems=[];continue;}
+    if(dateRaw&&dateRaw.match&&dateRaw.match(/\d{4}\/\d/)){
       altSection=false;
-      curDate=dateRaw;
-      curDow=dow||curDow;
-      // parse display date e.g. 2026/7/24 → 7/24
       const dp=dateRaw.replace('2026/','');
       const idx=days.length;
-      curDay={
-        label:`第${idx+1}天`,
-        dow:curDow,
-        emoji:DAY_EMOJIS[idx]||'📍',
-        date:dp,
-        region:'',
-        center:{lat:-45.031,lng:168.663},
-        zoom:13,
-        items:[],
-        altPlan:false,
-        altItems:[],
-        mainItems:null,
-      };
+      curDay={label:`第${idx+1}天`,dow:dow||'',emoji:DAY_EMOJIS[idx]||'📍',date:dp,region:'',center:{lat:-45.031,lng:168.663},zoom:13,items:[],altPlan:false,altItems:[],mainItems:null};
       days.push(curDay);
     }
-
-    if(!curDay) continue;
-
-    // Set region from place if not set (first meaningful place of the day)
-    if(!curDay.region && place && place.trim() && !place.includes('→')){
+    if(!curDay||!activity||!activity.trim())continue;
+    if(!curDay.region&&place&&place.trim()&&!place.includes('→')){
       curDay.region=place.trim();
-      const dc=getDayCenter(place);
+      const dc=getDayCenter(place+' '+activity);
       curDay.center=dc.center;curDay.zoom=dc.zoom;
     }
-
-    if(!activity||!activity.trim()) continue;
-
-    const isTransport = type&&(type.includes('出發')||type.includes('返回')||type.includes('前往'));
-    const coord = COORDS[place]||COORDS[(place||'').split('→')[0]?.trim()]||null;
-    const mk = mkType(type);
-    const photo = getPhoto(activity,note);
-    const stat = status||'';
+    const isTransport=type&&/出發|返回|前往/.test(type);
+    const coord=getCoord(place);
+    const mk=mkType(type);
+    const photo=getFallbackPhoto(activity,note);
     const tags=[];
-    if(stat.includes('已訂')) tags.push({t:'✅ 已訂',c:'b-ok'});
-    else if(stat.includes('需預約')) tags.push({t:'🔔 需預約',c:'b-need'});
-    else if(stat.includes('可選')) tags.push({t:'🔵 可選',c:'tb'});
-    if(type&&!type.includes('出發')&&!type.includes('返回')&&!type.includes('前往')){
-      const tc=type.includes('晚餐')||type.includes('午餐')||type.includes('早餐')?'tg':
-               type.includes('住宿')?'to':
-               type.includes('航班')||type.includes('落地')?'tb':'tp';
+    const stat=status||'';
+    if(stat.includes('已訂'))tags.push({t:'✅ 已訂',c:'b-ok'});
+    else if(stat.includes('需預約'))tags.push({t:'🔔 需預約',c:'b-need'});
+    if(type&&!/出發|返回|前往/.test(type)){
+      const tc=/晚餐|午餐|早餐|餐/.test(type)?'tg':/住宿/.test(type)?'to':/航班|落地/.test(type)?'tb':'tp';
       tags.push({t:type,c:tc});
     }
-    if(stat.includes('待定')) tags.push({t:'📝 待定',c:'b-tbd'});
-
-    const item={
-      time:time||'',
-      title:activity,
-      note:note||'',
-      tags,
-      photo,
-      ll:coord,
-      mk,
-      loc:activity+' '+(place||'New Zealand'),
-    };
-
+    if(stat.includes('待定'))tags.push({t:'📝 待定',c:'b-tbd'});
+    const item={time:time||'',title:activity,note:note||'',tags,photo,ll:coord,mk,loc:activity+' New Zealand'};
     if(isTransport){
-      const trItem={type:'tr',icon:type.includes('出發')||type.includes('前往')?'🚗':type.includes('返回')?'🚗':type.includes('航班')?'✈️':'🚗',text:`${time?time+' ':''}${activity}${note?' — '+note:''}`};
-      if(altSection&&curDay.altItems) curDay.altItems.push(trItem);
-      else curDay.items.push(trItem);
+      const tr={type:'tr',icon:'🚗',text:`${time?time+' ':''}${activity}${note?' — '+note:''}`};
+      if(altSection&&curDay.altItems)curDay.altItems.push(tr);else curDay.items.push(tr);
     } else {
-      if(altSection&&curDay.altItems){
-        curDay.altItems.push(item);
-        curDay.altPlan=true;
-      } else {
-        curDay.items.push(item);
-      }
+      if(altSection&&curDay.altItems){curDay.altItems.push(item);curDay.altPlan=true;}
+      else curDay.items.push(item);
     }
   }
-
-  // finalize altPlan days
-  days.forEach(d=>{
-    if(d.altPlan){
-      d.mainItems=d.items;
-      d.altLabel='天氣差備案';
-    }
-    if(!d.region) d.region=`第${days.indexOf(d)+1}天`;
-  });
-
-  return days.filter(d=>d.items.length>0||d.altItems?.length>0);
+  days.forEach(d=>{if(d.altPlan){d.mainItems=d.items;d.altLabel='天氣差備案';}if(!d.region)d.region=d.label;});
+  return days.filter(d=>d.items.length>0);
 }
 
 // ── App state ────────────────────────────────────
-let DAYS=[],cur=0,alt=false,gmap=null,gmMarkers=[],iobs=null,infoWin=null,mapFocus=false;
+let DAYS=[],cur=0,alt=false,gmap=null,gmMarkers=[],infoWin=null;
 
 // Countdown
-function updateCountdown(){
-  // Find first flight date from days
-  const target=new Date('2026-07-24');
-  const d=Math.ceil((target-new Date())/864e5);
-  document.getElementById('cd').textContent=d>0?`出發倒數 ${d} 天`:d===0?'今天出發！':'旅途中';
-}
-updateCountdown();
+const diffD=Math.ceil((new Date('2026-07-24')-new Date())/864e5);
+document.getElementById('cd').textContent=diffD>0?`出發倒數 ${diffD} 天`:diffD===0?'今天出發！':'旅途中';
 
 // ── Google Maps ──────────────────────────────────
 const DARK=[
-  {elementType:"geometry",stylers:[{color:"#1a1d2a"}]},
-  {elementType:"labels.text.stroke",stylers:[{color:"#1a1d2a"}]},
-  {elementType:"labels.text.fill",stylers:[{color:"#8b8fa8"}]},
-  {featureType:"road",elementType:"geometry",stylers:[{color:"#2e3147"}]},
-  {featureType:"road.highway",elementType:"geometry",stylers:[{color:"#3a3d55"}]},
-  {featureType:"water",elementType:"geometry",stylers:[{color:"#0d1929"}]},
-  {featureType:"poi",stylers:[{visibility:"off"}]},
-  {featureType:"transit",stylers:[{visibility:"off"}]},
-  {featureType:"landscape",elementType:"geometry",stylers:[{color:"#1a1d2a"}]},
+  {elementType:'geometry',stylers:[{color:'#1a1d2a'}]},
+  {elementType:'labels.text.stroke',stylers:[{color:'#1a1d2a'}]},
+  {elementType:'labels.text.fill',stylers:[{color:'#8b8fa8'}]},
+  {featureType:'road',elementType:'geometry',stylers:[{color:'#2e3147'}]},
+  {featureType:'road.highway',elementType:'geometry',stylers:[{color:'#3a3d55'}]},
+  {featureType:'water',elementType:'geometry',stylers:[{color:'#0d1929'}]},
+  {featureType:'water',elementType:'labels.text.fill',stylers:[{color:'#4a6fa5'}]},
+  {featureType:'poi',stylers:[{visibility:'off'}]},
+  {featureType:'transit',stylers:[{visibility:'off'}]},
+  {featureType:'landscape',elementType:'geometry',stylers:[{color:'#1a1d2a'}]},
 ];
 
 window.initGoogleMap=function(){
+  calcSheet();
   gmap=new google.maps.Map(document.getElementById('map'),{
     center:{lat:-45.031,lng:168.663},zoom:13,
     styles:DARK,disableDefaultUI:true,gestureHandling:'greedy',
   });
   infoWin=new google.maps.InfoWindow();
+  // Init Places service
+  placesService=new google.maps.places.PlacesService(gmap);
+  initDrag();
+  setSheetY(peekY);
   loadSheet();
+  window.addEventListener('resize',()=>{calcSheet();setSheetY(peekY,false);});
 };
 
 function mkColor(t){return{food:'#25c97a',activity:'#e8527a',transport:'#4da6ff',hotel:'#f0a500'}[t]||'#888';}
 function clearMarkers(){gmMarkers.forEach(m=>m.setMap(null));gmMarkers=[];}
 function addMarkers(items){
   clearMarkers();let n=1;
-  items.forEach(it=>{
-    if(!it||!it.ll) return;
-    const idx=n++,c=mkColor(it.mk);
-    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><circle cx="14" cy="14" r="13" fill="${c}" stroke="rgba(255,255,255,0.5)" stroke-width="2"/><text x="14" y="19" text-anchor="middle" font-size="11" font-weight="bold" fill="white" font-family="Arial">${idx}</text></svg>`;
-    const icon={url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg),scaledSize:new google.maps.Size(28,28),anchor:new google.maps.Point(14,14)};
+  (items||[]).forEach(it=>{
+    if(!it||!it.ll||it.type==='tr')return;
+    const idx=n++;const c=mkColor(it.mk);
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"><circle cx="15" cy="15" r="14" fill="${c}" stroke="rgba(255,255,255,0.5)" stroke-width="2"/><text x="15" y="20" text-anchor="middle" font-size="11" font-weight="bold" fill="white" font-family="Arial">${idx}</text></svg>`;
+    const icon={url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg),scaledSize:new google.maps.Size(30,30),anchor:new google.maps.Point(15,15)};
     const m=new google.maps.Marker({position:it.ll,map:gmap,icon,title:it.title});
     m.addListener('click',()=>{
-      infoWin.setContent(`<div style="background:#12141f;padding:4px;min-width:160px"><div style="font-size:11px;color:#f0a500;margin-bottom:2px">${it.time||''}</div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px">${it.title}</div><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.loc||it.title)}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:12px;background:#1a3a6e;border:1px solid #2960ad;color:#7ab8ff;font-size:11px;font-weight:700;text-decoration:none">🗺 Google Maps 導航</a></div>`);
+      infoWin.setContent(`<div style="background:#12141f;padding:4px;min-width:150px"><div style="font-size:11px;color:#f0a500;margin-bottom:2px">${it.time||''}</div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px">${it.title}</div><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.loc||it.title)}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:10px;background:#1a3a6e;border:1px solid #2960ad;color:#7ab8ff;font-size:11px;font-weight:700;text-decoration:none">🗺 導航</a></div>`);
       infoWin.open(gmap,m);
+      // Expand sheet a bit to show context
+      if(curSheetY>=peekY) setSheetY(midY);
     });
     gmMarkers.push(m);
   });
 }
 
-function enterMapFocus(lat,lng){
-  mapFocus=true;
-  document.getElementById('app').classList.add('map-focus');
-  if(lat&&lng){gmap.panTo({lat,lng});gmap.setZoom(15);}
-}
-function exitMapFocus(){
-  mapFocus=false;
-  document.getElementById('app').classList.remove('map-focus');
-  document.querySelectorAll('.card.active').forEach(c=>c.classList.remove('active'));
-  const d=DAYS[cur];
-  if(d){gmap.panTo(d.center);gmap.setZoom(d.zoom);}
-}
+// ── Card click: focus map on item ────────────────
 function toggleCard(el,lat,lng){
   const isOpen=el.classList.contains('active');
-  if(mapFocus&&isOpen){exitMapFocus();return;}
   document.querySelectorAll('.card.active').forEach(c=>c.classList.remove('active'));
   if(!isOpen){
     el.classList.add('active');
-    enterMapFocus(lat,lng);
-    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),50);
+    // Pull sheet up to mid so map is visible above
+    setSheetY(midY);
+    if(lat&&lng){
+      setTimeout(()=>{gmap.panTo({lat,lng});gmap.setZoom(15);},200);
+    }
+    // Load Places photo if not already loaded
+    const img=el.querySelector('.card-photo img');
+    if(img&&img.dataset.query&&!img.dataset.loaded){
+      getPlacesPhoto(img.dataset.query,url=>{
+        if(url){img.src=url;img.dataset.loaded='1';}
+      });
+    }
+  } else {
+    // Collapsed: fly back to day view
+    const d=DAYS[cur];
+    if(d){gmap.panTo(d.center);gmap.setZoom(d.zoom);}
   }
-}
-function setupObs(){
-  if(iobs)iobs.disconnect();
-  iobs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting&&e.intersectionRatio>=0.6&&!mapFocus){
-        const lat=parseFloat(e.target.dataset.lat),lng=parseFloat(e.target.dataset.lng);
-        if(lat&&lng){gmap.panTo({lat,lng});gmap.setZoom(14);}
-      }
-    });
-  },{root:document.getElementById('scroll'),threshold:[0.6]});
-  document.querySelectorAll('#cards .card[data-lat]').forEach(c=>iobs.observe(c));
 }
 
 // ── Render ───────────────────────────────────────
@@ -437,18 +411,19 @@ function badgeHtml(tags){
   return ok?`<span class="badge b-ok">✅ 已訂</span>`:need?`<span class="badge b-need">🔔 需預約</span>`:tbd?`<span class="badge b-tbd">📝 待定</span>`:'';
 }
 function cardHtml(it,idx){
-  if(it.type==='tr') return `<div class="tr"><span class="tr-icon">${it.icon}</span><div class="tr-text">${it.text}</div></div>`;
+  if(it.type==='tr')return`<div class="tr"><span class="tr-icon">${it.icon}</span><div class="tr-text">${it.text}</div></div>`;
   const vis=(it.tags||[]).filter(t=>!['b-ok','b-need','b-tbd'].includes(t.c));
   const nav=it.loc?`<a class="btnav" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.loc)}" target="_blank" onclick="event.stopPropagation()">🗺 Google Maps 導航</a>`:'';
-  const photo=it.photo?`<img src="${it.photo}" alt="${it.title}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:130px;object-fit:cover;display:block">`:'';
-  const pos=it.ll?`data-lat="${it.ll.lat}" data-lng="${it.ll.lng}"`:'';
   const lat=it.ll?it.ll.lat:'',lng=it.ll?it.ll.lng:'';
-  return `<div class="card" ${pos} onclick="toggleCard(this,${lat},${lng})">
-    <div class="card-photo">${photo}</div>
+  // Use Places query for photo if possible, fallback to static
+  const placeQuery=it.loc||it.title;
+  const photoEl=`<div class="card-photo"><img src="${it.photo}" data-query="${placeQuery}" alt="${it.title}" loading="lazy" onerror="this.src='${it.photo}'"></div>`;
+  return`<div class="card" onclick="toggleCard(this,${lat},${lng})">
+    ${photoEl}
     <div class="card-body">
       ${badgeHtml(it.tags||[])}
       <div class="card-time">${it.time||''}</div>
-      <div class="card-title-row">
+      <div class="card-row">
         <div class="card-num">${idx}</div>
         <div class="card-title">${it.title}</div>
         <div class="card-arrow">▼</div>
@@ -466,48 +441,43 @@ function renderTabs(){
   document.getElementById('dtabs').innerHTML=DAYS.map((d,i)=>`<div class="dtab ${i===cur?'on':''}" onclick="sel(${i})"><span class="de">${d.emoji}</span><span class="dn">${d.label}</span><span class="dd">${d.dow}・${d.date}</span></div>`).join('');
 }
 function renderCards(){
-  const d=DAYS[cur];
-  if(!d) return;
+  const d=DAYS[cur];if(!d)return;
+  document.getElementById('rgn-text').textContent=d.region;
   if(gmap){gmap.panTo(d.center);gmap.setZoom(d.zoom);}
-  let h=`<div class="rgn"><div class="rgn-dot"></div>${d.region}</div>`;
-  let items;
+  let h='',items;
   if(d.altPlan&&d.mainItems){
     h+=`<div class="alt-bar"><span class="alt-lbl">⚡ 天氣備案切換</span><div class="toggle"><div class="topt ${!alt?'on':''}" onclick="event.stopPropagation();setAlt(false)">正案</div><div class="topt ${alt?'on':''}" onclick="event.stopPropagation();setAlt(true)">${d.altLabel||'備案'}</div></div></div>`;
     items=alt?d.altItems:d.mainItems;
-  } else {items=d.items;}
+  } else items=d.items;
   let idx=1;
   (items||[]).forEach(it=>{h+=cardHtml(it,it.type==='tr'?'':idx++);});
   document.getElementById('cards').innerHTML=h;
-  document.getElementById('scroll').scrollTop=0;
-  if(gmap){addMarkers(items||[]);setTimeout(setupObs,200);}
+  document.getElementById('cards-wrap').scrollTop=0;
+  if(gmap)addMarkers(items||[]);
 }
-function sel(i){if(mapFocus)exitMapFocus();cur=i;alt=false;renderTabs();renderCards();}
+function sel(i){cur=i;alt=false;renderTabs();renderCards();setSheetY(peekY);}
 function setAlt(v){alt=v;renderCards();}
 
-// ── Load from Google Sheets ───────────────────────
+// ── Load data ────────────────────────────────────
 function loadSheet(){
-  // JSONP to bypass CORS
-  const cbName='_cb'+Date.now();
-  const script=document.createElement('script');
-  script.src=APPS_SCRIPT_URL+'?callback='+cbName;
-  script.onerror=()=>{
-    document.getElementById('loading').innerHTML=`<p style="color:#ff6b6b;text-align:center;padding:20px">載入失敗<br><small>網路錯誤</small><br><br><button onclick="loadSheet()" style="margin-top:8px;padding:8px 16px;border-radius:20px;background:var(--pink);border:none;color:#fff;cursor:pointer">重試</button></p>`;
-  };
-  window[cbName]=function(data){
-    delete window[cbName];
-    document.head.removeChild(script);
+  const cb='_cb'+Date.now();
+  const s=document.createElement('script');
+  s.src=APPS_SCRIPT_URL+'?callback='+cb;
+  s.onerror=()=>showErr('網路錯誤');
+  window[cb]=data=>{
+    delete window[cb];document.head.removeChild(s);
     try{
       DAYS=buildDays(data);
       document.getElementById('loading').style.display='none';
-      renderTabs();
-      renderCards();
-    } catch(e){
-      document.getElementById('loading').innerHTML=`<p style="color:#ff6b6b;text-align:center;padding:20px">解析失敗<br><small>${e.message}</small><br><br><button onclick="loadSheet()" style="margin-top:8px;padding:8px 16px;border-radius:20px;background:var(--pink);border:none;color:#fff;cursor:pointer">重試</button></p>`;
-    }
+      renderTabs();renderCards();
+    }catch(e){showErr(e.message);}
   };
-  document.head.appendChild(script);
+  document.head.appendChild(s);
+}
+function showErr(msg){
+  document.getElementById('loading').innerHTML=`<p style="color:#ff6b6b;text-align:center;padding:20px">載入失敗<br><small>${msg}</small><br><br><button onclick="loadSheet()" style="margin-top:8px;padding:8px 16px;border-radius:20px;background:var(--pink);border:none;color:#fff;cursor:pointer;font-size:14px">重試</button></p>`;
 }
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&callback=initGoogleMap&language=zh-TW"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&libraries=places&callback=initGoogleMap&language=zh-TW"></script>
 </body>
 </html>
