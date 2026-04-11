@@ -21,11 +21,15 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .hdr-title{font-size:15px;font-weight:700;color:#fff}
 .hdr-sub{font-size:10px;color:var(--muted)}
 .cd{margin-left:auto;background:rgba(232,82,122,.15);border:1px solid rgba(232,82,122,.4);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--pink);font-weight:700;white-space:nowrap}
+#rf{margin-left:6px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--border);color:#e8e8ec;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);transition:transform .25s cubic-bezier(.22,1.12,.32,1),background .2s;padding:0}
+#rf:active{transform:scale(.88)}
+#rf.spin{animation:spin .8s linear infinite}
 
 /* ── Day tabs ── */
 #dtabs{position:absolute;top:var(--HDR);left:0;right:0;height:var(--TABS);display:flex;gap:6px;overflow-x:auto;padding:8px 12px;background:rgba(8,10,20,.88);scrollbar-width:none;z-index:700;backdrop-filter:blur(12px);align-items:center}
 #dtabs::-webkit-scrollbar{display:none}
-.dtab{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 9px;border-radius:16px;background:#1a1d2a;border:1px solid var(--border);cursor:pointer;min-width:54px;transition:.15s}
+.dtab{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 9px;border-radius:16px;background:#1a1d2a;border:1px solid var(--border);cursor:pointer;min-width:54px;transition:transform .18s cubic-bezier(.22,1.12,.32,1),background .15s,border-color .15s}
+.dtab:active{transform:scale(.92)}
 .dtab.on{background:var(--pink);border-color:var(--pink)}
 .dtab .de{font-size:13px;line-height:1}
 .dtab .dn{font-size:10px;font-weight:700;color:#fff}
@@ -35,8 +39,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 /* ── Map (always full screen) ── */
 #map{position:absolute;inset:0;z-index:1}
 
-/* ── Region label ── */
-#rgn-label{position:absolute;left:50%;transform:translateX(-50%);background:rgba(6,8,18,.85);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:11px;font-weight:700;color:var(--muted);z-index:600;backdrop-filter:blur(8px);white-space:nowrap;transition:top .35s ease}
+/* ── Region label (Dynamic Island style) ── */
+#rgn-label{position:absolute;left:50%;transform:translateX(-50%);background:rgba(10,12,22,.78);border:1px solid var(--border);border-radius:22px;padding:7px 18px;font-size:12px;font-weight:700;color:#fff;z-index:600;backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);white-space:nowrap;transition:top .42s cubic-bezier(.22,1.12,.32,1);box-shadow:0 8px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05)}
+#rgn-label.morph{animation:rgnMorph .5s cubic-bezier(.22,1.12,.32,1)}
+@keyframes rgnMorph{0%{transform:translateX(-50%) scale(.86);opacity:.4}60%{transform:translateX(-50%) scale(1.03);opacity:1}100%{transform:translateX(-50%) scale(1);opacity:1}}
 
 /* ── Legend ── */
 #legend{position:absolute;right:10px;background:rgba(6,8,18,.88);border:1px solid var(--border);border-radius:10px;padding:7px 9px;z-index:600;backdrop-filter:blur(6px);transition:bottom .35s ease}
@@ -45,16 +51,17 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .legdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 
 /* ── Card carousel container ── */
-#carousel{position:absolute;left:0;right:0;z-index:500;transition:bottom .35s cubic-bezier(.32,1,.22,1)}
+#carousel{position:absolute;left:0;right:0;z-index:500;transition:height .42s cubic-bezier(.22,1.12,.32,1)}
 /* horizontal scroll snap */
-#carousel-track{display:flex;overflow-x:scroll;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 calc(50% - 155px);gap:12px}
+#carousel-track{display:flex;overflow-x:scroll;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 calc(50% - 155px);gap:14px;height:100%}
 #carousel-track::-webkit-scrollbar{display:none}
 
 /* ── Individual card ── */
-.card{flex-shrink:0;width:310px;scroll-snap-align:center;background:rgba(12,14,24,.95);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transition:border-color .2s,transform .2s;will-change:transform}
-.card.active{border-color:rgba(232,82,122,.6)}
+.card{flex-shrink:0;width:310px;scroll-snap-align:center;background:rgba(18,20,32,.72);backdrop-filter:blur(22px) saturate(1.35);-webkit-backdrop-filter:blur(22px) saturate(1.35);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transform:scale(.94);transition:transform .4s cubic-bezier(.22,1.12,.32,1),border-color .25s,box-shadow .25s;will-change:transform;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.card.focus{transform:scale(1);box-shadow:0 10px 32px rgba(0,0,0,.45)}
+.card.active{border-color:rgba(232,82,122,.6);transform:scale(1);box-shadow:0 14px 40px rgba(232,82,122,.18),0 10px 32px rgba(0,0,0,.5)}
 /* photo shown only when active */
-.card-photo{height:0;overflow:hidden;transition:height .32s ease}
+.card-photo{height:0;overflow:hidden;transition:height .42s cubic-bezier(.22,1.12,.32,1)}
 .card.active .card-photo{height:130px}
 .card-photo img{width:100%;height:130px;object-fit:cover;display:block}
 .card-body{padding:12px 14px 13px}
@@ -100,6 +107,11 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 #loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:999;background:#0d0f18}
 .spin{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--pink);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Toast ── */
+#toast{position:fixed;top:12px;left:50%;transform:translateX(-50%) translateY(-80px);background:rgba(20,22,34,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;color:#fff;z-index:9999;transition:transform .45s cubic-bezier(.22,1.12,.32,1);pointer-events:none;box-shadow:0 6px 24px rgba(0,0,0,.45)}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.err{color:#ff6b6b}
 </style>
 </head>
 <body>
@@ -108,6 +120,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     <span style="font-size:20px">🥝</span>
     <div><div class="hdr-title">紐西蘭蜜月旅遊</div><div class="hdr-sub">Queenstown / Tekapo / Auckland・2人</div></div>
     <div class="cd" id="cd">計算中</div>
+    <button id="rf" title="重新整理" onclick="loadData(true)">↻</button>
   </div>
   <div id="dtabs"></div>
   <div id="map"></div>
@@ -123,6 +136,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     <div id="carousel-track"></div>
   </div>
   <div id="loading"><div class="spin"></div><p style="font-size:13px;color:var(--muted)">載入行程中...</p></div>
+  <div id="toast"></div>
 </div>
 
 <script>
@@ -131,26 +145,33 @@ const GMKEY='AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U';
 
 // ── Layout constants ────────────────────────────
 const HDR=56,TABS=60,TOP=HDR+TABS;
-let VH=0,cardCollH=0,cardExpH=0,isExpanded=false;
+const COLLAPSED_H=236; // baseline carousel height (collapsed)
+let VH=0,isExpanded=false;
 
 function calcLayout(){
   VH=document.getElementById('app').offsetHeight;
-  cardCollH=76; // collapsed card height approx
-  cardExpH=cardCollH+130+130; // +photo+detail
   positionCarousel(false);
   positionOverlays();
 }
 
 function positionCarousel(animate){
   const car=document.getElementById('carousel');
-  car.style.transition=animate?'bottom .35s cubic-bezier(.32,1,.22,1)':'none';
-  // collapsed: peek from bottom ~220px
-  const bottomH=isExpanded?Math.min(cardExpH+40,VH-TOP-80):220;
+  car.style.transition=animate?'height .42s cubic-bezier(.22,1.12,.32,1)':'none';
+  let bottomH=COLLAPSED_H;
+  if(isExpanded&&activeCardEl){
+    // .card-body is sibling of .card-photo; after .active added it reflects
+    // full expanded body (detail shown). Photo final height is 130.
+    const body=activeCardEl.querySelector('.card-body');
+    const bodyH=body?body.offsetHeight:160;
+    const cardH=bodyH+130+2; // +photo +borders
+    bottomH=Math.min(cardH+56,VH-TOP-40);
+  }
   car.style.bottom='0px';
   car.style.height=bottomH+'px';
-  document.getElementById('carousel-track').style.alignItems='flex-end';
-  document.getElementById('carousel-track').style.paddingBottom='16px';
-  document.getElementById('carousel-track').style.paddingTop='16px';
+  const track=document.getElementById('carousel-track');
+  track.style.alignItems='flex-end';
+  track.style.paddingBottom='18px';
+  track.style.paddingTop='18px';
   positionOverlays();
 }
 
@@ -265,6 +286,7 @@ function buildDays(rows){
 let DAYS=[],curDay=0,curAlt=false,curCard=null;
 let gmap=null,gmMarkers=[],infoWin=null,placeSvc=null;
 let activeCardEl=null;
+let curPolyline=null;
 
 // Countdown
 const dd=Math.ceil((new Date('2026-07-24')-new Date())/864e5);
@@ -298,20 +320,77 @@ window.initGoogleMap=function(){
 
 function mkColor(t){return{food:'#25c97a',activity:'#e8527a',transport:'#4da6ff',hotel:'#f0a500'}[t]||'#888';}
 function clearMarkers(){gmMarkers.forEach(m=>m.setMap(null));gmMarkers=[];}
+function buildMarkerIcon(it,idx,active){
+  const c=mkColor(it.mk);
+  const sz=active?40:30;
+  const r=active?18:14;
+  const cx=sz/2,cy=sz/2;
+  const stroke=active?'#ffffff':'rgba(255,255,255,0.5)';
+  const sw=active?3:2;
+  const shadow=active?'<circle cx="'+cx+'" cy="'+cy+'" r="'+(r+4)+'" fill="'+c+'" opacity="0.28"/>':'';
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${sz}" height="${sz}">${shadow}<circle cx="${cx}" cy="${cy}" r="${r}" fill="${c}" stroke="${stroke}" stroke-width="${sw}"/><text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="${active?13:11}" font-weight="bold" fill="white" font-family="-apple-system,Arial">${idx}</text></svg>`;
+  return{url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg),scaledSize:new google.maps.Size(sz,sz),anchor:new google.maps.Point(cx,cy)};
+}
 function addMarkers(items){
-  clearMarkers();let n=1;
+  clearMarkers();let n=0;
   (items||[]).forEach(it=>{
     if(!it||!it.ll||it.type==='tr')return;
-    const i=n++;const c=mkColor(it.mk);
-    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"><circle cx="15" cy="15" r="14" fill="${c}" stroke="rgba(255,255,255,0.45)" stroke-width="2"/><text x="15" y="20" text-anchor="middle" font-size="11" font-weight="bold" fill="white" font-family="Arial">${i}</text></svg>`;
-    const icon={url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg),scaledSize:new google.maps.Size(30,30),anchor:new google.maps.Point(15,15)};
-    const m=new google.maps.Marker({position:it.ll,map:gmap,icon,title:it.title});
+    const idx=n++;const displayIdx=idx+1;
+    const m=new google.maps.Marker({position:it.ll,map:gmap,icon:buildMarkerIcon(it,displayIdx,false),title:it.title,zIndex:1});
+    m._it=it;m._idx=idx;m._displayIdx=displayIdx;
     m.addListener('click',()=>{
-      infoWin.setContent(`<div style="background:#12141f;padding:4px;min-width:150px"><div style="font-size:11px;color:#f0a500;margin-bottom:2px">${it.time||''}</div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px">${it.title}</div><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.loc||it.title)}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:10px;background:#1a3a6e;border:1px solid #2960ad;color:#7ab8ff;font-size:11px;font-weight:700;text-decoration:none">🗺 導航</a></div>`);
-      infoWin.open(gmap,m);
+      const track=document.getElementById('carousel-track');
+      const cards=track.querySelectorAll('.card');
+      const target=cards[idx];
+      if(target){
+        track.scrollTo({left:target.offsetLeft-(track.clientWidth-target.offsetWidth)/2,behavior:'smooth'});
+        setTimeout(()=>{
+          if(!target.classList.contains('active')){
+            toggleCard(target,it.ll.lat,it.ll.lng,it.loc||it.title);
+          }
+        },340);
+      }
     });
     gmMarkers.push(m);
   });
+}
+function highlightMarker(idx){
+  gmMarkers.forEach((m,i)=>{
+    const active=(i===idx);
+    m.setIcon(buildMarkerIcon(m._it,m._displayIdx,active));
+    m.setZIndex(active?999:1);
+  });
+}
+function drawRoute(items){
+  if(curPolyline){curPolyline.setMap(null);curPolyline=null;}
+  if(!gmap)return;
+  const path=[];
+  (items||[]).forEach(it=>{if(it&&it.ll&&it.type!=='tr')path.push(it.ll);});
+  if(path.length<2)return;
+  curPolyline=new google.maps.Polyline({
+    path,
+    geodesic:true,
+    strokeColor:'#e8527a',
+    strokeOpacity:0,
+    icons:[{
+      icon:{path:'M 0,-1 0,1',strokeOpacity:0.85,strokeColor:'#e8527a',strokeWeight:3,scale:2.4},
+      offset:'0',repeat:'14px'
+    }],
+    map:gmap,
+    zIndex:0
+  });
+}
+function fitDayBounds(items){
+  if(!gmap)return;
+  const pts=(items||[]).filter(it=>it&&it.ll&&it.type!=='tr').map(it=>it.ll);
+  if(pts.length===0){
+    const d=DAYS[curDay];if(d){gmap.panTo(d.center);gmap.setZoom(d.zoom);}return;
+  }
+  if(pts.length===1){gmap.panTo(pts[0]);gmap.setZoom(14);return;}
+  const b=new google.maps.LatLngBounds();
+  pts.forEach(p=>b.extend(p));
+  const carH=document.getElementById('carousel').offsetHeight||220;
+  gmap.fitBounds(b,{top:HDR+TABS+20,right:40,bottom:carH+20,left:40});
 }
 
 // Get Places photo and update img element
@@ -331,19 +410,24 @@ function toggleCard(el,lat,lng,query){
   // Close all
   document.querySelectorAll('.card.active').forEach(c=>c.classList.remove('active'));
   if(wasOpen){
-    // Collapse: restore carousel height, map back to day view
+    // Collapse: restore carousel height, map back to day bounds
     isExpanded=false;
+    activeCardEl=null;
     positionCarousel(true);
-    const d=DAYS[curDay];
-    if(d&&gmap){gmap.panTo(d.center);gmap.setZoom(d.zoom);}
+    const items=currentItems();
+    fitDayBounds(items);
   } else {
     // Expand
     el.classList.add('active');
     isExpanded=true;
+    activeCardEl=el;
     positionCarousel(true);
-    // Pan map to item
+    // Smart pan: only zoom in if user is too far out
     if(lat&&lng&&gmap){
-      setTimeout(()=>{gmap.panTo({lat,lng});gmap.setZoom(15);},300);
+      setTimeout(()=>{
+        gmap.panTo({lat:parseFloat(lat),lng:parseFloat(lng)});
+        if(gmap.getZoom()<14)gmap.setZoom(15);
+      },280);
     }
     // Load Places photo
     const img=el.querySelector('.card-photo img');
@@ -351,13 +435,20 @@ function toggleCard(el,lat,lng,query){
       img.dataset.loaded='1';
       loadPlacePhoto(img,query);
     }
-    // Scroll card into center of track
-    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}),100);
+    // Scroll card into center of track (no viewport jump)
+    setTimeout(()=>{
+      const tEl=document.getElementById('carousel-track');
+      tEl.scrollTo({left:el.offsetLeft-(tEl.clientWidth-el.offsetWidth)/2,behavior:'smooth'});
+    },80);
   }
+}
+function currentItems(){
+  const d=DAYS[curDay];if(!d)return[];
+  return d.altPlan&&curAlt?d.altItems:d.items;
 }
 
 // ── Dot indicator ────────────────────────────────
-let scrollTimer=null;
+let scrollTimer=null,scrollHandler=null;
 function setupScrollSpy(items){
   const track=document.getElementById('carousel-track');
   const realItems=items.filter(it=>it.type!=='tr');
@@ -365,34 +456,44 @@ function setupScrollSpy(items){
   const dotsEl=document.getElementById('dots');
   dotsEl.innerHTML=realItems.map((_,i)=>`<div class="dot ${i===0?'on':''}"></div>`).join('');
 
-  track.addEventListener('scroll',()=>{
+  // Remove previous listener to avoid double-binding across renderDay calls
+  if(scrollHandler)track.removeEventListener('scroll',scrollHandler);
+  scrollHandler=()=>{
     clearTimeout(scrollTimer);
     scrollTimer=setTimeout(()=>{
-      // find center card
+      // find center card / alt-pill
       const trackRect=track.getBoundingClientRect();
       const cx=trackRect.left+trackRect.width/2;
-      let best=null,bestD=Infinity;
-      track.querySelectorAll('.card,.card-tr').forEach((c,i)=>{
+      const nodes=track.querySelectorAll('.card,.card-tr,.alt-pill');
+      let bestNode=null,bestD=Infinity,bestIsCard=false,bestCardIdx=-1;
+      let cardCounter=0;
+      nodes.forEach((c)=>{
         const r=c.getBoundingClientRect();
         const d=Math.abs(r.left+r.width/2-cx);
-        if(d<bestD){bestD=d;best=i;}
+        const isCard=c.classList.contains('card');
+        if(d<bestD){
+          bestD=d;bestNode=c;bestIsCard=isCard;
+          bestCardIdx=isCard?cardCounter:-1;
+        }
+        if(isCard)cardCounter++;
       });
+      // focus class on center card
+      track.querySelectorAll('.card').forEach(c=>c.classList.toggle('focus',c===bestNode));
       // update dots
-      let ri=0;
-      track.querySelectorAll('.card,.card-tr').forEach((c,i)=>{
-        if(c.classList.contains('card-tr'))return;
-        const dot=dotsEl.children[ri];
-        if(dot)dot.className='dot'+(i===best?' on':'');
-        ri++;
+      dotsEl.querySelectorAll('.dot').forEach((d,i)=>{
+        d.className='dot'+(i===bestCardIdx?' on':'');
       });
-      // pan map to center card's location
-      const cEl=track.children[best];
-      if(cEl&&cEl.dataset.lat&&!isExpanded&&gmap){
-        const lt=parseFloat(cEl.dataset.lat),ln=parseFloat(cEl.dataset.lng);
-        if(lt&&ln){gmap.panTo({lat:lt,lng:ln});gmap.setZoom(14);}
+      // highlight corresponding marker
+      if(bestIsCard)highlightMarker(bestCardIdx);
+      else highlightMarker(-1);
+      // pan map to center card (respect user zoom — no setZoom)
+      if(bestNode&&bestNode.dataset&&bestNode.dataset.lat&&!isExpanded&&gmap){
+        const lt=parseFloat(bestNode.dataset.lat),ln=parseFloat(bestNode.dataset.lng);
+        if(lt&&ln)gmap.panTo({lat:lt,lng:ln});
       }
-    },120);
-  },{passive:true});
+    },80);
+  };
+  track.addEventListener('scroll',scrollHandler,{passive:true});
 }
 
 // ── Render ───────────────────────────────────────
@@ -406,9 +507,12 @@ function renderTabs(){
 function renderDay(){
   const d=DAYS[curDay];if(!d)return;
   isExpanded=false;
-  document.getElementById('rgn-label').textContent=d.region;
-  if(gmap){gmap.panTo(d.center);gmap.setZoom(d.zoom);}
+  activeCardEl=null;
   const items=d.altPlan&&curAlt?d.altItems:d.items;
+  const realCount=(items||[]).filter(it=>it.type!=='tr').length;
+  const rgnEl=document.getElementById('rgn-label');
+  rgnEl.textContent=`${d.emoji} ${d.region} · ${realCount} 個地點`;
+  rgnEl.classList.remove('morph');void rgnEl.offsetWidth;rgnEl.classList.add('morph');
   const track=document.getElementById('carousel-track');
   let html='';
   // alt toggle pill
@@ -448,30 +552,61 @@ function renderDay(){
   track.scrollLeft=0;
   positionCarousel(false);
   addMarkers(items||[]);
+  drawRoute(items||[]);
+  fitDayBounds(items||[]);
   setupScrollSpy(items||[]);
+  // Initial focus: first real card
+  requestAnimationFrame(()=>{
+    const firstCard=track.querySelector('.card');
+    if(firstCard)firstCard.classList.add('focus');
+    highlightMarker(0);
+  });
 }
 
 function selDay(i){curDay=i;curAlt=false;renderTabs();renderDay();}
 function setAlt(v){curAlt=v;document.querySelectorAll('.topt').forEach((el,i)=>{el.classList.toggle('on',i===(v?1:0));});renderDay();}
 
 // ── Load data ────────────────────────────────────
-function loadData(){
+function loadData(silent){
   const cb='_cb'+Date.now();
   const s=document.createElement('script');
-  s.src=APPS_URL+'?callback='+cb;
-  s.onerror=()=>showErr('網路錯誤，請稍後重試');
+  s.src=APPS_URL+'?t='+Date.now()+'&callback='+cb;
+  const rf=document.getElementById('rf');
+  if(silent){if(rf)rf.classList.add('spin');}
+  else{document.getElementById('loading').style.display='flex';}
+  s.onerror=()=>{
+    if(rf)rf.classList.remove('spin');
+    if(silent)toast('更新失敗',true);
+    else showErr('網路錯誤，請稍後重試');
+  };
   window[cb]=data=>{
     delete window[cb];document.head.removeChild(s);
+    if(rf)rf.classList.remove('spin');
     try{
       DAYS=buildDays(data);
       document.getElementById('loading').style.display='none';
-      renderTabs();renderDay();
-    }catch(e){showErr(e.message);}
+      const prevDay=curDay;
+      renderTabs();
+      if(prevDay>=DAYS.length)curDay=0;
+      renderDay();
+      if(silent)toast('已更新 ✓');
+    }catch(e){
+      if(silent)toast('更新失敗: '+e.message,true);
+      else showErr(e.message);
+    }
   };
   document.head.appendChild(s);
 }
 function showErr(msg){
+  document.getElementById('loading').style.display='flex';
   document.getElementById('loading').innerHTML=`<p style="color:#ff6b6b;text-align:center;padding:20px">載入失敗<br><small>${msg}</small><br><br><button onclick="loadData()" style="margin-top:8px;padding:8px 18px;border-radius:20px;background:var(--pink);border:none;color:#fff;cursor:pointer;font-size:14px">重試</button></p>`;
+}
+function toast(msg,err){
+  const t=document.getElementById('toast');if(!t)return;
+  t.textContent=msg;
+  t.className='show'+(err?' err':'');
+  clearTimeout(toast._t);
+  toast._t=setTimeout(()=>t.className=err?'err':'',2000);
 }
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&libraries=places&callback=initGoogleMap&language=zh-TW"></script>
