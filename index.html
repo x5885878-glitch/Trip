@@ -185,15 +185,35 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 .csr{display:flex;justify-content:space-between;padding:3px 0;font-size:12px}
 .csr b{font-weight:600}
 
+
+/* ── Editor mode indicator ── */
+.editor-bar{background:#1a6b6b;color:#fff;font-size:11px;padding:5px 14px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px}
+.editor-bar b{font-weight:700}
+.editor-badge{background:#fff;color:#1a6b6b;border-radius:10px;
+  padding:2px 8px;font-size:10px;font-weight:700}
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <h1>🇳🇿 紐西蘭 2026</h1>
-  <p>9/27–10/10 · 南島8晚 + 北島5晚 · 2人</p>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <h1>🇳🇿 紐西蘭 2026</h1>
+      <p>9/27–10/10 · 南島8晚 + 北島5晚 · 2人</p>
+    </div>
+    <div id="sync-status" style="font-size:10px;color:#aaa;padding-top:4px;transition:opacity .5s;opacity:0;text-align:right;min-width:60px"></div>
+  </div>
 </div>
 
+<div id="editor-bar" class="editor-bar" style="display:none">
+  <span>✏️ <b>編輯模式</b> — 你的所有修改會即時同步給其他人</span>
+  <span class="editor-badge">EDITOR</span>
+</div>
+<div id="viewer-bar" class="editor-bar" style="display:none;background:#555">
+  <span>👁 <b>唯讀模式</b> — 此裝置只能查看，無法修改</span>
+  <span class="editor-badge" style="color:#555">VIEWER</span>
+</div>
 <div class="tabs" id="tabs">
   <div class="tab on" data-tab="itin">📅 行程</div>
   <div class="tab" data-tab="map">🗺 地圖</div>
@@ -1268,50 +1288,139 @@ function recalcCosts() {
 // FEATURE 4: PERSISTENCE
 // ══════════════════════════
 
-function saveState() {
+// ── Firebase config ──
+var FB_URL = 'https://nz-trip-2026-dd942-default-rtdb.asia-southeast1.firebasedatabase.app';
+var IS_EDITOR = false;  // 預設唯讀，編輯者開啟 ?edit=1 即可
+
+// 判斷是否為編輯模式
+(function(){
   try {
-    var todos = {};
-    document.querySelectorAll('#todo-container .todo-item-row').forEach(function(row){
-      var id = row.getAttribute('data-id');
-      if (id) todos[id] = { done: !!row.querySelector('.todo-cb.done') };
-    });
-    localStorage.setItem('nz26_todos',  JSON.stringify(todos));
-    localStorage.setItem('nz26_costs',  JSON.stringify(costData));
+    IS_EDITOR = window.location.search.indexOf('edit=1') > -1 ||
+                localStorage.getItem('nz26_editor') === '1';
   } catch(e){}
+})();
+
+// ── Firebase REST helpers ──
+function fbWrite(data) {
+  if (!IS_EDITOR) return Promise.resolve();  // 唯讀不寫入
+  return fetch(FB_URL + '/nz26.json', {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  }).catch(function(e){ console.warn('Firebase write failed:', e); });
 }
 
-function loadState() {
-  try {
-    // Restore todos
-    var todos = JSON.parse(localStorage.getItem('nz26_todos') || '{}');
-    document.querySelectorAll('#todo-container .todo-item-row').forEach(function(row){
-      var id = row.getAttribute('data-id');
-      if (id && todos[id] && todos[id].done) {
-        var cb = row.querySelector('.todo-cb');
-        var tx = row.querySelector('.todo-text');
-        if (cb) cb.classList.add('done');
-        if (tx) tx.classList.add('done');
-      }
+function fbRead() {
+  return fetch(FB_URL + '/nz26.json')
+    .then(function(r){ return r.json(); })
+    .catch(function(e){
+      console.warn('Firebase read failed, using localStorage:', e);
+      return null;
     });
-    // Restore costs
-    var saved = JSON.parse(localStorage.getItem('nz26_costs') || '{}');
-    Object.keys(saved).forEach(function(key){
-      var val = saved[key];
-      if (val === undefined || val === null) return;
-      costData[key] = val;
-      var el = document.querySelector('[data-key="'+key+'"]');
-      if (!el) return;
-      var budget = parseInt(el.getAttribute('data-budget')) || 0;
-      el.textContent = 'TWD $' + val.toLocaleString();
-      if (val !== budget) {
-        el.classList.add('cost-actual');
-        el.title = '原預算: TWD $' + budget.toLocaleString();
-      }
-    });
-    recalcCosts();
-    updateProgress();
-  } catch(e){}
 }
+
+// ── 收集目前頁面狀態為一個 object ──
+function collectState() {
+  var todos = {};
+  document.querySelectorAll('#todo-container .todo-item-row').forEach(function(row){
+    var id = row.getAttribute('data-id');
+    if (id) todos[id] = { done: !!row.querySelector('.todo-cb.done') };
+  });
+  return { todos: todos, costs: costData, ts: Date.now() };
+}
+
+// ── 把 state object 套用到頁面 ──
+function applyState(state) {
+  if (!state) return;
+
+  // Restore todos
+  var todos = state.todos || {};
+  document.querySelectorAll('#todo-container .todo-item-row').forEach(function(row){
+    var id = row.getAttribute('data-id');
+    if (!id || !todos[id]) return;
+    var cb = row.querySelector('.todo-cb');
+    var tx = row.querySelector('.todo-text');
+    var done = todos[id].done;
+    if (cb) cb.classList.toggle('done', done);
+    if (tx) tx.classList.toggle('done', done);
+  });
+
+  // Restore costs
+  var costs = state.costs || {};
+  Object.keys(costs).forEach(function(key){
+    var val = costs[key];
+    if (val === undefined || val === null) return;
+    costData[key] = val;
+    var el = document.querySelector('[data-key="'+key+'"]');
+    if (!el) return;
+    var budget = parseInt(el.getAttribute('data-budget')) || 0;
+    el.textContent = 'TWD $' + val.toLocaleString();
+    if (val !== budget) {
+      el.classList.add('cost-actual');
+      el.title = '原預算: TWD $' + budget.toLocaleString();
+    } else {
+      el.classList.remove('cost-actual');
+      el.title = '';
+    }
+  });
+
+  recalcCosts();
+  updateProgress();
+}
+
+// ── saveState: 寫 localStorage + Firebase ──
+function saveState() {
+  var state = collectState();
+  // 1. 永遠先存 localStorage（離線 fallback）
+  try {
+    localStorage.setItem('nz26_todos', JSON.stringify(state.todos));
+    localStorage.setItem('nz26_costs', JSON.stringify(state.costs));
+  } catch(e){}
+  // 2. 同步到 Firebase（只有編輯者）
+  fbWrite(state);
+}
+
+// ── loadState: 優先讀 Firebase，fallback localStorage ──
+function loadState() {
+  // 先從 localStorage 快速恢復（避免白屏）
+  try {
+    var localState = {
+      todos: JSON.parse(localStorage.getItem('nz26_todos') || '{}'),
+      costs: JSON.parse(localStorage.getItem('nz26_costs') || '{}')
+    };
+    applyState(localState);
+  } catch(e){}
+
+  // 再從 Firebase 拉最新（覆蓋 localStorage 版本）
+  fbRead().then(function(fbState) {
+    if (!fbState) return;  // Firebase 失敗，localStorage 版本已套用
+    // Firebase 資料比較新才覆蓋
+    var localTs = 0;
+    try { localTs = parseInt(localStorage.getItem('nz26_ts') || '0'); } catch(e){}
+    var fbTs = fbState.ts || 0;
+    if (fbTs >= localTs) {
+      applyState(fbState);
+      // 更新 localStorage 為最新
+      try {
+        localStorage.setItem('nz26_todos', JSON.stringify(fbState.todos || {}));
+        localStorage.setItem('nz26_costs', JSON.stringify(fbState.costs || {}));
+        localStorage.setItem('nz26_ts', String(fbTs));
+      } catch(e){}
+    }
+    // 顯示同步狀態
+    showSyncStatus(IS_EDITOR ? '✅ 已同步' : '👁 唯讀模式');
+  });
+}
+
+// ── 顯示同步狀態小提示 ──
+function showSyncStatus(msg) {
+  var el = document.getElementById('sync-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.opacity = '1';
+  setTimeout(function(){ el.style.opacity = '0'; }, 2500);
+}
+
 
 // ═══════════════════════════════════════════════
 // EVENT BINDING — all via addEventListener (CSP-safe)
@@ -1416,6 +1525,30 @@ document.addEventListener('DOMContentLoaded', function() {
   loadState();
   updateProgress();
   recalcCosts();
+
+  // ── Show editor/viewer indicator ──
+  if (IS_EDITOR) {
+    var eb = document.getElementById('editor-bar');
+    if (eb) eb.style.display = 'flex';
+  } else {
+    var vb = document.getElementById('viewer-bar');
+    if (vb) vb.style.display = 'flex';
+    // Viewer: disable all edit buttons visually
+    var editBtns = document.querySelectorAll('#add-item-btn, #itin-edit-btn');
+    editBtns.forEach(function(b){
+      b.style.opacity = '0.35';
+      b.style.pointerEvents = 'none';
+      b.title = '唯讀模式，無法編輯';
+    });
+    // Disable cost dblclick for viewers
+    var costPanel = document.getElementById('cost');
+    if (costPanel) costPanel.style.pointerEvents = 'none';
+    // Disable todo clicks for viewers
+    var todoContainer = document.getElementById('todo-container');
+    if (todoContainer) todoContainer.style.pointerEvents = 'none';
+    var addTodoArea = document.querySelector('#book .add-todo-btn');
+    if (addTodoArea) addTodoArea.parentElement.style.display = 'none';
+  }
 });
 
 
