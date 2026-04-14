@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -17,116 +18,174 @@
 html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);font-size:14px;line-height:1.6;min-height:100vh}
 
 /* HEADER */
-.hdr{background:var(--ink);padding:16px 14px 12px;position:sticky;top:0;z-index:300}
-.hdr h1{font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff;font-weight:600}
-.hdr p{font-size:11px;color:var(--stone);margin-top:1px;letter-spacing:.05em;text-transform:uppercase}
+.hdr{background:var(–ink);padding:16px 14px 12px;position:sticky;top:0;z-index:300}
+.hdr h1{font-family:‘Cormorant Garamond’,serif;font-size:20px;color:#fff;font-weight:600}
+.hdr p{font-size:11px;color:var(–stone);margin-top:1px;letter-spacing:.05em;text-transform:uppercase}
 
 /* TABS */
-.tabs{display:flex;background:#fff;border-bottom:1px solid var(--parch);position:sticky;top:60px;z-index:299;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs{display:flex;background:#fff;border-bottom:1px solid var(–parch);position:sticky;top:60px;z-index:299;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;padding:10px 13px;font-size:12px;font-weight:500;color:var(--stone);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.tab.on{color:var(--ink);border-bottom-color:var(--gold);font-weight:600}
+.tab{flex:0 0 auto;padding:10px 13px;font-size:12px;font-weight:500;color:var(–stone);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.tab.on{color:var(–ink);border-bottom-color:var(–gold);font-weight:600}
 
 /* PANELS */
 .panel{display:none;padding:10px 12px 60px}.panel.on{display:block}
-.sec{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);padding:14px 4px 6px}
+.sec{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(–stone);padding:14px 4px 6px}
 
 /* DAY CARDS */
-.day{background:#fff;border-radius:12px;margin-bottom:8px;box-shadow:var(--sh);overflow:hidden}
+.day{background:#fff;border-radius:12px;margin-bottom:8px;box-shadow:var(–sh);overflow:hidden}
 .dh{display:flex;align-items:center;padding:12px 13px;cursor:pointer;gap:9px;-webkit-tap-highlight-color:transparent;user-select:none}
-.dh:active{background:var(--cream)}
+.dh:active{background:var(–cream)}
 .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.ds{background:var(--teal)}.dn{background:var(--gold)}.dt{background:var(--stone)}
-.ddate{font-size:11px;color:var(--stone);min-width:48px;font-weight:500}
-.dtit{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;flex:1;line-height:1.3}
-.darr{font-size:10px;color:var(--stone);transition:transform .2s;flex-shrink:0}
-.db{display:none;border-top:1px solid var(--parch);padding:6px 13px 10px}
+.ds{background:var(–teal)}.dn{background:var(–gold)}.dt{background:var(–stone)}
+.ddate{font-size:11px;color:var(–stone);min-width:48px;font-weight:500}
+.dtit{font-family:‘Cormorant Garamond’,serif;font-size:15px;font-weight:600;flex:1;line-height:1.3}
+.darr{font-size:10px;color:var(–stone);transition:transform .2s;flex-shrink:0}
+.db{display:none;border-top:1px solid var(–parch);padding:6px 13px 10px}
 
 /* ITEMS */
 .item{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid #f5f0eb}
 .item:last-child{border-bottom:none}
-.it{font-size:10px;color:var(--stone);min-width:36px;padding-top:3px;font-weight:500}
+.it{font-size:10px;color:var(–stone);min-width:36px;padding-top:3px;font-weight:500}
 .ii{font-size:14px;min-width:20px;text-align:center}
 .ic{flex:1}
 .in{font-size:13px;font-weight:500;line-height:1.4}
-.id{font-size:11px;color:var(--stone);margin-top:2px;line-height:1.5}
+.id{font-size:11px;color:var(–stone);margin-top:2px;line-height:1.5}
 
 /* TAGS */
 .tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;margin:3px 3px 0 0;font-weight:500;line-height:1.6}
-.tr{background:var(--rl);color:var(--red);border:1px solid #f5c6c2}
-.to{background:var(--ol);color:var(--ora);border:1px solid #f5d9a8}
-.tg{background:var(--gl);color:var(--grn);border:1px solid #a8d5bb}
-.tb{background:var(--tl);color:var(--teal);border:1px solid #a0d0cf}
+.tr{background:var(–rl);color:var(–red);border:1px solid #f5c6c2}
+.to{background:var(–ol);color:var(–ora);border:1px solid #f5d9a8}
+.tg{background:var(–gl);color:var(–grn);border:1px solid #a8d5bb}
+.tb{background:var(–tl);color:var(–teal);border:1px solid #a0d0cf}
 .tx{background:#e8e8f0;color:#555;border:1px solid #d0d0de}
 .tw{background:#fff3cd;color:#856404;border:1px solid #ffc107}
 
 /* LINKS */
 .links{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-.lnk{font-size:11px;padding:4px 10px;border-radius:20px;background:var(--tl);color:var(--teal);text-decoration:none;border:1px solid #b0d8d7;font-weight:500}
+.lnk{font-size:11px;padding:4px 10px;border-radius:20px;background:var(–tl);color:var(–teal);text-decoration:none;border:1px solid #b0d8d7;font-weight:500}
 
 /* HOTEL BADGE */
-.htl{display:flex;gap:10px;margin:10px 0 2px;padding:10px 11px;background:var(--parch);border-radius:8px;border:1px solid #ddd5c8}
+.htl{display:flex;gap:10px;margin:10px 0 2px;padding:10px 11px;background:var(–parch);border-radius:8px;border:1px solid #ddd5c8}
 .hi{font-size:18px;flex-shrink:0;padding-top:2px}
 .hn{font-size:13px;font-weight:600;line-height:1.3}
-.hd{font-size:11px;color:var(--stone);margin-top:2px;line-height:1.5}
-.hp{font-size:12px;color:var(--gold);font-weight:700;margin-top:3px}
+.hd{font-size:11px;color:var(–stone);margin-top:2px;line-height:1.5}
+.hp{font-size:12px;color:var(–gold);font-weight:700;margin-top:3px}
 
 /* MAP */
-#map-outer{background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--sh);margin-bottom:10px}
-.mhdr{padding:11px 13px;border-bottom:1px solid var(--parch);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
-.mtit{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600}
+#map-outer{background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(–sh);margin-bottom:10px}
+.mhdr{padding:11px 13px;border-bottom:1px solid var(–parch);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.mtit{font-family:‘Cormorant Garamond’,serif;font-size:16px;font-weight:600}
 .mbtns{display:flex;gap:4px}
-.mbtn{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--parch);background:var(--cream);color:var(--stone);cursor:pointer;font-weight:500;-webkit-tap-highlight-color:transparent}
-.mbtn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.mbtn{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(–parch);background:var(–cream);color:var(–stone);cursor:pointer;font-weight:500;-webkit-tap-highlight-color:transparent}
+.mbtn.on{background:var(–teal);color:#fff;border-color:var(–teal)}
 #gmap{width:100%;height:380px;background:#e0e0e0}
-.mleg{padding:8px 13px;display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid var(--parch)}
-.mli{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--stone)}
+.mleg{padding:8px 13px;display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid var(–parch)}
+.mli{display:flex;align-items:center;gap:5px;font-size:11px;color:var(–stone)}
 .mld{width:9px;height:9px;border-radius:50%}
 /* Google Maps InfoWindow custom style */
-.gm-iw{font-family:'DM Sans',sans-serif;padding:4px 2px;min-width:150px}
-.gm-iw-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:#1c1c1e;margin-bottom:2px}
+.gm-iw{font-family:‘DM Sans’,sans-serif;padding:4px 2px;min-width:150px}
+.gm-iw-name{font-family:‘Cormorant Garamond’,serif;font-size:15px;font-weight:600;color:#1c1c1e;margin-bottom:2px}
 .gm-iw-date{font-size:11px;color:#8e8e93}
 .gm-iw-desc{font-size:12px;color:#444;margin-top:5px;line-height:1.5}
 .gm-iw-tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-top:5px;font-weight:600}
 
 /* FEAS */
-.fc{background:#fff;border-radius:12px;margin-bottom:8px;box-shadow:var(--sh);overflow:hidden}
+.fc{background:#fff;border-radius:12px;margin-bottom:8px;box-shadow:var(–sh);overflow:hidden}
 .fh{padding:11px 13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:500;-webkit-tap-highlight-color:transparent;gap:8px}
-.fh:active{background:var(--cream)}
-.fh .fa{font-size:10px;color:var(--stone);transition:transform .2s;flex-shrink:0}
-.fb{display:none;padding:10px 13px 12px;font-size:12px;line-height:1.7;border-top:1px solid var(--parch)}
+.fh:active{background:var(–cream)}
+.fh .fa{font-size:10px;color:var(–stone);transition:transform .2s;flex-shrink:0}
+.fb{display:none;padding:10px 13px 12px;font-size:12px;line-height:1.7;border-top:1px solid var(–parch)}
 .fr{display:flex;gap:6px;margin-bottom:4px}
-.fl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);min-width:52px;padding-top:2px;flex-shrink:0}
+.fl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(–stone);min-width:52px;padding-top:2px;flex-shrink:0}
 .fv{flex:1;font-size:12px}
 .verd{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-bottom:8px}
-.vr{background:var(--rl);color:var(--red)}.vo{background:var(--ol);color:var(--ora)}.vg{background:var(--gl);color:var(--grn)}
+.vr{background:var(–rl);color:var(–red)}.vo{background:var(–ol);color:var(–ora)}.vg{background:var(–gl);color:var(–grn)}
 
 /* BOOKING */
-.todo{background:#fff;border-radius:12px;padding:12px 13px;box-shadow:var(--sh);margin-bottom:8px}
-.ttit{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);margin-bottom:8px}
-.ti{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--parch);font-size:12px;line-height:1.5}
+.todo{background:#fff;border-radius:12px;padding:12px 13px;box-shadow:var(–sh);margin-bottom:8px}
+.ttit{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(–stone);margin-bottom:8px}
+.ti{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(–parch);font-size:12px;line-height:1.5}
 .ti:last-child{border-bottom:none}
 .tnum{width:18px;height:18px;border-radius:50%;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 
 /* COST */
-.cb{background:#fff;border-radius:12px;margin-bottom:8px;padding:12px 13px;box-shadow:var(--sh)}
-.ctit{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);margin-bottom:10px}
-.cr{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;font-size:13px;border-bottom:1px solid var(--parch)}
+.cb{background:#fff;border-radius:12px;margin-bottom:8px;padding:12px 13px;box-shadow:var(–sh)}
+.ctit{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(–stone);margin-bottom:10px}
+.cr{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;font-size:13px;border-bottom:1px solid var(–parch)}
 .cr:last-child{border-bottom:none;font-weight:600;font-size:14px;padding-top:8px}
-.am{font-weight:500;color:var(--teal)}.cr:last-child .am{color:var(--gold);font-size:15px}
-.csub{font-size:10px;color:var(--stone)}
-.cnote{font-size:10px;color:var(--stone);margin-top:6px;line-height:1.5}
-.ctotal{background:var(--ink);border-radius:12px;padding:16px 13px;margin-bottom:8px}
-.ctr{display:flex;justify-content:space-between;color:var(--stone);font-size:13px;padding:3px 0}
-.ctr.grand{color:#fff;font-size:18px;font-family:'Cormorant Garamond',serif;font-weight:600;padding-top:10px;margin-top:6px;border-top:1px solid #444}
-.ctr.grand .am{color:var(--gold)}
+.am{font-weight:500;color:var(–teal)}.cr:last-child .am{color:var(–gold);font-size:15px}
+.csub{font-size:10px;color:var(–stone)}
+.cnote{font-size:10px;color:var(–stone);margin-top:6px;line-height:1.5}
+.ctotal{background:var(–ink);border-radius:12px;padding:16px 13px;margin-bottom:8px}
+.ctr{display:flex;justify-content:space-between;color:var(–stone);font-size:13px;padding:3px 0}
+.ctr.grand{color:#fff;font-size:18px;font-family:‘Cormorant Garamond’,serif;font-weight:600;padding-top:10px;margin-top:6px;border-top:1px solid #444}
+.ctr.grand .am{color:var(–gold)}
 .ctr.sub2{border-top:1px solid #333;margin-top:4px;padding-top:8px;color:#aaa}
 
 /* ALERTS */
 .alert{border-radius:8px;padding:10px 12px;font-size:12px;margin-bottom:10px;line-height:1.6}
-.ao{background:var(--ol);border:1px solid #f5d9a8;color:#7a4500}
-.ar{background:var(--rl);border:1px solid #f5c6c2;color:var(--red)}
-.ai{background:var(--tl);border:1px solid #a0d0cf;color:var(--teal)}
+.ao{background:var(–ol);border:1px solid #f5d9a8;color:#7a4500}
+.ar{background:var(–rl);border:1px solid #f5c6c2;color:var(–red)}
+.ai{background:var(–tl);border:1px solid #a0d0cf;color:var(–teal)}
+
+/* ── EDIT MODE GENERAL ── */
+.edit-bar{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.eb{font-size:11px;padding:6px 12px;border-radius:20px;border:none;cursor:pointer;font-weight:600;font-family:‘DM Sans’,sans-serif;-webkit-tap-highlight-color:transparent}
+.eb-add{background:var(–teal);color:#fff}
+.eb-add:active{background:#155a5a}
+.eb-save{background:var(–grn);color:#fff}
+.eb-cancel{background:#e0e0e0;color:#555}
+.eb-del{background:var(–rl);color:var(–red);border:1px solid #f5c6c2}
+
+/* ── ITIN EDIT ── */
+.itin-edit-mode .day{border:1.5px solid #e0e0e0}
+.itin-edit-mode .day.drag-over{border-color:var(–teal);background:#f0faf9}
+.itin-edit-mode .day.dragging{opacity:.4}
+.day-edit-btns{display:none;gap:5px;margin-left:auto}
+.itin-edit-mode .day-edit-btns{display:flex}
+.day-move{cursor:grab;font-size:16px;color:var(–stone);padding:0 4px;line-height:1}
+.day-move:active{cursor:grabbing}
+.day-del-btn{font-size:11px;padding:3px 8px;border-radius:12px;background:var(–rl);color:var(–red);border:1px solid #f5c6c2;cursor:pointer;font-weight:600}
+.add-day-form{background:#fff;border-radius:12px;padding:14px;box-shadow:var(–sh);margin-bottom:10px;display:none}
+.add-day-form.show{display:block}
+.form-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.form-input{flex:1;min-width:100px;padding:7px 10px;border:1px solid var(–parch);border-radius:8px;font-size:13px;font-family:‘DM Sans’,sans-serif;background:#fff;color:var(–ink)}
+.form-input:focus{outline:none;border-color:var(–teal)}
+.form-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(–stone);margin-bottom:4px;display:block}
+
+/* ── BOOKING TODO ── */
+.todo-item-row{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(–parch)}
+.todo-item-row:last-child{border-bottom:none}
+.todo-cb{width:18px;height:18px;border-radius:5px;border:2px solid #ccc;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;background:#fff}
+.todo-cb.done{background:var(–grn);border-color:var(–grn)}
+.todo-cb.done::after{content:‘✓’;color:#fff;font-size:11px;font-weight:700}
+.todo-text{flex:1;font-size:12px;line-height:1.5;cursor:pointer}
+.todo-text.done{text-decoration:line-through;color:var(–stone)}
+.todo-del{font-size:14px;color:#ccc;cursor:pointer;padding:0 2px;flex-shrink:0;line-height:1}
+.todo-del:hover{color:var(–red)}
+.add-todo-row{display:flex;gap:6px;margin-top:8px}
+.add-todo-input{flex:1;padding:6px 10px;border:1px solid var(–parch);border-radius:20px;font-size:12px;font-family:‘DM Sans’,sans-serif;background:#fff}
+.add-todo-input:focus{outline:none;border-color:var(–teal)}
+.add-todo-btn{padding:6px 12px;border-radius:20px;background:var(–teal);color:#fff;border:none;font-size:12px;font-weight:600;cursor:pointer}
+.todo-section-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(–stone);padding:10px 0 5px;border-top:1px solid var(–parch);margin-top:4px}
+.todo-section-title:first-child{border-top:none;padding-top:2px}
+.todo-progress{height:4px;background:#e8e8e8;border-radius:2px;margin-bottom:12px;overflow:hidden}
+.todo-progress-bar{height:100%;background:var(–grn);border-radius:2px;transition:width .3s}
+.todo-stats{font-size:11px;color:var(–stone);margin-bottom:8px}
+
+/* ── COST EDIT ── */
+.cost-editable{cursor:text;border-bottom:1px dashed transparent;transition:border-color .15s;border-radius:2px;padding:1px 2px}
+.cost-editable:hover{border-bottom-color:var(–gold)}
+.cost-edit-input{background:transparent;border:none;border-bottom:2px solid var(–gold);font-weight:500;color:var(–teal);font-size:13px;width:120px;font-family:‘DM Sans’,sans-serif;text-align:right;outline:none;padding:1px 2px}
+.cost-actual{color:var(–grn)!important;font-weight:700!important}
+.cost-actual::before{content:’實 ’}
+.cost-hint{font-size:10px;color:var(–stone);margin-bottom:6px;font-style:italic}
+.cost-grand-edit{font-size:11px;color:var(–gold);margin-top:8px;text-align:center;font-style:italic}
+.cost-summary-block{background:var(–gl);border:1px solid #a8d5bb;border-radius:8px;padding:10px 13px;margin-bottom:8px;font-size:12px}
+.csr{display:flex;justify-content:space-between;padding:3px 0;font-size:12px}
+.csr b{font-weight:600}
+
 </style>
 </head>
 <body>
@@ -145,10 +204,51 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 </div>
 
 <!-- ===== ITINERARY ===== -->
+
 <div class="panel on" id="itin">
 
+<!-- Edit toolbar -->
+
+<div class="edit-bar" id="itin-toolbar">
+  <button class="eb eb-add" onclick="showAddDay()">＋ 新增天數</button>
+  <button class="eb" id="itin-edit-btn" onclick="toggleItinEdit()">✏️ 編輯排序</button>
+</div>
+
+<!-- Add day form -->
+
+<div class="add-day-form" id="add-day-form">
+  <div class="form-row">
+    <div style="flex:0 0 90px">
+      <label class="form-label">日期</label>
+      <input class="form-input" id="new-day-date" placeholder="10/11 日" style="flex:none;width:100%">
+    </div>
+    <div style="flex:1">
+      <label class="form-label">標題</label>
+      <input class="form-input" id="new-day-title" placeholder="例：奧克蘭市區探索">
+    </div>
+  </div>
+  <div class="form-row">
+    <div style="flex:1">
+      <label class="form-label">地區</label>
+      <select class="form-input" id="new-day-region" style="flex:none">
+        <option value="south">🏔 南島</option>
+        <option value="north">🌿 北島</option>
+        <option value="travel">✈️ 交通日</option>
+      </select>
+    </div>
+    <div style="flex:2">
+      <label class="form-label">備註（選填）</label>
+      <input class="form-input" id="new-day-note" placeholder="例：退房日，下午班機">
+    </div>
+  </div>
+  <div style="display:flex;gap:6px">
+    <button class="eb eb-save" onclick="addNewDay()">新增</button>
+    <button class="eb eb-cancel" onclick="hideAddDay()">取消</button>
+  </div>
+</div>
+
 <div class="sec">✈️ 出發</div>
-<div class="day">
+<div class="day" id="day-1">
   <div class="dh"><div class="dot dt"></div><div class="ddate">9/26 六</div><div class="dtit">台北出發</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">18:35</div><div class="ii">✈️</div><div class="ic"><div class="in">NZ0078 台北→奧克蘭</div><div class="id">豪華商務艙 · 787-9 · 10h40m <span class="tag tx">✓ 已訂</span></div></div></div>
@@ -158,7 +258,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 
 <div class="sec">🏔 南島皇后鎮 · 9/27–10/5（8晚）</div>
 
-<div class="day">
+<div class="day" id="day-2">
   <div class="dh"><div class="dot ds"></div><div class="ddate">9/27 日</div><div class="dtit">抵達皇后鎮 · Skyline纜車</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">14:20</div><div class="ii">🛬</div><div class="ic"><div class="in">抵達皇后鎮 · 取南島租車</div></div></div>
@@ -168,7 +268,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-3">
   <div class="dh"><div class="dot ds"></div><div class="ddate">9/28 一</div><div class="dtit">📸 格林諾奇婚紗攝影 + 騎馬</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">07:30</div><div class="ii">🚗</div><div class="ic"><div class="in">自駕格林諾奇 · 45min</div><div class="id">途中 Bennett's Bluff Lookout · 週一人最少</div></div></div>
@@ -178,7 +278,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-4">
   <div class="dh"><div class="dot ds"></div><div class="ddate">9/29 二</div><div class="dtit">⛴️ 米佛峽灣全天</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">06:00</div><div class="ii">🚗</div><div class="ic"><div class="in">自駕米佛峽灣 · 4hr</div><div class="id">途中 Mirror Lakes 停拍 · 帶便當</div></div></div>
@@ -187,7 +287,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-5">
   <div class="dh"><div class="dot ds"></div><div class="ddate">9/30 三</div><div class="dtit">♨️ Deer Park + Moke Lake + 溫泉</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">09:00</div><div class="ii">🦌</div><div class="ic"><div class="in">Deer Park Heights · NZD $20/人</div><div class="id">魔戒洛汗國取景地 · 360度全景</div></div></div>
@@ -198,7 +298,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-6">
   <div class="dh"><div class="dot ds"></div><div class="ddate">10/1 四</div><div class="dtit">🚁 庫克山直升機 → 蒂卡波觀星</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">06:30</div><div class="ii">🚗</div><div class="ic"><div class="in">自駕庫克山 · 3.5hr</div><div class="id">途中普卡基湖停拍</div></div></div>
@@ -210,7 +310,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-7">
   <div class="dh"><div class="dot ds"></div><div class="ddate">10/2 五</div><div class="dtit">蒂卡波晨光 → 皇后鎮 → 箭鎮</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">07:30</div><div class="ii">☀️</div><div class="ic"><div class="in">蒂卡波晨光 · 善牧教堂</div></div></div>
@@ -221,7 +321,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-8">
   <div class="dh"><div class="dot ds"></div><div class="ddate">10/3 六</div><div class="dtit">🛒 農夫市集? + Dart River + 格林諾奇</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">09:00</div><div class="ii">🛒</div><div class="ic"><div class="in">Remarkables Market（待確認）</div><div class="id">2026/27新賽季開幕日未公告 · 慣例10月第一個六 · 10/3符合 <span class="tag tw">⚠️ 出發前確認</span></div><div class="links"><a class="lnk" href="https://remarkablesmarket.com/" target="_blank">官網</a><a class="lnk" href="https://www.facebook.com/RemarkablesMarket" target="_blank">FB</a></div></div></div>
@@ -231,7 +331,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-9">
   <div class="dh"><div class="dot ds"></div><div class="ddate">10/4 日</div><div class="dtit">🚢 TSS Earnslaw + Walter Peak 農場晚宴</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">上午</div><div class="ii">🏙️</div><div class="ic"><div class="in">皇后鎮市區輕鬆走 · 購物</div></div></div>
@@ -239,7 +339,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-10">
   <div class="dh"><div class="dot ds"></div><div class="ddate">10/5 一</div><div class="dtit">皇后鎮退房 → 飛奧克蘭</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">早上</div><div class="ii">☕</div><div class="ic"><div class="in">悠閒早餐 · 退房 · 還南島租車</div></div></div>
@@ -252,7 +352,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 
 <div class="sec">🌿 北島 · 10/6–10/10（5晚）</div>
 
-<div class="day">
+<div class="day" id="day-11">
   <div class="dh"><div class="dot dn"></div><div class="ddate">10/6 二</div><div class="dtit">🚗 奧克蘭→Rotorua · 地熱 · Mitai晚宴</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">09:00</div><div class="ii">🚗</div><div class="ic"><div class="in">自駕奧克蘭→Rotorua · 3hr</div></div></div>
@@ -262,7 +362,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-12">
   <div class="dh"><div class="dot dn"></div><div class="ddate">10/7 三</div><div class="dtit">✨ Waitomo → 🧙 Hobbiton → 返奧克蘭</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">07:30</div><div class="ii">🚗</div><div class="ic"><div class="in">Rotorua→Waitomo · 1.5hr</div></div></div>
@@ -273,7 +373,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-13">
   <div class="dh"><div class="dot dn"></div><div class="ddate">10/8 四</div><div class="dtit">⛴️ Waiheke Island 一日遊</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">09:00</div><div class="ii">⛴️</div><div class="ic"><div class="in">Fullers360 渡輪 · NZD $62/人來回</div><div class="id">Ferry Building步行5min · 40min · 不需要車</div><div class="links"><a class="lnk" href="https://www.fullers.co.nz/" target="_blank">Fullers</a></div></div></div>
@@ -282,7 +382,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-14">
   <div class="dh"><div class="dot dn"></div><div class="ddate">10/9 五</div><div class="dtit">奧克蘭市區 · 告別晚餐 → 機場</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">09:00</div><div class="ii">🏛️</div><div class="ic"><div class="in">Auckland Museum · NZD $28/人</div><div class="id">毛利文化 · 10:00–17:00</div></div></div>
@@ -293,7 +393,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
-<div class="day">
+<div class="day" id="day-15">
   <div class="dh"><div class="dot dt"></div><div class="ddate">10/10 六</div><div class="dtit">✈️ 回台灣</div><div class="darr">▶</div></div>
   <div class="db">
     <div class="item"><div class="it">07:30</div><div class="ii">🚶</div><div class="ic"><div class="in">步行3分 → 國際出境 Check in</div></div></div>
@@ -305,6 +405,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 </div><!-- /itin -->
 
 <!-- ===== MAP ===== -->
+
 <div class="panel" id="map">
   <div id="map-outer">
     <div class="mhdr">
@@ -331,6 +432,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 </div>
 
 <!-- ===== FEASIBILITY ===== -->
+
 <div class="panel" id="feas">
 <div class="alert ar">⚠️ 2026年全面審視版 · 按緊迫程度排列</div>
 
@@ -421,114 +523,211 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 </div><!-- /feas -->
 
 <!-- ===== BOOKING ===== -->
+
 <div class="panel" id="book">
-<div class="alert ar">⚠️ 按緊迫程度排序，紅色現在就要處理！</div>
+<div class="alert ar">⚠️ 按緊迫程度排序，點擊方框打勾完成！</div>
 
-<div class="todo"><div class="ttit">🔴 立即（現在就做）</div>
-  <div class="ti"><div class="tnum" style="background:var(--red)">1</div><div><b>Mt John Observatory 觀星</b>（10/1）· 75天前售罄<br><a href="https://www.darkskyproject.co.nz/experiences/the-summit-experience/" style="color:var(--teal)">→ darkskyproject.co.nz</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--red)">2</div><div><b>Hobbiton 普通話導覽</b>（10/7）· 每天僅1場<br><a href="https://www.hobbitontours.com/experiences/mandarin/" style="color:var(--teal)">→ hobbitontours.com 普通話場</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--red)">3</div><div><b>皇后鎮→奧克蘭機票</b>（10/5 下午班）<br><a href="https://www.airnewzealand.co.nz/" style="color:var(--teal)">→ Air NZ</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--red)">4</div><div><b>格林諾奇婚紗攝影師</b>（9/28）小紅書/Instagram聯絡</div></div>
-  <div class="ti"><div class="tnum" style="background:var(--red)">5</div><div><b>10/5–10/6 奧克蘭市區住宿</b> · 1晚 · 有停車</div></div>
+<!-- Progress bar -->
+
+<div class="todo-progress"><div class="todo-progress-bar" id="todo-progress-bar" style="width:0%"></div></div>
+<div class="todo-stats" id="todo-stats">已完成 0 / 17 項</div>
+
+<div class="todo" id="todo-container">
+
+  <div class="todo-section-title">🔴 立即（現在就做）</div>
+  <div class="todo-item-row" data-id="t1">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Mt John Observatory 觀星</b>（10/1）· 75天前售罄<br><a href="https://www.darkskyproject.co.nz/experiences/the-summit-experience/" style="color:var(--teal)" target="_blank">→ darkskyproject.co.nz</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t2">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Hobbiton 普通話導覽</b>（10/7）· 每天僅1場<br><a href="https://www.hobbitontours.com/experiences/mandarin/" style="color:var(--teal)" target="_blank">→ hobbitontours.com 普通話場</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t3">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>皇后鎮→奧克蘭機票</b>（10/5 下午班）<br><a href="https://www.airnewzealand.co.nz/" style="color:var(--teal)" target="_blank">→ Air NZ</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t4">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>格林諾奇婚紗攝影師</b>（9/28）小紅書/Instagram聯絡</div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t5">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>10/5–10/6 奧克蘭市區住宿</b> · 1晚 · 有停車</div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+
+  <div class="todo-section-title">🟡 4–8週前</div>
+  <div class="todo-item-row" data-id="t6">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>庫克山直升機</b>（10/1）6–8週前<br><a href="https://www.heliworks.co.nz/" style="color:var(--teal)" target="_blank">→ Heliworks</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t7">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>米佛峽灣 RealNZ Classic Cruise</b>（9/29）3–4週前<br><a href="https://www.realnz.com/en/experiences/day-cruises/milford-sound-classic-cruise/" style="color:var(--teal)" target="_blank">→ RealNZ官網</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t8">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Mitai Māori Village</b>（10/6）4–6週前<br><a href="https://www.mitai.co.nz/" style="color:var(--teal)" target="_blank">→ 官網直訂</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t9">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Dart River Jet Boat</b>（10/3）4–6週前<br><a href="https://www.dartriver.co.nz/" style="color:var(--teal)" target="_blank">→ dartriver.co.nz</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t10">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Lighthorse Adventures 騎馬</b>（9/28）<br><a href="https://www.lighthorseadventures.com/" style="color:var(--teal)" target="_blank">→ 官網</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t11">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Onsen Hot Pools</b>（9/30）1–2週前<br><a href="https://www.onsen.co.nz/" style="color:var(--teal)" target="_blank">→ 官網直訂</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+
+  <div class="todo-section-title">🟢 2–3週前</div>
+  <div class="todo-item-row" data-id="t12">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>TSS Earnslaw + Walter Peak</b>（10/4）選Vintage Steamship<br><a href="https://www.realnz.com/en/experiences/tss-earnslaw-walter-peak-experiences/walter-peak-gourmet-bbq-dining/" style="color:var(--teal)" target="_blank">→ RealNZ官網</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t13">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Waitomo 螢火蟲洞</b>（10/7）09:00場<br><a href="https://www.klook.com/en-US/activity/2994-waitomo-glowworm-caves-tour/" style="color:var(--teal)" target="_blank">→ Klook</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t14">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Mudbrick Vineyard 午餐訂位</b>（10/8）<br><a href="https://mudbrick.co.nz/" style="color:var(--teal)" target="_blank">→ 訂位</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t15">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>北島租車</b>（10/5取 10/7晚還）<br><a href="https://www.omegarentalcars.com/" style="color:var(--teal)" target="_blank">→ Omega（單程免費）</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t16">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>餐廳訂位</b> · Rata(9/28) · Botswana(9/29) · Sherwood(10/3) · The French Café(10/9)</div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+  <div class="todo-item-row" data-id="t17">
+    <div class="todo-cb" onclick="toggleTodo(this)"></div>
+    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Remarkables Market 確認2026開幕日</b><br><a href="https://www.facebook.com/RemarkablesMarket" style="color:var(--teal)" target="_blank">→ FB確認</a></div>
+    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+  </div>
+
+</div><!-- /todo-container -->
+
+<!-- Add custom todo -->
+
+<div class="todo" style="margin-top:4px">
+  <div class="ttit">＋ 新增自訂待辦</div>
+  <div class="add-todo-row">
+    <input class="add-todo-input" id="new-todo-input" placeholder="輸入待辦事項..." onkeydown="if(event.key==='Enter')addTodo()">
+    <button class="add-todo-btn" onclick="addTodo()">新增</button>
+  </div>
 </div>
 
-<div class="todo"><div class="ttit">🟡 4–8週前</div>
-  <div class="ti"><div class="tnum" style="background:var(--ora)">6</div><div><b>庫克山直升機</b>（10/1）6–8週前<br><a href="https://www.heliworks.co.nz/" style="color:var(--teal)">→ Heliworks</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--ora)">7</div><div><b>米佛峽灣 RealNZ Classic Cruise</b>（9/29）3–4週前<br><a href="https://www.realnz.com/en/experiences/day-cruises/milford-sound-classic-cruise/" style="color:var(--teal)">→ RealNZ官網</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--ora)">8</div><div><b>Mitai Māori Village</b>（10/6）4–6週前<br><a href="https://www.mitai.co.nz/" style="color:var(--teal)">→ 官網直訂</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--ora)">9</div><div><b>Dart River Jet Boat</b>（10/3）4–6週前<br><a href="https://www.dartriver.co.nz/" style="color:var(--teal)">→ dartriver.co.nz</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--ora)">10</div><div><b>Lighthorse Adventures 騎馬</b>（9/28）<br><a href="https://www.lighthorseadventures.com/" style="color:var(--teal)">→ 官網</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--ora)">11</div><div><b>Onsen Hot Pools</b>（9/30）1–2週前<br><a href="https://www.onsen.co.nz/" style="color:var(--teal)">→ 官網直訂</a></div></div>
-</div>
-
-<div class="todo"><div class="ttit">🟢 2–3週前</div>
-  <div class="ti"><div class="tnum" style="background:var(--grn)">12</div><div><b>TSS Earnslaw + Walter Peak</b>（10/4）選Vintage Steamship<br><a href="https://www.realnz.com/en/experiences/tss-earnslaw-walter-peak-experiences/walter-peak-gourmet-bbq-dining/" style="color:var(--teal)">→ RealNZ官網</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--grn)">13</div><div><b>Waitomo 螢火蟲洞</b>（10/7）09:00場<br><a href="https://www.klook.com/en-US/activity/2994-waitomo-glowworm-caves-tour/" style="color:var(--teal)">→ Klook</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--grn)">14</div><div><b>Mudbrick Vineyard 午餐訂位</b>（10/8）<br><a href="https://mudbrick.co.nz/" style="color:var(--teal)">→ 訂位</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--grn)">15</div><div><b>北島租車</b>（10/5取 10/7晚還）<br><a href="https://www.omegarentalcars.com/" style="color:var(--teal)">→ Omega（單程免費）</a></div></div>
-  <div class="ti"><div class="tnum" style="background:var(--grn)">16</div><div><b>餐廳訂位</b> · Rata(9/28) · Botswana(9/29) · Sherwood(10/3) · The French Café(10/9)</div></div>
-  <div class="ti"><div class="tnum" style="background:var(--grn)">17</div><div><b>Remarkables Market 確認2026開幕日</b><br><a href="https://www.facebook.com/RemarkablesMarket" style="color:var(--teal)">→ FB確認</a></div></div>
-</div>
 </div><!-- /book -->
 
 <!-- ===== COST ===== -->
+
 <div class="panel" id="cost">
 
-<div class="cb">
-  <div class="ctit">✈️ 機票</div>
-  <div class="cr"><span>台北↔紐西蘭全程（2人）</span><span class="am">TWD $270,000</span></div>
-  <div class="cr"><span>皇后鎮→奧克蘭 10/5（2人，未訂）</span><span class="am">≈ TWD $8,000</span></div>
-  <div class="cr"><span>機票合計</span><span class="am">≈ TWD $278,000</span></div>
+<div class="cost-hint">💡 雙擊金額數字可輸入實際花費，按 Enter 確認</div>
+
+<!-- Live summary -->
+
+<div class="cost-summary-block" id="cost-summary">
+  <div class="csr"><span>💰 預算合計</span><b id="cs-budget">TWD $608,767</b></div>
+  <div class="csr"><span>✅ 實際已知</span><b id="cs-actual" style="color:var(--grn)">TWD $0</b></div>
+  <div class="csr"><span>📊 剩餘預估</span><b id="cs-remain">TWD $608,767</b></div>
 </div>
 
 <div class="cb">
-  <div class="ctit">🏨 住宿（13晚，含全部已訂）</div>
-  <div class="cr"><span>Distinctive Alpine Meadows <span class="csub">9/27–10/1 · 4晚</span></span><span class="am">TWD $34,566 ✅</span></div>
-  <div class="cr"><span>Galaxy Boutique Hotel <span class="csub">10/1–10/2 · 1晚</span></span><span class="am">TWD $12,149 ✅</span></div>
-  <div class="cr"><span>大漾閣別墅 <span class="csub">10/2–10/5 · 3晚</span></span><span class="am">TWD $35,039 ✅</span></div>
-  <div class="cr"><span>奧克蘭市區住宿 <span class="csub">10/5–10/6 · 1晚（待訂）</span></span><span class="am">≈ TWD $3,500</span></div>
-  <div class="cr"><span>羅托魯阿阿千禧 <span class="csub">10/6–10/7 · 1晚</span></span><span class="am">TWD $3,930 ✅</span></div>
-  <div class="cr"><span>Queen St 21樓公寓 <span class="csub">10/7–10/9 · 2晚</span></span><span class="am">TWD $11,180 ✅</span></div>
-  <div class="cr"><span>Pullman Auckland Airport <span class="csub">10/9–10/10 · 1晚</span></span><span class="am">TWD $5,576 ✅</span></div>
-  <div class="cr"><span>住宿合計</span><span class="am">TWD $105,940</span></div>
+  <div class="ctit">✈️ 機票</div>
+  <div class="cr"><span>台北↔紐西蘭全程（2人）</span><span class="am cost-editable" data-key="c1" data-budget="270000" ondblclick="startEdit(this)">≈ TWD $270,000</span></div>
+  <div class="cr"><span>皇后鎮→奧克蘭 10/5（2人，未訂）</span><span class="am cost-editable" data-key="c2" data-budget="8000" ondblclick="startEdit(this)">≈ TWD $8,000</span></div>
+  <div class="cr"><span>機票合計</span><span class="am" id="sub-ticket">≈ TWD $278,000</span></div>
+</div>
+
+<div class="cb">
+  <div class="ctit">🏨 住宿（13晚）</div>
+  <div class="cr"><span>Distinctive Alpine Meadows <span class="csub">9/27–10/1 · 4晚</span></span><span class="am cost-editable" data-key="c3" data-budget="34566" ondblclick="startEdit(this)">TWD $34,566 ✅</span></div>
+  <div class="cr"><span>Galaxy Boutique Hotel <span class="csub">10/1–10/2 · 1晚</span></span><span class="am cost-editable" data-key="c4" data-budget="12149" ondblclick="startEdit(this)">TWD $12,149 ✅</span></div>
+  <div class="cr"><span>大漾閣別墅 <span class="csub">10/2–10/5 · 3晚</span></span><span class="am cost-editable" data-key="c5" data-budget="35039" ondblclick="startEdit(this)">TWD $35,039 ✅</span></div>
+  <div class="cr"><span>奧克蘭市區住宿 <span class="csub">10/5–10/6 · 1晚（待訂）</span></span><span class="am cost-editable" data-key="c6" data-budget="3500" ondblclick="startEdit(this)">≈ TWD $3,500</span></div>
+  <div class="cr"><span>羅托魯阿阿千禧 <span class="csub">10/6–10/7 · 1晚</span></span><span class="am cost-editable" data-key="c7" data-budget="3930" ondblclick="startEdit(this)">TWD $3,930 ✅</span></div>
+  <div class="cr"><span>Queen St 21樓公寓 <span class="csub">10/7–10/9 · 2晚</span></span><span class="am cost-editable" data-key="c8" data-budget="11180" ondblclick="startEdit(this)">TWD $11,180 ✅</span></div>
+  <div class="cr"><span>Pullman Auckland Airport <span class="csub">10/9–10/10 · 1晚</span></span><span class="am cost-editable" data-key="c9" data-budget="5576" ondblclick="startEdit(this)">TWD $5,576 ✅</span></div>
+  <div class="cr"><span>住宿合計</span><span class="am" id="sub-hotel">TWD $105,940</span></div>
 </div>
 
 <div class="cb">
   <div class="ctit">🚗 交通（2人）</div>
-  <div class="cr"><span>南島租車 <span class="csub">8天 NZD $80/天</span></span><span class="am">≈ TWD $11,840</span></div>
-  <div class="cr"><span>南島油費 <span class="csub">約1,800km</span></span><span class="am">≈ TWD $9,324</span></div>
-  <div class="cr"><span>北島租車 <span class="csub">2天 NZD $100/天</span></span><span class="am">≈ TWD $3,700</span></div>
-  <div class="cr"><span>北島油費 <span class="csub">約600km</span></span><span class="am">≈ TWD $3,108</span></div>
-  <div class="cr"><span>Waiheke渡輪+零散Uber</span><span class="am">≈ TWD $3,500</span></div>
-  <div class="cr"><span>交通合計</span><span class="am">≈ TWD $31,472</span></div>
+  <div class="cr"><span>南島租車 <span class="csub">8天</span></span><span class="am cost-editable" data-key="c10" data-budget="11840" ondblclick="startEdit(this)">≈ TWD $11,840</span></div>
+  <div class="cr"><span>南島油費</span><span class="am cost-editable" data-key="c11" data-budget="9324" ondblclick="startEdit(this)">≈ TWD $9,324</span></div>
+  <div class="cr"><span>北島租車 <span class="csub">2天</span></span><span class="am cost-editable" data-key="c12" data-budget="3700" ondblclick="startEdit(this)">≈ TWD $3,700</span></div>
+  <div class="cr"><span>北島油費</span><span class="am cost-editable" data-key="c13" data-budget="3108" ondblclick="startEdit(this)">≈ TWD $3,108</span></div>
+  <div class="cr"><span>Waiheke渡輪+零散Uber</span><span class="am cost-editable" data-key="c14" data-budget="3500" ondblclick="startEdit(this)">≈ TWD $3,500</span></div>
+  <div class="cr"><span>交通合計</span><span class="am" id="sub-trans">≈ TWD $31,472</span></div>
 </div>
 
 <div class="cb">
   <div class="ctit">🎡 活動（2人合計）</div>
-  <div class="cr"><span>婚紗攝影 <span class="csub">NZD $1,800估</span></span><span class="am">≈ TWD $33,300</span></div>
-  <div class="cr"><span>騎馬 Lighthorse <span class="csub">NZD $460</span></span><span class="am">≈ TWD $8,510</span></div>
-  <div class="cr"><span>米佛峽灣遊船 <span class="csub">NZD $290</span></span><span class="am">≈ TWD $5,365</span></div>
-  <div class="cr"><span>Deer Park + Onsen <span class="csub">NZD $162</span></span><span class="am">≈ TWD $2,997</span></div>
-  <div class="cr"><span>庫克山直升機 <span class="csub">NZD $1,060</span></span><span class="am">≈ TWD $19,610</span></div>
-  <div class="cr"><span>Mt John 觀星 <span class="csub">NZD $350</span></span><span class="am">≈ TWD $6,475</span></div>
-  <div class="cr"><span>Skyline Gondola <span class="csub">NZD $160</span></span><span class="am">≈ TWD $2,960</span></div>
-  <div class="cr"><span>Dart River Jet Boat <span class="csub">NZD $558</span></span><span class="am">≈ TWD $10,323</span></div>
-  <div class="cr"><span>TSS Earnslaw+Walter Peak <span class="csub">NZD $398</span></span><span class="am">≈ TWD $7,363</span></div>
-  <div class="cr"><span>Wai-O-Tapu <span class="csub">NZD $80</span></span><span class="am">≈ TWD $1,480</span></div>
-  <div class="cr"><span>Mitai 毛利晚宴 <span class="csub">NZD $338</span></span><span class="am">≈ TWD $6,253</span></div>
-  <div class="cr"><span>Waitomo 螢火蟲 <span class="csub">NZD $130</span></span><span class="am">≈ TWD $2,405</span></div>
-  <div class="cr"><span>Hobbiton 普通話 <span class="csub">NZD $188</span></span><span class="am">≈ TWD $3,478</span></div>
-  <div class="cr"><span>Auckland Museum <span class="csub">NZD $56</span></span><span class="am">≈ TWD $1,036</span></div>
-  <div class="cr"><span>活動合計</span><span class="am">≈ TWD $111,555</span></div>
+  <div class="cr"><span>婚紗攝影</span><span class="am cost-editable" data-key="c15" data-budget="33300" ondblclick="startEdit(this)">≈ TWD $33,300</span></div>
+  <div class="cr"><span>騎馬 Lighthorse</span><span class="am cost-editable" data-key="c16" data-budget="8510" ondblclick="startEdit(this)">≈ TWD $8,510</span></div>
+  <div class="cr"><span>米佛峽灣遊船</span><span class="am cost-editable" data-key="c17" data-budget="5365" ondblclick="startEdit(this)">≈ TWD $5,365</span></div>
+  <div class="cr"><span>Deer Park + Onsen</span><span class="am cost-editable" data-key="c18" data-budget="2997" ondblclick="startEdit(this)">≈ TWD $2,997</span></div>
+  <div class="cr"><span>庫克山直升機</span><span class="am cost-editable" data-key="c19" data-budget="19610" ondblclick="startEdit(this)">≈ TWD $19,610</span></div>
+  <div class="cr"><span>Mt John 觀星</span><span class="am cost-editable" data-key="c20" data-budget="6475" ondblclick="startEdit(this)">≈ TWD $6,475</span></div>
+  <div class="cr"><span>Skyline Gondola</span><span class="am cost-editable" data-key="c21" data-budget="2960" ondblclick="startEdit(this)">≈ TWD $2,960</span></div>
+  <div class="cr"><span>Dart River Jet Boat</span><span class="am cost-editable" data-key="c22" data-budget="10323" ondblclick="startEdit(this)">≈ TWD $10,323</span></div>
+  <div class="cr"><span>TSS Earnslaw+Walter Peak</span><span class="am cost-editable" data-key="c23" data-budget="7363" ondblclick="startEdit(this)">≈ TWD $7,363</span></div>
+  <div class="cr"><span>Wai-O-Tapu</span><span class="am cost-editable" data-key="c24" data-budget="1480" ondblclick="startEdit(this)">≈ TWD $1,480</span></div>
+  <div class="cr"><span>Mitai 毛利晚宴</span><span class="am cost-editable" data-key="c25" data-budget="6253" ondblclick="startEdit(this)">≈ TWD $6,253</span></div>
+  <div class="cr"><span>Waitomo 螢火蟲</span><span class="am cost-editable" data-key="c26" data-budget="2405" ondblclick="startEdit(this)">≈ TWD $2,405</span></div>
+  <div class="cr"><span>Hobbiton 普通話</span><span class="am cost-editable" data-key="c27" data-budget="3478" ondblclick="startEdit(this)">≈ TWD $3,478</span></div>
+  <div class="cr"><span>Auckland Museum</span><span class="am cost-editable" data-key="c28" data-budget="1036" ondblclick="startEdit(this)">≈ TWD $1,036</span></div>
+  <div class="cr"><span>活動合計</span><span class="am" id="sub-act">≈ TWD $111,555</span></div>
   <div class="cnote">* 匯率 NZD 1 ≈ TWD 18.5</div>
 </div>
 
 <div class="cb">
-  <div class="ctit">🍽️ 餐飲（14天 · 2人 · 不含早餐）</div>
-  <div class="cr"><span>午餐 <span class="csub">14天 · TWD $700/人/天</span></span><span class="am">≈ TWD $19,600</span></div>
-  <div class="cr"><span>一般晚餐×8 <span class="csub">TWD $1,200/人/餐</span></span><span class="am">≈ TWD $19,200</span></div>
-  <div class="cr"><span>特別晚餐×6 <span class="csub">Rata/Botswana/Sherwood/French Café等 TWD $2,500/人/餐</span></span><span class="am">≈ TWD $30,000</span></div>
-  <div class="cr"><span>餐飲合計</span><span class="am">≈ TWD $68,800</span></div>
+  <div class="ctit">🍽️ 餐飲（不含早餐）</div>
+  <div class="cr"><span>午餐 <span class="csub">14天 · TWD $700/人/天</span></span><span class="am cost-editable" data-key="c29" data-budget="19600" ondblclick="startEdit(this)">≈ TWD $19,600</span></div>
+  <div class="cr"><span>一般晚餐×8</span><span class="am cost-editable" data-key="c30" data-budget="19200" ondblclick="startEdit(this)">≈ TWD $19,200</span></div>
+  <div class="cr"><span>特別晚餐×6 <span class="csub">Rata/Botswana/Sherwood/French Café</span></span><span class="am cost-editable" data-key="c31" data-budget="30000" ondblclick="startEdit(this)">≈ TWD $30,000</span></div>
+  <div class="cr"><span>餐飲合計</span><span class="am" id="sub-food">≈ TWD $68,800</span></div>
 </div>
 
 <div class="cb">
   <div class="ctit">🧳 雜費</div>
-  <div class="cr"><span>旅遊保險（2人）</span><span class="am">≈ TWD $5,000</span></div>
-  <div class="cr"><span>購物・紀念品・小費</span><span class="am">≈ TWD $8,000</span></div>
-  <div class="cr"><span>雜費合計</span><span class="am">≈ TWD $13,000</span></div>
+  <div class="cr"><span>旅遊保險</span><span class="am cost-editable" data-key="c32" data-budget="5000" ondblclick="startEdit(this)">≈ TWD $5,000</span></div>
+  <div class="cr"><span>購物・紀念品・小費</span><span class="am cost-editable" data-key="c33" data-budget="8000" ondblclick="startEdit(this)">≈ TWD $8,000</span></div>
+  <div class="cr"><span>雜費合計</span><span class="am" id="sub-misc">≈ TWD $13,000</span></div>
 </div>
 
 <div class="ctotal">
-  <div class="ctr"><span>✈️ 機票</span><span class="am">≈ TWD $278,000</span></div>
-  <div class="ctr"><span>🏨 住宿</span><span class="am">TWD $105,940</span></div>
-  <div class="ctr"><span>🚗 交通</span><span class="am">≈ TWD $31,472</span></div>
-  <div class="ctr"><span>🎡 活動</span><span class="am">≈ TWD $111,555</span></div>
-  <div class="ctr"><span>🍽️ 餐飲（不含早餐）</span><span class="am">≈ TWD $68,800</span></div>
-  <div class="ctr"><span>🧳 雜費</span><span class="am">≈ TWD $13,000</span></div>
-  <div class="ctr sub2"><span>非機票小計</span><span class="am">≈ TWD $330,767</span></div>
-  <div class="ctr grand"><span>2人旅費總計</span><span class="am">≈ TWD $608,767</span></div>
+  <div class="ctr"><span>✈️ 機票</span><span class="am" id="gt-ticket">≈ TWD $278,000</span></div>
+  <div class="ctr"><span>🏨 住宿</span><span class="am" id="gt-hotel">TWD $105,940</span></div>
+  <div class="ctr"><span>🚗 交通</span><span class="am" id="gt-trans">≈ TWD $31,472</span></div>
+  <div class="ctr"><span>🎡 活動</span><span class="am" id="gt-act">≈ TWD $111,555</span></div>
+  <div class="ctr"><span>🍽️ 餐飲</span><span class="am" id="gt-food">≈ TWD $68,800</span></div>
+  <div class="ctr"><span>🧳 雜費</span><span class="am" id="gt-misc">≈ TWD $13,000</span></div>
+  <div class="ctr sub2"><span>非機票小計</span><span class="am" id="gt-sub">≈ TWD $330,767</span></div>
+  <div class="ctr grand"><span>2人旅費總計</span><span class="am" id="gt-total">≈ TWD $608,767</span></div>
 </div>
-<div style="text-align:center;font-size:11px;color:var(--stone);padding:4px 0 12px">不含早餐版本 · 匯率 NZD 1 ≈ TWD 18.5</div>
+<div class="cost-grand-edit">✏️ 雙擊任一金額可輸入實際數字 · 綠色＝已確認實際花費</div>
 
 </div><!-- /cost -->
 
@@ -746,9 +945,394 @@ window.showMap = function(region) {
   );
   GMAP.fitBounds(bounds);
 };
+
+
+// ══════════════════════════════════════════════════════════
+// AGENT 1: ITINERARY EDIT (add / delete / drag-reorder)
+// ══════════════════════════════════════════════════════════
+var itinEditMode = false;
+var dragSrc = null;
+
+function toggleItinEdit() {
+  itinEditMode = !itinEditMode;
+  var itin = document.getElementById('itin');
+  var btn  = document.getElementById('itin-edit-btn');
+  itin.classList.toggle('itin-edit-mode', itinEditMode);
+  btn.textContent = itinEditMode ? '✅ 完成編輯' : '✏️ 編輯排序';
+  btn.style.background = itinEditMode ? 'var(--grn)' : '';
+  btn.style.color = itinEditMode ? '#fff' : '';
+
+  // Add/remove drag handles dynamically
+  document.querySelectorAll('#itin .day').forEach(function(day) {
+    var existing = day.querySelector('.day-edit-btns');
+    if (itinEditMode && !existing) {
+      var btns = document.createElement('div');
+      btns.className = 'day-edit-btns';
+      btns.innerHTML = '<span class="day-move" title="長按拖曳">⠿</span><button class="day-del-btn" onclick="delDay(this)">刪除</button>';
+      var dh = day.querySelector('.dh');
+      if (dh) {
+        // Insert before the arrow
+        var arr = dh.querySelector('.darr');
+        if (arr) dh.insertBefore(btns, arr);
+      }
+    } else if (!itinEditMode && existing) {
+      existing.remove();
+    }
+    // Drag events
+    if (itinEditMode) {
+      day.setAttribute('draggable','true');
+      day.addEventListener('dragstart', onDragStart);
+      day.addEventListener('dragover',  onDragOver);
+      day.addEventListener('drop',      onDrop);
+      day.addEventListener('dragend',   onDragEnd);
+    } else {
+      day.removeAttribute('draggable');
+    }
+  });
+}
+
+function onDragStart(e) {
+  dragSrc = this;
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('#itin .day').forEach(function(d){d.classList.remove('drag-over');});
+  this.classList.add('drag-over');
+}
+function onDrop(e) {
+  e.stopPropagation();
+  if (dragSrc !== this) {
+    var parent = this.parentNode;
+    var srcIdx = Array.from(parent.children).indexOf(dragSrc);
+    var tgtIdx = Array.from(parent.children).indexOf(this);
+    if (srcIdx < tgtIdx) parent.insertBefore(dragSrc, this.nextSibling);
+    else parent.insertBefore(dragSrc, this);
+  }
+  return false;
+}
+function onDragEnd() {
+  this.classList.remove('dragging');
+  document.querySelectorAll('#itin .day').forEach(function(d){d.classList.remove('drag-over');});
+  dragSrc = null;
+}
+
+function delDay(btn) {
+  if (!confirm('確定要刪除這一天的行程？')) return;
+  var day = btn.closest('.day');
+  if (day) {
+    day.style.transition = 'opacity .2s, max-height .3s';
+    day.style.opacity = '0';
+    setTimeout(function(){ day.remove(); }, 250);
+  }
+}
+
+function showAddDay() {
+  document.getElementById('add-day-form').classList.add('show');
+  document.getElementById('new-day-date').focus();
+}
+function hideAddDay() {
+  document.getElementById('add-day-form').classList.remove('show');
+}
+
+var dayDotMap = {south:'ds', north:'dn', travel:'dt'};
+
+function addNewDay() {
+  var date   = document.getElementById('new-day-date').value.trim();
+  var title  = document.getElementById('new-day-title').value.trim();
+  var region = document.getElementById('new-day-region').value;
+  var note   = document.getElementById('new-day-note').value.trim();
+  if (!date || !title) { alert('請填入日期與標題'); return; }
+
+  var dotClass = dayDotMap[region] || 'dt';
+  var secLabel = region === 'south' ? '🏔 南島' : region === 'north' ? '🌿 北島' : '✈️ 交通';
+  var idNum = Date.now();
+
+  var dayHtml =
+    '<div class="day" id="day-' + idNum + '">' +
+      '<div class="dh">' +
+        '<div class="dot ' + dotClass + '"></div>' +
+        '<div class="ddate">' + date + '</div>' +
+        '<div class="dtit">' + title + '</div>' +
+        '<div class="darr">▶</div>' +
+      '</div>' +
+      '<div class="db">' +
+        (note ? '<div class="item"><div class="it"></div><div class="ii">📝</div><div class="ic"><div class="in">' + note + '</div></div></div>' : '') +
+        '<div class="item" style="border:none;padding-top:8px">' +
+          '<div class="it"></div><div class="ii">＋</div>' +
+          '<div class="ic"><div class="in" style="color:var(--stone);font-size:12px">點擊「編輯排序」後可拖曳此天至正確位置</div></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  // Find the right section to append to
+  var itin = document.getElementById('itin');
+  // Append before /itin closing
+  var tmp = document.createElement('div');
+  tmp.innerHTML = dayHtml;
+  var newDay = tmp.firstChild;
+
+  // Find last .day and insert after it
+  var allDays = itin.querySelectorAll('.day');
+  if (allDays.length > 0) {
+    allDays[allDays.length-1].insertAdjacentElement('afterend', newDay);
+  } else {
+    itin.appendChild(newDay);
+  }
+
+  // Highlight briefly
+  newDay.style.background = '#e8f4ee';
+  setTimeout(function(){ newDay.style.background = ''; }, 1200);
+
+  // Clear form and hide
+  document.getElementById('new-day-date').value = '';
+  document.getElementById('new-day-title').value = '';
+  document.getElementById('new-day-note').value = '';
+  hideAddDay();
+  saveTodoState(); // trigger any persistence
+}
+
+// ══════════════════════════════════════════════════════════
+// AGENT 2: BOOKING TODO LIST
+// ══════════════════════════════════════════════════════════
+
+function toggleTodo(cb) {
+  cb.classList.toggle('done');
+  var textEl = cb.nextElementSibling;
+  if (textEl) textEl.classList.toggle('done', cb.classList.contains('done'));
+  updateProgress();
+  saveTodoState();
+}
+
+function delTodo(btn) {
+  var row = btn.closest('.todo-item-row');
+  if (row) {
+    row.style.opacity = '0';
+    row.style.transition = 'opacity .2s';
+    setTimeout(function(){ row.remove(); updateProgress(); saveTodoState(); }, 200);
+  }
+}
+
+function addTodo() {
+  var input = document.getElementById('new-todo-input');
+  var text = input.value.trim();
+  if (!text) return;
+
+  var id = 'custom-' + Date.now();
+  var row = document.createElement('div');
+  row.className = 'todo-item-row';
+  row.setAttribute('data-id', id);
+  row.innerHTML =
+    '<div class="todo-cb" onclick="toggleTodo(this)"></div>' +
+    '<div class="todo-text" onclick="toggleTodo(this.previousElementSibling)">' + text + '</div>' +
+    '<span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>';
+
+  document.getElementById('todo-container').appendChild(row);
+  input.value = '';
+  updateProgress();
+  saveTodoState();
+}
+
+function updateProgress() {
+  var allRows = document.querySelectorAll('#todo-container .todo-item-row');
+  var doneRows = document.querySelectorAll('#todo-container .todo-cb.done');
+  var total = allRows.length, done = doneRows.length;
+  var pct = total > 0 ? Math.round(done/total*100) : 0;
+  var bar = document.getElementById('todo-progress-bar');
+  var stats = document.getElementById('todo-stats');
+  if (bar) bar.style.width = pct + '%';
+  if (stats) stats.textContent = '已完成 ' + done + ' / ' + total + ' 項 (' + pct + '%)';
+}
+
+// ══════════════════════════════════════════════════════════
+// AGENT 3: COST INLINE EDITING
+// ══════════════════════════════════════════════════════════
+
+// Budget groups for subtotal recalculation
+var COST_GROUPS = {
+  ticket: ['c1','c2'],
+  hotel:  ['c3','c4','c5','c6','c7','c8','c9'],
+  trans:  ['c10','c11','c12','c13','c14'],
+  act:    ['c15','c16','c17','c18','c19','c20','c21','c22','c23','c24','c25','c26','c27','c28'],
+  food:   ['c29','c30','c31'],
+  misc:   ['c32','c33']
+};
+
+var costData = {}; // key -> actual value (null = use budget)
+
+function startEdit(el) {
+  if (el.querySelector('input')) return; // already editing
+  var key = el.getAttribute('data-key');
+  var budget = parseInt(el.getAttribute('data-budget')) || 0;
+  var current = costData[key] !== undefined ? costData[key] : budget;
+
+  var orig = el.textContent;
+  el.setAttribute('data-orig', orig);
+
+  var input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'cost-edit-input';
+  input.value = current;
+  input.placeholder = budget;
+
+  el.textContent = '';
+  el.appendChild(input);
+  input.focus();
+  input.select();
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') commitEdit(el, input, key, budget);
+    if (e.key === 'Escape') cancelEdit(el);
+  });
+  input.addEventListener('blur', function() {
+    commitEdit(el, input, key, budget);
+  });
+}
+
+function commitEdit(el, input, key, budget) {
+  var raw = input.value.replace(/[,$,TWD, ,≈]/g,'').trim();
+  var val = parseInt(raw);
+  if (!isNaN(val) && val >= 0) {
+    costData[key] = val;
+    el.textContent = 'TWD $' + val.toLocaleString();
+    if (val !== budget) {
+      el.classList.add('cost-actual');
+      el.title = '原預算: TWD $' + budget.toLocaleString();
+    } else {
+      el.classList.remove('cost-actual');
+    }
+  } else {
+    el.textContent = el.getAttribute('data-orig') || ('≈ TWD $' + budget.toLocaleString());
+    costData[key] = undefined;
+    el.classList.remove('cost-actual');
+  }
+  recalcCosts();
+  saveTodoState();
+}
+
+function cancelEdit(el) {
+  el.textContent = el.getAttribute('data-orig') || el.getAttribute('data-budget');
+}
+
+function getVal(key) {
+  var el = document.querySelector('[data-key="'+key+'"]');
+  if (!el) return 0;
+  if (costData[key] !== undefined) return costData[key];
+  return parseInt(el.getAttribute('data-budget')) || 0;
+}
+
+function groupSum(keys) {
+  return keys.reduce(function(s,k){ return s + getVal(k); }, 0);
+}
+
+function fmt(n) { return 'TWD $' + n.toLocaleString(); }
+
+function recalcCosts() {
+  var ticket = groupSum(COST_GROUPS.ticket);
+  var hotel  = groupSum(COST_GROUPS.hotel);
+  var trans  = groupSum(COST_GROUPS.trans);
+  var act    = groupSum(COST_GROUPS.act);
+  var food   = groupSum(COST_GROUPS.food);
+  var misc   = groupSum(COST_GROUPS.misc);
+  var sub    = hotel + trans + act + food + misc;
+  var total  = ticket + sub;
+
+  // Update subtotals
+  var s = document.getElementById('sub-ticket'); if(s) s.textContent = fmt(ticket);
+  var s = document.getElementById('sub-hotel');  if(s) s.textContent = fmt(hotel);
+  var s = document.getElementById('sub-trans');  if(s) s.textContent = fmt(trans);
+  var s = document.getElementById('sub-act');    if(s) s.textContent = fmt(act);
+  var s = document.getElementById('sub-food');   if(s) s.textContent = fmt(food);
+  var s = document.getElementById('sub-misc');   if(s) s.textContent = fmt(misc);
+
+  // Update grand total block
+  var gt = document.getElementById('gt-ticket'); if(gt) gt.textContent = fmt(ticket);
+  var gt = document.getElementById('gt-hotel');  if(gt) gt.textContent = fmt(hotel);
+  var gt = document.getElementById('gt-trans');  if(gt) gt.textContent = fmt(trans);
+  var gt = document.getElementById('gt-act');    if(gt) gt.textContent = fmt(act);
+  var gt = document.getElementById('gt-food');   if(gt) gt.textContent = fmt(food);
+  var gt = document.getElementById('gt-misc');   if(gt) gt.textContent = fmt(misc);
+  var gt = document.getElementById('gt-sub');    if(gt) gt.textContent = fmt(sub);
+  var gt = document.getElementById('gt-total');  if(gt) gt.textContent = fmt(total);
+
+  // Update summary card
+  var budget = 608767;
+  var actualKeys = Object.keys(costData).filter(function(k){ return costData[k] !== undefined; });
+  var actualSum  = actualKeys.reduce(function(s,k){ return s + costData[k]; }, 0);
+  var remain = total - actualSum;
+
+  var cs_b = document.getElementById('cs-budget');  if(cs_b) cs_b.textContent = fmt(total);
+  var cs_a = document.getElementById('cs-actual');  if(cs_a) cs_a.textContent = fmt(actualSum);
+  var cs_r = document.getElementById('cs-remain');  if(cs_r) cs_r.textContent = fmt(remain);
+}
+
+// ══════════════════════════════════════════════════════════
+// AGENT 4: PERSISTENCE (localStorage)
+// ══════════════════════════════════════════════════════════
+
+function saveTodoState() {
+  try {
+    // Save todo states
+    var states = {};
+    document.querySelectorAll('#todo-container .todo-item-row').forEach(function(row) {
+      var id = row.getAttribute('data-id');
+      if (id) {
+        states[id] = {
+          done: !!row.querySelector('.todo-cb.done'),
+          text: row.querySelector('.todo-text') ? row.querySelector('.todo-text').innerHTML : ''
+        };
+      }
+    });
+    localStorage.setItem('nz_todos', JSON.stringify(states));
+    // Save cost data
+    localStorage.setItem('nz_costs', JSON.stringify(costData));
+  } catch(e) {}
+}
+
+function loadSavedState() {
+  try {
+    // Restore todos
+    var savedTodos = JSON.parse(localStorage.getItem('nz_todos') || '{}');
+    document.querySelectorAll('#todo-container .todo-item-row').forEach(function(row) {
+      var id = row.getAttribute('data-id');
+      if (id && savedTodos[id] && savedTodos[id].done) {
+        var cb = row.querySelector('.todo-cb');
+        var tx = row.querySelector('.todo-text');
+        if (cb) cb.classList.add('done');
+        if (tx) tx.classList.add('done');
+      }
+    });
+    // Restore cost edits
+    var savedCosts = JSON.parse(localStorage.getItem('nz_costs') || '{}');
+    Object.keys(savedCosts).forEach(function(key) {
+      if (savedCosts[key] !== undefined && savedCosts[key] !== null) {
+        costData[key] = savedCosts[key];
+        var el = document.querySelector('[data-key="' + key + '"]');
+        if (el) {
+          var budget = parseInt(el.getAttribute('data-budget')) || 0;
+          el.textContent = 'TWD $' + savedCosts[key].toLocaleString();
+          if (savedCosts[key] !== budget) {
+            el.classList.add('cost-actual');
+            el.title = '原預算: TWD $' + budget.toLocaleString();
+          }
+        }
+      }
+    });
+    recalcCosts();
+    updateProgress();
+  } catch(e) {}
+}
+
+// Init on load
+loadSavedState();
+updateProgress();
+
 })();
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&callback=gmapsReady&loading=async" async defer></script>
+
 </body>
 </html>
