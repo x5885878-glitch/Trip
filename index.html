@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>Xi++員工跑去happy拉</title>
+<title>紐西蘭 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -207,8 +207,8 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 
 <!-- Edit toolbar -->
 <div class="edit-bar" id="itin-toolbar">
-  <button class="eb eb-add" id="add-item-btn" onclick="toggleAddItemMode()">＋ 新增行程</button>
-  <button class="eb" id="itin-edit-btn" onclick="toggleItinEdit()">✏️ 編輯排序</button>
+  <button class="eb eb-add" id="add-item-btn">＋ 新增行程</button>
+  <button class="eb" id="itin-edit-btn">✏️ 編輯排序</button>
 </div>
 
 <!-- Add item form (hidden by default) -->
@@ -240,8 +240,8 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
     </div>
   </div>
   <div style="display:flex;gap:6px">
-    <button class="eb eb-save" onclick="addNewItem()">新增</button>
-    <button class="eb eb-cancel" onclick="toggleAddItemMode()">取消</button>
+    <button class="eb eb-save">新增</button>
+    <button class="eb eb-cancel">取消</button>
   </div>
 </div>
 
@@ -408,9 +408,9 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
     <div class="mhdr">
       <div class="mtit">🗺 行程地圖</div>
       <div class="mbtns">
-        <button class="mbtn on" id="mb-south" onclick="showMap('south')">南島</button>
-        <button class="mbtn" id="mb-north" onclick="showMap('north')">北島</button>
-        <button class="mbtn" id="mb-all" onclick="showMap('all')">全部</button>
+        <button class="mbtn on" id="mb-south">南島</button>
+        <button class="mbtn" id="mb-north">北島</button>
+        <button class="mbtn" id="mb-all">全部</button>
       </div>
     </div>
     <div id="gmap">
@@ -530,93 +530,93 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 
   <div class="todo-section-title">🔴 立即（現在就做）</div>
   <div class="todo-item-row" data-id="t1">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Mt John Observatory 觀星</b>（10/1）· 75天前售罄<br><a href="https://www.darkskyproject.co.nz/experiences/the-summit-experience/" style="color:var(--teal)" target="_blank">→ darkskyproject.co.nz</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>Mt John Observatory 觀星</b>（10/1）· 75天前售罄<br><a href="https://www.darkskyproject.co.nz/experiences/the-summit-experience/" style="color:var(--teal)" target="_blank">→ darkskyproject.co.nz</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t2">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Hobbiton 普通話導覽</b>（10/7）· 每天僅1場<br><a href="https://www.hobbitontours.com/experiences/mandarin/" style="color:var(--teal)" target="_blank">→ hobbitontours.com 普通話場</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>Hobbiton 普通話導覽</b>（10/7）· 每天僅1場<br><a href="https://www.hobbitontours.com/experiences/mandarin/" style="color:var(--teal)" target="_blank">→ hobbitontours.com 普通話場</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t3">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>皇后鎮→奧克蘭機票</b>（10/5 下午班）<br><a href="https://www.airnewzealand.co.nz/" style="color:var(--teal)" target="_blank">→ Air NZ</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>皇后鎮→奧克蘭機票</b>（10/5 下午班）<br><a href="https://www.airnewzealand.co.nz/" style="color:var(--teal)" target="_blank">→ Air NZ</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t4">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>格林諾奇婚紗攝影師</b>（9/28）小紅書/Instagram聯絡</div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>格林諾奇婚紗攝影師</b>（9/28）小紅書/Instagram聯絡</div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t5">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>10/5–10/6 奧克蘭市區住宿</b> · 1晚 · 有停車</div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>10/5–10/6 奧克蘭市區住宿</b> · 1晚 · 有停車</div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
 
   <div class="todo-section-title">🟡 4–8週前</div>
   <div class="todo-item-row" data-id="t6">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>庫克山直升機</b>（10/1）6–8週前<br><a href="https://www.heliworks.co.nz/" style="color:var(--teal)" target="_blank">→ Heliworks</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>庫克山直升機</b>（10/1）6–8週前<br><a href="https://www.heliworks.co.nz/" style="color:var(--teal)" target="_blank">→ Heliworks</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t7">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>米佛峽灣 RealNZ Classic Cruise</b>（9/29）3–4週前<br><a href="https://www.realnz.com/en/experiences/day-cruises/milford-sound-classic-cruise/" style="color:var(--teal)" target="_blank">→ RealNZ官網</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>米佛峽灣 RealNZ Classic Cruise</b>（9/29）3–4週前<br><a href="https://www.realnz.com/en/experiences/day-cruises/milford-sound-classic-cruise/" style="color:var(--teal)" target="_blank">→ RealNZ官網</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t8">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Mitai Māori Village</b>（10/6）4–6週前<br><a href="https://www.mitai.co.nz/" style="color:var(--teal)" target="_blank">→ 官網直訂</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>Mitai Māori Village</b>（10/6）4–6週前<br><a href="https://www.mitai.co.nz/" style="color:var(--teal)" target="_blank">→ 官網直訂</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t9">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Dart River Jet Boat</b>（10/3）4–6週前<br><a href="https://www.dartriver.co.nz/" style="color:var(--teal)" target="_blank">→ dartriver.co.nz</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>Dart River Jet Boat</b>（10/3）4–6週前<br><a href="https://www.dartriver.co.nz/" style="color:var(--teal)" target="_blank">→ dartriver.co.nz</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t10">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Lighthorse Adventures 騎馬</b>（9/28）<br><a href="https://www.lighthorseadventures.com/" style="color:var(--teal)" target="_blank">→ 官網</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>Lighthorse Adventures 騎馬</b>（9/28）<br><a href="https://www.lighthorseadventures.com/" style="color:var(--teal)" target="_blank">→ 官網</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t11">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Onsen Hot Pools</b>（9/30）1–2週前<br><a href="https://www.onsen.co.nz/" style="color:var(--teal)" target="_blank">→ 官網直訂</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>Onsen Hot Pools</b>（9/30）1–2週前<br><a href="https://www.onsen.co.nz/" style="color:var(--teal)" target="_blank">→ 官網直訂</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
 
   <div class="todo-section-title">🟢 2–3週前</div>
   <div class="todo-item-row" data-id="t12">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>TSS Earnslaw + Walter Peak</b>（10/4）選Vintage Steamship<br><a href="https://www.realnz.com/en/experiences/tss-earnslaw-walter-peak-experiences/walter-peak-gourmet-bbq-dining/" style="color:var(--teal)" target="_blank">→ RealNZ官網</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>TSS Earnslaw + Walter Peak</b>（10/4）選Vintage Steamship<br><a href="https://www.realnz.com/en/experiences/tss-earnslaw-walter-peak-experiences/walter-peak-gourmet-bbq-dining/" style="color:var(--teal)" target="_blank">→ RealNZ官網</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t13">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Waitomo 螢火蟲洞</b>（10/7）09:00場<br><a href="https://www.klook.com/en-US/activity/2994-waitomo-glowworm-caves-tour/" style="color:var(--teal)" target="_blank">→ Klook</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>Waitomo 螢火蟲洞</b>（10/7）09:00場<br><a href="https://www.klook.com/en-US/activity/2994-waitomo-glowworm-caves-tour/" style="color:var(--teal)" target="_blank">→ Klook</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t14">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Mudbrick Vineyard 午餐訂位</b>（10/8）<br><a href="https://mudbrick.co.nz/" style="color:var(--teal)" target="_blank">→ 訂位</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>Mudbrick Vineyard 午餐訂位</b>（10/8）<br><a href="https://mudbrick.co.nz/" style="color:var(--teal)" target="_blank">→ 訂位</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t15">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>北島租車</b>（10/5取 10/7晚還）<br><a href="https://www.omegarentalcars.com/" style="color:var(--teal)" target="_blank">→ Omega（單程免費）</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>北島租車</b>（10/5取 10/7晚還）<br><a href="https://www.omegarentalcars.com/" style="color:var(--teal)" target="_blank">→ Omega（單程免費）</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t16">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>餐廳訂位</b> · Rata(9/28) · Botswana(9/29) · Sherwood(10/3) · The French Café(10/9)</div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>餐廳訂位</b> · Rata(9/28) · Botswana(9/29) · Sherwood(10/3) · The French Café(10/9)</div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
   <div class="todo-item-row" data-id="t17">
-    <div class="todo-cb" onclick="toggleTodo(this)"></div>
-    <div class="todo-text" onclick="toggleTodo(this.previousElementSibling)"><b>Remarkables Market 確認2026開幕日</b><br><a href="https://www.facebook.com/RemarkablesMarket" style="color:var(--teal)" target="_blank">→ FB確認</a></div>
-    <span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>
+    <div class="todo-cb" data-action="toggle"></div>
+    <div class="todo-text" data-action="toggle-from-text"><b>Remarkables Market 確認2026開幕日</b><br><a href="https://www.facebook.com/RemarkablesMarket" style="color:var(--teal)" target="_blank">→ FB確認</a></div>
+    <span class="todo-del" data-action="del-todo" title="刪除">×</span>
   </div>
 
 </div><!-- /todo-container -->
@@ -625,8 +625,8 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 <div class="todo" style="margin-top:4px">
   <div class="ttit">＋ 新增自訂待辦</div>
   <div class="add-todo-row">
-    <input class="add-todo-input" id="new-todo-input" placeholder="輸入待辦事項..." onkeydown="if(event.key==='Enter')addTodo()">
-    <button class="add-todo-btn" onclick="addTodo()">新增</button>
+    <input class="add-todo-input" id="new-todo-input" placeholder="輸入待辦事項...">
+    <button class="add-todo-btn">新增</button>
   </div>
 </div>
 
@@ -646,65 +646,65 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 
 <div class="cb">
   <div class="ctit">✈️ 機票</div>
-  <div class="cr"><span>台北↔紐西蘭全程（2人）</span><span class="am cost-editable" data-key="c1" data-budget="270000" ondblclick="startEdit(this)">≈ TWD $270,000</span></div>
-  <div class="cr"><span>皇后鎮→奧克蘭 10/5（2人，未訂）</span><span class="am cost-editable" data-key="c2" data-budget="8000" ondblclick="startEdit(this)">≈ TWD $8,000</span></div>
+  <div class="cr"><span>台北↔紐西蘭全程（2人）</span><span class="am cost-editable" data-key="c1" data-budget="270000">≈ TWD $270,000</span></div>
+  <div class="cr"><span>皇后鎮→奧克蘭 10/5（2人，未訂）</span><span class="am cost-editable" data-key="c2" data-budget="8000">≈ TWD $8,000</span></div>
   <div class="cr"><span>機票合計</span><span class="am" id="sub-ticket">≈ TWD $278,000</span></div>
 </div>
 
 <div class="cb">
   <div class="ctit">🏨 住宿（13晚）</div>
-  <div class="cr"><span>Distinctive Alpine Meadows <span class="csub">9/27–10/1 · 4晚</span></span><span class="am cost-editable" data-key="c3" data-budget="34566" ondblclick="startEdit(this)">TWD $34,566 ✅</span></div>
-  <div class="cr"><span>Galaxy Boutique Hotel <span class="csub">10/1–10/2 · 1晚</span></span><span class="am cost-editable" data-key="c4" data-budget="12149" ondblclick="startEdit(this)">TWD $12,149 ✅</span></div>
-  <div class="cr"><span>大漾閣別墅 <span class="csub">10/2–10/5 · 3晚</span></span><span class="am cost-editable" data-key="c5" data-budget="35039" ondblclick="startEdit(this)">TWD $35,039 ✅</span></div>
-  <div class="cr"><span>奧克蘭市區住宿 <span class="csub">10/5–10/6 · 1晚（待訂）</span></span><span class="am cost-editable" data-key="c6" data-budget="3500" ondblclick="startEdit(this)">≈ TWD $3,500</span></div>
-  <div class="cr"><span>羅托魯阿阿千禧 <span class="csub">10/6–10/7 · 1晚</span></span><span class="am cost-editable" data-key="c7" data-budget="3930" ondblclick="startEdit(this)">TWD $3,930 ✅</span></div>
-  <div class="cr"><span>Queen St 21樓公寓 <span class="csub">10/7–10/9 · 2晚</span></span><span class="am cost-editable" data-key="c8" data-budget="11180" ondblclick="startEdit(this)">TWD $11,180 ✅</span></div>
-  <div class="cr"><span>Pullman Auckland Airport <span class="csub">10/9–10/10 · 1晚</span></span><span class="am cost-editable" data-key="c9" data-budget="5576" ondblclick="startEdit(this)">TWD $5,576 ✅</span></div>
+  <div class="cr"><span>Distinctive Alpine Meadows <span class="csub">9/27–10/1 · 4晚</span></span><span class="am cost-editable" data-key="c3" data-budget="34566">TWD $34,566 ✅</span></div>
+  <div class="cr"><span>Galaxy Boutique Hotel <span class="csub">10/1–10/2 · 1晚</span></span><span class="am cost-editable" data-key="c4" data-budget="12149">TWD $12,149 ✅</span></div>
+  <div class="cr"><span>大漾閣別墅 <span class="csub">10/2–10/5 · 3晚</span></span><span class="am cost-editable" data-key="c5" data-budget="35039">TWD $35,039 ✅</span></div>
+  <div class="cr"><span>奧克蘭市區住宿 <span class="csub">10/5–10/6 · 1晚（待訂）</span></span><span class="am cost-editable" data-key="c6" data-budget="3500">≈ TWD $3,500</span></div>
+  <div class="cr"><span>羅托魯阿阿千禧 <span class="csub">10/6–10/7 · 1晚</span></span><span class="am cost-editable" data-key="c7" data-budget="3930">TWD $3,930 ✅</span></div>
+  <div class="cr"><span>Queen St 21樓公寓 <span class="csub">10/7–10/9 · 2晚</span></span><span class="am cost-editable" data-key="c8" data-budget="11180">TWD $11,180 ✅</span></div>
+  <div class="cr"><span>Pullman Auckland Airport <span class="csub">10/9–10/10 · 1晚</span></span><span class="am cost-editable" data-key="c9" data-budget="5576">TWD $5,576 ✅</span></div>
   <div class="cr"><span>住宿合計</span><span class="am" id="sub-hotel">TWD $105,940</span></div>
 </div>
 
 <div class="cb">
   <div class="ctit">🚗 交通（2人）</div>
-  <div class="cr"><span>南島租車 <span class="csub">8天</span></span><span class="am cost-editable" data-key="c10" data-budget="11840" ondblclick="startEdit(this)">≈ TWD $11,840</span></div>
-  <div class="cr"><span>南島油費</span><span class="am cost-editable" data-key="c11" data-budget="9324" ondblclick="startEdit(this)">≈ TWD $9,324</span></div>
-  <div class="cr"><span>北島租車 <span class="csub">2天</span></span><span class="am cost-editable" data-key="c12" data-budget="3700" ondblclick="startEdit(this)">≈ TWD $3,700</span></div>
-  <div class="cr"><span>北島油費</span><span class="am cost-editable" data-key="c13" data-budget="3108" ondblclick="startEdit(this)">≈ TWD $3,108</span></div>
-  <div class="cr"><span>Waiheke渡輪+零散Uber</span><span class="am cost-editable" data-key="c14" data-budget="3500" ondblclick="startEdit(this)">≈ TWD $3,500</span></div>
+  <div class="cr"><span>南島租車 <span class="csub">8天</span></span><span class="am cost-editable" data-key="c10" data-budget="11840">≈ TWD $11,840</span></div>
+  <div class="cr"><span>南島油費</span><span class="am cost-editable" data-key="c11" data-budget="9324">≈ TWD $9,324</span></div>
+  <div class="cr"><span>北島租車 <span class="csub">2天</span></span><span class="am cost-editable" data-key="c12" data-budget="3700">≈ TWD $3,700</span></div>
+  <div class="cr"><span>北島油費</span><span class="am cost-editable" data-key="c13" data-budget="3108">≈ TWD $3,108</span></div>
+  <div class="cr"><span>Waiheke渡輪+零散Uber</span><span class="am cost-editable" data-key="c14" data-budget="3500">≈ TWD $3,500</span></div>
   <div class="cr"><span>交通合計</span><span class="am" id="sub-trans">≈ TWD $31,472</span></div>
 </div>
 
 <div class="cb">
   <div class="ctit">🎡 活動（2人合計）</div>
-  <div class="cr"><span>婚紗攝影</span><span class="am cost-editable" data-key="c15" data-budget="33300" ondblclick="startEdit(this)">≈ TWD $33,300</span></div>
-  <div class="cr"><span>騎馬 Lighthorse</span><span class="am cost-editable" data-key="c16" data-budget="8510" ondblclick="startEdit(this)">≈ TWD $8,510</span></div>
-  <div class="cr"><span>米佛峽灣遊船</span><span class="am cost-editable" data-key="c17" data-budget="5365" ondblclick="startEdit(this)">≈ TWD $5,365</span></div>
-  <div class="cr"><span>Deer Park + Onsen</span><span class="am cost-editable" data-key="c18" data-budget="2997" ondblclick="startEdit(this)">≈ TWD $2,997</span></div>
-  <div class="cr"><span>庫克山直升機</span><span class="am cost-editable" data-key="c19" data-budget="19610" ondblclick="startEdit(this)">≈ TWD $19,610</span></div>
-  <div class="cr"><span>Mt John 觀星</span><span class="am cost-editable" data-key="c20" data-budget="6475" ondblclick="startEdit(this)">≈ TWD $6,475</span></div>
-  <div class="cr"><span>Skyline Gondola</span><span class="am cost-editable" data-key="c21" data-budget="2960" ondblclick="startEdit(this)">≈ TWD $2,960</span></div>
-  <div class="cr"><span>Dart River Jet Boat</span><span class="am cost-editable" data-key="c22" data-budget="10323" ondblclick="startEdit(this)">≈ TWD $10,323</span></div>
-  <div class="cr"><span>TSS Earnslaw+Walter Peak</span><span class="am cost-editable" data-key="c23" data-budget="7363" ondblclick="startEdit(this)">≈ TWD $7,363</span></div>
-  <div class="cr"><span>Wai-O-Tapu</span><span class="am cost-editable" data-key="c24" data-budget="1480" ondblclick="startEdit(this)">≈ TWD $1,480</span></div>
-  <div class="cr"><span>Mitai 毛利晚宴</span><span class="am cost-editable" data-key="c25" data-budget="6253" ondblclick="startEdit(this)">≈ TWD $6,253</span></div>
-  <div class="cr"><span>Waitomo 螢火蟲</span><span class="am cost-editable" data-key="c26" data-budget="2405" ondblclick="startEdit(this)">≈ TWD $2,405</span></div>
-  <div class="cr"><span>Hobbiton 普通話</span><span class="am cost-editable" data-key="c27" data-budget="3478" ondblclick="startEdit(this)">≈ TWD $3,478</span></div>
-  <div class="cr"><span>Auckland Museum</span><span class="am cost-editable" data-key="c28" data-budget="1036" ondblclick="startEdit(this)">≈ TWD $1,036</span></div>
+  <div class="cr"><span>婚紗攝影</span><span class="am cost-editable" data-key="c15" data-budget="33300">≈ TWD $33,300</span></div>
+  <div class="cr"><span>騎馬 Lighthorse</span><span class="am cost-editable" data-key="c16" data-budget="8510">≈ TWD $8,510</span></div>
+  <div class="cr"><span>米佛峽灣遊船</span><span class="am cost-editable" data-key="c17" data-budget="5365">≈ TWD $5,365</span></div>
+  <div class="cr"><span>Deer Park + Onsen</span><span class="am cost-editable" data-key="c18" data-budget="2997">≈ TWD $2,997</span></div>
+  <div class="cr"><span>庫克山直升機</span><span class="am cost-editable" data-key="c19" data-budget="19610">≈ TWD $19,610</span></div>
+  <div class="cr"><span>Mt John 觀星</span><span class="am cost-editable" data-key="c20" data-budget="6475">≈ TWD $6,475</span></div>
+  <div class="cr"><span>Skyline Gondola</span><span class="am cost-editable" data-key="c21" data-budget="2960">≈ TWD $2,960</span></div>
+  <div class="cr"><span>Dart River Jet Boat</span><span class="am cost-editable" data-key="c22" data-budget="10323">≈ TWD $10,323</span></div>
+  <div class="cr"><span>TSS Earnslaw+Walter Peak</span><span class="am cost-editable" data-key="c23" data-budget="7363">≈ TWD $7,363</span></div>
+  <div class="cr"><span>Wai-O-Tapu</span><span class="am cost-editable" data-key="c24" data-budget="1480">≈ TWD $1,480</span></div>
+  <div class="cr"><span>Mitai 毛利晚宴</span><span class="am cost-editable" data-key="c25" data-budget="6253">≈ TWD $6,253</span></div>
+  <div class="cr"><span>Waitomo 螢火蟲</span><span class="am cost-editable" data-key="c26" data-budget="2405">≈ TWD $2,405</span></div>
+  <div class="cr"><span>Hobbiton 普通話</span><span class="am cost-editable" data-key="c27" data-budget="3478">≈ TWD $3,478</span></div>
+  <div class="cr"><span>Auckland Museum</span><span class="am cost-editable" data-key="c28" data-budget="1036">≈ TWD $1,036</span></div>
   <div class="cr"><span>活動合計</span><span class="am" id="sub-act">≈ TWD $111,555</span></div>
   <div class="cnote">* 匯率 NZD 1 ≈ TWD 18.5</div>
 </div>
 
 <div class="cb">
   <div class="ctit">🍽️ 餐飲（不含早餐）</div>
-  <div class="cr"><span>午餐 <span class="csub">14天 · TWD $700/人/天</span></span><span class="am cost-editable" data-key="c29" data-budget="19600" ondblclick="startEdit(this)">≈ TWD $19,600</span></div>
-  <div class="cr"><span>一般晚餐×8</span><span class="am cost-editable" data-key="c30" data-budget="19200" ondblclick="startEdit(this)">≈ TWD $19,200</span></div>
-  <div class="cr"><span>特別晚餐×6 <span class="csub">Rata/Botswana/Sherwood/French Café</span></span><span class="am cost-editable" data-key="c31" data-budget="30000" ondblclick="startEdit(this)">≈ TWD $30,000</span></div>
+  <div class="cr"><span>午餐 <span class="csub">14天 · TWD $700/人/天</span></span><span class="am cost-editable" data-key="c29" data-budget="19600">≈ TWD $19,600</span></div>
+  <div class="cr"><span>一般晚餐×8</span><span class="am cost-editable" data-key="c30" data-budget="19200">≈ TWD $19,200</span></div>
+  <div class="cr"><span>特別晚餐×6 <span class="csub">Rata/Botswana/Sherwood/French Café</span></span><span class="am cost-editable" data-key="c31" data-budget="30000">≈ TWD $30,000</span></div>
   <div class="cr"><span>餐飲合計</span><span class="am" id="sub-food">≈ TWD $68,800</span></div>
 </div>
 
 <div class="cb">
   <div class="ctit">🧳 雜費</div>
-  <div class="cr"><span>旅遊保險</span><span class="am cost-editable" data-key="c32" data-budget="5000" ondblclick="startEdit(this)">≈ TWD $5,000</span></div>
-  <div class="cr"><span>購物・紀念品・小費</span><span class="am cost-editable" data-key="c33" data-budget="8000" ondblclick="startEdit(this)">≈ TWD $8,000</span></div>
+  <div class="cr"><span>旅遊保險</span><span class="am cost-editable" data-key="c32" data-budget="5000">≈ TWD $5,000</span></div>
+  <div class="cr"><span>購物・紀念品・小費</span><span class="am cost-editable" data-key="c33" data-budget="8000">≈ TWD $8,000</span></div>
   <div class="cr"><span>雜費合計</span><span class="am" id="sub-misc">≈ TWD $13,000</span></div>
 </div>
 
@@ -943,115 +943,121 @@ window.showMap = function(region) {
 </script>
 
 <script>
-// ══════════════════════════════════════════════════════════
-// AGENT 1: ITINERARY EDIT (add items / delete / drag-reorder)
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// ALL FEATURES - bound via addEventListener (CSP-safe)
+// ═══════════════════════════════════════════════════════════════
 
+// ── State ──
 var itinEditMode = false;
-var dragSrc = null;
-var addItemOpen = false;
+var addItemOpen  = false;
+var dragSrc      = null;
+var costData     = {};
 
-// ── Toggle "新增行程" panel ──
+// ── Utility: safe getElementById ──
+function $id(id){ return document.getElementById(id); }
+
+// ══════════════════════════
+// FEATURE 1: ITINERARY EDIT
+// ══════════════════════════
+
 function toggleAddItemMode() {
   addItemOpen = !addItemOpen;
-  var form = document.getElementById('add-item-form');
-  var btn  = document.getElementById('add-item-btn');
-  if (!form) return;
+  var form = $id('add-item-form');
+  var btn  = $id('add-item-btn');
+  if (!form || !btn) return;
   form.classList.toggle('show', addItemOpen);
   btn.textContent = addItemOpen ? '✕ 關閉' : '＋ 新增行程';
   if (addItemOpen) {
     populateDaySelect();
-    document.getElementById('ni-name').focus();
+    var ni = $id('ni-name');
+    if (ni) ni.focus();
   }
 }
 
-// ── Populate day selector dropdown ──
 function populateDaySelect() {
-  var sel = document.getElementById('ni-day-select');
+  var sel = $id('ni-day-select');
   if (!sel) return;
   sel.innerHTML = '';
-  var days = document.querySelectorAll('#itin .day');
-  days.forEach(function(day, i) {
+  document.querySelectorAll('#itin .day').forEach(function(day, i) {
     var ddate = day.querySelector('.ddate');
     var dtit  = day.querySelector('.dtit');
     var opt   = document.createElement('option');
     opt.value = day.id || ('day-' + i);
-    opt.textContent = (ddate ? ddate.textContent : '') + ' ' + (dtit ? dtit.textContent.slice(0,18) : '');
+    opt.textContent = (ddate ? ddate.textContent.trim() : '') + ' ' +
+                      (dtit  ? dtit.textContent.trim().slice(0,20) : '');
     sel.appendChild(opt);
   });
 }
 
-// ── Add new item to selected day ──
 function addNewItem() {
-  var time   = (document.getElementById('ni-time').value || '').trim();
-  var icon   = (document.getElementById('ni-icon').value || '📍').trim() || '📍';
-  var name   = (document.getElementById('ni-name').value || '').trim();
-  var desc   = (document.getElementById('ni-desc').value || '').trim();
-  var dayId  = document.getElementById('ni-day-select').value;
-
+  var time  = ($id('ni-time')  ? $id('ni-time').value  : '').trim();
+  var icon  = ($id('ni-icon')  ? $id('ni-icon').value  : '').trim() || '📍';
+  var name  = ($id('ni-name')  ? $id('ni-name').value  : '').trim();
+  var desc  = ($id('ni-desc')  ? $id('ni-desc').value  : '').trim();
+  var dayId = $id('ni-day-select') ? $id('ni-day-select').value : '';
   if (!name) { alert('請輸入行程名稱'); return; }
-
-  var day = document.getElementById(dayId);
-  if (!day) { alert('找不到指定的天數'); return; }
-
-  // Open the day body if not open
+  var day = $id(dayId);
+  if (!day) { alert('找不到指定天數'); return; }
   var db = day.querySelector('.db');
   if (db && db.style.display !== 'block') {
     db.style.display = 'block';
     var arr = day.querySelector('.darr');
     if (arr) arr.style.transform = 'rotate(90deg)';
   }
-
-  // Build new item HTML
-  var itemEl = document.createElement('div');
-  itemEl.className = 'item';
-  itemEl.innerHTML =
-    '<div class="it">' + (time || '') + '</div>' +
-    '<div class="ii">' + icon + '</div>' +
-    '<div class="ic">' +
+  var item = document.createElement('div');
+  item.className = 'item';
+  item.innerHTML =
+    '<div class="it">'  + (time || '') + '</div>' +
+    '<div class="ii">'  + icon         + '</div>' +
+    '<div class="ic">'  +
       '<div class="in">' + name + '</div>' +
       (desc ? '<div class="id">' + desc + '</div>' : '') +
-    '</div>' +
-    (itinEditMode ? '<button style="margin-left:auto;background:none;border:none;color:#ccc;cursor:pointer;font-size:16px" onclick="this.closest('.item').remove()">×</button>' : '');
-
-  if (db) {
-    db.appendChild(itemEl);
-    // Flash highlight
-    itemEl.style.background = '#e8f4ee';
-    setTimeout(function(){ itemEl.style.background = ''; }, 1000);
+    '</div>';
+  if (itinEditMode) {
+    var delBtn = document.createElement('button');
+    delBtn.style.cssText = 'margin-left:auto;background:none;border:none;color:#ccc;cursor:pointer;font-size:16px';
+    delBtn.setAttribute('data-action','del-item');
+    delBtn.textContent = '×';
+    item.appendChild(delBtn);
   }
-
-  // Clear inputs
-  document.getElementById('ni-time').value = '';
-  document.getElementById('ni-icon').value = '';
-  document.getElementById('ni-name').value = '';
-  document.getElementById('ni-desc').value = '';
-  document.getElementById('ni-name').focus();
+  if (db) db.appendChild(item);
+  item.style.background = '#e8f4ee';
+  setTimeout(function(){ item.style.background = ''; }, 1000);
+  if ($id('ni-time'))  $id('ni-time').value  = '';
+  if ($id('ni-icon'))  $id('ni-icon').value  = '';
+  if ($id('ni-name'))  $id('ni-name').value  = '';
+  if ($id('ni-desc'))  $id('ni-desc').value  = '';
+  if ($id('ni-name'))  $id('ni-name').focus();
 }
 
-// ── Toggle edit/reorder mode ──
 function toggleItinEdit() {
   itinEditMode = !itinEditMode;
-  var itin = document.getElementById('itin');
-  var btn  = document.getElementById('itin-edit-btn');
+  var itin = $id('itin');
+  var btn  = $id('itin-edit-btn');
+  if (!itin || !btn) return;
   itin.classList.toggle('itin-edit-mode', itinEditMode);
   btn.textContent = itinEditMode ? '✅ 完成編輯' : '✏️ 編輯排序';
   btn.style.background = itinEditMode ? 'var(--grn)' : '';
   btn.style.color = itinEditMode ? '#fff' : '';
-
   document.querySelectorAll('#itin .day').forEach(function(day) {
     var existing = day.querySelector('.day-edit-btns');
     if (itinEditMode && !existing) {
       var btns = document.createElement('div');
       btns.className = 'day-edit-btns';
-      btns.innerHTML =
-        '<span class="day-move" title="拖曳排序">⠿</span>' +
-        '<button class="day-del-btn" onclick="delDay(this)">刪除</button>';
+      var handle = document.createElement('span');
+      handle.className = 'day-move';
+      handle.title = '拖曳排序';
+      handle.textContent = '⠿';
+      var delBtn = document.createElement('button');
+      delBtn.className = 'day-del-btn';
+      delBtn.setAttribute('data-action','del-day');
+      delBtn.textContent = '刪除';
+      btns.appendChild(handle);
+      btns.appendChild(delBtn);
       var dh = day.querySelector('.dh');
       if (dh) {
         var arr = dh.querySelector('.darr');
-        if (arr) dh.insertBefore(btns, arr);
-        else dh.appendChild(btns);
+        arr ? dh.insertBefore(btns, arr) : dh.appendChild(btns);
       }
     } else if (!itinEditMode && existing) {
       existing.remove();
@@ -1064,10 +1070,7 @@ function toggleItinEdit() {
       day.ondragend   = onDragEnd;
     } else {
       day.removeAttribute('draggable');
-      day.ondragstart = null;
-      day.ondragover  = null;
-      day.ondrop      = null;
-      day.ondragend   = null;
+      day.ondragstart = day.ondragover = day.ondrop = day.ondragend = null;
     }
   });
 }
@@ -1088,10 +1091,9 @@ function onDrop(e) {
   e.stopPropagation();
   if (dragSrc && dragSrc !== this) {
     var p = this.parentNode;
-    var srcIdx = Array.from(p.children).indexOf(dragSrc);
-    var tgtIdx = Array.from(p.children).indexOf(this);
-    if (srcIdx < tgtIdx) p.insertBefore(dragSrc, this.nextSibling);
-    else p.insertBefore(dragSrc, this);
+    var si = Array.from(p.children).indexOf(dragSrc);
+    var ti = Array.from(p.children).indexOf(this);
+    p.insertBefore(dragSrc, si < ti ? this.nextSibling : this);
   }
   return false;
 }
@@ -1100,7 +1102,6 @@ function onDragEnd() {
   document.querySelectorAll('#itin .day').forEach(function(d){ d.classList.remove('drag-over'); });
   dragSrc = null;
 }
-
 function delDay(btn) {
   if (!confirm('確定要刪除這一天的行程？')) return;
   var day = btn.closest('.day');
@@ -1110,63 +1111,69 @@ function delDay(btn) {
   setTimeout(function(){ day.remove(); }, 250);
 }
 
-// ══════════════════════════════════════════════════════════
-// AGENT 2: BOOKING TODO LIST
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════
+// FEATURE 2: BOOKING TODO
+// ══════════════════════════
 
 function toggleTodo(cb) {
+  if (!cb) return;
   cb.classList.toggle('done');
-  var textEl = cb.nextElementSibling;
-  if (textEl) textEl.classList.toggle('done', cb.classList.contains('done'));
+  var txt = cb.nextElementSibling;
+  if (txt && txt.classList.contains('todo-text'))
+    txt.classList.toggle('done', cb.classList.contains('done'));
   updateProgress();
-  saveTodoState();
+  saveState();
 }
-
 function delTodo(btn) {
   var row = btn.closest('.todo-item-row');
-  if (row) {
-    row.style.opacity = '0';
-    row.style.transition = 'opacity .2s';
-    setTimeout(function(){ row.remove(); updateProgress(); saveTodoState(); }, 200);
-  }
+  if (!row) return;
+  row.style.transition = 'opacity .2s';
+  row.style.opacity = '0';
+  setTimeout(function(){ row.remove(); updateProgress(); saveState(); }, 200);
 }
-
 function addTodo() {
-  var input = document.getElementById('new-todo-input');
+  var input = $id('new-todo-input');
+  if (!input) return;
   var text = input.value.trim();
   if (!text) return;
-
-  var id = 'custom-' + Date.now();
   var row = document.createElement('div');
   row.className = 'todo-item-row';
-  row.setAttribute('data-id', id);
-  row.innerHTML =
-    '<div class="todo-cb" onclick="toggleTodo(this)"></div>' +
-    '<div class="todo-text" onclick="toggleTodo(this.previousElementSibling)">' + text + '</div>' +
-    '<span class="todo-del" onclick="delTodo(this)" title="刪除">×</span>';
-
-  document.getElementById('todo-container').appendChild(row);
+  row.setAttribute('data-id', 'custom-' + Date.now());
+  var cb = document.createElement('div');
+  cb.className = 'todo-cb';
+  cb.setAttribute('data-action','toggle');
+  var tx = document.createElement('div');
+  tx.className = 'todo-text';
+  tx.setAttribute('data-action','toggle-from-text');
+  tx.textContent = text;
+  var dl = document.createElement('span');
+  dl.className = 'todo-del';
+  dl.setAttribute('data-action','del-todo');
+  dl.title = '刪除';
+  dl.textContent = '×';
+  row.appendChild(cb);
+  row.appendChild(tx);
+  row.appendChild(dl);
+  var container = $id('todo-container');
+  if (container) container.appendChild(row);
   input.value = '';
   updateProgress();
-  saveTodoState();
+  saveState();
 }
-
 function updateProgress() {
-  var allRows = document.querySelectorAll('#todo-container .todo-item-row');
-  var doneRows = document.querySelectorAll('#todo-container .todo-cb.done');
-  var total = allRows.length, done = doneRows.length;
-  var pct = total > 0 ? Math.round(done/total*100) : 0;
-  var bar = document.getElementById('todo-progress-bar');
-  var stats = document.getElementById('todo-stats');
-  if (bar) bar.style.width = pct + '%';
-  if (stats) stats.textContent = '已完成 ' + done + ' / ' + total + ' 項 (' + pct + '%)';
+  var all  = document.querySelectorAll('#todo-container .todo-item-row').length;
+  var done = document.querySelectorAll('#todo-container .todo-cb.done').length;
+  var pct  = all > 0 ? Math.round(done/all*100) : 0;
+  var bar  = $id('todo-progress-bar');
+  var stats = $id('todo-stats');
+  if (bar)   bar.style.width = pct + '%';
+  if (stats) stats.textContent = '已完成 ' + done + ' / ' + all + ' 項 (' + pct + '%)';
 }
 
-// ══════════════════════════════════════════════════════════
-// AGENT 3: COST INLINE EDITING
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════
+// FEATURE 3: COST EDITING
+// ══════════════════════════
 
-// Budget groups for subtotal recalculation
 var COST_GROUPS = {
   ticket: ['c1','c2'],
   hotel:  ['c3','c4','c5','c6','c7','c8','c9'],
@@ -1176,44 +1183,33 @@ var COST_GROUPS = {
   misc:   ['c32','c33']
 };
 
-var costData = {}; // key -> actual value (null = use budget)
-
 function startEdit(el) {
-  if (el.querySelector('input')) return; // already editing
-  var key = el.getAttribute('data-key');
+  if (!el || el.querySelector('input')) return;
+  var key    = el.getAttribute('data-key');
   var budget = parseInt(el.getAttribute('data-budget')) || 0;
-  var current = costData[key] !== undefined ? costData[key] : budget;
-
-  var orig = el.textContent;
+  var current= costData[key] !== undefined ? costData[key] : budget;
+  var orig   = el.textContent;
   el.setAttribute('data-orig', orig);
-
-  var input = document.createElement('input');
+  var input  = document.createElement('input');
   input.type = 'text';
   input.className = 'cost-edit-input';
   input.value = current;
   input.placeholder = budget;
-
-  var committed = false;  // guard against double-commit
-
+  var committed = false;
   el.textContent = '';
   el.appendChild(input);
   input.focus();
   input.select();
-
   input.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (!committed) { committed = true; commitEdit(el, input, key, budget); }
-    }
-    if (e.key === 'Escape') { committed = true; cancelEdit(el); }
+    if (e.key === 'Enter')  { e.preventDefault(); if (!committed){ committed=true; commitEdit(el,input,key,budget); } }
+    if (e.key === 'Escape') { committed=true; cancelEdit(el); }
   });
   input.addEventListener('blur', function() {
-    if (!committed) { committed = true; commitEdit(el, input, key, budget); }
+    if (!committed){ committed=true; commitEdit(el,input,key,budget); }
   });
 }
-
 function commitEdit(el, input, key, budget) {
-  var raw = input.value.replace(/[,$,TWD, ,≈]/g,'').trim();
+  var raw = input.value.replace(/[,$TWD ≈]/g,'').trim();
   var val = parseInt(raw);
   if (!isNaN(val) && val >= 0) {
     costData[key] = val;
@@ -1223,133 +1219,207 @@ function commitEdit(el, input, key, budget) {
       el.title = '原預算: TWD $' + budget.toLocaleString();
     } else {
       el.classList.remove('cost-actual');
+      el.title = '';
     }
   } else {
     el.textContent = el.getAttribute('data-orig') || ('≈ TWD $' + budget.toLocaleString());
-    costData[key] = undefined;
+    delete costData[key];
     el.classList.remove('cost-actual');
   }
   recalcCosts();
-  saveTodoState();
+  saveState();
 }
-
 function cancelEdit(el) {
-  el.textContent = el.getAttribute('data-orig') || el.getAttribute('data-budget');
+  el.textContent = el.getAttribute('data-orig') || '';
 }
-
 function getVal(key) {
-  var el = document.querySelector('[data-key="'+key+'"]');
-  if (!el) return 0;
   if (costData[key] !== undefined) return costData[key];
-  return parseInt(el.getAttribute('data-budget')) || 0;
+  var el = document.querySelector('[data-key="'+key+'"]');
+  return el ? (parseInt(el.getAttribute('data-budget')) || 0) : 0;
 }
-
 function groupSum(keys) {
   return keys.reduce(function(s,k){ return s + getVal(k); }, 0);
 }
-
-function fmt(n) { return 'TWD $' + n.toLocaleString(); }
-
+function fmt(n){ return 'TWD $' + n.toLocaleString(); }
 function recalcCosts() {
-  var ticket = groupSum(COST_GROUPS.ticket);
-  var hotel  = groupSum(COST_GROUPS.hotel);
-  var trans  = groupSum(COST_GROUPS.trans);
-  var act    = groupSum(COST_GROUPS.act);
-  var food   = groupSum(COST_GROUPS.food);
-  var misc   = groupSum(COST_GROUPS.misc);
-  var sub    = hotel + trans + act + food + misc;
-  var total  = ticket + sub;
-
-  // Update subtotals
-  var s = document.getElementById('sub-ticket'); if(s) s.textContent = fmt(ticket);
-  var s = document.getElementById('sub-hotel');  if(s) s.textContent = fmt(hotel);
-  var s = document.getElementById('sub-trans');  if(s) s.textContent = fmt(trans);
-  var s = document.getElementById('sub-act');    if(s) s.textContent = fmt(act);
-  var s = document.getElementById('sub-food');   if(s) s.textContent = fmt(food);
-  var s = document.getElementById('sub-misc');   if(s) s.textContent = fmt(misc);
-
-  // Update grand total block
-  var gt = document.getElementById('gt-ticket'); if(gt) gt.textContent = fmt(ticket);
-  var gt = document.getElementById('gt-hotel');  if(gt) gt.textContent = fmt(hotel);
-  var gt = document.getElementById('gt-trans');  if(gt) gt.textContent = fmt(trans);
-  var gt = document.getElementById('gt-act');    if(gt) gt.textContent = fmt(act);
-  var gt = document.getElementById('gt-food');   if(gt) gt.textContent = fmt(food);
-  var gt = document.getElementById('gt-misc');   if(gt) gt.textContent = fmt(misc);
-  var gt = document.getElementById('gt-sub');    if(gt) gt.textContent = fmt(sub);
-  var gt = document.getElementById('gt-total');  if(gt) gt.textContent = fmt(total);
-
-  // Update summary card
-  var budget = 608767;
-  var actualKeys = Object.keys(costData).filter(function(k){ return costData[k] !== undefined; });
-  var actualSum  = actualKeys.reduce(function(s,k){ return s + costData[k]; }, 0);
-  var remain = total - actualSum;
-
-  var cs_b = document.getElementById('cs-budget');  if(cs_b) cs_b.textContent = fmt(total);
-  var cs_a = document.getElementById('cs-actual');  if(cs_a) cs_a.textContent = fmt(actualSum);
-  var cs_r = document.getElementById('cs-remain');  if(cs_r) cs_r.textContent = fmt(remain);
+  var g = COST_GROUPS;
+  var ticket = groupSum(g.ticket), hotel  = groupSum(g.hotel);
+  var trans  = groupSum(g.trans),  act    = groupSum(g.act);
+  var food   = groupSum(g.food),   misc   = groupSum(g.misc);
+  var sub = hotel + trans + act + food + misc;
+  var total = ticket + sub;
+  var setT = function(id, val){ var e=$id(id); if(e) e.textContent=fmt(val); };
+  setT('sub-ticket', ticket); setT('sub-hotel', hotel);
+  setT('sub-trans',  trans);  setT('sub-act',   act);
+  setT('sub-food',   food);   setT('sub-misc',  misc);
+  setT('gt-ticket',  ticket); setT('gt-hotel',  hotel);
+  setT('gt-trans',   trans);  setT('gt-act',    act);
+  setT('gt-food',    food);   setT('gt-misc',   misc);
+  setT('gt-sub', sub); setT('gt-total', total);
+  var actualSum = Object.keys(costData).reduce(function(s,k){
+    return s + (costData[k] !== undefined ? costData[k] : 0);
+  }, 0);
+  setT('cs-budget', total);
+  setT('cs-actual', actualSum);
+  setT('cs-remain', total - actualSum);
 }
 
-// ══════════════════════════════════════════════════════════
-// AGENT 4: PERSISTENCE (localStorage)
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════
+// FEATURE 4: PERSISTENCE
+// ══════════════════════════
 
-function saveTodoState() {
+function saveState() {
   try {
-    // Save todo states
-    var states = {};
-    document.querySelectorAll('#todo-container .todo-item-row').forEach(function(row) {
+    var todos = {};
+    document.querySelectorAll('#todo-container .todo-item-row').forEach(function(row){
       var id = row.getAttribute('data-id');
-      if (id) {
-        states[id] = {
-          done: !!row.querySelector('.todo-cb.done'),
-          text: row.querySelector('.todo-text') ? row.querySelector('.todo-text').innerHTML : ''
-        };
-      }
+      if (id) todos[id] = { done: !!row.querySelector('.todo-cb.done') };
     });
-    localStorage.setItem('nz_todos', JSON.stringify(states));
-    // Save cost data
-    localStorage.setItem('nz_costs', JSON.stringify(costData));
-  } catch(e) {}
+    localStorage.setItem('nz26_todos',  JSON.stringify(todos));
+    localStorage.setItem('nz26_costs',  JSON.stringify(costData));
+  } catch(e){}
 }
 
-function loadSavedState() {
+function loadState() {
   try {
     // Restore todos
-    var savedTodos = JSON.parse(localStorage.getItem('nz_todos') || '{}');
-    document.querySelectorAll('#todo-container .todo-item-row').forEach(function(row) {
+    var todos = JSON.parse(localStorage.getItem('nz26_todos') || '{}');
+    document.querySelectorAll('#todo-container .todo-item-row').forEach(function(row){
       var id = row.getAttribute('data-id');
-      if (id && savedTodos[id] && savedTodos[id].done) {
+      if (id && todos[id] && todos[id].done) {
         var cb = row.querySelector('.todo-cb');
         var tx = row.querySelector('.todo-text');
         if (cb) cb.classList.add('done');
         if (tx) tx.classList.add('done');
       }
     });
-    // Restore cost edits
-    var savedCosts = JSON.parse(localStorage.getItem('nz_costs') || '{}');
-    Object.keys(savedCosts).forEach(function(key) {
-      if (savedCosts[key] !== undefined && savedCosts[key] !== null) {
-        costData[key] = savedCosts[key];
-        var el = document.querySelector('[data-key="' + key + '"]');
-        if (el) {
-          var budget = parseInt(el.getAttribute('data-budget')) || 0;
-          el.textContent = 'TWD $' + savedCosts[key].toLocaleString();
-          if (savedCosts[key] !== budget) {
-            el.classList.add('cost-actual');
-            el.title = '原預算: TWD $' + budget.toLocaleString();
-          }
-        }
+    // Restore costs
+    var saved = JSON.parse(localStorage.getItem('nz26_costs') || '{}');
+    Object.keys(saved).forEach(function(key){
+      var val = saved[key];
+      if (val === undefined || val === null) return;
+      costData[key] = val;
+      var el = document.querySelector('[data-key="'+key+'"]');
+      if (!el) return;
+      var budget = parseInt(el.getAttribute('data-budget')) || 0;
+      el.textContent = 'TWD $' + val.toLocaleString();
+      if (val !== budget) {
+        el.classList.add('cost-actual');
+        el.title = '原預算: TWD $' + budget.toLocaleString();
       }
     });
     recalcCosts();
     updateProgress();
-  } catch(e) {}
+  } catch(e){}
 }
 
-// Init on load
-loadSavedState();
-updateProgress();
+// ═══════════════════════════════════════════════
+// EVENT BINDING — all via addEventListener (CSP-safe)
+// ═══════════════════════════════════════════════
 
+document.addEventListener('DOMContentLoaded', function() {
+
+  // ── Itin toolbar buttons ──
+  var addItemBtn = $id('add-item-btn');
+  if (addItemBtn) addItemBtn.addEventListener('click', toggleAddItemMode);
+
+  var editBtn = $id('itin-edit-btn');
+  if (editBtn) editBtn.addEventListener('click', toggleItinEdit);
+
+  // ── Add item form: Save / Cancel ──
+  var form = $id('add-item-form');
+  if (form) {
+    var saveBtn = form.querySelector('.eb-save');
+    var cancelBtn = form.querySelector('.eb-cancel');
+    if (saveBtn)   saveBtn.addEventListener('click', addNewItem);
+    if (cancelBtn) cancelBtn.addEventListener('click', toggleAddItemMode);
+    // Enter key in name/desc fields
+    ['ni-name','ni-desc','ni-time','ni-icon'].forEach(function(id){
+      var el = $id(id);
+      if (el) el.addEventListener('keydown', function(e){
+        if (e.key === 'Enter') { e.preventDefault(); addNewItem(); }
+      });
+    });
+  }
+
+  // ── Map buttons ──
+  var mbS = $id('mb-south'), mbN = $id('mb-north'), mbA = $id('mb-all');
+  if (mbS) mbS.addEventListener('click', function(){ if(typeof showMap==='function') showMap('south'); });
+  if (mbN) mbN.addEventListener('click', function(){ if(typeof showMap==='function') showMap('north'); });
+  if (mbA) mbA.addEventListener('click', function(){ if(typeof showMap==='function') showMap('all'); });
+
+  // ── Todo: delegated click on container ──
+  var todoContainer = $id('todo-container');
+  if (todoContainer) {
+    todoContainer.addEventListener('click', function(e) {
+      var action = e.target.getAttribute('data-action');
+      if (!action) {
+        // Check parent
+        var parent = e.target.parentElement;
+        action = parent ? parent.getAttribute('data-action') : null;
+      }
+      if (action === 'toggle') {
+        var cb = e.target.classList.contains('todo-cb') ? e.target : e.target.querySelector('.todo-cb');
+        if (!cb && e.target.closest('.todo-cb')) cb = e.target.closest('.todo-cb');
+        if (cb) toggleTodo(cb);
+      } else if (action === 'toggle-from-text') {
+        var row = e.target.closest('.todo-item-row');
+        if (row) {
+          var cb = row.querySelector('.todo-cb');
+          if (cb) toggleTodo(cb);
+        }
+      } else if (action === 'del-todo') {
+        delTodo(e.target.closest('.todo-del') || e.target);
+      }
+    });
+  }
+
+  // ── Todo: add new ──
+  var addTodoBtn = document.querySelector('#book .add-todo-btn');
+  if (addTodoBtn) addTodoBtn.addEventListener('click', addTodo);
+  var todoInput = $id('new-todo-input');
+  if (todoInput) todoInput.addEventListener('keydown', function(e){
+    if (e.key === 'Enter') { e.preventDefault(); addTodo(); }
+  });
+
+  // ── Cost: delegated dblclick on cost panels ──
+  var costPanel = $id('cost');
+  if (costPanel) {
+    costPanel.addEventListener('dblclick', function(e) {
+      var el = e.target.closest('.cost-editable');
+      if (el) startEdit(el);
+    });
+    // Also handle tap-hold on mobile (touchstart for 600ms)
+    var touchTimer = null;
+    costPanel.addEventListener('touchstart', function(e) {
+      var el = e.target.closest('.cost-editable');
+      if (!el) return;
+      touchTimer = setTimeout(function(){ startEdit(el); }, 600);
+    }, {passive: true});
+    costPanel.addEventListener('touchend', function(){
+      if (touchTimer) { clearTimeout(touchTimer); touchTimer = null; }
+    });
+  }
+
+  // ── Itin: delegated del-day click ──
+  var itinEl = $id('itin');
+  if (itinEl) {
+    itinEl.addEventListener('click', function(e) {
+      var btn = e.target.closest('[data-action="del-day"]');
+      if (btn) { e.stopPropagation(); delDay(btn); }
+      var delItem = e.target.closest('[data-action="del-item"]');
+      if (delItem) { e.stopPropagation(); var item = delItem.closest('.item'); if(item) item.remove(); }
+    });
+  }
+
+  // ── Init ──
+  loadState();
+  updateProgress();
+  recalcCosts();
+});
+
+
+</script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&callback=gmapsReady&loading=async" async defer></script>
 </body>
