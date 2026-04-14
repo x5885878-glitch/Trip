@@ -2,613 +2,753 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>紐西蘭蜜月旅遊</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>紐西蘭 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'PingFang TC','Noto Sans TC',sans-serif;background:#0d0f18;color:#e8e8ec}
 :root{
-  --pink:#e8527a;--gold:#f0a500;--muted:#7a7d96;
-  --green:#25c97a;--blue:#4da6ff;
-  --border:rgba(255,255,255,0.09);
-  --HDR:56px;--TABS:60px;
+  --ink:#1c1c1e;--stone:#8e8e93;--cream:#f5f0eb;--parch:#ede8e0;
+  --gold:#b5892a;--teal:#1a6b6b;--tl:#e0f0ef;
+  --red:#c0392b;--rl:#fdecea;--ora:#c47c2b;--ol:#fef3e2;
+  --grn:#2d6a4f;--gl:#e8f4ee;--wht:#fff;
+  --sh:0 2px 12px rgba(0,0,0,.08);
 }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);font-size:14px;line-height:1.6;min-height:100vh}
 
-#app{position:fixed;inset:0;max-width:430px;margin:0 auto;overflow:hidden}
+/* HEADER */
+.hdr{background:var(--ink);padding:16px 14px 12px;position:sticky;top:0;z-index:300}
+.hdr h1{font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff;font-weight:600}
+.hdr p{font-size:11px;color:var(--stone);margin-top:1px;letter-spacing:.05em;text-transform:uppercase}
 
-/* ── Header ── */
-#hdr{position:absolute;top:0;left:0;right:0;height:var(--HDR);background:rgba(8,10,20,.92);padding:0 16px;display:flex;align-items:center;gap:8px;z-index:700;backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.hdr-title{font-size:15px;font-weight:700;color:#fff}
-.hdr-sub{font-size:10px;color:var(--muted)}
-.cd{margin-left:auto;background:rgba(232,82,122,.15);border:1px solid rgba(232,82,122,.4);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--pink);font-weight:700;white-space:nowrap}
-#rf{margin-left:6px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--border);color:#e8e8ec;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);transition:transform .25s cubic-bezier(.22,1.12,.32,1),background .2s;padding:0}
-#rf:active{transform:scale(.88)}
-#rf.spin{animation:spin .8s linear infinite}
+/* TABS */
+.tabs{display:flex;background:#fff;border-bottom:1px solid var(--parch);position:sticky;top:60px;z-index:299;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:10px 13px;font-size:12px;font-weight:500;color:var(--stone);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.tab.on{color:var(--ink);border-bottom-color:var(--gold);font-weight:600}
 
-/* ── Day tabs ── */
-#dtabs{position:absolute;top:var(--HDR);left:0;right:0;height:var(--TABS);display:flex;gap:6px;overflow-x:auto;padding:8px 12px;background:rgba(8,10,20,.88);scrollbar-width:none;z-index:700;backdrop-filter:blur(12px);align-items:center}
-#dtabs::-webkit-scrollbar{display:none}
-.dtab{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 9px;border-radius:16px;background:#1a1d2a;border:1px solid var(--border);cursor:pointer;min-width:54px;transition:transform .18s cubic-bezier(.22,1.12,.32,1),background .15s,border-color .15s}
-.dtab:active{transform:scale(.92)}
-.dtab.on{background:var(--pink);border-color:var(--pink)}
-.dtab .de{font-size:13px;line-height:1}
-.dtab .dn{font-size:10px;font-weight:700;color:#fff}
-.dtab .dd{font-size:9px;color:rgba(255,255,255,.6)}
-.dtab:not(.on) .dn{color:var(--muted)}
+/* PANELS */
+.panel{display:none;padding:10px 12px 60px}.panel.on{display:block}
+.sec{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);padding:14px 4px 6px}
 
-/* ── Map (always full screen) ── */
-#map{position:absolute;inset:0;z-index:1}
+/* DAY CARDS */
+.day{background:#fff;border-radius:12px;margin-bottom:8px;box-shadow:var(--sh);overflow:hidden}
+.dh{display:flex;align-items:center;padding:12px 13px;cursor:pointer;gap:9px;-webkit-tap-highlight-color:transparent;user-select:none}
+.dh:active{background:var(--cream)}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ds{background:var(--teal)}.dn{background:var(--gold)}.dt{background:var(--stone)}
+.ddate{font-size:11px;color:var(--stone);min-width:48px;font-weight:500}
+.dtit{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;flex:1;line-height:1.3}
+.darr{font-size:10px;color:var(--stone);transition:transform .2s;flex-shrink:0}
+.db{display:none;border-top:1px solid var(--parch);padding:6px 13px 10px}
 
-/* ── Region label (Dynamic Island style) ── */
-#rgn-label{position:absolute;left:50%;transform:translateX(-50%);background:rgba(10,12,22,.78);border:1px solid var(--border);border-radius:22px;padding:7px 18px;font-size:12px;font-weight:700;color:#fff;z-index:600;backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);white-space:nowrap;transition:top .42s cubic-bezier(.22,1.12,.32,1);box-shadow:0 8px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05)}
-#rgn-label.morph{animation:rgnMorph .5s cubic-bezier(.22,1.12,.32,1)}
-@keyframes rgnMorph{0%{transform:translateX(-50%) scale(.86);opacity:.4}60%{transform:translateX(-50%) scale(1.03);opacity:1}100%{transform:translateX(-50%) scale(1);opacity:1}}
+/* ITEMS */
+.item{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid #f5f0eb}
+.item:last-child{border-bottom:none}
+.it{font-size:10px;color:var(--stone);min-width:36px;padding-top:3px;font-weight:500}
+.ii{font-size:14px;min-width:20px;text-align:center}
+.ic{flex:1}
+.in{font-size:13px;font-weight:500;line-height:1.4}
+.id{font-size:11px;color:var(--stone);margin-top:2px;line-height:1.5}
 
-/* ── Legend ── */
-#legend{position:absolute;right:10px;background:rgba(6,8,18,.88);border:1px solid var(--border);border-radius:10px;padding:7px 9px;z-index:600;backdrop-filter:blur(6px);transition:bottom .35s ease}
-.leg{display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.7);margin-bottom:3px}
-.leg:last-child{margin-bottom:0}
-.legdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+/* TAGS */
+.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;margin:3px 3px 0 0;font-weight:500;line-height:1.6}
+.tr{background:var(--rl);color:var(--red);border:1px solid #f5c6c2}
+.to{background:var(--ol);color:var(--ora);border:1px solid #f5d9a8}
+.tg{background:var(--gl);color:var(--grn);border:1px solid #a8d5bb}
+.tb{background:var(--tl);color:var(--teal);border:1px solid #a0d0cf}
+.tx{background:#e8e8f0;color:#555;border:1px solid #d0d0de}
+.tw{background:#fff3cd;color:#856404;border:1px solid #ffc107}
 
-/* ── Card carousel container ── */
-#carousel{position:absolute;left:0;right:0;z-index:500;transition:height .42s cubic-bezier(.22,1.12,.32,1)}
-/* horizontal scroll snap */
-#carousel-track{display:flex;overflow-x:scroll;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 calc(50% - 155px);gap:14px;height:100%}
-#carousel-track::-webkit-scrollbar{display:none}
+/* LINKS */
+.links{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.lnk{font-size:11px;padding:4px 10px;border-radius:20px;background:var(--tl);color:var(--teal);text-decoration:none;border:1px solid #b0d8d7;font-weight:500}
 
-/* ── Individual card ── */
-.card{flex-shrink:0;width:310px;scroll-snap-align:center;background:rgba(18,20,32,.72);backdrop-filter:blur(22px) saturate(1.35);-webkit-backdrop-filter:blur(22px) saturate(1.35);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transform:scale(.94);transition:transform .4s cubic-bezier(.22,1.12,.32,1),border-color .25s,box-shadow .25s;will-change:transform;box-shadow:0 2px 10px rgba(0,0,0,.25)}
-.card.focus{transform:scale(1);box-shadow:0 10px 32px rgba(0,0,0,.45)}
-.card.active{border-color:rgba(232,82,122,.6);transform:scale(1);box-shadow:0 14px 40px rgba(232,82,122,.18),0 10px 32px rgba(0,0,0,.5)}
-/* photo shown only when active */
-.card-photo{height:0;overflow:hidden;transition:height .42s cubic-bezier(.22,1.12,.32,1)}
-.card.active .card-photo{height:130px}
-.card-photo img{width:100%;height:130px;object-fit:cover;display:block}
-.card-body{padding:12px 14px 13px}
-.card-time{font-size:11px;font-weight:700;color:var(--gold);margin-bottom:3px}
-.card-row{display:flex;align-items:center;gap:8px}
-.card-num{width:20px;height:20px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
-.card-title{font-size:14px;font-weight:700;color:#fff;flex:1;line-height:1.3}
-.card-arrow{font-size:11px;color:var(--muted);transition:transform .3s;flex-shrink:0}
-.card.active .card-arrow{transform:rotate(180deg)}
-.card-detail{display:none;padding-top:9px}
-.card.active .card-detail{display:block}
-.card-note{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:8px}
-.tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
-.tag{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700}
-.tg{background:rgba(37,201,122,.15);color:var(--green);border:1px solid rgba(37,201,122,.3)}
-.tb{background:rgba(77,166,255,.15);color:var(--blue);border:1px solid rgba(77,166,255,.3)}
-.tp{background:rgba(232,82,122,.15);color:var(--pink);border:1px solid rgba(232,82,122,.3)}
-.to{background:rgba(240,165,0,.15);color:var(--gold);border:1px solid rgba(240,165,0,.3)}
-.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;margin-bottom:5px}
-.b-ok{background:rgba(37,201,122,.2);color:var(--green);border:1px solid rgba(37,201,122,.3)}
-.b-need{background:rgba(240,165,0,.2);color:var(--gold);border:1px solid rgba(240,165,0,.3)}
-.b-tbd{background:rgba(122,125,150,.15);color:var(--muted);border:1px solid rgba(255,255,255,.08)}
-.btnav{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:5px 12px;border-radius:16px;background:#0f1e40;border:1px solid #2960ad;color:#7ab8ff;font-size:11px;font-weight:700;text-decoration:none}
+/* HOTEL BADGE */
+.htl{display:flex;gap:10px;margin:10px 0 2px;padding:10px 11px;background:var(--parch);border-radius:8px;border:1px solid #ddd5c8}
+.hi{font-size:18px;flex-shrink:0;padding-top:2px}
+.hn{font-size:13px;font-weight:600;line-height:1.3}
+.hd{font-size:11px;color:var(--stone);margin-top:2px;line-height:1.5}
+.hp{font-size:12px;color:var(--gold);font-weight:700;margin-top:3px}
 
-/* transport mini card */
-.card-tr{flex-shrink:0;width:310px;scroll-snap-align:center;background:rgba(13,15,26,.7);border:1px dashed rgba(255,255,255,.07);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px}
-.tr-icon{font-size:16px;flex-shrink:0}
-.tr-text{font-size:12px;color:var(--muted);line-height:1.45}
+/* MAP */
+#map-outer{background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--sh);margin-bottom:10px}
+.mhdr{padding:11px 13px;border-bottom:1px solid var(--parch);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.mtit{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600}
+.mbtns{display:flex;gap:4px}
+.mbtn{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--parch);background:var(--cream);color:var(--stone);cursor:pointer;font-weight:500;-webkit-tap-highlight-color:transparent}
+.mbtn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+#gmap{width:100%;height:380px;background:#e0e0e0}
+.mleg{padding:8px 13px;display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid var(--parch)}
+.mli{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--stone)}
+.mld{width:9px;height:9px;border-radius:50%}
+/* Google Maps InfoWindow custom style */
+.gm-iw{font-family:'DM Sans',sans-serif;padding:4px 2px;min-width:150px}
+.gm-iw-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:#1c1c1e;margin-bottom:2px}
+.gm-iw-date{font-size:11px;color:#8e8e93}
+.gm-iw-desc{font-size:12px;color:#444;margin-top:5px;line-height:1.5}
+.gm-iw-tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-top:5px;font-weight:600}
 
-/* alt toggle */
-.alt-pill{flex-shrink:0;width:310px;scroll-snap-align:center;background:rgba(240,165,0,.07);border:1px solid rgba(240,165,0,.2);border-radius:14px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
-.alt-lbl{font-size:12px;color:var(--gold);font-weight:700}
-.toggle{display:flex;background:#0d0f18;border:1px solid var(--border);border-radius:20px;overflow:hidden}
-.topt{padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted)}
-.topt.on{background:var(--gold);color:#150f00}
+/* FEAS */
+.fc{background:#fff;border-radius:12px;margin-bottom:8px;box-shadow:var(--sh);overflow:hidden}
+.fh{padding:11px 13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:500;-webkit-tap-highlight-color:transparent;gap:8px}
+.fh:active{background:var(--cream)}
+.fh .fa{font-size:10px;color:var(--stone);transition:transform .2s;flex-shrink:0}
+.fb{display:none;padding:10px 13px 12px;font-size:12px;line-height:1.7;border-top:1px solid var(--parch)}
+.fr{display:flex;gap:6px;margin-bottom:4px}
+.fl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);min-width:52px;padding-top:2px;flex-shrink:0}
+.fv{flex:1;font-size:12px}
+.verd{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-bottom:8px}
+.vr{background:var(--rl);color:var(--red)}.vo{background:var(--ol);color:var(--ora)}.vg{background:var(--gl);color:var(--grn)}
 
-/* ── Dot indicator ── */
-#dots{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:600}
-.dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.25);transition:.2s}
-.dot.on{background:var(--pink);width:14px;border-radius:3px}
+/* BOOKING */
+.todo{background:#fff;border-radius:12px;padding:12px 13px;box-shadow:var(--sh);margin-bottom:8px}
+.ttit{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);margin-bottom:8px}
+.ti{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--parch);font-size:12px;line-height:1.5}
+.ti:last-child{border-bottom:none}
+.tnum{width:18px;height:18px;border-radius:50%;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 
-/* ── Loading ── */
-#loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:999;background:#0d0f18}
-.spin{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--pink);border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* COST */
+.cb{background:#fff;border-radius:12px;margin-bottom:8px;padding:12px 13px;box-shadow:var(--sh)}
+.ctit{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);margin-bottom:10px}
+.cr{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;font-size:13px;border-bottom:1px solid var(--parch)}
+.cr:last-child{border-bottom:none;font-weight:600;font-size:14px;padding-top:8px}
+.am{font-weight:500;color:var(--teal)}.cr:last-child .am{color:var(--gold);font-size:15px}
+.csub{font-size:10px;color:var(--stone)}
+.cnote{font-size:10px;color:var(--stone);margin-top:6px;line-height:1.5}
+.ctotal{background:var(--ink);border-radius:12px;padding:16px 13px;margin-bottom:8px}
+.ctr{display:flex;justify-content:space-between;color:var(--stone);font-size:13px;padding:3px 0}
+.ctr.grand{color:#fff;font-size:18px;font-family:'Cormorant Garamond',serif;font-weight:600;padding-top:10px;margin-top:6px;border-top:1px solid #444}
+.ctr.grand .am{color:var(--gold)}
+.ctr.sub2{border-top:1px solid #333;margin-top:4px;padding-top:8px;color:#aaa}
 
-/* ── Toast ── */
-#toast{position:fixed;top:12px;left:50%;transform:translateX(-50%) translateY(-80px);background:rgba(20,22,34,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:20px;padding:8px 18px;font-size:12px;font-weight:700;color:#fff;z-index:9999;transition:transform .45s cubic-bezier(.22,1.12,.32,1);pointer-events:none;box-shadow:0 6px 24px rgba(0,0,0,.45)}
-#toast.show{transform:translateX(-50%) translateY(0)}
-#toast.err{color:#ff6b6b}
+/* ALERTS */
+.alert{border-radius:8px;padding:10px 12px;font-size:12px;margin-bottom:10px;line-height:1.6}
+.ao{background:var(--ol);border:1px solid #f5d9a8;color:#7a4500}
+.ar{background:var(--rl);border:1px solid #f5c6c2;color:var(--red)}
+.ai{background:var(--tl);border:1px solid #a0d0cf;color:var(--teal)}
 </style>
 </head>
 <body>
-<div id="app">
-  <div id="hdr">
-    <span style="font-size:20px">🥝</span>
-    <div><div class="hdr-title">紐西蘭蜜月旅遊</div><div class="hdr-sub">Queenstown / Tekapo / Auckland・2人</div></div>
-    <div class="cd" id="cd">計算中</div>
-    <button id="rf" title="重新整理" onclick="loadData(true)">↻</button>
-  </div>
-  <div id="dtabs"></div>
-  <div id="map"></div>
-  <div id="rgn-label">載入中...</div>
-  <div id="legend">
-    <div class="leg"><div class="legdot" style="background:#25c97a"></div>餐飲</div>
-    <div class="leg"><div class="legdot" style="background:#e8527a"></div>觀光</div>
-    <div class="leg"><div class="legdot" style="background:#4da6ff"></div>交通</div>
-    <div class="leg"><div class="legdot" style="background:#f0a500"></div>住宿</div>
-  </div>
-  <div id="carousel">
-    <div id="dots"></div>
-    <div id="carousel-track"></div>
-  </div>
-  <div id="loading"><div class="spin"></div><p style="font-size:13px;color:var(--muted)">載入行程中...</p></div>
-  <div id="toast"></div>
+
+<div class="hdr">
+  <h1>🇳🇿 紐西蘭 2026</h1>
+  <p>9/27–10/10 · 南島8晚 + 北島5晚 · 2人</p>
 </div>
 
-<script>
-const APPS_URL='https://script.google.com/macros/s/AKfycbzbQpA87vF39HLZBBbJKznW_9fsvi22cqNAPjyvPGvoMUyAczUnmFCBZsto09xXziM7/exec';
-const GMKEY='AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U';
+<div class="tabs" id="tabs">
+  <div class="tab on" data-tab="itin">📅 行程</div>
+  <div class="tab" data-tab="map">🗺 地圖</div>
+  <div class="tab" data-tab="feas">✅ 可行性</div>
+  <div class="tab" data-tab="book">🎫 訂票</div>
+  <div class="tab" data-tab="cost">💰 費用</div>
+</div>
 
-// ── Layout constants ────────────────────────────
-const HDR=56,TABS=60,TOP=HDR+TABS;
-const COLLAPSED_H=236; // baseline carousel height (collapsed)
-let VH=0,isExpanded=false;
+<!-- ===== ITINERARY ===== -->
+<div class="panel on" id="itin">
 
-function calcLayout(){
-  VH=document.getElementById('app').offsetHeight;
-  positionCarousel(false);
-  positionOverlays();
-}
+<div class="sec">✈️ 出發</div>
+<div class="day">
+  <div class="dh"><div class="dot dt"></div><div class="ddate">9/26 六</div><div class="dtit">台北出發</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">18:35</div><div class="ii">✈️</div><div class="ic"><div class="in">NZ0078 台北→奧克蘭</div><div class="id">豪華商務艙 · 787-9 · 10h40m <span class="tag tx">✓ 已訂</span></div></div></div>
+    <div class="item"><div class="it">翌日</div><div class="ii">🔄</div><div class="ic"><div class="in">奧克蘭轉機 → 皇后鎮 NZ0637</div><div class="id">10:15抵奧克蘭 → 12:25出發 → 14:20抵皇后鎮 <span class="tag tx">✓ 已訂</span></div></div></div>
+  </div>
+</div>
 
-function positionCarousel(animate){
-  const car=document.getElementById('carousel');
-  car.style.transition=animate?'height .42s cubic-bezier(.22,1.12,.32,1)':'none';
-  let bottomH=COLLAPSED_H;
-  if(isExpanded&&activeCardEl){
-    // .card-body is sibling of .card-photo; after .active added it reflects
-    // full expanded body (detail shown). Photo final height is 130.
-    const body=activeCardEl.querySelector('.card-body');
-    const bodyH=body?body.offsetHeight:160;
-    const cardH=bodyH+130+2; // +photo +borders
-    bottomH=Math.min(cardH+56,VH-TOP-40);
-  }
-  car.style.bottom='0px';
-  car.style.height=bottomH+'px';
-  const track=document.getElementById('carousel-track');
-  track.style.alignItems='flex-end';
-  track.style.paddingBottom='18px';
-  track.style.paddingTop='18px';
-  positionOverlays();
-}
+<div class="sec">🏔 南島皇后鎮 · 9/27–10/5（8晚）</div>
 
-function positionOverlays(){
-  const car=document.getElementById('carousel');
-  const carH=car.offsetHeight||220;
-  const mapBottom=VH-carH;
-  // rgn label sits just above carousel
-  const rgnEl=document.getElementById('rgn-label');
-  rgnEl.style.top=(mapBottom-36)+'px';
-  // legend bottom-right above carousel
-  document.getElementById('legend').style.bottom=(carH+8)+'px';
-  // dots above track
-  document.getElementById('dots').style.bottom=(carH-14)+'px';
-}
+<div class="day">
+  <div class="dh"><div class="dot ds"></div><div class="ddate">9/27 日</div><div class="dtit">抵達皇后鎮 · Skyline纜車</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">14:20</div><div class="ii">🛬</div><div class="ic"><div class="in">抵達皇后鎮 · 取南島租車</div></div></div>
+    <div class="item"><div class="it">16:30</div><div class="ii">🚡</div><div class="ic"><div class="in">Skyline Gondola + Luge</div><div class="id">NZD $80/人 · Bob's Peak全景 <span class="tag to">⚡ 需預約</span></div><div class="links"><a class="lnk" href="https://www.klook.com/en-US/activity/1142-skyline-gondola-luge-queenstown/" target="_blank">Klook</a></div></div></div>
+    <div class="item"><div class="it">19:00</div><div class="ii">🍔</div><div class="ic"><div class="in">晚餐 · Fergburger</div><div class="id">18:30前到避免排隊</div></div></div>
+    <div class="htl"><div class="hi">🏡</div><div><div class="hn">Distinctive Alpine Meadows（9/27–10/1 · 4晚）</div><div class="hd">湖景豪華物業</div><div class="hp">TWD $34,566 ✅ 已訂</div></div></div>
+  </div>
+</div>
 
-// ── Coords & helpers ─────────────────────────────
-const COORDS={
-  '皇后鎮機場':{lat:-45.021,lng:168.740},'皇后鎮':{lat:-45.031,lng:168.663},
-  '皇后鎮市區':{lat:-45.031,lng:168.661},'Shotover 峽谷':{lat:-45.005,lng:168.717},
-  '格林諾奇':{lat:-45.034,lng:168.376},'米佛峽灣':{lat:-44.641,lng:167.897},
-  'Arthurs Point':{lat:-45.005,lng:168.707},'Gibbston Valley':{lat:-45.064,lng:168.813},
-  '庫克山國家公園':{lat:-43.526,lng:170.194},'庫克山':{lat:-43.737,lng:170.101},
-  '蒂卡波湖':{lat:-44.005,lng:170.478},'蒂卡波':{lat:-44.007,lng:170.479},
-  '奧克蘭':{lat:-36.851,lng:174.765},'奧克蘭機場區':{lat:-37.008,lng:174.785},
-  '奧克蘭碼頭':{lat:-36.840,lng:174.769},'奧克蘭市區':{lat:-36.851,lng:174.765},
-  'Waitomo':{lat:-38.259,lng:175.101},'Matamata':{lat:-37.810,lng:175.774},
-  'Hobbiton':{lat:-37.858,lng:175.682},'桃園機場':{lat:25.079,lng:121.234},
-};
-const DAY_CENTERS=[
-  {k:['格林諾奇'],c:{lat:-45.034,lng:168.376},z:12},
-  {k:['米佛'],c:{lat:-44.641,lng:167.897},z:10},
-  {k:['庫克山','蒂卡波'],c:{lat:-43.74,lng:170.10},z:10},
-  {k:['Waitomo','Hobbiton','哈比'],c:{lat:-38.259,lng:175.101},z:10},
-  {k:['奧克蘭'],c:{lat:-36.851,lng:174.765},z:13},
-  {k:['皇后鎮','Queenstown'],c:{lat:-45.031,lng:168.663},z:13},
-  {k:['桃園','台灣'],c:{lat:-37.008,lng:174.785},z:12},
-];
-function getDayCenter(r){for(const d of DAY_CENTERS)if(d.k.some(k=>r.includes(k)))return{center:d.c,zoom:d.z};return{center:{lat:-45.031,lng:168.663},zoom:12};}
-function getCoord(p){if(!p)return null;const k=p.split('→')[0].trim();return COORDS[k]||COORDS[p]||null;}
+<div class="day">
+  <div class="dh"><div class="dot ds"></div><div class="ddate">9/28 一</div><div class="dtit">📸 格林諾奇婚紗攝影 + 騎馬</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">07:30</div><div class="ii">🚗</div><div class="ic"><div class="in">自駕格林諾奇 · 45min</div><div class="id">途中 Bennett's Bluff Lookout · 週一人最少</div></div></div>
+    <div class="item"><div class="it">08:30</div><div class="ii">📸</div><div class="ic"><div class="in">婚紗攝影全天 · NZD $1,800估</div><div class="id"><span class="tag tr">🔴 立即聯絡攝影師</span></div></div></div>
+    <div class="item"><div class="it">14:30</div><div class="ii">🐴</div><div class="ic"><div class="in">Lighthorse Adventures 騎馬 · NZD $230/人</div><div class="id"><span class="tag to">⚡ 4–6週前訂</span></div><div class="links"><a class="lnk" href="https://www.lighthorseadventures.com/" target="_blank">官網</a></div></div></div>
+    <div class="item"><div class="it">19:30</div><div class="ii">🍽️</div><div class="ic"><div class="in">慶祝晚餐 · Rata</div><div class="links"><a class="lnk" href="https://www.ratadining.co.nz/" target="_blank">訂位</a></div></div></div>
+  </div>
+</div>
 
-const PHOTOS=[
-  {k:['機場','航班','落地','桃園'],u:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80'},
-  {k:['Skyline','Gondola','纜車','滑車'],u:'https://images.unsplash.com/photo-1589802829985-817e51171b92?w=600&q=80'},
-  {k:['Fergburger','漢堡','Fish','Chips'],u:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80'},
-  {k:['婚紗','格林諾奇'],u:'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80'},
-  {k:['米佛','Milford','峽灣','遊船'],u:'https://images.unsplash.com/photo-1572375992501-4b0892d50c69?w=600&q=80'},
-  {k:['跳傘','Nzone'],u:'https://images.unsplash.com/photo-1601024445121-e5b82f020549?w=600&q=80'},
-  {k:['Shotover','噴射船'],u:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80'},
-  {k:['溫泉','Onsen'],u:'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80'},
-  {k:['酒莊','Winery','Amisfield','Gibbston'],u:'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=600&q=80'},
-  {k:['冰川','直升機'],u:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80'},
-  {k:['庫克山','胡克','健行'],u:'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80'},
-  {k:['蒂卡波','Tekapo','善牧','教堂','散步'],u:'https://images.unsplash.com/photo-1548032885-b5e38734688a?w=600&q=80'},
-  {k:['觀星','Observatory'],u:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80'},
-  {k:['Sky Tower','奧克蘭','Auckland','自由行'],u:'https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=600&q=80'},
-  {k:['螢火蟲','Waitomo'],u:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80'},
-  {k:['哈比','Hobbiton'],u:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600&q=80'},
-  {k:['餐廳','晚餐','Rata','Botswana','Clooney','Kohan','Stratosfare'],u:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80'},
-  {k:['咖啡','Café','早餐','Vudu','Run76'],u:'https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80'},
-];
-function getPhoto(t,n){const s=(t||'')+' '+(n||'');for(const p of PHOTOS)if(p.k.some(k=>s.includes(k)))return p.u;return'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=600&q=80';}
+<div class="day">
+  <div class="dh"><div class="dot ds"></div><div class="ddate">9/29 二</div><div class="dtit">⛴️ 米佛峽灣全天</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">06:00</div><div class="ii">🚗</div><div class="ic"><div class="in">自駕米佛峽灣 · 4hr</div><div class="id">途中 Mirror Lakes 停拍 · 帶便當</div></div></div>
+    <div class="item"><div class="it">10:30</div><div class="ii">⛴️</div><div class="ic"><div class="in">RealNZ Classic Cruise · NZD $145/人</div><div class="id">2hr · 春雨瀑布最壯觀 · 幾乎不取消 <span class="tag to">⚡ 3–4週前訂</span></div><div class="links"><a class="lnk" href="https://www.realnz.com/en/experiences/day-cruises/milford-sound-classic-cruise/" target="_blank">RealNZ</a></div></div></div>
+    <div class="item"><div class="it">19:30</div><div class="ii">🥩</div><div class="ic"><div class="in">晚餐 · Botswana Butchery</div><div class="links"><a class="lnk" href="https://www.botswanabutchery.co.nz/" target="_blank">訂位</a></div></div></div>
+  </div>
+</div>
 
-// ── Data parser ──────────────────────────────────
-const DAY_EMOJIS=['✈️','📸','🚢','🪂','🏔','🚀','🏙','✨','🏠'];
-function mkType(t){if(!t)return'activity';if(/晚餐|午餐|早餐|餐/.test(t))return'food';if(/住宿/.test(t))return'hotel';if(/出發|返回|前往|落地|航班|報到/.test(t))return'transport';return'activity';}
+<div class="day">
+  <div class="dh"><div class="dot ds"></div><div class="ddate">9/30 三</div><div class="dtit">♨️ Deer Park + Moke Lake + 溫泉</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">09:00</div><div class="ii">🦌</div><div class="ic"><div class="in">Deer Park Heights · NZD $20/人</div><div class="id">魔戒洛汗國取景地 · 360度全景</div></div></div>
+    <div class="item"><div class="it">11:30</div><div class="ii">🏞️</div><div class="ic"><div class="in">Moke Lake · 免費</div><div class="id">環湖步道1.5hr · 遊客極少</div></div></div>
+    <div class="item"><div class="it">13:30</div><div class="ii">🧺</div><div class="ic"><div class="in">回住宿洗衣烘乾</div></div></div>
+    <div class="item"><div class="it">15:30</div><div class="ii">♨️</div><div class="ic"><div class="in">Onsen Hot Pools · NZD $61+/人</div><div class="id">每天11am–11pm · 俯瞰Shotover Canyon <span class="tag to">⚡ 1–2週前訂，不可轉讓</span></div><div class="links"><a class="lnk" href="https://www.onsen.co.nz/" target="_blank">官網直訂</a></div></div></div>
+    <div class="item"><div class="it">19:00</div><div class="ii">🍽️</div><div class="ic"><div class="in">晚餐 · The Bunker</div></div></div>
+  </div>
+</div>
 
-function buildDays(rows){
-  const days=[];let cur=null,alt=false;
-  for(let i=1;i<rows.length;i++){
-    const r=rows[i];if(r.length<3)continue;
-    const[date,dow,time,type,act,note,place,status]=r;
-    if(!date&&act&&act.includes('備案')){alt=true;if(cur)cur.altItems=[];continue;}
-    if(date&&String(date).match(/\d{4}\/\d/)){
-      alt=false;
-      const dp=String(date).replace('2026/','');
-      const idx=days.length;
-      cur={label:`第${idx+1}天`,dow:dow||'',emoji:DAY_EMOJIS[idx]||'📍',date:dp,region:'',center:{lat:-45.031,lng:168.663},zoom:13,items:[],altPlan:false,altItems:[],mainItems:null,altLabel:'天氣差備案'};
-      days.push(cur);
-    }
-    if(!cur||!act||!act.trim())continue;
-    if(!cur.region&&place&&place.trim()&&!place.includes('→')){
-      cur.region=place.trim();
-      const dc=getDayCenter(place+' '+act);
-      cur.center=dc.center;cur.zoom=dc.zoom;
-    }
-    const isTr=type&&/出發|返回|前往/.test(type);
-    const coord=getCoord(place);
-    const tags=[];
-    const st=status||'';
-    if(st.includes('已訂'))tags.push({t:'✅ 已訂',c:'b-ok'});
-    else if(st.includes('需預約'))tags.push({t:'🔔 需預約',c:'b-need'});
-    if(type&&!/出發|返回|前往/.test(type)){
-      const tc=/晚餐|午餐|早餐|餐/.test(type)?'tg':/住宿/.test(type)?'to':/航班|落地/.test(type)?'tb':'tp';
-      tags.push({t:type,c:tc});
-    }
-    if(st.includes('待定'))tags.push({t:'📝 待定',c:'b-tbd'});
-    const item={time:time||'',title:act,note:note||'',tags,photo:getPhoto(act,note),ll:coord,mk:mkType(type),loc:act+' New Zealand'};
-    if(isTr){
-      const tr={type:'tr',icon:'🚗',text:`${time?time+' ':''}${act}${note?' — '+note:''}`};
-      if(alt&&cur.altItems)cur.altItems.push(tr);else cur.items.push(tr);
-    } else {
-      if(alt&&cur.altItems){cur.altItems.push(item);cur.altPlan=true;}
-      else cur.items.push(item);
-    }
-  }
-  days.forEach(d=>{if(d.altPlan){d.mainItems=d.items;}if(!d.region)d.region=d.label;});
-  return days.filter(d=>d.items.length>0);
-}
+<div class="day">
+  <div class="dh"><div class="dot ds"></div><div class="ddate">10/1 四</div><div class="dtit">🚁 庫克山直升機 → 蒂卡波觀星</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">06:30</div><div class="ii">🚗</div><div class="ic"><div class="in">自駕庫克山 · 3.5hr</div><div class="id">途中普卡基湖停拍</div></div></div>
+    <div class="item"><div class="it">10:30</div><div class="ii">🚁</div><div class="ic"><div class="in">塔斯曼冰川直升機 · NZD $530/人</div><div class="id">備案：胡克谷步道（免費） <span class="tag to">⚡ 6–8週前訂</span></div><div class="links"><a class="lnk" href="https://www.heliworks.co.nz/" target="_blank">Heliworks</a></div></div></div>
+    <div class="item"><div class="it">15:30</div><div class="ii">🚗</div><div class="ic"><div class="in">自駕蒂卡波 · 1hr</div></div></div>
+    <div class="item"><div class="it">17:00</div><div class="ii">💙</div><div class="ic"><div class="in">蒂卡波湖黃昏 · 善牧教堂</div></div></div>
+    <div class="item"><div class="it">21:30</div><div class="ii">⭐</div><div class="ic"><div class="in">Mt John Observatory 觀星 · NZD $175/人</div><div class="id">Dark Sky Project · 世界最佳星空 <span class="tag tr">🔴 NOW · 75天前售罄</span></div><div class="links"><a class="lnk" href="https://www.darkskyproject.co.nz/experiences/the-summit-experience/" target="_blank">立即訂</a></div></div></div>
+    <div class="htl"><div class="hi">🌌</div><div><div class="hn">Galaxy Boutique Hotel（10/1–10/2）</div><div class="hd">天窗觀星房</div><div class="hp">TWD $12,149 ✅ 已訂</div></div></div>
+  </div>
+</div>
 
-// ── App state ────────────────────────────────────
-let DAYS=[],curDay=0,curAlt=false,curCard=null;
-let gmap=null,gmMarkers=[],infoWin=null,placeSvc=null;
-let activeCardEl=null;
-let curPolyline=null;
+<div class="day">
+  <div class="dh"><div class="dot ds"></div><div class="ddate">10/2 五</div><div class="dtit">蒂卡波晨光 → 皇后鎮 → 箭鎮</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">07:30</div><div class="ii">☀️</div><div class="ic"><div class="in">蒂卡波晨光 · 善牧教堂</div></div></div>
+    <div class="item"><div class="it">10:00</div><div class="ii">🚗</div><div class="ic"><div class="in">自駕返回皇后鎮 · 2.5hr</div><div class="id">途中 Cromwell 停留 · 春季果園花海</div></div></div>
+    <div class="item"><div class="it">13:30</div><div class="ii">🌸</div><div class="ic"><div class="in">Lake Hayes 環湖步道 · 免費 · 2hr</div><div class="id">春季櫻花+雪山倒影</div></div></div>
+    <div class="item"><div class="it">16:00</div><div class="ii">🏘️</div><div class="ic"><div class="in">箭鎮歷史街區</div><div class="id">Devon Street 春季櫻花大道</div></div></div>
+    <div class="htl"><div class="hi">🏡</div><div><div class="hn">大漾閣別墅（10/2–10/5 · 3晚）</div><div class="hd">皇后鎮豪華別墅</div><div class="hp">TWD $35,039 ✅ 已訂</div></div></div>
+  </div>
+</div>
 
-// Countdown
-const dd=Math.ceil((new Date('2026-07-24')-new Date())/864e5);
-document.getElementById('cd').textContent=dd>0?`出發倒數 ${dd} 天`:dd===0?'今天出發！':'旅途中';
+<div class="day">
+  <div class="dh"><div class="dot ds"></div><div class="ddate">10/3 六</div><div class="dtit">🛒 農夫市集? + Dart River + 格林諾奇</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">09:00</div><div class="ii">🛒</div><div class="ic"><div class="in">Remarkables Market（待確認）</div><div class="id">2026/27新賽季開幕日未公告 · 慣例10月第一個六 · 10/3符合 <span class="tag tw">⚠️ 出發前確認</span></div><div class="links"><a class="lnk" href="https://remarkablesmarket.com/" target="_blank">官網</a><a class="lnk" href="https://www.facebook.com/RemarkablesMarket" target="_blank">FB</a></div></div></div>
+    <div class="item"><div class="it">11:30</div><div class="ii">🚤</div><div class="ic"><div class="in">Dart River Wilderness Jet · NZD $279/人</div><div class="id">夏季每天09:30/13:00兩班 · 平均51天前訂 <span class="tag to">⚡ 4–6週前訂</span></div><div class="links"><a class="lnk" href="https://www.dartriver.co.nz/" target="_blank">官網直訂</a></div></div></div>
+    <div class="item"><div class="it">14:30</div><div class="ii">📸</div><div class="ic"><div class="in">格林諾奇漫遊</div><div class="id">Red Boat Shed · Glenorchy Lagoon步道</div></div></div>
+    <div class="item"><div class="it">19:00</div><div class="ii">🌿</div><div class="ic"><div class="in">晚餐 · Sherwood</div><div class="links"><a class="lnk" href="https://www.sherwoodqueenstown.nz/" target="_blank">訂位</a></div></div></div>
+  </div>
+</div>
 
-// ── Google Maps ──────────────────────────────────
-const DARK=[
-  {elementType:'geometry',stylers:[{color:'#1a1d2a'}]},
-  {elementType:'labels.text.stroke',stylers:[{color:'#1a1d2a'}]},
-  {elementType:'labels.text.fill',stylers:[{color:'#8b8fa8'}]},
-  {featureType:'road',elementType:'geometry',stylers:[{color:'#2e3147'}]},
-  {featureType:'road.highway',elementType:'geometry',stylers:[{color:'#3a3d55'}]},
-  {featureType:'water',elementType:'geometry',stylers:[{color:'#0d1929'}]},
-  {featureType:'water',elementType:'labels.text.fill',stylers:[{color:'#4a6fa5'}]},
-  {featureType:'poi',stylers:[{visibility:'off'}]},
-  {featureType:'transit',stylers:[{visibility:'off'}]},
-  {featureType:'landscape',elementType:'geometry',stylers:[{color:'#1a1d2a'}]},
-];
+<div class="day">
+  <div class="dh"><div class="dot ds"></div><div class="ddate">10/4 日</div><div class="dtit">🚢 TSS Earnslaw + Walter Peak 農場晚宴</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">上午</div><div class="ii">🏙️</div><div class="ic"><div class="in">皇后鎮市區輕鬆走 · 購物</div></div></div>
+    <div class="item"><div class="it">18:00</div><div class="ii">🚢</div><div class="ic"><div class="in">TSS Earnslaw + Walter Peak BBQ · NZD $199/人</div><div class="id">22:00返回 · ✅ 2026保養期5/18–6/26，10/4是真蒸汽船 <span class="tag to">⚡ 選Vintage Steamship選項</span></div><div class="links"><a class="lnk" href="https://www.realnz.com/en/experiences/tss-earnslaw-walter-peak-experiences/walter-peak-gourmet-bbq-dining/" target="_blank">RealNZ</a></div></div></div>
+  </div>
+</div>
 
-window.initGoogleMap=function(){
-  gmap=new google.maps.Map(document.getElementById('map'),{
-    center:{lat:-45.031,lng:168.663},zoom:13,
-    styles:DARK,disableDefaultUI:true,gestureHandling:'greedy',
-  });
-  infoWin=new google.maps.InfoWindow();
-  placeSvc=new google.maps.places.PlacesService(gmap);
-  calcLayout();
-  window.addEventListener('resize',calcLayout);
-  loadData();
-};
+<div class="day">
+  <div class="dh"><div class="dot ds"></div><div class="ddate">10/5 一</div><div class="dtit">皇后鎮退房 → 飛奧克蘭</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">早上</div><div class="ii">☕</div><div class="ic"><div class="in">悠閒早餐 · 退房 · 還南島租車</div></div></div>
+    <div class="item"><div class="it">~13:05</div><div class="ii">✈️</div><div class="ic"><div class="in">皇后鎮→奧克蘭 · Air NZ</div><div class="id">下午班機 · 約14:55抵奧克蘭 <span class="tag tr">🔴 機票未訂！</span></div><div class="links"><a class="lnk" href="https://www.airnewzealand.co.nz/" target="_blank">Air NZ</a></div></div></div>
+    <div class="item"><div class="it">~15:30</div><div class="ii">🚗</div><div class="ic"><div class="in">取北島租車 · 開車到市區住宿</div></div></div>
+    <div class="item"><div class="it">19:30</div><div class="ii">🦞</div><div class="ic"><div class="in">晚餐 · Depot</div></div></div>
+    <div class="htl"><div class="hi">🏙️</div><div><div class="hn">奧克蘭市區住宿（10/5–10/6 · 1晚）</div><div class="hd">市區有停車 · 簡單即可</div><div class="hp">≈ TWD $3,500 待訂</div></div></div>
+  </div>
+</div>
 
-function mkColor(t){return{food:'#25c97a',activity:'#e8527a',transport:'#4da6ff',hotel:'#f0a500'}[t]||'#888';}
-function clearMarkers(){gmMarkers.forEach(m=>m.setMap(null));gmMarkers=[];}
-function buildMarkerIcon(it,idx,active){
-  const c=mkColor(it.mk);
-  const sz=active?40:30;
-  const r=active?18:14;
-  const cx=sz/2,cy=sz/2;
-  const stroke=active?'#ffffff':'rgba(255,255,255,0.5)';
-  const sw=active?3:2;
-  const shadow=active?'<circle cx="'+cx+'" cy="'+cy+'" r="'+(r+4)+'" fill="'+c+'" opacity="0.28"/>':'';
-  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${sz}" height="${sz}">${shadow}<circle cx="${cx}" cy="${cy}" r="${r}" fill="${c}" stroke="${stroke}" stroke-width="${sw}"/><text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="${active?13:11}" font-weight="bold" fill="white" font-family="-apple-system,Arial">${idx}</text></svg>`;
-  return{url:'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg),scaledSize:new google.maps.Size(sz,sz),anchor:new google.maps.Point(cx,cy)};
-}
-function addMarkers(items){
-  clearMarkers();let n=0;
-  (items||[]).forEach(it=>{
-    if(!it||!it.ll||it.type==='tr')return;
-    const idx=n++;const displayIdx=idx+1;
-    const m=new google.maps.Marker({position:it.ll,map:gmap,icon:buildMarkerIcon(it,displayIdx,false),title:it.title,zIndex:1});
-    m._it=it;m._idx=idx;m._displayIdx=displayIdx;
-    m.addListener('click',()=>{
-      const track=document.getElementById('carousel-track');
-      const cards=track.querySelectorAll('.card');
-      const target=cards[idx];
-      if(target){
-        track.scrollTo({left:target.offsetLeft-(track.clientWidth-target.offsetWidth)/2,behavior:'smooth'});
-        setTimeout(()=>{
-          if(!target.classList.contains('active')){
-            toggleCard(target,it.ll.lat,it.ll.lng,it.loc||it.title);
-          }
-        },340);
-      }
-    });
-    gmMarkers.push(m);
-  });
-}
-function highlightMarker(idx){
-  gmMarkers.forEach((m,i)=>{
-    const active=(i===idx);
-    m.setIcon(buildMarkerIcon(m._it,m._displayIdx,active));
-    m.setZIndex(active?999:1);
-  });
-}
-function drawRoute(items){
-  if(curPolyline){curPolyline.setMap(null);curPolyline=null;}
-  if(!gmap)return;
-  const path=[];
-  (items||[]).forEach(it=>{if(it&&it.ll&&it.type!=='tr')path.push(it.ll);});
-  if(path.length<2)return;
-  curPolyline=new google.maps.Polyline({
-    path,
-    geodesic:true,
-    strokeColor:'#e8527a',
-    strokeOpacity:0,
-    icons:[{
-      icon:{path:'M 0,-1 0,1',strokeOpacity:0.85,strokeColor:'#e8527a',strokeWeight:3,scale:2.4},
-      offset:'0',repeat:'14px'
-    }],
-    map:gmap,
-    zIndex:0
-  });
-}
-function fitDayBounds(items){
-  if(!gmap)return;
-  const pts=(items||[]).filter(it=>it&&it.ll&&it.type!=='tr').map(it=>it.ll);
-  if(pts.length===0){
-    const d=DAYS[curDay];if(d){gmap.panTo(d.center);gmap.setZoom(d.zoom);}return;
-  }
-  if(pts.length===1){gmap.panTo(pts[0]);gmap.setZoom(14);return;}
-  const b=new google.maps.LatLngBounds();
-  pts.forEach(p=>b.extend(p));
-  const carH=document.getElementById('carousel').offsetHeight||220;
-  gmap.fitBounds(b,{top:HDR+TABS+20,right:40,bottom:carH+20,left:40});
-}
+<div class="sec">🌿 北島 · 10/6–10/10（5晚）</div>
 
-// Get Places photo and update img element
-function loadPlacePhoto(imgEl,query){
-  if(!placeSvc||!query)return;
-  placeSvc.findPlaceFromQuery({query,fields:['photos']},(res,st)=>{
-    if(st===google.maps.places.PlacesServiceStatus.OK&&res[0]?.photos?.[0]){
-      const url=res[0].photos[0].getUrl({maxWidth:600,maxHeight:300});
-      imgEl.src=url;
-    }
-  });
-}
+<div class="day">
+  <div class="dh"><div class="dot dn"></div><div class="ddate">10/6 二</div><div class="dtit">🚗 奧克蘭→Rotorua · 地熱 · Mitai晚宴</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">09:00</div><div class="ii">🚗</div><div class="ic"><div class="in">自駕奧克蘭→Rotorua · 3hr</div></div></div>
+    <div class="item"><div class="it">13:00</div><div class="ii">🌋</div><div class="ic"><div class="in">Wai-O-Tapu Thermal Wonderland · NZD $40/人</div><div class="id">每天08:30–17:00（最後入場15:45）· 無需預約 <span class="tag tg">✓ 直接去</span></div><div class="links"><a class="lnk" href="https://www.waiotapu.co.nz/" target="_blank">官網</a></div></div></div>
+    <div class="item"><div class="it">17:30</div><div class="ii">🌿</div><div class="ic"><div class="in">Mitai Māori Village · NZD $169/人</div><div class="id">冬季場17:30–20:30 · 自駕196 Fairy Springs Road <span class="tag to">⚡ 4–6週前訂</span></div><div class="links"><a class="lnk" href="https://www.mitai.co.nz/" target="_blank">官網直訂</a></div></div></div>
+    <div class="htl"><div class="hi">🌋</div><div><div class="hn">羅托魯阿阿千禧（10/6–10/7）</div><div class="hd">市中心 · 免費停車</div><div class="hp">TWD $3,930 ✅ 已訂</div></div></div>
+  </div>
+</div>
 
-// ── Card toggle ──────────────────────────────────
-function toggleCard(el,lat,lng,query){
-  const wasOpen=el.classList.contains('active');
-  // Close all
-  document.querySelectorAll('.card.active').forEach(c=>c.classList.remove('active'));
-  if(wasOpen){
-    // Collapse: restore carousel height, map back to day bounds
-    isExpanded=false;
-    activeCardEl=null;
-    positionCarousel(true);
-    const items=currentItems();
-    fitDayBounds(items);
-  } else {
-    // Expand
-    el.classList.add('active');
-    isExpanded=true;
-    activeCardEl=el;
-    positionCarousel(true);
-    // Smart pan: only zoom in if user is too far out
-    if(lat&&lng&&gmap){
-      setTimeout(()=>{
-        gmap.panTo({lat:parseFloat(lat),lng:parseFloat(lng)});
-        if(gmap.getZoom()<14)gmap.setZoom(15);
-      },280);
-    }
-    // Load Places photo
-    const img=el.querySelector('.card-photo img');
-    if(img&&query&&!img.dataset.loaded){
-      img.dataset.loaded='1';
-      loadPlacePhoto(img,query);
-    }
-    // Scroll card into center of track (no viewport jump)
-    setTimeout(()=>{
-      const tEl=document.getElementById('carousel-track');
-      tEl.scrollTo({left:el.offsetLeft-(tEl.clientWidth-el.offsetWidth)/2,behavior:'smooth'});
-    },80);
-  }
-}
-function currentItems(){
-  const d=DAYS[curDay];if(!d)return[];
-  return d.altPlan&&curAlt?d.altItems:d.items;
-}
+<div class="day">
+  <div class="dh"><div class="dot dn"></div><div class="ddate">10/7 三</div><div class="dtit">✨ Waitomo → 🧙 Hobbiton → 返奧克蘭</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">07:30</div><div class="ii">🚗</div><div class="ic"><div class="in">Rotorua→Waitomo · 1.5hr</div></div></div>
+    <div class="item"><div class="it">09:00</div><div class="ii">✨</div><div class="ic"><div class="in">Waitomo 螢火蟲洞 · NZD $65/人</div><div class="id">室內洞穴 · 全年每天 <span class="tag to">⚡ 2–3週前訂</span></div><div class="links"><a class="lnk" href="https://www.klook.com/en-US/activity/2994-waitomo-glowworm-caves-tour/" target="_blank">Klook</a></div></div></div>
+    <div class="item"><div class="it">12:30</div><div class="ii">🧙</div><div class="ic"><div class="in">Hobbiton 普通話導覽 · NZD $94/人</div><div class="id">每天僅1場 · 必須官網直訂 <span class="tag tr">🔴 立即訂</span></div><div class="links"><a class="lnk" href="https://www.hobbitontours.com/experiences/mandarin/" target="_blank">Hobbiton官網普通話場</a></div></div></div>
+    <div class="item"><div class="it">15:00</div><div class="ii">🚗</div><div class="ic"><div class="in">Hobbiton→奧克蘭 · 1hr15min · 還北島租車</div></div></div>
+    <div class="htl"><div class="hi">🏙️</div><div><div class="hn">Queen St 21樓公寓（10/7–10/9 · 2晚）</div><div class="hd">市中心 · 免費停車 · 21樓景觀</div><div class="hp">TWD $11,180 ✅ 已訂</div></div></div>
+  </div>
+</div>
 
-// ── Dot indicator ────────────────────────────────
-let scrollTimer=null,scrollHandler=null;
-function setupScrollSpy(items){
-  const track=document.getElementById('carousel-track');
-  const realItems=items.filter(it=>it.type!=='tr');
-  // build dots
-  const dotsEl=document.getElementById('dots');
-  dotsEl.innerHTML=realItems.map((_,i)=>`<div class="dot ${i===0?'on':''}"></div>`).join('');
+<div class="day">
+  <div class="dh"><div class="dot dn"></div><div class="ddate">10/8 四</div><div class="dtit">⛴️ Waiheke Island 一日遊</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">09:00</div><div class="ii">⛴️</div><div class="ic"><div class="in">Fullers360 渡輪 · NZD $62/人來回</div><div class="id">Ferry Building步行5min · 40min · 不需要車</div><div class="links"><a class="lnk" href="https://www.fullers.co.nz/" target="_blank">Fullers</a></div></div></div>
+    <div class="item"><div class="it">12:30</div><div class="ii">🍽️</div><div class="ic"><div class="in">午餐 · Mudbrick Vineyard</div><div class="id">山頂俯瞰Hauraki Gulf · 需訂位</div><div class="links"><a class="lnk" href="https://mudbrick.co.nz/" target="_blank">訂位</a></div></div></div>
+    <div class="item"><div class="it">19:30</div><div class="ii">🥂</div><div class="ic"><div class="in">晚餐 · Ahi</div></div></div>
+  </div>
+</div>
 
-  // Remove previous listener to avoid double-binding across renderDay calls
-  if(scrollHandler)track.removeEventListener('scroll',scrollHandler);
-  scrollHandler=()=>{
-    clearTimeout(scrollTimer);
-    scrollTimer=setTimeout(()=>{
-      // find center card / alt-pill
-      const trackRect=track.getBoundingClientRect();
-      const cx=trackRect.left+trackRect.width/2;
-      const nodes=track.querySelectorAll('.card,.card-tr,.alt-pill');
-      let bestNode=null,bestD=Infinity,bestIsCard=false,bestCardIdx=-1;
-      let cardCounter=0;
-      nodes.forEach((c)=>{
-        const r=c.getBoundingClientRect();
-        const d=Math.abs(r.left+r.width/2-cx);
-        const isCard=c.classList.contains('card');
-        if(d<bestD){
-          bestD=d;bestNode=c;bestIsCard=isCard;
-          bestCardIdx=isCard?cardCounter:-1;
-        }
-        if(isCard)cardCounter++;
-      });
-      // focus class on center card
-      track.querySelectorAll('.card').forEach(c=>c.classList.toggle('focus',c===bestNode));
-      // update dots
-      dotsEl.querySelectorAll('.dot').forEach((d,i)=>{
-        d.className='dot'+(i===bestCardIdx?' on':'');
-      });
-      // highlight corresponding marker
-      if(bestIsCard)highlightMarker(bestCardIdx);
-      else highlightMarker(-1);
-      // pan map to center card (respect user zoom — no setZoom)
-      if(bestNode&&bestNode.dataset&&bestNode.dataset.lat&&!isExpanded&&gmap){
-        const lt=parseFloat(bestNode.dataset.lat),ln=parseFloat(bestNode.dataset.lng);
-        if(lt&&ln)gmap.panTo({lat:lt,lng:ln});
-      }
-    },80);
-  };
-  track.addEventListener('scroll',scrollHandler,{passive:true});
-}
+<div class="day">
+  <div class="dh"><div class="dot dn"></div><div class="ddate">10/9 五</div><div class="dtit">奧克蘭市區 · 告別晚餐 → 機場</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">09:00</div><div class="ii">🏛️</div><div class="ic"><div class="in">Auckland Museum · NZD $28/人</div><div class="id">毛利文化 · 10:00–17:00</div></div></div>
+    <div class="item"><div class="it">15:00</div><div class="ii">🌋</div><div class="ic"><div class="in">Mount Eden 火山口 · 免費</div></div></div>
+    <div class="item"><div class="it">19:00</div><div class="ii">🍽️</div><div class="ic"><div class="in">告別晚餐 · The French Café</div><div class="links"><a class="lnk" href="https://thefrenchcafe.co.nz/" target="_blank">訂位</a></div></div></div>
+    <div class="item"><div class="it">21:30</div><div class="ii">🚗</div><div class="ic"><div class="in">開車→機場還車→Check in Pullman</div><div class="id">The French Café → 機場約25–30min · 行李在車上一氣呵成 ✅</div></div></div>
+    <div class="htl"><div class="hi">✈️</div><div><div class="hn">Pullman Auckland Airport（10/9–10/10）</div><div class="hd">機場內 · 步行3分到國際出境</div><div class="hp">TWD $5,576 ✅ 已訂</div></div></div>
+  </div>
+</div>
 
-// ── Render ───────────────────────────────────────
-function badgeHtml(tags){
-  const ok=tags.find(t=>t.c==='b-ok'),need=tags.find(t=>t.c==='b-need'),tbd=tags.find(t=>t.c==='b-tbd');
-  return ok?`<span class="badge b-ok">✅ 已訂</span>`:need?`<span class="badge b-need">🔔 需預約</span>`:tbd?`<span class="badge b-tbd">📝 待定</span>`:'';
-}
-function renderTabs(){
-  document.getElementById('dtabs').innerHTML=DAYS.map((d,i)=>`<div class="dtab ${i===curDay?'on':''}" onclick="selDay(${i})"><span class="de">${d.emoji}</span><span class="dn">${d.label}</span><span class="dd">${d.dow}・${d.date}</span></div>`).join('');
-}
-function renderDay(){
-  const d=DAYS[curDay];if(!d)return;
-  isExpanded=false;
-  activeCardEl=null;
-  const items=d.altPlan&&curAlt?d.altItems:d.items;
-  const realCount=(items||[]).filter(it=>it.type!=='tr').length;
-  const rgnEl=document.getElementById('rgn-label');
-  rgnEl.textContent=`${d.emoji} ${d.region} · ${realCount} 個地點`;
-  rgnEl.classList.remove('morph');void rgnEl.offsetWidth;rgnEl.classList.add('morph');
-  const track=document.getElementById('carousel-track');
-  let html='';
-  // alt toggle pill
-  if(d.altPlan){
-    html+=`<div class="alt-pill"><span class="alt-lbl">⚡ 天氣備案</span><div class="toggle"><div class="topt ${!curAlt?'on':''}" onclick="setAlt(false)">正案</div><div class="topt ${curAlt?'on':''}" onclick="setAlt(true)">${d.altLabel||'備案'}</div></div></div>`;
-  }
-  let idx=1;
-  (items||[]).forEach(it=>{
-    if(it.type==='tr'){
-      html+=`<div class="card-tr"><span class="tr-icon">${it.icon}</span><div class="tr-text">${it.text}</div></div>`;
-      return;
-    }
-    const n=idx++;
-    const vis=(it.tags||[]).filter(t=>!['b-ok','b-need','b-tbd'].includes(t.c));
-    const nav=it.loc?`<a class="btnav" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.loc)}" target="_blank" onclick="event.stopPropagation()">🗺 Google Maps 導航</a>`:'';
-    const lat=it.ll?it.ll.lat:'',lng=it.ll?it.ll.lng:'';
-    const q=encodeURIComponent(it.loc||it.title);
-    html+=`<div class="card" data-lat="${lat}" data-lng="${lng}" onclick="toggleCard(this,${lat},${lng},'${it.loc||it.title}')">
-      <div class="card-photo"><img src="${it.photo}" alt="${it.title}" loading="lazy" onerror="this.src='${it.photo}'"></div>
-      <div class="card-body">
-        ${badgeHtml(it.tags||[])}
-        <div class="card-time">${it.time||''}</div>
-        <div class="card-row">
-          <div class="card-num">${n}</div>
-          <div class="card-title">${it.title}</div>
-          <div class="card-arrow">▼</div>
-        </div>
-        <div class="card-detail">
-          <div class="card-note">${it.note||''}</div>
-          <div class="tags">${vis.map(t=>`<span class="tag ${t.c}">${t.t}</span>`).join('')}</div>
-          ${nav}
-        </div>
+<div class="day">
+  <div class="dh"><div class="dot dt"></div><div class="ddate">10/10 六</div><div class="dtit">✈️ 回台灣</div><div class="darr">▶</div></div>
+  <div class="db">
+    <div class="item"><div class="it">07:30</div><div class="ii">🚶</div><div class="ic"><div class="in">步行3分 → 國際出境 Check in</div></div></div>
+    <div class="item"><div class="it">10:40</div><div class="ii">✈️</div><div class="ic"><div class="in">NZ0077 奧克蘭→台北</div><div class="id">豪華經濟艙 · 11h25m <span class="tag tx">✓ 已訂</span></div></div></div>
+    <div class="item"><div class="it">17:05</div><div class="ii">🏠</div><div class="ic"><div class="in">抵達桃園 · 回家！</div></div></div>
+  </div>
+</div>
+
+</div><!-- /itin -->
+
+<!-- ===== MAP ===== -->
+<div class="panel" id="map">
+  <div id="map-outer">
+    <div class="mhdr">
+      <div class="mtit">🗺 行程地圖</div>
+      <div class="mbtns">
+        <button class="mbtn on" id="mb-south" onclick="showMap('south')">南島</button>
+        <button class="mbtn" id="mb-north" onclick="showMap('north')">北島</button>
+        <button class="mbtn" id="mb-all" onclick="showMap('all')">全部</button>
       </div>
-    </div>`;
-  });
-  track.innerHTML=html;
-  track.scrollLeft=0;
-  positionCarousel(false);
-  addMarkers(items||[]);
-  drawRoute(items||[]);
-  fitDayBounds(items||[]);
-  setupScrollSpy(items||[]);
-  // Initial focus: first real card
-  requestAnimationFrame(()=>{
-    const firstCard=track.querySelector('.card');
-    if(firstCard)firstCard.classList.add('focus');
-    highlightMarker(0);
-  });
+    </div>
+    <div id="gmap">
+  <div id="gmap-loading" style="width:100%;height:380px;display:flex;align-items:center;justify-content:center;background:#f0ece3;font-family:DM Sans,sans-serif;font-size:13px;color:#8e8e93;flex-direction:column;gap:8px">
+    <div style="font-size:24px">🗺</div>
+    <div>Google 地圖載入中...</div>
+  </div>
+</div>
+    <div class="mleg">
+      <div class="mli"><div class="mld" style="background:#1a6b6b"></div>南島景點</div>
+      <div class="mli"><div class="mld" style="background:#b5892a"></div>北島景點</div>
+      <div class="mli"><div class="mld" style="background:#c0392b"></div>住宿</div>
+    </div>
+  </div>
+  <div class="alert ai">💡 點擊地圖上的標記查看景點資訊。可雙指縮放、拖曳移動。</div>
+</div>
+
+<!-- ===== FEASIBILITY ===== -->
+<div class="panel" id="feas">
+<div class="alert ar">⚠️ 2026年全面審視版 · 按緊迫程度排列</div>
+
+<div class="sec">🔴 立即處理</div>
+<div class="fc"><div class="fh"><span>⭐ Mt John Observatory 觀星（10/1）</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vr">🔴 最緊迫</span>
+<div class="fr"><div class="fl">提前量</div><div class="fv">平均75天前售罄，距出發165天，現在訂剛好</div></div>
+<div class="fr"><div class="fl">天候</div><div class="fv">40–60%機率取消，提供免費改期或全退</div></div>
+<div class="fr"><div class="fl">月份</div><div class="fv">10月是絕佳觀星月份，春季天氣穩定</div></div>
+<div class="links"><a class="lnk" href="https://www.darkskyproject.co.nz/experiences/the-summit-experience/" target="_blank">Dark Sky官網立即訂</a></div>
+</div></div>
+
+<div class="fc"><div class="fh"><span>🧙 Hobbiton 普通話導覽（10/7）</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vr">🔴 立即訂</span>
+<div class="fr"><div class="fl">開放</div><div class="fv">全年每天，除聖誕節</div></div>
+<div class="fr"><div class="fl">注意</div><div class="fv">每天僅1場，KKday/Klook無法選普通話場次，必須官網直訂</div></div>
+<div class="links"><a class="lnk" href="https://www.hobbitontours.com/experiences/mandarin/" target="_blank">官網普通話場</a></div>
+</div></div>
+
+<div class="fc"><div class="fh"><span>✈️ 皇后鎮→奧克蘭機票（10/5）</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vr">🔴 機票未訂</span>
+<div class="fr"><div class="fl">建議</div><div class="fv">Air NZ 下午13:05班次，14:55抵達最理想</div></div>
+<div class="fr"><div class="fl">注意</div><div class="fv">10/4 TSS晚宴22:00結束，10/5早上從容退房還車</div></div>
+<div class="links"><a class="lnk" href="https://www.airnewzealand.co.nz/" target="_blank">Air NZ訂票</a></div>
+</div></div>
+
+<div class="fc"><div class="fh"><span>📸 格林諾奇婚紗攝影（9/28）</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vr">🔴 立即聯絡</span>
+<div class="fr"><div class="fl">月份</div><div class="fv">9月底春季最佳：積雪消退、牧場翠綠、人少</div></div>
+<div class="fr"><div class="fl">如何找</div><div class="fv">小紅書/Instagram搜「皇后鎮婚紗攝影師」直接私訊</div></div>
+</div></div>
+
+<div class="sec">🟡 4–8週前</div>
+<div class="fc"><div class="fh"><span>🚁 庫克山直升機（10/1）</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vo">🟡 6–8週前訂</span>
+<div class="fr"><div class="fl">月份</div><div class="fv">10月冰川雪線高，天氣穩定，直升機最佳季節</div></div>
+<div class="fr"><div class="fl">天候</div><div class="fv">雲低或強風取消全退。備案：胡克谷步道（免費·震撼不輸）</div></div>
+<div class="links"><a class="lnk" href="https://www.heliworks.co.nz/" target="_blank">Heliworks</a><a class="lnk" href="https://www.mountainhelicopters.co.nz/" target="_blank">Mt Helicopters</a></div>
+</div></div>
+
+<div class="fc"><div class="fh"><span>⛴️ 米佛峽灣遊船（9/29）</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vo">🟡 3–4週前訂</span>
+<div class="fr"><div class="fl">月份</div><div class="fv">10月春雨瀑布最壯觀，海豹幼崽出沒，幾乎不取消</div></div>
+<div class="fr"><div class="fl">建議</div><div class="fv">10:30場最佳 · NZD $145/人</div></div>
+<div class="links"><a class="lnk" href="https://www.realnz.com/en/experiences/day-cruises/milford-sound-classic-cruise/" target="_blank">RealNZ官網</a></div>
+</div></div>
+
+<div class="fc"><div class="fh"><span>🚤 Dart River Jet Boat（10/3）</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vo">🟡 4–6週前訂</span>
+<div class="fr"><div class="fl">開放</div><div class="fv">夏季（9–4月）每天09:30和13:00兩班 ✅</div></div>
+<div class="fr"><div class="fl">天候</div><div class="fv">河道保護，幾乎不受天候影響</div></div>
+<div class="links"><a class="lnk" href="https://www.dartriver.co.nz/" target="_blank">官網直訂</a></div>
+</div></div>
+
+<div class="fc"><div class="fh"><span>🚢 TSS Earnslaw + Walter Peak（10/4）</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vo">🟡 2–3週前訂</span>
+<div class="fr"><div class="fl">2026保養</div><div class="fv">✅ 確認5/18–6/26，10/4是真正蒸汽船</div></div>
+<div class="fr"><div class="fl">重要</div><div class="fv">訂票必須選「Vintage Steamship」選項</div></div>
+<div class="links"><a class="lnk" href="https://www.realnz.com/en/experiences/tss-earnslaw-walter-peak-experiences/walter-peak-gourmet-bbq-dining/" target="_blank">RealNZ官網</a></div>
+</div></div>
+
+<div class="fc"><div class="fh"><span>🛒 Remarkables Market（10/3六）</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vo">🟡 出發前確認</span>
+<div class="fr"><div class="fl">2026狀況</div><div class="fv">17th Season開幕日未公告，慣例10月第一個六，10/3符合但無法100%確認</div></div>
+<div class="fr"><div class="fl">備案</div><div class="fv">若未開幕，10/3仍有Dart River行程，影響不大</div></div>
+<div class="links"><a class="lnk" href="https://remarkablesmarket.com/" target="_blank">官網確認</a></div>
+</div></div>
+
+<div class="sec">🟢 無需擔心</div>
+<div class="fc"><div class="fh"><span>🌋 Wai-O-Tapu（10/6）</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vg">🟢 無需預約</span>
+<div class="fr"><div class="fl">開放</div><div class="fv">全年每天 08:30–17:00（最後入場15:45）</div></div>
+<div class="fr"><div class="fl">你的時間</div><div class="fv">13:00抵達→15:30完成，剛好在最後入場前 ✅</div></div>
+</div></div>
+
+<div class="fc"><div class="fh"><span>✨ Waitomo 螢火蟲洞（10/7）</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vg">🟢 全年開放</span>
+<div class="fr"><div class="fl">天候</div><div class="fv">室內洞穴，完全不受天氣影響 ✅</div></div>
+<div class="fr"><div class="fl">時間</div><div class="fv">09:00場 · 45min · 配合路線最佳</div></div>
+</div></div>
+
+<div class="fc"><div class="fh"><span>🚢 TSS Earnslaw 2026保養確認</span><span class="fa">▶</span></div>
+<div class="fb"><span class="verd vg">🟢 已確認</span>
+<div class="fr"><div class="fl">保養期</div><div class="fv">2026年確認為5/18–6/26</div></div>
+<div class="fr"><div class="fl">10/4狀態</div><div class="fv">✅ 保養結束後3個多月，確定是真正的TSS Earnslaw蒸汽船</div></div>
+</div></div>
+
+</div><!-- /feas -->
+
+<!-- ===== BOOKING ===== -->
+<div class="panel" id="book">
+<div class="alert ar">⚠️ 按緊迫程度排序，紅色現在就要處理！</div>
+
+<div class="todo"><div class="ttit">🔴 立即（現在就做）</div>
+  <div class="ti"><div class="tnum" style="background:var(--red)">1</div><div><b>Mt John Observatory 觀星</b>（10/1）· 75天前售罄<br><a href="https://www.darkskyproject.co.nz/experiences/the-summit-experience/" style="color:var(--teal)">→ darkskyproject.co.nz</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--red)">2</div><div><b>Hobbiton 普通話導覽</b>（10/7）· 每天僅1場<br><a href="https://www.hobbitontours.com/experiences/mandarin/" style="color:var(--teal)">→ hobbitontours.com 普通話場</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--red)">3</div><div><b>皇后鎮→奧克蘭機票</b>（10/5 下午班）<br><a href="https://www.airnewzealand.co.nz/" style="color:var(--teal)">→ Air NZ</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--red)">4</div><div><b>格林諾奇婚紗攝影師</b>（9/28）小紅書/Instagram聯絡</div></div>
+  <div class="ti"><div class="tnum" style="background:var(--red)">5</div><div><b>10/5–10/6 奧克蘭市區住宿</b> · 1晚 · 有停車</div></div>
+</div>
+
+<div class="todo"><div class="ttit">🟡 4–8週前</div>
+  <div class="ti"><div class="tnum" style="background:var(--ora)">6</div><div><b>庫克山直升機</b>（10/1）6–8週前<br><a href="https://www.heliworks.co.nz/" style="color:var(--teal)">→ Heliworks</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--ora)">7</div><div><b>米佛峽灣 RealNZ Classic Cruise</b>（9/29）3–4週前<br><a href="https://www.realnz.com/en/experiences/day-cruises/milford-sound-classic-cruise/" style="color:var(--teal)">→ RealNZ官網</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--ora)">8</div><div><b>Mitai Māori Village</b>（10/6）4–6週前<br><a href="https://www.mitai.co.nz/" style="color:var(--teal)">→ 官網直訂</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--ora)">9</div><div><b>Dart River Jet Boat</b>（10/3）4–6週前<br><a href="https://www.dartriver.co.nz/" style="color:var(--teal)">→ dartriver.co.nz</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--ora)">10</div><div><b>Lighthorse Adventures 騎馬</b>（9/28）<br><a href="https://www.lighthorseadventures.com/" style="color:var(--teal)">→ 官網</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--ora)">11</div><div><b>Onsen Hot Pools</b>（9/30）1–2週前<br><a href="https://www.onsen.co.nz/" style="color:var(--teal)">→ 官網直訂</a></div></div>
+</div>
+
+<div class="todo"><div class="ttit">🟢 2–3週前</div>
+  <div class="ti"><div class="tnum" style="background:var(--grn)">12</div><div><b>TSS Earnslaw + Walter Peak</b>（10/4）選Vintage Steamship<br><a href="https://www.realnz.com/en/experiences/tss-earnslaw-walter-peak-experiences/walter-peak-gourmet-bbq-dining/" style="color:var(--teal)">→ RealNZ官網</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--grn)">13</div><div><b>Waitomo 螢火蟲洞</b>（10/7）09:00場<br><a href="https://www.klook.com/en-US/activity/2994-waitomo-glowworm-caves-tour/" style="color:var(--teal)">→ Klook</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--grn)">14</div><div><b>Mudbrick Vineyard 午餐訂位</b>（10/8）<br><a href="https://mudbrick.co.nz/" style="color:var(--teal)">→ 訂位</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--grn)">15</div><div><b>北島租車</b>（10/5取 10/7晚還）<br><a href="https://www.omegarentalcars.com/" style="color:var(--teal)">→ Omega（單程免費）</a></div></div>
+  <div class="ti"><div class="tnum" style="background:var(--grn)">16</div><div><b>餐廳訂位</b> · Rata(9/28) · Botswana(9/29) · Sherwood(10/3) · The French Café(10/9)</div></div>
+  <div class="ti"><div class="tnum" style="background:var(--grn)">17</div><div><b>Remarkables Market 確認2026開幕日</b><br><a href="https://www.facebook.com/RemarkablesMarket" style="color:var(--teal)">→ FB確認</a></div></div>
+</div>
+</div><!-- /book -->
+
+<!-- ===== COST ===== -->
+<div class="panel" id="cost">
+
+<div class="cb">
+  <div class="ctit">✈️ 機票</div>
+  <div class="cr"><span>台北↔紐西蘭全程（2人）</span><span class="am">TWD $270,000</span></div>
+  <div class="cr"><span>皇后鎮→奧克蘭 10/5（2人，未訂）</span><span class="am">≈ TWD $8,000</span></div>
+  <div class="cr"><span>機票合計</span><span class="am">≈ TWD $278,000</span></div>
+</div>
+
+<div class="cb">
+  <div class="ctit">🏨 住宿（13晚，含全部已訂）</div>
+  <div class="cr"><span>Distinctive Alpine Meadows <span class="csub">9/27–10/1 · 4晚</span></span><span class="am">TWD $34,566 ✅</span></div>
+  <div class="cr"><span>Galaxy Boutique Hotel <span class="csub">10/1–10/2 · 1晚</span></span><span class="am">TWD $12,149 ✅</span></div>
+  <div class="cr"><span>大漾閣別墅 <span class="csub">10/2–10/5 · 3晚</span></span><span class="am">TWD $35,039 ✅</span></div>
+  <div class="cr"><span>奧克蘭市區住宿 <span class="csub">10/5–10/6 · 1晚（待訂）</span></span><span class="am">≈ TWD $3,500</span></div>
+  <div class="cr"><span>羅托魯阿阿千禧 <span class="csub">10/6–10/7 · 1晚</span></span><span class="am">TWD $3,930 ✅</span></div>
+  <div class="cr"><span>Queen St 21樓公寓 <span class="csub">10/7–10/9 · 2晚</span></span><span class="am">TWD $11,180 ✅</span></div>
+  <div class="cr"><span>Pullman Auckland Airport <span class="csub">10/9–10/10 · 1晚</span></span><span class="am">TWD $5,576 ✅</span></div>
+  <div class="cr"><span>住宿合計</span><span class="am">TWD $105,940</span></div>
+</div>
+
+<div class="cb">
+  <div class="ctit">🚗 交通（2人）</div>
+  <div class="cr"><span>南島租車 <span class="csub">8天 NZD $80/天</span></span><span class="am">≈ TWD $11,840</span></div>
+  <div class="cr"><span>南島油費 <span class="csub">約1,800km</span></span><span class="am">≈ TWD $9,324</span></div>
+  <div class="cr"><span>北島租車 <span class="csub">2天 NZD $100/天</span></span><span class="am">≈ TWD $3,700</span></div>
+  <div class="cr"><span>北島油費 <span class="csub">約600km</span></span><span class="am">≈ TWD $3,108</span></div>
+  <div class="cr"><span>Waiheke渡輪+零散Uber</span><span class="am">≈ TWD $3,500</span></div>
+  <div class="cr"><span>交通合計</span><span class="am">≈ TWD $31,472</span></div>
+</div>
+
+<div class="cb">
+  <div class="ctit">🎡 活動（2人合計）</div>
+  <div class="cr"><span>婚紗攝影 <span class="csub">NZD $1,800估</span></span><span class="am">≈ TWD $33,300</span></div>
+  <div class="cr"><span>騎馬 Lighthorse <span class="csub">NZD $460</span></span><span class="am">≈ TWD $8,510</span></div>
+  <div class="cr"><span>米佛峽灣遊船 <span class="csub">NZD $290</span></span><span class="am">≈ TWD $5,365</span></div>
+  <div class="cr"><span>Deer Park + Onsen <span class="csub">NZD $162</span></span><span class="am">≈ TWD $2,997</span></div>
+  <div class="cr"><span>庫克山直升機 <span class="csub">NZD $1,060</span></span><span class="am">≈ TWD $19,610</span></div>
+  <div class="cr"><span>Mt John 觀星 <span class="csub">NZD $350</span></span><span class="am">≈ TWD $6,475</span></div>
+  <div class="cr"><span>Skyline Gondola <span class="csub">NZD $160</span></span><span class="am">≈ TWD $2,960</span></div>
+  <div class="cr"><span>Dart River Jet Boat <span class="csub">NZD $558</span></span><span class="am">≈ TWD $10,323</span></div>
+  <div class="cr"><span>TSS Earnslaw+Walter Peak <span class="csub">NZD $398</span></span><span class="am">≈ TWD $7,363</span></div>
+  <div class="cr"><span>Wai-O-Tapu <span class="csub">NZD $80</span></span><span class="am">≈ TWD $1,480</span></div>
+  <div class="cr"><span>Mitai 毛利晚宴 <span class="csub">NZD $338</span></span><span class="am">≈ TWD $6,253</span></div>
+  <div class="cr"><span>Waitomo 螢火蟲 <span class="csub">NZD $130</span></span><span class="am">≈ TWD $2,405</span></div>
+  <div class="cr"><span>Hobbiton 普通話 <span class="csub">NZD $188</span></span><span class="am">≈ TWD $3,478</span></div>
+  <div class="cr"><span>Auckland Museum <span class="csub">NZD $56</span></span><span class="am">≈ TWD $1,036</span></div>
+  <div class="cr"><span>活動合計</span><span class="am">≈ TWD $111,555</span></div>
+  <div class="cnote">* 匯率 NZD 1 ≈ TWD 18.5</div>
+</div>
+
+<div class="cb">
+  <div class="ctit">🍽️ 餐飲（14天 · 2人 · 不含早餐）</div>
+  <div class="cr"><span>午餐 <span class="csub">14天 · TWD $700/人/天</span></span><span class="am">≈ TWD $19,600</span></div>
+  <div class="cr"><span>一般晚餐×8 <span class="csub">TWD $1,200/人/餐</span></span><span class="am">≈ TWD $19,200</span></div>
+  <div class="cr"><span>特別晚餐×6 <span class="csub">Rata/Botswana/Sherwood/French Café等 TWD $2,500/人/餐</span></span><span class="am">≈ TWD $30,000</span></div>
+  <div class="cr"><span>餐飲合計</span><span class="am">≈ TWD $68,800</span></div>
+</div>
+
+<div class="cb">
+  <div class="ctit">🧳 雜費</div>
+  <div class="cr"><span>旅遊保險（2人）</span><span class="am">≈ TWD $5,000</span></div>
+  <div class="cr"><span>購物・紀念品・小費</span><span class="am">≈ TWD $8,000</span></div>
+  <div class="cr"><span>雜費合計</span><span class="am">≈ TWD $13,000</span></div>
+</div>
+
+<div class="ctotal">
+  <div class="ctr"><span>✈️ 機票</span><span class="am">≈ TWD $278,000</span></div>
+  <div class="ctr"><span>🏨 住宿</span><span class="am">TWD $105,940</span></div>
+  <div class="ctr"><span>🚗 交通</span><span class="am">≈ TWD $31,472</span></div>
+  <div class="ctr"><span>🎡 活動</span><span class="am">≈ TWD $111,555</span></div>
+  <div class="ctr"><span>🍽️ 餐飲（不含早餐）</span><span class="am">≈ TWD $68,800</span></div>
+  <div class="ctr"><span>🧳 雜費</span><span class="am">≈ TWD $13,000</span></div>
+  <div class="ctr sub2"><span>非機票小計</span><span class="am">≈ TWD $330,767</span></div>
+  <div class="ctr grand"><span>2人旅費總計</span><span class="am">≈ TWD $608,767</span></div>
+</div>
+<div style="text-align:center;font-size:11px;color:var(--stone);padding:4px 0 12px">不含早餐版本 · 匯率 NZD 1 ≈ TWD 18.5</div>
+
+</div><!-- /cost -->
+
+<script>
+(function(){
+'use strict';
+
+// ── TAB SWITCHING ──────────────────────────────
+document.getElementById('tabs').addEventListener('click', function(e){
+  var el = e.target;
+  if(!el.classList.contains('tab')) return;
+  var name = el.getAttribute('data-tab');
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); });
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('on'); });
+  el.classList.add('on');
+  document.getElementById(name).classList.add('on');
+  if(name === 'map') initGoogleMap();
+});
+
+// ── DAY ACCORDION ──────────────────────────────
+document.getElementById('itin').addEventListener('click', function(e){
+  var dh = e.target.closest('.dh');
+  if(!dh) return;
+  var db = dh.nextElementSibling;
+  if(!db || !db.classList.contains('db')) return;
+  var open = db.style.display === 'block';
+  db.style.display = open ? 'none' : 'block';
+  var arr = dh.querySelector('.darr');
+  if(arr) arr.style.transform = open ? '' : 'rotate(90deg)';
+});
+
+// ── FEAS ACCORDION ─────────────────────────────
+document.getElementById('feas').addEventListener('click', function(e){
+  var fh = e.target.closest('.fh');
+  if(!fh) return;
+  var fb = fh.nextElementSibling;
+  if(!fb || !fb.classList.contains('fb')) return;
+  var open = fb.style.display === 'block';
+  fb.style.display = open ? 'none' : 'block';
+  var fa = fh.querySelector('.fa');
+  if(fa) fa.textContent = open ? '▶' : '▼';
+});
+
+// ── GOOGLE MAPS ─────────────────────────────────────────────────────
+var GMAP = null;
+var GM_MARKERS = [];
+var GM_INFOWINDOW = null;
+var GM_CURRENT = 'south';
+var GM_INITED = false;
+var GM_API_READY = false;
+var GM_PENDING = false;  // waiting for API to load
+
+// Called by Google Maps SDK when ready
+window.gmapsReady = function() {
+  GM_API_READY = true;
+  if (GM_PENDING) {
+    GM_PENDING = false;
+    initGoogleMap();
+  }
+};
+
+var PLACES = [
+  // South Island – Hotels
+  {n:'Distinctive Alpine Meadows', lat:-45.031, lng:168.663, type:'hotel', r:'south', d:'9/27–10/1', x:'皇后鎮豪華住宿 · 4晚 · TWD $34,566 ✅'},
+  {n:'Galaxy Boutique Hotel',       lat:-44.004, lng:170.480, type:'hotel', r:'south', d:'10/1–10/2', x:'蒂卡波天窗觀星房 · TWD $12,149 ✅'},
+  {n:'大漾閣別墅',                   lat:-45.020, lng:168.700, type:'hotel', r:'south', d:'10/2–10/5', x:'皇后鎮豪華別墅 · 3晚 · TWD $35,039 ✅'},
+  // South Island – Activities
+  {n:'Skyline Gondola',             lat:-45.027, lng:168.655, type:'act',   r:'south', d:'9/27',       x:"Bob's Peak全景纜車 · NZD $80/人"},
+  {n:'格林諾奇',                     lat:-44.860, lng:168.380, type:'act',   r:'south', d:'9/28',       x:'婚紗攝影全天 + Lighthorse騎馬'},
+  {n:'米佛峽灣 Milford Sound',       lat:-44.674, lng:167.924, type:'act',   r:'south', d:'9/29',       x:'RealNZ Classic Cruise · NZD $145/人'},
+  {n:'Deer Park Heights',           lat:-45.017, lng:168.717, type:'act',   r:'south', d:'9/30 上午',  x:'魔戒洛汗國取景地 · NZD $20/人'},
+  {n:'Onsen Hot Pools',             lat:-45.006, lng:168.708, type:'act',   r:'south', d:'9/30 下午',  x:'私人溫泉 · 俯瞰Shotover · NZD $61+/人'},
+  {n:'庫克山 Mt Cook',               lat:-43.735, lng:170.099, type:'act',   r:'south', d:'10/1',       x:'塔斯曼冰川直升機 · NZD $530/人'},
+  {n:'善牧教堂 Lake Tekapo',         lat:-44.006, lng:170.475, type:'act',   r:'south', d:'10/1–10/2',  x:'蒂卡波湖標誌景點 · 觀星基地'},
+  {n:'Lake Hayes',                  lat:-45.033, lng:168.783, type:'act',   r:'south', d:'10/2',       x:'環湖步道 · 春季櫻花倒影'},
+  {n:'箭鎮 Arrowtown',              lat:-44.950, lng:168.817, type:'act',   r:'south', d:'10/2',       x:'歷史街區 · 春季櫻花大道'},
+  {n:'Dart River Glenorchy',        lat:-44.870, lng:168.370, type:'act',   r:'south', d:'10/3',       x:'Wilderness Jet Boat · NZD $279/人'},
+  {n:'TSS Earnslaw 碼頭',           lat:-45.035, lng:168.661, type:'act',   r:'south', d:'10/4',       x:'百年蒸汽船 + Walter Peak BBQ · NZD $199/人'},
+  // North Island – Hotels
+  {n:'奧克蘭市區住宿',               lat:-36.848, lng:174.763, type:'hotel', r:'north', d:'10/5–10/6',  x:'1晚 · 有停車 · 待訂 ≈TWD $3,500'},
+  {n:'羅托魯阿阿千禧',               lat:-38.137, lng:176.250, type:'hotel', r:'north', d:'10/6–10/7',  x:'市中心五星 · 免費停車 · TWD $3,930 ✅'},
+  {n:'Queen St 21樓公寓',           lat:-36.849, lng:174.766, type:'hotel', r:'north', d:'10/7–10/9',  x:'市中心 · 免費停車 · 21樓景觀 · TWD $11,180 ✅'},
+  {n:'Pullman Auckland Airport',    lat:-37.008, lng:174.785, type:'hotel', r:'north', d:'10/9–10/10', x:'機場內 · 步行3分到國際出境 · TWD $5,576 ✅'},
+  // North Island – Activities
+  {n:'Wai-O-Tapu Thermal',         lat:-38.356, lng:176.366, type:'act',   r:'north', d:'10/6',       x:'香檳池+地熱奇觀 · NZD $40/人 · 無需預約'},
+  {n:'Mitai Māori Village',         lat:-38.105, lng:176.232, type:'act',   r:'north', d:'10/6',       x:'毛利晚宴+Haka · NZD $169/人'},
+  {n:'Waitomo 螢火蟲洞',            lat:-38.260, lng:175.106, type:'act',   r:'north', d:'10/7',       x:'藍色螢火蟲 · NZD $65/人 · 室內全年'},
+  {n:'Hobbiton 哈比村',             lat:-37.872, lng:175.684, type:'act',   r:'north', d:'10/7',       x:'普通話導覽 · NZD $94/人 · 每天1場'},
+  {n:'Waiheke Island',              lat:-36.797, lng:175.081, type:'act',   r:'north', d:'10/8',       x:'渡輪日遊 · Mudbrick午餐 · NZD $62/人渡輪'},
+  {n:'Auckland War Memorial Museum',lat:-36.860, lng:174.777, type:'act',   r:'north', d:'10/9',       x:'毛利文化 · NZD $28/人'},
+  {n:'Mount Eden',                  lat:-36.878, lng:174.763, type:'act',   r:'north', d:'10/9',       x:'火山口全景 · 俯瞰奧克蘭 · 免費'},
+];
+
+var BOUNDS = {
+  south: {lat:{min:-47.0,max:-40.5}, lng:{min:166.5,max:174.5}, zoom:6},
+  north: {lat:{min:-41.5,max:-34.5}, lng:{min:172.5,max:178.5}, zoom:7},
+  all:   {lat:{min:-47.5,max:-34.0}, lng:{min:166.0,max:178.5}, zoom:5}
+};
+
+function markerColor(p) {
+  if (p.type === 'hotel') return '#c0392b';
+  return p.r === 'south' ? '#1a6b6b' : '#b5892a';
 }
 
-function selDay(i){curDay=i;curAlt=false;renderTabs();renderDay();}
-function setAlt(v){curAlt=v;document.querySelectorAll('.topt').forEach((el,i)=>{el.classList.toggle('on',i===(v?1:0));});renderDay();}
+function markerSvg(color, isHotel) {
+  var size = isHotel ? 28 : 22;
+  var label = isHotel ? 'H' : '●';
+  var fontSize = isHotel ? '9' : '11';
+  return {
+    url: 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size + '">' +
+      '<circle cx="' + (size/2) + '" cy="' + (size/2) + '" r="' + (size/2 - 1) + '" fill="' + color + '" stroke="white" stroke-width="2"/>' +
+      (isHotel ? '<text x="' + (size/2) + '" y="' + (size/2 + 4) + '" text-anchor="middle" font-size="' + fontSize + '" fill="white" font-family="sans-serif" font-weight="bold">' + label + '</text>' : '') +
+      '</svg>'
+    ),
+    scaledSize: new google.maps.Size(size, size),
+    anchor: new google.maps.Point(size/2, size/2)
+  };
+}
 
-// ── Load data ────────────────────────────────────
-function loadData(silent){
-  const cb='_cb'+Date.now();
-  const s=document.createElement('script');
-  s.src=APPS_URL+'?t='+Date.now()+'&callback='+cb;
-  const rf=document.getElementById('rf');
-  if(silent){if(rf)rf.classList.add('spin');}
-  else{document.getElementById('loading').style.display='flex';}
-  s.onerror=()=>{
-    if(rf)rf.classList.remove('spin');
-    if(silent)toast('更新失敗',true);
-    else showErr('網路錯誤，請稍後重試');
-  };
-  window[cb]=data=>{
-    delete window[cb];document.head.removeChild(s);
-    if(rf)rf.classList.remove('spin');
-    try{
-      DAYS=buildDays(data);
-      document.getElementById('loading').style.display='none';
-      const prevDay=curDay;
-      renderTabs();
-      if(prevDay>=DAYS.length)curDay=0;
-      renderDay();
-      if(silent)toast('已更新 ✓');
-    }catch(e){
-      if(silent)toast('更新失敗: '+e.message,true);
-      else showErr(e.message);
-    }
-  };
-  document.head.appendChild(s);
+function tagHtml(p) {
+  var color, bg, text;
+  if (p.type === 'hotel') { color='#c0392b'; bg='#fdecea'; text='住宿'; }
+  else if (p.r === 'south') { color='#1a6b6b'; bg='#e0f0ef'; text='南島'; }
+  else { color='#b5892a'; bg='#fef3e2'; text='北島'; }
+  return '<span class="gm-iw-tag" style="background:' + bg + ';color:' + color + ';border:1px solid ' + color + '44">' + text + '</span>';
 }
-function showErr(msg){
-  document.getElementById('loading').style.display='flex';
-  document.getElementById('loading').innerHTML=`<p style="color:#ff6b6b;text-align:center;padding:20px">載入失敗<br><small>${msg}</small><br><br><button onclick="loadData()" style="margin-top:8px;padding:8px 18px;border-radius:20px;background:var(--pink);border:none;color:#fff;cursor:pointer;font-size:14px">重試</button></p>`;
+
+function infoContent(p) {
+  return '<div class="gm-iw">' +
+    '<div class="gm-iw-name">' + p.n + '</div>' +
+    '<div class="gm-iw-date">' + p.d + '</div>' +
+    '<div class="gm-iw-desc">' + p.x + '</div>' +
+    tagHtml(p) +
+    '</div>';
 }
-function toast(msg,err){
-  const t=document.getElementById('toast');if(!t)return;
-  t.textContent=msg;
-  t.className='show'+(err?' err':'');
-  clearTimeout(toast._t);
-  toast._t=setTimeout(()=>t.className=err?'err':'',2000);
+
+function initGoogleMap() {
+  // If API not loaded yet, set flag and wait for callback
+  if (!GM_API_READY) {
+    GM_PENDING = true;
+    return;
+  }
+  if (GM_INITED) {
+    showMap(GM_CURRENT);
+    return;
+  }
+  GM_INITED = true;
+
+  var loadingEl = document.getElementById('gmap-loading');
+  if (loadingEl) loadingEl.style.display = 'none';
+  GMAP = new google.maps.Map(document.getElementById('gmap'), {
+    zoom: 5,
+    center: {lat: -41.0, lng: 172.5},
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: false,
+    gestureHandling: 'cooperative',
+    styles: [
+      {featureType:'water',      elementType:'geometry', stylers:[{color:'#a8d4e8'}]},
+      {featureType:'landscape',  elementType:'geometry', stylers:[{color:'#f0ece3'}]},
+      {featureType:'road',       elementType:'geometry', stylers:[{color:'#e0d8cc'}]},
+      {featureType:'road',       elementType:'labels',   stylers:[{visibility:'simplified'}]},
+      {featureType:'poi',        elementType:'labels',   stylers:[{visibility:'off'}]},
+      {featureType:'transit',    elementType:'labels',   stylers:[{visibility:'off'}]},
+      {featureType:'administrative', elementType:'labels.text.fill', stylers:[{color:'#888'}]}
+    ]
+  });
+
+  GM_INFOWINDOW = new google.maps.InfoWindow({maxWidth: 220});
+
+  // Create all markers
+  PLACES.forEach(function(p, i) {
+    var marker = new google.maps.Marker({
+      position: {lat: p.lat, lng: p.lng},
+      map: GMAP,
+      icon: markerSvg(markerColor(p), p.type === 'hotel'),
+      title: p.n,
+      visible: false
+    });
+    marker.placeData = p;
+    marker.addListener('click', function() {
+      GM_INFOWINDOW.setContent(infoContent(p));
+      GM_INFOWINDOW.open(GMAP, marker);
+    });
+    GM_MARKERS.push(marker);
+  });
+
+  showMap('south');
 }
+
+window.showMap = function(region) {
+  GM_CURRENT = region;
+  ['south','north','all'].forEach(function(k) {
+    var b = document.getElementById('mb-' + k);
+    if (b) b.classList.toggle('on', k === region);
+  });
+
+  if (!GMAP) return;
+
+  // Close any open infowindow
+  if (GM_INFOWINDOW) GM_INFOWINDOW.close();
+
+  // Show/hide markers
+  GM_MARKERS.forEach(function(m) {
+    var p = m.placeData;
+    m.setVisible(region === 'all' || p.r === region);
+  });
+
+  // Fit bounds
+  var b = BOUNDS[region];
+  var bounds = new google.maps.LatLngBounds(
+    new google.maps.LatLng(b.lat.min, b.lng.min),
+    new google.maps.LatLng(b.lat.max, b.lng.max)
+  );
+  GMAP.fitBounds(bounds);
+};
+})();
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&libraries=places&callback=initGoogleMap&language=zh-TW"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&callback=gmapsReady&loading=async" async defer></script>
 </body>
 </html>
