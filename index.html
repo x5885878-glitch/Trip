@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>Xi++員工結婚偷偷跑去紐西蘭Happy</title>
+<title>Xi++員工跑去happy拉</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -1193,17 +1193,22 @@ function startEdit(el) {
   input.value = current;
   input.placeholder = budget;
 
+  var committed = false;  // guard against double-commit
+
   el.textContent = '';
   el.appendChild(input);
   input.focus();
   input.select();
 
   input.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') commitEdit(el, input, key, budget);
-    if (e.key === 'Escape') cancelEdit(el);
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!committed) { committed = true; commitEdit(el, input, key, budget); }
+    }
+    if (e.key === 'Escape') { committed = true; cancelEdit(el); }
   });
   input.addEventListener('blur', function() {
-    commitEdit(el, input, key, budget);
+    if (!committed) { committed = true; commitEdit(el, input, key, budget); }
   });
 }
 
