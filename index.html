@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -17,189 +18,221 @@
 html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);font-size:14px;line-height:1.6;min-height:100vh}
 
 /* HEADER */
-.hdr{background:var(--ink);padding:16px 14px 12px;position:sticky;top:0;z-index:300}
-.hdr h1{font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff;font-weight:600}
-.hdr p{font-size:11px;color:var(--stone);margin-top:1px;letter-spacing:.05em;text-transform:uppercase}
+.hdr{background:var(–ink);padding:16px 14px 12px;position:sticky;top:0;z-index:300}
+.hdr h1{font-family:‘Cormorant Garamond’,serif;font-size:20px;color:#fff;font-weight:600}
+.hdr p{font-size:11px;color:var(–stone);margin-top:1px;letter-spacing:.05em;text-transform:uppercase}
 
 /* TABS */
-.tabs{display:flex;background:#fff;border-bottom:1px solid var(--parch);position:sticky;top:60px;z-index:299;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs{display:flex;background:#fff;border-bottom:1px solid var(–parch);position:sticky;top:60px;z-index:299;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;padding:10px 13px;font-size:12px;font-weight:500;color:var(--stone);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.tab.on{color:var(--ink);border-bottom-color:var(--gold);font-weight:600}
+.tab{flex:0 0 auto;padding:10px 13px;font-size:12px;font-weight:500;color:var(–stone);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.tab.on{color:var(–ink);border-bottom-color:var(–gold);font-weight:600}
 
 /* PANELS */
 .panel{display:none;padding:10px 12px 60px}.panel.on{display:block}
-.sec{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);padding:14px 4px 6px}
+.sec{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(–stone);padding:14px 4px 6px}
 
 /* DAY CARDS */
-.day{background:#fff;border-radius:12px;margin-bottom:8px;box-shadow:var(--sh);overflow:hidden}
+.day{background:#fff;border-radius:12px;margin-bottom:8px;box-shadow:var(–sh);overflow:hidden}
 .dh{display:flex;align-items:center;padding:12px 13px;cursor:pointer;gap:9px;-webkit-tap-highlight-color:transparent;user-select:none}
-.dh:active{background:var(--cream)}
+.dh:active{background:var(–cream)}
 .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.ds{background:var(--teal)}.dn{background:var(--gold)}.dt{background:var(--stone)}
-.ddate{font-size:11px;color:var(--stone);min-width:48px;font-weight:500}
-.dtit{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;flex:1;line-height:1.3}
-.darr{font-size:10px;color:var(--stone);transition:transform .2s;flex-shrink:0}
-.db{display:none;border-top:1px solid var(--parch);padding:6px 13px 10px}
+.ds{background:var(–teal)}.dn{background:var(–gold)}.dt{background:var(–stone)}
+.ddate{font-size:11px;color:var(–stone);min-width:48px;font-weight:500}
+.dtit{font-family:‘Cormorant Garamond’,serif;font-size:15px;font-weight:600;flex:1;line-height:1.3}
+.darr{font-size:10px;color:var(–stone);transition:transform .2s;flex-shrink:0}
+.db{display:none;border-top:1px solid var(–parch);padding:6px 13px 10px}
 
 /* ITEMS */
 .item{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid #f5f0eb}
 .item:last-child{border-bottom:none}
-.it{font-size:10px;color:var(--stone);min-width:36px;padding-top:3px;font-weight:500}
+.it{font-size:10px;color:var(–stone);min-width:36px;padding-top:3px;font-weight:500}
 .ii{font-size:14px;min-width:20px;text-align:center}
 .ic{flex:1}
 .in{font-size:13px;font-weight:500;line-height:1.4}
-.id{font-size:11px;color:var(--stone);margin-top:2px;line-height:1.5}
+.id{font-size:11px;color:var(–stone);margin-top:2px;line-height:1.5}
 
 /* TAGS */
 .tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;margin:3px 3px 0 0;font-weight:500;line-height:1.6}
-.tr{background:var(--rl);color:var(--red);border:1px solid #f5c6c2}
-.to{background:var(--ol);color:var(--ora);border:1px solid #f5d9a8}
-.tg{background:var(--gl);color:var(--grn);border:1px solid #a8d5bb}
-.tb{background:var(--tl);color:var(--teal);border:1px solid #a0d0cf}
+.tr{background:var(–rl);color:var(–red);border:1px solid #f5c6c2}
+.to{background:var(–ol);color:var(–ora);border:1px solid #f5d9a8}
+.tg{background:var(–gl);color:var(–grn);border:1px solid #a8d5bb}
+.tb{background:var(–tl);color:var(–teal);border:1px solid #a0d0cf}
 .tx{background:#e8e8f0;color:#555;border:1px solid #d0d0de}
 .tw{background:#fff3cd;color:#856404;border:1px solid #ffc107}
 
 /* LINKS */
 .links{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-.lnk{font-size:11px;padding:4px 10px;border-radius:20px;background:var(--tl);color:var(--teal);text-decoration:none;border:1px solid #b0d8d7;font-weight:500}
+.lnk{font-size:11px;padding:4px 10px;border-radius:20px;background:var(–tl);color:var(–teal);text-decoration:none;border:1px solid #b0d8d7;font-weight:500}
 
 /* HOTEL BADGE */
-.htl{display:flex;gap:10px;margin:10px 0 2px;padding:10px 11px;background:var(--parch);border-radius:8px;border:1px solid #ddd5c8}
+.htl{display:flex;gap:10px;margin:10px 0 2px;padding:10px 11px;background:var(–parch);border-radius:8px;border:1px solid #ddd5c8}
 .hi{font-size:18px;flex-shrink:0;padding-top:2px}
 .hn{font-size:13px;font-weight:600;line-height:1.3}
-.hd{font-size:11px;color:var(--stone);margin-top:2px;line-height:1.5}
-.hp{font-size:12px;color:var(--gold);font-weight:700;margin-top:3px}
+.hd{font-size:11px;color:var(–stone);margin-top:2px;line-height:1.5}
+.hp{font-size:12px;color:var(–gold);font-weight:700;margin-top:3px}
 
 /* MAP */
-#map-outer{background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--sh);margin-bottom:10px}
-.mhdr{padding:11px 13px;border-bottom:1px solid var(--parch);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
-.mtit{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600}
+#map-outer{background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(–sh);margin-bottom:10px}
+.mhdr{padding:11px 13px;border-bottom:1px solid var(–parch);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.mtit{font-family:‘Cormorant Garamond’,serif;font-size:16px;font-weight:600}
 .mbtns{display:flex;gap:4px}
-.mbtn{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--parch);background:var(--cream);color:var(--stone);cursor:pointer;font-weight:500;-webkit-tap-highlight-color:transparent}
-.mbtn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.mbtn{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(–parch);background:var(–cream);color:var(–stone);cursor:pointer;font-weight:500;-webkit-tap-highlight-color:transparent}
+.mbtn.on{background:var(–teal);color:#fff;border-color:var(–teal)}
 #gmap{width:100%;height:380px;background:#e0e0e0}
-.mleg{padding:8px 13px;display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid var(--parch)}
-.mli{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--stone)}
+.mleg{padding:8px 13px;display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid var(–parch)}
+.mli{display:flex;align-items:center;gap:5px;font-size:11px;color:var(–stone)}
 .mld{width:9px;height:9px;border-radius:50%}
 /* Google Maps InfoWindow custom style */
-.gm-iw{font-family:'DM Sans',sans-serif;padding:4px 2px;min-width:150px}
-.gm-iw-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:#1c1c1e;margin-bottom:2px}
+.gm-iw{font-family:‘DM Sans’,sans-serif;padding:4px 2px;min-width:150px}
+.gm-iw-name{font-family:‘Cormorant Garamond’,serif;font-size:15px;font-weight:600;color:#1c1c1e;margin-bottom:2px}
 .gm-iw-date{font-size:11px;color:#8e8e93}
 .gm-iw-desc{font-size:12px;color:#444;margin-top:5px;line-height:1.5}
 .gm-iw-tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-top:5px;font-weight:600}
 
 /* FEAS */
-.fc{background:#fff;border-radius:12px;margin-bottom:8px;box-shadow:var(--sh);overflow:hidden}
+.fc{background:#fff;border-radius:12px;margin-bottom:8px;box-shadow:var(–sh);overflow:hidden}
 .fh{padding:11px 13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:500;-webkit-tap-highlight-color:transparent;gap:8px}
-.fh:active{background:var(--cream)}
-.fh .fa{font-size:10px;color:var(--stone);transition:transform .2s;flex-shrink:0}
-.fb{display:none;padding:10px 13px 12px;font-size:12px;line-height:1.7;border-top:1px solid var(--parch)}
+.fh:active{background:var(–cream)}
+.fh .fa{font-size:10px;color:var(–stone);transition:transform .2s;flex-shrink:0}
+.fb{display:none;padding:10px 13px 12px;font-size:12px;line-height:1.7;border-top:1px solid var(–parch)}
 .fr{display:flex;gap:6px;margin-bottom:4px}
-.fl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);min-width:52px;padding-top:2px;flex-shrink:0}
+.fl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(–stone);min-width:52px;padding-top:2px;flex-shrink:0}
 .fv{flex:1;font-size:12px}
 .verd{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-bottom:8px}
-.vr{background:var(--rl);color:var(--red)}.vo{background:var(--ol);color:var(--ora)}.vg{background:var(--gl);color:var(--grn)}
+.vr{background:var(–rl);color:var(–red)}.vo{background:var(–ol);color:var(–ora)}.vg{background:var(–gl);color:var(–grn)}
 
 /* BOOKING */
-.todo{background:#fff;border-radius:12px;padding:12px 13px;box-shadow:var(--sh);margin-bottom:8px}
-.ttit{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);margin-bottom:8px}
-.ti{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--parch);font-size:12px;line-height:1.5}
+.todo{background:#fff;border-radius:12px;padding:12px 13px;box-shadow:var(–sh);margin-bottom:8px}
+.ttit{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(–stone);margin-bottom:8px}
+.ti{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(–parch);font-size:12px;line-height:1.5}
 .ti:last-child{border-bottom:none}
 .tnum{width:18px;height:18px;border-radius:50%;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 
 /* COST */
-.cb{background:#fff;border-radius:12px;margin-bottom:8px;padding:12px 13px;box-shadow:var(--sh)}
-.ctit{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);margin-bottom:10px}
-.cr{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;font-size:13px;border-bottom:1px solid var(--parch)}
+.cb{background:#fff;border-radius:12px;margin-bottom:8px;padding:12px 13px;box-shadow:var(–sh)}
+.ctit{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(–stone);margin-bottom:10px}
+.cr{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;font-size:13px;border-bottom:1px solid var(–parch)}
 .cr:last-child{border-bottom:none;font-weight:600;font-size:14px;padding-top:8px}
-.am{font-weight:500;color:var(--teal)}.cr:last-child .am{color:var(--gold);font-size:15px}
-.csub{font-size:10px;color:var(--stone)}
-.cnote{font-size:10px;color:var(--stone);margin-top:6px;line-height:1.5}
-.ctotal{background:var(--ink);border-radius:12px;padding:16px 13px;margin-bottom:8px}
-.ctr{display:flex;justify-content:space-between;color:var(--stone);font-size:13px;padding:3px 0}
-.ctr.grand{color:#fff;font-size:18px;font-family:'Cormorant Garamond',serif;font-weight:600;padding-top:10px;margin-top:6px;border-top:1px solid #444}
-.ctr.grand .am{color:var(--gold)}
+.am{font-weight:500;color:var(–teal)}.cr:last-child .am{color:var(–gold);font-size:15px}
+.csub{font-size:10px;color:var(–stone)}
+.cnote{font-size:10px;color:var(–stone);margin-top:6px;line-height:1.5}
+.ctotal{background:var(–ink);border-radius:12px;padding:16px 13px;margin-bottom:8px}
+.ctr{display:flex;justify-content:space-between;color:var(–stone);font-size:13px;padding:3px 0}
+.ctr.grand{color:#fff;font-size:18px;font-family:‘Cormorant Garamond’,serif;font-weight:600;padding-top:10px;margin-top:6px;border-top:1px solid #444}
+.ctr.grand .am{color:var(–gold)}
 .ctr.sub2{border-top:1px solid #333;margin-top:4px;padding-top:8px;color:#aaa}
 
 /* ALERTS */
 .alert{border-radius:8px;padding:10px 12px;font-size:12px;margin-bottom:10px;line-height:1.6}
-.ao{background:var(--ol);border:1px solid #f5d9a8;color:#7a4500}
-.ar{background:var(--rl);border:1px solid #f5c6c2;color:var(--red)}
-.ai{background:var(--tl);border:1px solid #a0d0cf;color:var(--teal)}
+.ao{background:var(–ol);border:1px solid #f5d9a8;color:#7a4500}
+.ar{background:var(–rl);border:1px solid #f5c6c2;color:var(–red)}
+.ai{background:var(–tl);border:1px solid #a0d0cf;color:var(–teal)}
 
 /* ── EDIT MODE GENERAL ── */
 .edit-bar{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-.eb{font-size:11px;padding:6px 12px;border-radius:20px;border:none;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;-webkit-tap-highlight-color:transparent}
-.eb-add{background:var(--teal);color:#fff}
+.eb{font-size:11px;padding:6px 12px;border-radius:20px;border:none;cursor:pointer;font-weight:600;font-family:‘DM Sans’,sans-serif;-webkit-tap-highlight-color:transparent}
+.eb-add{background:var(–teal);color:#fff}
 .eb-add:active{background:#155a5a}
-.eb-save{background:var(--grn);color:#fff}
+.eb-save{background:var(–grn);color:#fff}
 .eb-cancel{background:#e0e0e0;color:#555}
-.eb-del{background:var(--rl);color:var(--red);border:1px solid #f5c6c2}
+.eb-del{background:var(–rl);color:var(–red);border:1px solid #f5c6c2}
 
 /* ── ITIN EDIT ── */
 .itin-edit-mode .day{border:1.5px solid #e0e0e0}
-.itin-edit-mode .day.drag-over{border-color:var(--teal);background:#f0faf9}
+.itin-edit-mode .day.drag-over{border-color:var(–teal);background:#f0faf9}
 .itin-edit-mode .day.dragging{opacity:.4}
 .day-edit-btns{display:none;gap:5px;margin-left:auto}
 .itin-edit-mode .day-edit-btns{display:flex}
-.day-move{cursor:grab;font-size:16px;color:var(--stone);padding:0 4px;line-height:1}
+.day-move{cursor:grab;font-size:16px;color:var(–stone);padding:0 4px;line-height:1}
 .day-move:active{cursor:grabbing}
-.day-del-btn{font-size:11px;padding:3px 8px;border-radius:12px;background:var(--rl);color:var(--red);border:1px solid #f5c6c2;cursor:pointer;font-weight:600}
-.add-day-form{background:#fff;border-radius:12px;padding:14px;box-shadow:var(--sh);margin-bottom:10px;display:none}
+.day-del-btn{font-size:11px;padding:3px 8px;border-radius:12px;background:var(–rl);color:var(–red);border:1px solid #f5c6c2;cursor:pointer;font-weight:600}
+
+/* ── Item-level edit ── */
+.itin-edit-mode .item{position:relative;border:1.5px dashed transparent;border-radius:6px;transition:border-color .15s,background .15s}
+.itin-edit-mode .item:hover{border-color:#e0e0e0}
+.itin-edit-mode .item.drag-over{border-color:var(–teal);background:#f0faf9}
+.itin-edit-mode .item.dragging{opacity:.4}
+.item-move{display:none;cursor:grab;font-size:14px;color:var(–stone);padding:0 6px;line-height:1;user-select:none;flex-shrink:0;align-self:center}
+.itin-edit-mode .item .item-move{display:inline-block}
+.item-move:active{cursor:grabbing}
+.item-del-btn{display:none;margin-left:auto;background:none;border:none;color:#ccc;cursor:pointer;font-size:16px;padding:0 4px;line-height:1;align-self:center}
+.itin-edit-mode .item .item-del-btn{display:inline-block}
+.item-del-btn:hover{color:var(–red)}
+.itin-edit-mode .item .ic{cursor:default}
+
+/* ── Hotel badge inline editing ── */
+.htl{position:relative}
+.htl-edit-wrapper{flex:1;min-width:0}
+.htl-input{width:100%;border:1px solid var(–teal);border-radius:4px;padding:4px 6px;font-size:13px;font-family:inherit;background:#fff;margin:1px 0}
+.htl-input.hn-input{font-weight:600}
+.htl-input.hd-input{font-size:11px;color:var(–stone)}
+.htl-input.hp-input{font-size:12px;color:var(–gold);font-weight:700}
+.htl-edit-hint{font-size:10px;color:var(–stone);margin-top:3px;font-style:italic}
+.htl-edit-btn{display:none;position:absolute;top:4px;right:6px;font-size:10px;padding:2px 8px;border-radius:10px;background:var(–tl);color:var(–teal);border:1px solid #b8dedc;cursor:pointer;font-weight:600}
+.itin-edit-mode .htl .htl-edit-btn{display:inline-block}
+.htl-editable-indicator{display:none;font-size:10px;color:var(–stone);margin-left:6px;font-weight:400}
+.itin-edit-mode .htl-editable-indicator{display:inline}
+
+/* ── Enhanced add item form: position picker ── */
+.form-position-picker{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.form-position-btn{padding:4px 10px;font-size:11px;border-radius:12px;background:#f0f0f0;border:1px solid #ddd;cursor:pointer;color:var(–ink);font-family:inherit}
+.form-position-btn.on{background:var(–teal);color:#fff;border-color:var(–teal)}
+.form-position-preview{margin-top:4px;padding:6px 8px;background:var(–tl);border-radius:4px;font-size:11px;color:var(–teal);line-height:1.4}
+.add-day-form{background:#fff;border-radius:12px;padding:14px;box-shadow:var(–sh);margin-bottom:10px;display:none}
 .add-day-form.show{display:block}
 .form-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.form-input{flex:1;min-width:100px;padding:7px 10px;border:1px solid var(--parch);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:#fff;color:var(--ink)}
-.form-input:focus{outline:none;border-color:var(--teal)}
-.form-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:4px;display:block}
+.form-input{flex:1;min-width:100px;padding:7px 10px;border:1px solid var(–parch);border-radius:8px;font-size:13px;font-family:‘DM Sans’,sans-serif;background:#fff;color:var(–ink)}
+.form-input:focus{outline:none;border-color:var(–teal)}
+.form-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(–stone);margin-bottom:4px;display:block}
 
 /* ── BOOKING TODO ── */
-.todo-item-row{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--parch)}
+.todo-item-row{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(–parch)}
 .todo-item-row:last-child{border-bottom:none}
 .todo-cb{width:18px;height:18px;border-radius:5px;border:2px solid #ccc;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;background:#fff}
-.todo-cb.done{background:var(--grn);border-color:var(--grn)}
-.todo-cb.done::after{content:'✓';color:#fff;font-size:11px;font-weight:700}
+.todo-cb.done{background:var(–grn);border-color:var(–grn)}
+.todo-cb.done::after{content:‘✓’;color:#fff;font-size:11px;font-weight:700}
 .todo-text{flex:1;font-size:12px;line-height:1.5;cursor:pointer}
-.todo-text.done{text-decoration:line-through;color:var(--stone)}
+.todo-text.done{text-decoration:line-through;color:var(–stone)}
 .todo-del{font-size:14px;color:#ccc;cursor:pointer;padding:0 2px;flex-shrink:0;line-height:1}
-.todo-del:hover{color:var(--red)}
+.todo-del:hover{color:var(–red)}
 .add-todo-row{display:flex;gap:6px;margin-top:8px}
-.add-todo-input{flex:1;padding:6px 10px;border:1px solid var(--parch);border-radius:20px;font-size:12px;font-family:'DM Sans',sans-serif;background:#fff}
-.add-todo-input:focus{outline:none;border-color:var(--teal)}
-.add-todo-btn{padding:6px 12px;border-radius:20px;background:var(--teal);color:#fff;border:none;font-size:12px;font-weight:600;cursor:pointer}
-.todo-section-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);padding:10px 0 5px;border-top:1px solid var(--parch);margin-top:4px}
+.add-todo-input{flex:1;padding:6px 10px;border:1px solid var(–parch);border-radius:20px;font-size:12px;font-family:‘DM Sans’,sans-serif;background:#fff}
+.add-todo-input:focus{outline:none;border-color:var(–teal)}
+.add-todo-btn{padding:6px 12px;border-radius:20px;background:var(–teal);color:#fff;border:none;font-size:12px;font-weight:600;cursor:pointer}
+.todo-section-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(–stone);padding:10px 0 5px;border-top:1px solid var(–parch);margin-top:4px}
 .todo-section-title:first-child{border-top:none;padding-top:2px}
 .todo-progress{height:4px;background:#e8e8e8;border-radius:2px;margin-bottom:12px;overflow:hidden}
-.todo-progress-bar{height:100%;background:var(--grn);border-radius:2px;transition:width .3s}
-.todo-stats{font-size:11px;color:var(--stone);margin-bottom:8px}
+.todo-progress-bar{height:100%;background:var(–grn);border-radius:2px;transition:width .3s}
+.todo-stats{font-size:11px;color:var(–stone);margin-bottom:8px}
 
 /* ── COST EDIT ── */
 .cost-editable{cursor:text;border-bottom:1px dashed transparent;transition:border-color .15s;border-radius:2px;padding:1px 2px}
-.cost-editable:hover{border-bottom-color:var(--gold)}
-.cost-edit-input{background:transparent;border:none;border-bottom:2px solid var(--gold);font-weight:500;color:var(--teal);font-size:13px;width:120px;font-family:'DM Sans',sans-serif;text-align:right;outline:none;padding:1px 2px}
-.cost-actual{color:var(--grn)!important;font-weight:700!important}
-.cost-actual::before{content:'實 '}
-.cost-hint{font-size:10px;color:var(--stone);margin-bottom:6px;font-style:italic}
-.cost-grand-edit{font-size:11px;color:var(--gold);margin-top:8px;text-align:center;font-style:italic}
-.cost-summary-block{background:var(--gl);border:1px solid #a8d5bb;border-radius:8px;padding:10px 13px;margin-bottom:8px;font-size:12px}
+.cost-editable:hover{border-bottom-color:var(–gold)}
+.cost-edit-input{background:transparent;border:none;border-bottom:2px solid var(–gold);font-weight:500;color:var(–teal);font-size:13px;width:120px;font-family:‘DM Sans’,sans-serif;text-align:right;outline:none;padding:1px 2px}
+.cost-actual{color:var(–grn)!important;font-weight:700!important}
+.cost-actual::before{content:’實 ’}
+.cost-hint{font-size:10px;color:var(–stone);margin-bottom:6px;font-style:italic}
+.cost-grand-edit{font-size:11px;color:var(–gold);margin-top:8px;text-align:center;font-style:italic}
+.cost-summary-block{background:var(–gl);border:1px solid #a8d5bb;border-radius:8px;padding:10px 13px;margin-bottom:8px;font-size:12px}
 .csr{display:flex;justify-content:space-between;padding:3px 0;font-size:12px}
 .csr b{font-weight:600}
 
-
 /* ── Editor mode indicator ── */
 .editor-bar{background:#1a6b6b;color:#fff;font-size:11px;padding:5px 14px;
-  display:flex;align-items:center;justify-content:space-between;gap:8px}
+display:flex;align-items:center;justify-content:space-between;gap:8px}
 .editor-bar b{font-weight:700}
 .editor-badge{background:#fff;color:#1a6b6b;border-radius:10px;
-  padding:2px 8px;font-size:10px;font-weight:700}
+padding:2px 8px;font-size:10px;font-weight:700}
 </style>
+
 </head>
 <body>
 
 <div class="hdr">
   <div style="display:flex;justify-content:space-between;align-items:flex-start">
     <div>
-      <h1>Xi++ NZ gogo</h1>
+      <h1>🇳🇿 紐西蘭 2026</h1>
       <p>9/25–10/9 · 南島7晚 + 北島5晚 · 2人</p>
     </div>
     <div id="sync-status" style="font-size:10px;color:#aaa;padding-top:4px;transition:opacity .5s;opacity:0;text-align:right;min-width:60px"></div>
@@ -223,17 +256,20 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 </div>
 
 <!-- ===== ITINERARY ===== -->
+
 <div class="panel on" id="itin">
 
 <!-- Edit toolbar -->
+
 <div class="edit-bar" id="itin-toolbar">
   <button class="eb eb-add" id="add-item-btn">＋ 新增行程</button>
   <button class="eb" id="itin-edit-btn">✏️ 編輯排序</button>
 </div>
 
 <!-- Add item form -->
+
 <div class="add-day-form" id="add-item-form">
-  <div style="font-size:11px;color:var(--stone);margin-bottom:8px;font-weight:600;letter-spacing:.06em;text-transform:uppercase">新增行程項目到哪一天？</div>
+  <div style="font-size:11px;color:var(--stone);margin-bottom:8px;font-weight:600;letter-spacing:.06em;text-transform:uppercase">新增行程項目</div>
   <div class="form-row">
     <div style="flex:0 0 70px">
       <label class="form-label">時間</label>
@@ -259,6 +295,16 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
       <select class="form-input" id="ni-day-select"></select>
     </div>
   </div>
+  <div class="form-row" style="flex-direction:column;gap:4px">
+    <label class="form-label">位置</label>
+    <div class="form-position-picker" id="ni-position-picker">
+      <button type="button" class="form-position-btn on" data-pos="end">加到當天最後</button>
+      <button type="button" class="form-position-btn" data-pos="start">加到當天最前</button>
+      <button type="button" class="form-position-btn" data-pos="after">插在某項之後…</button>
+    </div>
+    <select class="form-input" id="ni-after-select" style="display:none;margin-top:4px"></select>
+    <div class="form-position-preview" id="ni-position-preview" style="display:none"></div>
+  </div>
   <div style="display:flex;gap:6px">
     <button class="eb eb-save">新增</button>
     <button class="eb eb-cancel">取消</button>
@@ -271,7 +317,8 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   <div class="db">
     <div class="item"><div class="it">18:35</div><div class="ii">✈️</div><div class="ic"><div class="in">NZ0078 台北→奧克蘭</div><div class="id">豪華商務艙 · 10h40m · 翌日 09:15 抵奧克蘭 <span class="tag tx">✓ 已訂</span></div></div></div>
     <div class="item"><div class="it">翌日</div><div class="ii">🔄</div><div class="ic"><div class="in">奧克蘭轉機 → NZ0619 11:35 飛皇后鎮</div><div class="id">09:15抵奧克蘭 · 候機2h20m · 13:30抵皇后鎮 <span class="tag tx">✓ 已訂</span></div></div></div>
-  </div>
+      <div class="htl"><div class="hi">✈️</div><div><div class="hn">航班上（機上過夜）</div><div class="hd">台北→奧克蘭 NZ0078</div></div></div>
+</div>
 </div>
 
 <div class="sec">🏔 南島皇后鎮 · 9/26–10/4（8天7晚）</div>
@@ -293,7 +340,8 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
     <div class="item"><div class="it">08:30</div><div class="ii">📸</div><div class="ic"><div class="in">婚紗攝影全天 · NZD $1,800估</div><div class="id"><span class="tag tr">🔴 立即聯絡攝影師</span></div></div></div>
     <div class="item"><div class="it">14:30</div><div class="ii">🐴</div><div class="ic"><div class="in">Lighthorse Adventures 騎馬 · NZD $230/人</div><div class="id"><span class="tag to">⚡ 4–6週前訂</span></div><div class="links"><a class="lnk" href="https://www.lighthorseadventures.com/" target="_blank">官網</a></div></div></div>
     <div class="item"><div class="it">19:30</div><div class="ii">🍽️</div><div class="ic"><div class="in">慶祝晚餐 · Rata</div><div class="links"><a class="lnk" href="https://www.ratadining.co.nz/" target="_blank">訂位</a></div></div></div>
-  </div>
+      <div class="htl"><div class="hi">🏡</div><div><div class="hn">皇后鎮住宿 A（連住）</div><div class="hd">同 9/26 住宿 · 第 2 晚 / 共 6 晚</div></div></div>
+</div>
 </div>
 
 <div class="day" id="day-4">
@@ -302,7 +350,8 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
     <div class="item"><div class="it">06:00</div><div class="ii">🚗</div><div class="ic"><div class="in">自駕米佛峽灣 · 4hr</div><div class="id">途中 Mirror Lakes 停拍 · 帶便當</div></div></div>
     <div class="item"><div class="it">10:30</div><div class="ii">⛴️</div><div class="ic"><div class="in">RealNZ Classic Cruise · NZD $145/人</div><div class="id">2hr · 春雨瀑布最壯觀 · 幾乎不取消 <span class="tag to">⚡ 3–4週前訂</span></div><div class="links"><a class="lnk" href="https://www.realnz.com/en/experiences/day-cruises/milford-sound-classic-cruise/" target="_blank">RealNZ</a></div></div></div>
     <div class="item"><div class="it">19:30</div><div class="ii">🥩</div><div class="ic"><div class="in">晚餐 · Botswana Butchery</div><div class="links"><a class="lnk" href="https://www.botswanabutchery.co.nz/" target="_blank">訂位</a></div></div></div>
-  </div>
+      <div class="htl"><div class="hi">🏡</div><div><div class="hn">皇后鎮住宿 A（連住）</div><div class="hd">同 9/26 住宿 · 第 3 晚 / 共 6 晚</div></div></div>
+</div>
 </div>
 
 <div class="day" id="day-5">
@@ -313,7 +362,8 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
     <div class="item"><div class="it">13:30</div><div class="ii">🧺</div><div class="ic"><div class="in">回住宿洗衣烘乾</div></div></div>
     <div class="item"><div class="it">15:30</div><div class="ii">♨️</div><div class="ic"><div class="in">Onsen Hot Pools · NZD $61+/人</div><div class="id">每天11am–11pm · 俯瞰Shotover Canyon <span class="tag to">⚡ 1–2週前訂</span></div><div class="links"><a class="lnk" href="https://www.onsen.co.nz/" target="_blank">官網</a></div></div></div>
     <div class="item"><div class="it">19:00</div><div class="ii">🍽️</div><div class="ic"><div class="in">晚餐選項</div><div class="id">· The Bunker（當地人推） · Jervois Steak House · Blue Kanu</div></div></div>
-  </div>
+      <div class="htl"><div class="hi">🏡</div><div><div class="hn">皇后鎮住宿 A（連住）</div><div class="hd">同 9/26 住宿 · 第 4 晚 / 共 6 晚</div></div></div>
+</div>
 </div>
 
 <div class="day" id="day-6">
@@ -329,7 +379,8 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
     <div class="item"><div class="it">16:00</div><div class="ii">💙</div><div class="ic"><div class="in">Wanaka 湖畔 Roys Bay 散步</div><div class="id">下午陽光最溫柔 · 買冰淇淋 · 停1小時</div></div></div>
     <div class="item"><div class="it">17:30</div><div class="ii">🚗</div><div class="ic"><div class="in">走 SH6 回皇后鎮（經 Cromwell）</div><div class="id">回程不重複風景 · 經 Lake Dunstan + Kawarau Gorge · 約1.5h</div></div></div>
     <div class="item"><div class="it">19:00</div><div class="ii">🌿</div><div class="ic"><div class="in">晚餐 · Sherwood</div><div class="id">2025 Cuisine 雙帽</div><div class="links"><a class="lnk" href="https://www.sherwoodqueenstown.nz/" target="_blank">訂位</a></div></div></div>
-  </div>
+      <div class="htl"><div class="hi">🏡</div><div><div class="hn">皇后鎮住宿 A（連住）</div><div class="hd">同 9/26 住宿 · 第 5 晚 / 共 6 晚</div></div></div>
+</div>
 </div>
 
 <div class="day" id="day-7">
@@ -338,7 +389,8 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
     <div class="item"><div class="it">上午</div><div class="ii">🏙️</div><div class="ic"><div class="in">皇后鎮市區輕鬆走 · 購物</div></div></div>
     <div class="item"><div class="it">下午</div><div class="ii">🛍️</div><div class="ic"><div class="in">Queenstown Mall · Patagonia · Icebreaker</div></div></div>
     <div class="item"><div class="it">18:00</div><div class="ii">🚢</div><div class="ic"><div class="in">TSS Earnslaw + Walter Peak BBQ · NZD $199/人</div><div class="id">22:00返回 · ✅ 2026保養5/18–6/26，10/1是真蒸汽船 <span class="tag to">⚡ 選Vintage Steamship</span></div><div class="links"><a class="lnk" href="https://www.realnz.com/en/experiences/tss-earnslaw-walter-peak-experiences/walter-peak-gourmet-bbq-dining/" target="_blank">RealNZ</a></div></div></div>
-  </div>
+      <div class="htl"><div class="hi">🏡</div><div><div class="hn">皇后鎮住宿 A（連住）</div><div class="hd">同 9/26 住宿 · 第 6 晚 / 共 6 晚</div></div></div>
+</div>
 </div>
 
 <div class="day" id="day-8">
@@ -392,7 +444,8 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
     <div class="item"><div class="it">14:30</div><div class="ii">✨</div><div class="ic"><div class="in">Waitomo 螢火蟲洞</div><div class="id">45min · 室內洞穴 · 全年不受天氣影響</div></div></div>
     <div class="item"><div class="it">17:30</div><div class="ii">🏙️</div><div class="ic"><div class="in">回到 SkyCity Terminal · 步行回住宿</div></div></div>
     <div class="item"><div class="it">19:30</div><div class="ii">🌿</div><div class="ic"><div class="in">晚餐選項</div><div class="id">· Ahi（紐西蘭在地食材）· Cassia（印度創新）· Queen's Rooftop</div></div></div>
-  </div>
+      <div class="htl"><div class="hi">🏙️</div><div><div class="hn">Queen St 21樓公寓（連住）</div><div class="hd">同 10/4 住宿 · 第 2 晚 / 共 3 晚</div></div></div>
+</div>
 </div>
 
 <div class="day" id="day-12">
@@ -407,7 +460,8 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
     <div class="item"><div class="it">15:30</div><div class="ii">🏖️</div><div class="ic"><div class="in">Onetangi Beach 最美沙灘</div></div></div>
     <div class="item"><div class="it">17:30</div><div class="ii">⛴️</div><div class="ic"><div class="in">渡輪返回奧克蘭（18:10 抵達）</div></div></div>
     <div class="item"><div class="it">19:30</div><div class="ii">🥂</div><div class="ic"><div class="in">告別晚餐 · The French Café</div><div class="id">Symonds St · Uber 10min · 紐西蘭 Top 10 · 需訂位</div><div class="links"><a class="lnk" href="https://thefrenchcafe.co.nz/" target="_blank">訂位</a></div></div></div>
-  </div>
+      <div class="htl"><div class="hi">🏙️</div><div><div class="hn">Queen St 21樓公寓（連住）</div><div class="hd">同 10/4 住宿 · 第 3 晚 / 共 3 晚</div></div></div>
+</div>
 </div>
 
 <div class="day" id="day-13">
@@ -443,12 +497,14 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
     <div class="item"><div class="it">07:30</div><div class="ii">🚶</div><div class="ic"><div class="in">步行3分 → 國際出境 Check in</div></div></div>
     <div class="item"><div class="it">10:40</div><div class="ii">✈️</div><div class="ic"><div class="in">NZ0077 奧克蘭→台北</div><div class="id">豪華經濟艙 · 11h25m <span class="tag tx">✓ 已訂</span></div></div></div>
     <div class="item"><div class="it">17:05</div><div class="ii">🏠</div><div class="ic"><div class="in">抵達桃園 · 回家！</div></div></div>
-  </div>
+      <div class="htl"><div class="hi">✈️</div><div><div class="hn">航班上（機上返程）</div><div class="hd">奧克蘭→台北 NZ0077</div></div></div>
+</div>
 </div>
 
 </div><!-- /itin -->
 
 <!-- ===== MAP ===== -->
+
 <div class="panel" id="map">
   <div id="map-outer">
     <div class="mhdr">
@@ -475,6 +531,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 </div>
 
 <!-- ===== FEASIBILITY ===== -->
+
 <div class="panel" id="feas">
 <div class="alert ar">⚠️ 按緊迫程度排列，紅色現在就要處理！</div>
 
@@ -590,6 +647,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 </div><!-- /feas -->
 
 <!-- ===== BOOKING ===== -->
+
 <div class="panel" id="book">
 <div class="alert ar">⚠️ 點擊方框打勾完成，所有狀態自動同步</div>
 
@@ -599,6 +657,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 <div class="todo" id="todo-container">
 
   <!-- ── 住宿 ── -->
+
   <div class="todo-section-title">🏨 住宿</div>
   <div class="todo-item-row" data-id="t1">
     <div class="todo-cb" data-action="toggle"></div>
@@ -632,6 +691,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 
   <!-- ── 交通 ── -->
+
   <div class="todo-section-title">✈️ 交通</div>
   <div class="todo-item-row" data-id="t7">
     <div class="todo-cb" data-action="toggle"></div>
@@ -670,6 +730,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 
   <!-- ── 活動 ── -->
+
   <div class="todo-section-title">🎡 活動</div>
   <div class="todo-item-row" data-id="t14">
     <div class="todo-cb" data-action="toggle"></div>
@@ -728,6 +789,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 
   <!-- ── 餐廳 ── -->
+
   <div class="todo-section-title">🍽️ 餐廳訂位</div>
   <div class="todo-item-row" data-id="t26">
     <div class="todo-cb" data-action="toggle"></div>
@@ -758,6 +820,7 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 </div><!-- /todo-container -->
 
 <!-- 新增自訂 -->
+
 <div class="todo" style="margin-top:4px">
   <div class="ttit">＋ 新增自訂待辦</div>
   <div class="add-todo-row">
@@ -769,11 +832,13 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 </div><!-- /book -->
 
 <!-- ===== COST ===== -->
+
 <div class="panel" id="cost">
 
 <div class="cost-hint">💡 雙擊金額數字可輸入實際花費，按 Enter 確認</div>
 
 <!-- Live summary -->
+
 <div class="cost-summary-block" id="cost-summary">
   <div class="csr"><span>💰 預算合計</span><b id="cs-budget">TWD $0</b></div>
   <div class="csr"><span>✅ 實際已知</span><b id="cs-actual" style="color:var(--grn)">TWD $0</b></div>
@@ -1131,6 +1196,45 @@ function populateDaySelect() {
                       (dtit  ? dtit.textContent.trim().slice(0,20) : '');
     sel.appendChild(opt);
   });
+  // Whenever the day changes, repopulate the after-item list
+  sel.removeEventListener('change', populateAfterSelect);
+  sel.addEventListener('change', populateAfterSelect);
+  populateAfterSelect();
+}
+
+function populateAfterSelect() {
+  var sel = $id('ni-after-select');
+  var daySel = $id('ni-day-select');
+  if (!sel || !daySel) return;
+  sel.innerHTML = '';
+  var day = document.getElementById(daySel.value);
+  if (!day) return;
+  day.querySelectorAll('.item').forEach(function(item, i) {
+    var t = item.querySelector('.it');
+    var n = item.querySelector('.in');
+    var opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = (t ? t.textContent.trim() : '') + ' · ' +
+                      (n ? n.textContent.trim().slice(0,25) : '第' + (i+1) + '項');
+    sel.appendChild(opt);
+  });
+  updatePositionPreview();
+}
+
+var selectedPosition = 'end';
+function updatePositionPreview() {
+  var preview = $id('ni-position-preview');
+  if (!preview) return;
+  var msg = '';
+  if (selectedPosition === 'end') msg = '→ 新行程會加在當天最後一項';
+  else if (selectedPosition === 'start') msg = '→ 新行程會加在當天最前面';
+  else if (selectedPosition === 'after') {
+    var sel = $id('ni-after-select');
+    var txt = sel && sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].textContent : '';
+    msg = '→ 新行程會插在「' + txt + '」之後';
+  }
+  preview.textContent = msg;
+  preview.style.display = 'block';
 }
 
 function addNewItem() {
@@ -1148,6 +1252,8 @@ function addNewItem() {
     var arr = day.querySelector('.darr');
     if (arr) arr.style.transform = 'rotate(90deg)';
   }
+
+  // Build item
   var item = document.createElement('div');
   item.className = 'item';
   item.innerHTML =
@@ -1158,13 +1264,41 @@ function addNewItem() {
       (desc ? '<div class="id">' + desc + '</div>' : '') +
     '</div>';
   if (itinEditMode) {
+    var mv = document.createElement('span');
+    mv.className = 'item-move';
+    mv.title = '拖曳調整順序';
+    mv.textContent = '⠿';
+    item.insertBefore(mv, item.firstChild);
     var delBtn = document.createElement('button');
-    delBtn.style.cssText = 'margin-left:auto;background:none;border:none;color:#ccc;cursor:pointer;font-size:16px';
+    delBtn.className = 'item-del-btn';
     delBtn.setAttribute('data-action','del-item');
     delBtn.textContent = '×';
     item.appendChild(delBtn);
+    item.setAttribute('draggable','true');
+    item.ondragstart = onItemDragStart;
+    item.ondragover  = onItemDragOver;
+    item.ondrop      = onItemDrop;
+    item.ondragend   = onItemDragEnd;
   }
-  if (db) db.appendChild(item);
+
+  // Position logic
+  if (db) {
+    var items = db.querySelectorAll('.item');
+    if (selectedPosition === 'start' && items.length > 0) {
+      db.insertBefore(item, items[0]);
+    } else if (selectedPosition === 'after' && items.length > 0) {
+      var afterIdx = parseInt(($id('ni-after-select') ? $id('ni-after-select').value : '0')) || 0;
+      var target = items[afterIdx];
+      if (target) db.insertBefore(item, target.nextSibling);
+      else db.appendChild(item);
+    } else {
+      // end (default) — append before hotel badge if exists
+      var htl = db.querySelector('.htl');
+      if (htl) db.insertBefore(item, htl);
+      else db.appendChild(item);
+    }
+  }
+
   item.style.background = '#e8f4ee';
   setTimeout(function(){ item.style.background = ''; }, 1000);
   if ($id('ni-time'))  $id('ni-time').value  = '';
@@ -1172,6 +1306,8 @@ function addNewItem() {
   if ($id('ni-name'))  $id('ni-name').value  = '';
   if ($id('ni-desc'))  $id('ni-desc').value  = '';
   if ($id('ni-name'))  $id('ni-name').focus();
+  // Refresh after-select since item count changed
+  populateAfterSelect();
 }
 
 function toggleItinEdit() {
@@ -1183,6 +1319,8 @@ function toggleItinEdit() {
   btn.textContent = itinEditMode ? '✅ 完成編輯' : '✏️ 編輯排序';
   btn.style.background = itinEditMode ? 'var(--grn)' : '';
   btn.style.color = itinEditMode ? '#fff' : '';
+
+  // ── Each day: add/remove day-level drag handle + del button ──
   document.querySelectorAll('#itin .day').forEach(function(day) {
     var existing = day.querySelector('.day-edit-btns');
     if (itinEditMode && !existing) {
@@ -1190,7 +1328,7 @@ function toggleItinEdit() {
       btns.className = 'day-edit-btns';
       var handle = document.createElement('span');
       handle.className = 'day-move';
-      handle.title = '拖曳排序';
+      handle.title = '拖曳調整天數順序';
       handle.textContent = '⠿';
       var delBtn = document.createElement('button');
       delBtn.className = 'day-del-btn';
@@ -1208,32 +1346,82 @@ function toggleItinEdit() {
     }
     if (itinEditMode) {
       day.setAttribute('draggable','true');
-      day.ondragstart = onDragStart;
-      day.ondragover  = onDragOver;
-      day.ondrop      = onDrop;
-      day.ondragend   = onDragEnd;
+      day.ondragstart = onDayDragStart;
+      day.ondragover  = onDayDragOver;
+      day.ondrop      = onDayDrop;
+      day.ondragend   = onDayDragEnd;
     } else {
       day.removeAttribute('draggable');
       day.ondragstart = day.ondragover = day.ondrop = day.ondragend = null;
     }
   });
+
+  // ── Each item: add/remove item-level drag handle + del button ──
+  document.querySelectorAll('#itin .item').forEach(function(item) {
+    var existingMove = item.querySelector('.item-move');
+    var existingDel  = item.querySelector('.item-del-btn');
+    if (itinEditMode) {
+      if (!existingMove) {
+        var mv = document.createElement('span');
+        mv.className = 'item-move';
+        mv.title = '拖曳調整順序';
+        mv.textContent = '⠿';
+        item.insertBefore(mv, item.firstChild);
+      }
+      if (!existingDel) {
+        var db = document.createElement('button');
+        db.className = 'item-del-btn';
+        db.setAttribute('data-action','del-item');
+        db.title = '刪除此行程';
+        db.textContent = '×';
+        item.appendChild(db);
+      }
+      item.setAttribute('draggable','true');
+      item.ondragstart = onItemDragStart;
+      item.ondragover  = onItemDragOver;
+      item.ondrop      = onItemDrop;
+      item.ondragend   = onItemDragEnd;
+    } else {
+      if (existingMove) existingMove.remove();
+      if (existingDel)  existingDel.remove();
+      item.removeAttribute('draggable');
+      item.ondragstart = item.ondragover = item.ondrop = item.ondragend = null;
+    }
+  });
+
+  // ── Each hotel badge: add/remove edit button ──
+  document.querySelectorAll('#itin .htl').forEach(function(htl) {
+    var existingBtn = htl.querySelector('.htl-edit-btn');
+    if (itinEditMode && !existingBtn) {
+      var btn = document.createElement('button');
+      btn.className = 'htl-edit-btn';
+      btn.setAttribute('data-action','edit-hotel');
+      btn.textContent = '✏️ 編輯';
+      htl.appendChild(btn);
+    } else if (!itinEditMode && existingBtn) {
+      existingBtn.remove();
+    }
+  });
 }
 
-function onDragStart(e) {
+// ── Day-level drag (reorder days) ──
+function onDayDragStart(e) {
   dragSrc = this;
   this.classList.add('dragging');
   e.dataTransfer.effectAllowed = 'move';
+  e.stopPropagation();
 }
-function onDragOver(e) {
+function onDayDragOver(e) {
   e.preventDefault();
+  e.stopPropagation();
   e.dataTransfer.dropEffect = 'move';
   document.querySelectorAll('#itin .day').forEach(function(d){ d.classList.remove('drag-over'); });
   this.classList.add('drag-over');
   return false;
 }
-function onDrop(e) {
+function onDayDrop(e) {
   e.stopPropagation();
-  if (dragSrc && dragSrc !== this) {
+  if (dragSrc && dragSrc !== this && dragSrc.classList.contains('day')) {
     var p = this.parentNode;
     var si = Array.from(p.children).indexOf(dragSrc);
     var ti = Array.from(p.children).indexOf(this);
@@ -1241,11 +1429,54 @@ function onDrop(e) {
   }
   return false;
 }
-function onDragEnd() {
+function onDayDragEnd() {
   this.classList.remove('dragging');
   document.querySelectorAll('#itin .day').forEach(function(d){ d.classList.remove('drag-over'); });
   dragSrc = null;
 }
+
+// ── Item-level drag (reorder within a day OR move between days) ──
+function onItemDragStart(e) {
+  dragSrc = this;
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.stopPropagation();  // don't bubble up to the day
+}
+function onItemDragOver(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('#itin .item').forEach(function(d){ d.classList.remove('drag-over'); });
+  this.classList.add('drag-over');
+  return false;
+}
+function onItemDrop(e) {
+  e.stopPropagation();
+  if (dragSrc && dragSrc !== this && dragSrc.classList.contains('item')) {
+    // Insert dragSrc before or after `this` item within its parent
+    var p = this.parentNode;
+    if (dragSrc.parentNode === p) {
+      var si = Array.from(p.children).indexOf(dragSrc);
+      var ti = Array.from(p.children).indexOf(this);
+      p.insertBefore(dragSrc, si < ti ? this.nextSibling : this);
+    } else {
+      // Move between different days' .db containers
+      p.insertBefore(dragSrc, this.nextSibling);
+    }
+  }
+  return false;
+}
+function onItemDragEnd() {
+  this.classList.remove('dragging');
+  document.querySelectorAll('#itin .item').forEach(function(d){ d.classList.remove('drag-over'); });
+  dragSrc = null;
+}
+
+// ── Compatibility shims (old references) ──
+var onDragStart = onDayDragStart;
+var onDragOver  = onDayDragOver;
+var onDrop      = onDayDrop;
+var onDragEnd   = onDayDragEnd;
 function delDay(btn) {
   if (!confirm('確定要刪除這一天的行程？')) return;
   var day = btn.closest('.day');
@@ -1537,6 +1768,96 @@ function loadState() {
 }
 
 // ── 顯示同步狀態小提示 ──
+// ── Hotel badge inline editing ──
+function startEditHotel(btn) {
+  var htl = btn.closest('.htl');
+  if (!htl) return;
+  var contentDiv = htl.querySelector('.htl > div:not(.hi):not(.htl-edit-btn)') || htl.children[1];
+  if (!contentDiv || contentDiv.querySelector('.htl-input')) return;  // already editing
+
+  // Read current values
+  var hnEl = contentDiv.querySelector('.hn');
+  var hdEl = contentDiv.querySelector('.hd');
+  var hpEl = contentDiv.querySelector('.hp');
+  var hnText = hnEl ? hnEl.textContent.trim() : '';
+  var hdText = hdEl ? hdEl.textContent.trim() : '';
+  // hp may contain HTML (tags). We'll edit plain text; if user had a tag, they can re-add via HTML entities
+  var hpText = hpEl ? hpEl.textContent.trim() : '';
+
+  // Save originals on the badge for cancel
+  htl.setAttribute('data-orig-hn', hnText);
+  htl.setAttribute('data-orig-hd', hdText);
+  htl.setAttribute('data-orig-hp', hpText);
+
+  // Replace with inputs
+  contentDiv.innerHTML =
+    '<input class="htl-input hn-input" placeholder="住宿名稱（含日期/晚數）" value="' + escAttr(hnText) + '">' +
+    '<input class="htl-input hd-input" placeholder="補充說明（選填）" value="' + escAttr(hdText) + '">' +
+    '<input class="htl-input hp-input" placeholder="價格或狀態（例：TWD $5,576 ✅ 已訂）" value="' + escAttr(hpText) + '">' +
+    '<div class="htl-edit-hint">Enter 確認 · Esc 取消</div>';
+
+  var hnInput = contentDiv.querySelector('.hn-input');
+  hnInput.focus();
+  hnInput.select();
+
+  // Hide the edit button while editing
+  var editBtn = htl.querySelector('.htl-edit-btn');
+  if (editBtn) editBtn.style.display = 'none';
+
+  // Bind keyboard
+  contentDiv.querySelectorAll('.htl-input').forEach(function(inp) {
+    inp.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); commitEditHotel(htl); }
+      if (e.key === 'Escape') { e.preventDefault(); cancelEditHotel(htl); }
+    });
+  });
+}
+
+function commitEditHotel(htl) {
+  var contentDiv = htl.querySelector('.htl > div:not(.hi):not(.htl-edit-btn)') || htl.children[1];
+  if (!contentDiv) return;
+  var hn = contentDiv.querySelector('.hn-input');
+  var hd = contentDiv.querySelector('.hd-input');
+  var hp = contentDiv.querySelector('.hp-input');
+  if (!hn) return;
+  var hnVal = hn.value.trim() || '（未命名）';
+  var hdVal = hd ? hd.value.trim() : '';
+  var hpVal = hp ? hp.value.trim() : '';
+  contentDiv.innerHTML =
+    '<div class="hn">' + escHtml(hnVal) + '</div>' +
+    (hdVal ? '<div class="hd">' + escHtml(hdVal) + '</div>' : '') +
+    (hpVal ? '<div class="hp">' + escHtml(hpVal) + '</div>' : '');
+  var editBtn = htl.querySelector('.htl-edit-btn');
+  if (editBtn) editBtn.style.display = '';
+  htl.removeAttribute('data-orig-hn');
+  htl.removeAttribute('data-orig-hd');
+  htl.removeAttribute('data-orig-hp');
+  // Persist: hotel badges are stored inside itinerary DOM, which is not yet synced to Firebase.
+  // For future: could add hotel-specific persistence. For now, the edit stays local.
+  saveState();
+}
+
+function cancelEditHotel(htl) {
+  var contentDiv = htl.querySelector('.htl > div:not(.hi):not(.htl-edit-btn)') || htl.children[1];
+  if (!contentDiv) return;
+  var hn = htl.getAttribute('data-orig-hn') || '';
+  var hd = htl.getAttribute('data-orig-hd') || '';
+  var hp = htl.getAttribute('data-orig-hp') || '';
+  contentDiv.innerHTML =
+    '<div class="hn">' + escHtml(hn) + '</div>' +
+    (hd ? '<div class="hd">' + escHtml(hd) + '</div>' : '') +
+    (hp ? '<div class="hp">' + escHtml(hp) + '</div>' : '');
+  var editBtn = htl.querySelector('.htl-edit-btn');
+  if (editBtn) editBtn.style.display = '';
+}
+
+function escAttr(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 function showSyncStatus(msg) {
   var el = document.getElementById('sync-status');
   if (!el) return;
@@ -1634,16 +1955,40 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ── Itin: delegated del-day click ──
+  // ── Itin: delegated click handlers ──
   var itinEl = $id('itin');
   if (itinEl) {
     itinEl.addEventListener('click', function(e) {
       var btn = e.target.closest('[data-action="del-day"]');
-      if (btn) { e.stopPropagation(); delDay(btn); }
+      if (btn) { e.stopPropagation(); delDay(btn); return; }
       var delItem = e.target.closest('[data-action="del-item"]');
-      if (delItem) { e.stopPropagation(); var item = delItem.closest('.item'); if(item) item.remove(); }
+      if (delItem) {
+        e.stopPropagation();
+        var item = delItem.closest('.item');
+        if (item && confirm('確定要刪除「' + (item.querySelector('.in') ? item.querySelector('.in').textContent.trim() : '此項') + '」嗎？')) item.remove();
+        return;
+      }
+      var editHotel = e.target.closest('[data-action="edit-hotel"]');
+      if (editHotel) { e.stopPropagation(); startEditHotel(editHotel); return; }
     });
   }
+
+  // ── Add-item form: position picker buttons ──
+  var posPicker = $id('ni-position-picker');
+  if (posPicker) {
+    posPicker.addEventListener('click', function(e) {
+      var btn = e.target.closest('.form-position-btn');
+      if (!btn) return;
+      posPicker.querySelectorAll('.form-position-btn').forEach(function(b){ b.classList.remove('on'); });
+      btn.classList.add('on');
+      selectedPosition = btn.getAttribute('data-pos') || 'end';
+      var afterSel = $id('ni-after-select');
+      if (afterSel) afterSel.style.display = selectedPosition === 'after' ? 'block' : 'none';
+      updatePositionPreview();
+    });
+  }
+  var afterSel = $id('ni-after-select');
+  if (afterSel) afterSel.addEventListener('change', updatePositionPreview);
 
   // ── Init ──
   loadState();
@@ -1679,5 +2024,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&callback=gmapsReady&loading=async" async defer></script>
+
 </body>
 </html>
