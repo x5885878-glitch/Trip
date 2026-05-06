@@ -173,7 +173,10 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 .itin-edit-mode .item .ic{cursor:default}
 
 /* ── Hotel badge inline editing ── */
-.htl{position:relative}
+.htl{position:relative;cursor:pointer;transition:background .2s}
+.htl:hover{background:rgba(26,107,107,.03)}
+.htl::after{content:"雙擊編輯";position:absolute;top:4px;right:6px;font-size:9px;color:var(--stone);opacity:0;transition:opacity .2s;pointer-events:none}
+.htl:hover::after{opacity:.5}
 .htl-edit-wrapper{flex:1;min-width:0}
 .htl-input{width:100%;border:1px solid var(--teal);border-radius:4px;padding:4px 6px;font-size:13px;font-family:inherit;background:#fff;margin:1px 0}
 .htl-input.hn-input{font-weight:600}
@@ -787,6 +790,10 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
   </div>
 
   <!-- ── 餐廳 ── -->
+  <!-- ── 美食 ── -->
+  <div class="todo-section-title">🍜 美食</div>
+
+  <!-- ── 餐廳訂位 ── -->
   <div class="todo-section-title">🍽️ 餐廳訂位</div>
   <div class="todo-item-row" data-id="t26">
     <div class="todo-cb" data-action="toggle"></div>
@@ -819,8 +826,16 @@ html,body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--i
 <!-- 新增自訂 -->
 <div class="todo" style="margin-top:4px">
   <div class="ttit">＋ 新增自訂待辦</div>
-  <div class="add-todo-row">
-    <input class="add-todo-input" id="new-todo-input" placeholder="輸入待辦事項...">
+  <div class="add-todo-row" style="flex-wrap:wrap;gap:6px">
+    <input class="add-todo-input" id="new-todo-input" placeholder="輸入待辦事項..." style="flex:1;min-width:0">
+    <select id="new-todo-cat" style="padding:6px 8px;border:1px solid var(--parch);border-radius:6px;font-size:12px;font-family:inherit;color:var(--ink);background:#fff;cursor:pointer">
+      <option value="auto">🤖 自動分類</option>
+      <option value="hotel">🏨 住宿</option>
+      <option value="transport">✈️ 交通</option>
+      <option value="activity">🎡 活動</option>
+      <option value="food">🍜 美食</option>
+      <option value="restaurant">🍽️ 餐廳訂位</option>
+    </select>
     <button class="add-todo-btn">新增</button>
   </div>
 </div>
@@ -945,17 +960,43 @@ document.getElementById('itin').addEventListener('click', function(e){
   if(arr) arr.style.transform = open ? '' : 'rotate(90deg)';
 });
 
-// ── FEAS ACCORDION ─────────────────────────────
-document.getElementById('feas').addEventListener('click', function(e){
-  var fh = e.target.closest('.fh');
-  if(!fh) return;
-  var fb = fh.nextElementSibling;
-  if(!fb || !fb.classList.contains('fb')) return;
-  var open = fb.style.display === 'block';
-  fb.style.display = open ? 'none' : 'block';
-  var fa = fh.querySelector('.fa');
-  if(fa) fa.textContent = open ? '▶' : '▼';
-});
+// ── FEAS ACCORDION + INLINE EDITING ─────────────────
+var feasEl = document.getElementById('feas');
+if (feasEl) {
+  feasEl.addEventListener('click', function(e){
+    var fh = e.target.closest('.fh');
+    if(fh) {
+      var fb = fh.nextElementSibling;
+      if(!fb || !fb.classList.contains('fb')) return;
+      var open = fb.style.display === 'block';
+      fb.style.display = open ? 'none' : 'block';
+      var fa = fh.querySelector('.fa');
+      if(fa) fa.textContent = open ? '▶' : '▼';
+      return;
+    }
+  });
+  // Double-click on feas value to edit
+  feasEl.addEventListener('dblclick', function(e){
+    var fv = e.target.closest('.fv');
+    if (!fv || fv.querySelector('.feas-edit-input')) return;
+    var origText = fv.textContent.trim();
+    fv.setAttribute('data-orig', origText);
+    var input = document.createElement('input');
+    input.className = 'feas-edit-input';
+    input.value = origText;
+    fv.textContent = '';
+    fv.appendChild(input);
+    input.focus();
+    input.select();
+    input.addEventListener('keydown', function(ev) {
+      if (ev.key === 'Enter') { fv.textContent = input.value.trim() || origText; }
+      if (ev.key === 'Escape') { fv.textContent = origText; }
+    });
+    input.addEventListener('blur', function() {
+      if (fv.querySelector('.feas-edit-input')) fv.textContent = input.value.trim() || origText;
+    });
+  });
+}
 
 // ── GOOGLE MAPS ─────────────────────────────────────────────────────
 var GMAP = null;
@@ -1502,9 +1543,32 @@ function delTodo(btn) {
 }
 function addTodo() {
   var input = $id('new-todo-input');
+  var catSelect = $id('new-todo-cat');
   if (!input) return;
   var text = input.value.trim();
   if (!text) return;
+  var category = catSelect ? catSelect.value : 'auto';
+
+  // Auto-detect category if set to 'auto'
+  if (category === 'auto') {
+    var lower = text.toLowerCase();
+    if (/飯店|住宿|hotel|hostel|airbnb|booking|check.?in|退房/.test(lower)) category = 'hotel';
+    else if (/機票|租車|uber|taxi|bus|ferry|渡輪|高鐵|火車|航班|skybus|交通/.test(lower)) category = 'transport';
+    else if (/餐廳|訂位|dinner|lunch|restaurant|cafe|brunch/.test(lower)) category = 'restaurant';
+    else if (/美食|小吃|名物|必吃|伴手禮|甜點|拉麵|壽司|蛋糕|冰淇淋|市場|夜市/.test(lower)) category = 'food';
+    else category = 'activity';
+  }
+
+  // Find the target section title
+  var sectionMap = {
+    hotel: '🏨 住宿',
+    transport: '✈️ 交通',
+    activity: '🎡 活動',
+    food: '🍜 美食',
+    restaurant: '🍽️ 餐廳訂位'
+  };
+  var sectionTitle = sectionMap[category] || '🎡 活動';
+
   var row = document.createElement('div');
   row.className = 'todo-item-row';
   row.setAttribute('data-id', 'custom-' + Date.now());
@@ -1514,7 +1578,7 @@ function addTodo() {
   var tx = document.createElement('div');
   tx.className = 'todo-text';
   tx.setAttribute('data-action','toggle-from-text');
-  tx.textContent = text;
+  tx.innerHTML = '<b>' + escHtml(text) + '</b>';
   var dl = document.createElement('span');
   dl.className = 'todo-del';
   dl.setAttribute('data-action','del-todo');
@@ -1523,9 +1587,37 @@ function addTodo() {
   row.appendChild(cb);
   row.appendChild(tx);
   row.appendChild(dl);
+
+  // Insert into the correct section
   var container = $id('todo-container');
-  if (container) container.appendChild(row);
+  if (container) {
+    var inserted = false;
+    var sections = container.querySelectorAll('.todo-section-title');
+    var targetSection = null;
+    var nextSection = null;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].textContent.trim() === sectionTitle) {
+        targetSection = sections[i];
+        nextSection = (i + 1 < sections.length) ? sections[i + 1] : null;
+        break;
+      }
+    }
+    if (targetSection) {
+      // Insert before the next section title (or at end of container if last section)
+      if (nextSection) {
+        container.insertBefore(row, nextSection);
+      } else {
+        container.appendChild(row);
+      }
+      inserted = true;
+      // Flash highlight
+      row.style.background = 'var(--tl)';
+      setTimeout(function(){ row.style.background = ''; }, 1500);
+    }
+    if (!inserted) container.appendChild(row);
+  }
   input.value = '';
+  if (catSelect) catSelect.value = 'auto';
   updateProgress();
   saveState();
 }
@@ -1803,8 +1895,8 @@ function cancelEditField(el) {
 }
 
 // ── Hotel badge inline editing ──
-function startEditHotel(btn) {
-  var htl = btn.closest('.htl');
+function startEditHotel(btnOrHtl) {
+  var htl = btnOrHtl.classList.contains('htl') ? btnOrHtl : btnOrHtl.closest('.htl');
   if (!htl) return;
   var contentDiv = htl.querySelector('.htl > div:not(.hi):not(.htl-edit-btn)') || htl.children[1];
   if (!contentDiv || contentDiv.querySelector('.htl-input')) return;  // already editing
@@ -1992,6 +2084,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // ── Itin: delegated click handlers ──
   var itinEl = $id('itin');
   if (itinEl) {
+    // Double-click on hotel badge to edit (no edit mode needed)
+    itinEl.addEventListener('dblclick', function(e) {
+      var htl = e.target.closest('.htl');
+      if (htl && !htl.querySelector('.htl-input')) {
+        e.stopPropagation();
+        startEditHotel(htl);
+      }
+    });
     itinEl.addEventListener('click', function(e) {
       var btn = e.target.closest('[data-action="del-day"]');
       if (btn) { e.stopPropagation(); delDay(btn); return; }
