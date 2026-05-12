@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Xi++ 2026/09 紐西蘭 v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e1a; --bg2:#141827; --bg3:#1e2235;
+  --glass:rgba(255,255,255,0.06); --glass2:rgba(255,255,255,0.10); --glass3:rgba(255,255,255,0.15);
+  --txt:#e8e8ec; --txt2:#9ca3af; --txt3:#6b7280;
+  --accent:#2dd4bf; --accent2:#8b5cf6; --warn:#fbbf24; --danger:#f87171; --ok:#34d399;
+  --rad:14px; --rad2:10px; --rad3:6px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--txt);font-family:'Outfit','Noto Sans TC',sans-serif;font-size:14px;line-height:1.5;min-height:100vh;overscroll-behavior-y:none}
+body{padding-bottom:env(safe-area-inset-bottom)}
+button,input,select,textarea{font-family:inherit;color:inherit;background:none;border:none;outline:none}
+a{color:var(--accent);text-decoration:none}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(10,14,26,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--glass);padding:14px 16px 10px}
+.topbar h1{font-size:18px;font-weight:600;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:inline-block;letter-spacing:0.5px}
+.topbar .sub{font-size:11px;color:var(--txt2);margin-top:2px}
+.topbar .badges{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 10px;background:var(--glass);border:1px solid var(--glass2);border-radius:999px;color:var(--txt2)}
+.badge.ok{color:var(--ok);border-color:rgba(52,211,153,0.3)}
+.badge.warn{color:var(--warn);border-color:rgba(251,191,36,0.3)}
+
+/* DAY TABS */
+.day-tabs-wrap{position:sticky;top:60px;z-index:90;background:rgba(10,14,26,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--glass);padding:8px 12px}
+.day-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.day-tabs::-webkit-scrollbar{display:none}
+.day-tab{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 12px;background:var(--glass);border:1px solid var(--glass2);border-radius:var(--rad2);cursor:pointer;transition:all 0.2s;min-width:62px;position:relative;font-family:inherit}
+.day-tab:hover{background:var(--glass2);transform:translateY(-1px)}
+.day-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;box-shadow:0 4px 14px rgba(45,212,191,0.3)}
+.day-tab.active .dt-d{color:#0a0e1a;font-weight:600}
+.day-tab.active .dt-wd{color:rgba(10,14,26,0.7)}
+.dt-d{font-size:13px;font-weight:500;color:var(--txt);letter-spacing:0.3px}
+.dt-wd{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.5px}
+.dt-icon{font-size:14px;margin-bottom:1px;line-height:1}
+
+/* Drag handle on day-tab (edit mode only) */
+.edit-mode .day-tab{cursor:grab}
+.edit-mode .day-tab::after{content:'⠿';position:absolute;top:2px;right:4px;font-size:9px;color:var(--txt3);opacity:0.6}
+.edit-mode .day-tab.dragging{opacity:0.4}
+.edit-mode .day-tab.drag-over{box-shadow:0 0 0 2px var(--accent)}
+
+/* PROGRESS BAR */
+.progress-bar{height:2px;background:var(--glass);position:relative}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width 0.4s ease}
+
+/* DAY PANEL */
+.day-panel{display:none;padding:14px 14px 110px;animation:slideIn 0.3s ease}
+.day-panel.active{display:block}
+@keyframes slideIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+
+.dp-header{margin-bottom:12px}
+.dp-title{font-size:18px;font-weight:600;color:var(--txt);margin-bottom:2px}
+.dp-sub{font-size:12px;color:var(--txt2)}
+
+.dp-toggle{display:flex;gap:0;background:var(--glass);border-radius:var(--rad2);padding:3px;margin:12px 0}
+.dp-btn{flex:1;padding:8px 12px;border-radius:7px;font-size:13px;font-weight:500;color:var(--txt2);cursor:pointer;transition:all 0.2s;background:transparent}
+.dp-btn.active{background:var(--glass2);color:var(--txt)}
+
+/* CARDS */
+.card{position:relative;background:var(--glass);border:1px solid var(--glass2);border-radius:var(--rad);padding:14px;margin-bottom:10px;transition:all 0.2s;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.card:hover{background:var(--glass2);border-color:var(--glass3);transform:translateY(-1px)}
+.card .ct{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.c-time{font-size:16px;font-weight:600;color:var(--accent);min-width:50px;letter-spacing:0.3px}
+.c-icon{font-size:18px;line-height:1}
+.c-name{font-size:14px;font-weight:500;color:var(--txt);flex:1;line-height:1.45}
+.c-desc{font-size:12px;color:var(--txt2);margin-top:4px;line-height:1.5}
+.c-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.c-tag{font-size:10px;padding:2px 8px;background:var(--glass);border:1px solid var(--glass2);border-radius:999px;color:var(--txt2)}
+.c-tag.book{color:var(--warn);border-color:rgba(251,191,36,0.3)}
+.c-tag.done{color:var(--ok);border-color:rgba(52,211,153,0.3)}
+
+/* Quick actions */
+.c-actions{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;padding-top:8px;border-top:1px solid var(--glass)}
+.c-act{font-size:11px;padding:4px 10px;background:var(--glass);border:1px solid var(--glass2);border-radius:999px;color:var(--txt2);cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:3px}
+.c-act:hover{background:var(--glass2);color:var(--txt)}
+
+/* Card details (推薦地點) */
+.card-expand-btn{margin-top:6px;font-size:11px;color:var(--accent);cursor:pointer;display:inline-flex;align-items:center;gap:3px}
+.card-details{display:none;margin-top:8px;padding:10px;background:var(--glass);border-radius:var(--rad3);font-size:12px;color:var(--txt2);line-height:1.7}
+.card-details.show{display:block;animation:slideDown 0.2s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+
+/* Add-between (edit mode only) */
+.card-add-between{display:none;text-align:center;padding:6px;margin:-2px 0;font-size:11px;color:var(--accent);cursor:pointer;border:1px dashed transparent;border-radius:var(--rad3);transition:all 0.15s}
+.edit-mode .card-add-between{display:block;border-color:var(--glass2)}
+.card-add-between:hover{background:var(--glass);border-color:var(--accent)}
+
+/* Hotel card */
+.card-hotel{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(45,212,191,0.05));border-color:rgba(139,92,246,0.2)}
+.card-hotel .ct{align-items:center}
+.hotel-grid{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.h-icon{font-size:22px}
+.h-name{font-size:14px;font-weight:500;color:var(--txt)}
+.h-desc{font-size:11px;color:var(--txt2);margin-top:2px}
+.h-price{font-size:13px;color:var(--accent);font-weight:500;text-align:right;white-space:nowrap}
+
+/* EDIT MODE indicators */
+.edit-mode .card{padding-right:36px}
+.edit-mode .card .c-time,.edit-mode .card .c-name,.edit-mode .card .c-desc,.edit-mode .card .h-name,.edit-mode .card .h-desc,.edit-mode .card .h-price{cursor:text;border-radius:4px}
+.edit-mode .card .c-time:hover,.edit-mode .card .c-name:hover,.edit-mode .card .c-desc:hover,.edit-mode .card .h-name:hover,.edit-mode .card .h-desc:hover,.edit-mode .card .h-price:hover{background:var(--glass2);outline:1px solid var(--accent)}
+.edit-input{width:100%;padding:4px 6px;background:var(--bg2);border:1px solid var(--accent);border-radius:4px;color:var(--txt);font-size:inherit;font-family:inherit}
+
+.card-drag-handle{display:none;position:absolute;left:6px;top:50%;transform:translateY(-50%);color:var(--txt3);font-size:12px;cursor:grab;user-select:none}
+.edit-mode .card .card-drag-handle{display:block}
+.edit-mode .card{padding-left:28px}
+.card.dragging{opacity:0.4}
+.card.drag-over{box-shadow:0 0 0 2px var(--accent)}
+
+.card-del{display:none;position:absolute;right:8px;top:8px;width:24px;height:24px;background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);border-radius:50%;color:var(--danger);font-size:14px;line-height:22px;text-align:center;cursor:pointer;transition:all 0.15s}
+.edit-mode .card-del{display:block}
+.card-del:hover{background:var(--danger);color:#fff}
+
+/* Map container */
+.dp-map{display:none;border-radius:var(--rad);overflow:hidden;border:1px solid var(--glass2);height:60vh;min-height:400px;margin-top:8px;position:relative;background:var(--bg2)}
+.dp-map.active{display:block}
+.dp-map-inner{width:100%;height:100%}
+.dp-itin.hidden{display:none}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:100;background:rgba(10,14,26,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--glass);display:flex;padding:6px 8px calc(8px + env(safe-area-inset-bottom))}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;cursor:pointer;border-radius:var(--rad3);color:var(--txt3);transition:all 0.15s;background:none;border:none;font-family:inherit}
+.bnav-btn.active{color:var(--accent)}
+.bnav-btn:hover{color:var(--txt2)}
+.bnav-btn.active:hover{color:var(--accent)}
+.bnav-icon{font-size:18px;line-height:1}
+.bnav-label{font-size:10px;font-weight:500;letter-spacing:0.3px}
+
+/* BOTTOM SHEETS */
+.sheet-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.sheet-overlay.show{display:block;animation:fadeIn 0.2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:201;background:var(--bg2);border-top-left-radius:20px;border-top-right-radius:20px;max-height:85vh;display:none;flex-direction:column;animation:slideUp 0.3s cubic-bezier(0.2,0.8,0.2,1)}
+.sheet.show{display:flex}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet-handle{width:36px;height:4px;background:var(--glass3);border-radius:2px;margin:8px auto 4px;flex-shrink:0}
+.sheet-header{padding:6px 18px 12px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-bottom:1px solid var(--glass)}
+.sheet-title{font-size:16px;font-weight:600;color:var(--txt)}
+.sheet-close{font-size:20px;color:var(--txt2);cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px}
+.sheet-close:hover{background:var(--glass)}
+.sheet-body{flex:1;overflow-y:auto;padding:14px 18px calc(18px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+
+/* BOOKING SHEET */
+.bs-section{margin-bottom:14px}
+.bs-section-title{font-size:13px;font-weight:600;color:var(--txt2);margin-bottom:6px;padding-left:2px}
+.bs-todo{display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--glass);border:1px solid var(--glass);border-radius:var(--rad2);margin-bottom:6px;cursor:pointer;transition:all 0.15s}
+.bs-todo:hover{background:var(--glass2)}
+.bs-todo-cb{width:18px;height:18px;border-radius:4px;border:2px solid var(--txt3);flex-shrink:0;margin-top:1px;transition:all 0.15s;display:flex;align-items:center;justify-content:center;font-size:12px;color:#0a0e1a}
+.bs-todo.done .bs-todo-cb{background:var(--accent);border-color:var(--accent)}
+.bs-todo.done .bs-todo-cb::after{content:'✓'}
+.bs-todo-text{flex:1;font-size:13px;color:var(--txt);line-height:1.45}
+.bs-todo.done .bs-todo-text{color:var(--txt3);text-decoration:line-through}
+.bs-todo-text b{font-weight:500;color:var(--txt)}
+.bs-todo.done .bs-todo-text b{color:var(--txt3)}
+.bs-todo-del{display:none;color:var(--danger);font-size:14px;cursor:pointer;padding:0 4px}
+.edit-mode .bs-todo .bs-todo-del{display:block}
+
+/* Add new todo (smart categorization) */
+.bs-add-row{margin-top:10px;padding:10px;background:var(--glass);border-radius:var(--rad2);border:1px dashed var(--glass3)}
+.bs-add-row input,.bs-add-row select{background:var(--bg);border:1px solid var(--glass2);border-radius:6px;padding:8px 10px;color:var(--txt);font-size:13px;width:100%}
+.bs-add-row .row{display:flex;gap:6px;margin-bottom:6px}
+.bs-add-row select{flex:0 0 100px}
+.bs-add-row input{flex:1}
+.bs-add-btn{margin-top:4px;width:100%;padding:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0e1a;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
+
+/* COST SHEET */
+.cs-group{margin-bottom:14px}
+.cs-group-title{font-size:13px;font-weight:600;color:var(--txt2);margin-bottom:6px;padding-left:2px}
+.cs-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--glass);border-radius:var(--rad3);margin-bottom:4px;font-size:13px}
+.cs-row .cl{flex:1;color:var(--txt);padding-right:8px}
+.cs-row .csub{display:block;font-size:11px;color:var(--txt3);margin-top:2px}
+.cs-row .am{color:var(--accent);font-weight:500;font-variant-numeric:tabular-nums;cursor:pointer;padding:2px 4px;border-radius:4px;white-space:nowrap}
+.cs-row .am.has-actual{color:var(--ok);font-weight:600}
+.cs-row .am:hover{background:var(--glass2)}
+.cs-row .am.editing{outline:1px solid var(--accent);background:var(--bg)}
+.cs-sub{display:flex;justify-content:space-between;padding:8px 10px;background:var(--glass2);border-radius:var(--rad3);margin-bottom:4px;font-size:13px;font-weight:600;color:var(--txt)}
+.cs-sub .am{color:var(--accent)}
+.cs-grand{display:flex;justify-content:space-between;align-items:center;padding:14px;background:linear-gradient(135deg,rgba(45,212,191,0.1),rgba(139,92,246,0.1));border:1px solid var(--accent);border-radius:var(--rad);margin-top:12px;font-size:15px;font-weight:600}
+.cs-grand .am{color:var(--accent);font-size:18px;font-variant-numeric:tabular-nums}
+.cs-summary{display:flex;gap:10px;margin-bottom:14px}
+.cs-summary-card{flex:1;padding:10px;background:var(--glass);border-radius:var(--rad2);text-align:center}
+.cs-summary-card .label{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.cs-summary-card .value{font-size:15px;font-weight:600;color:var(--txt);font-variant-numeric:tabular-nums}
+
+.cost-hint{font-size:11px;color:var(--txt3);text-align:center;padding:6px;background:var(--glass);border-radius:6px;margin-bottom:10px}
+
+/* SYNC BADGE */
+.sync-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--txt3);margin-left:6px}
+.sync-badge.syncing{color:var(--warn)}
+.sync-badge.ok{color:var(--ok)}
+.sync-badge.err{color:var(--danger)}
+
+/* EDIT MODE banner */
+.edit-banner{display:none;position:sticky;top:0;z-index:120;background:var(--warn);color:#0a0e1a;padding:6px 14px;font-size:11px;font-weight:500;text-align:center}
+.edit-mode .edit-banner{display:block}
+
+/* TOAST */
+.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--bg3);color:var(--txt);padding:10px 18px;border-radius:999px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,0.4);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+</style>
+</head>
+<body>
+
+<div class="edit-banner">✏️ 編輯模式 — 拖曳卡片重排 · 點擊文字修改 · 長按 day tab 刪整天</div>
+
+<header class="topbar">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+    <div>
+      <h1>🌙 Xi++ 2026/09 紐西蘭</h1>
+      <div class="sub">9/25–10/9 · 南島7晚 + 北島5晚 · 2人</div>
+    </div>
+    <span class="sync-badge" id="sync-badge"><span id="sync-dot">○</span> <span id="sync-text">待同步</span></span>
+  </div>
+  <div class="badges">
+    <span class="badge">🔒 私隱</span>
+    <span class="badge">👥 2名</span>
+    <span class="badge ok">✈️ NZ0078/77</span>
+  </div>
+</header>
+
+<div class="day-tabs-wrap">
+  <div class="day-tabs" id="day-tabs"></div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+<main id="panels-container">
+  <!-- day panels render here -->
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bnav-btn active" data-nav="itin">
+    <span class="bnav-icon">🗓</span>
+    <span class="bnav-label">行程</span>
+  </button>
+  <button class="bnav-btn" data-nav="book">
+    <span class="bnav-icon">🎫</span>
+    <span class="bnav-label">訂票</span>
+  </button>
+  <button class="bnav-btn" data-nav="cost">
+    <span class="bnav-icon">💰</span>
+    <span class="bnav-label">費用</span>
+  </button>
+  <button class="bnav-btn" data-nav="edit">
+    <span class="bnav-icon">✏️</span>
+    <span class="bnav-label">編輯</span>
+  </button>
+</nav>
+
+<!-- BOOKING SHEET -->
+<div class="sheet-overlay" id="ov-book" data-close></div>
+<div class="sheet" id="sh-book">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-title">🎫 訂票清單 <span style="font-size:11px;color:var(--txt3);font-weight:400" id="book-progress">0/29</span></div>
+    <div class="sheet-close" data-close>✕</div>
+  </div>
+  <div class="sheet-body" id="book-list">
+    <!-- booking sections render here -->
+  </div>
+</div>
+
+<!-- COST SHEET -->
+<div class="sheet-overlay" id="ov-cost" data-close></div>
+<div class="sheet" id="sh-cost">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-title">💰 費用估算</div>
+    <div class="sheet-close" data-close>✕</div>
+  </div>
+  <div class="sheet-body" id="cost-list">
+    <!-- cost groups render here -->
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+
+<script>
+var TRIP_DATA = [
+  {
+    id:"day-1",
+    date:"9/25 五",
+    title:"台北出發",
+    items:[
+      {time:"18:35",icon:"✈️",name:"NZ0078 台北→奧克蘭",desc:""},
+      {time:"翌日",icon:"🔄",name:"奧克蘭轉機 → NZ0619 11:35 飛皇后鎮",desc:""}
+    ],
+    hotel:{icon:"✈️",name:"航班上（機上過夜）",desc:"",price:""}
+  },
+  {
+    id:"day-2",
+    date:"9/26 六",
+    title:"抵達皇后鎮 · Skyline纜車",
+    items:[
+      {time:"13:30",icon:"🛬",name:"",desc:""},
+      {time:"16:30",icon:"🚡",name:"Skyline Gondola + Luge",desc:""},
+      {time:"19:00",icon:"🍔",name:"晚餐 · Fergburger",desc:""}
+    ],
+    hotel:{icon:"🏡",name:"皇后鎮住宿（9/26–10/2 · 6晚）",desc:"三選一候選：美景酒店 / Whakatipu Bliss / 大漾閣別墅",price:""}
+  },
+  {
+    id:"day-3",
+    date:"9/27 日",
+    title:"📸 格林諾奇婚紗攝影 + 騎馬",
+    items:[
+      {time:"07:30",icon:"🚗",name:"自駕格林諾奇 · 45min",desc:""},
+      {time:"08:30",icon:"📸",name:"婚紗攝影全天 · NZD $1,800估",desc:""},
+      {time:"14:30",icon:"🐴",name:"Lighthorse Adventures 騎馬 · NZD $230/人",desc:""},
+      {time:"19:30",icon:"🍽️",name:"慶祝晚餐 · Rata",desc:""}
+    ],
+    hotel:{icon:"🏡",name:"皇后鎮住宿 A（連住）",desc:"",price:""}
+  },
+  {
+    id:"day-4",
+    date:"9/28 一",
+    title:"⛴️ 米佛峽灣全天",
+    items:[
+      {time:"06:00",icon:"🚗",name:"自駕米佛峽灣 · 4hr",desc:""},
+      {time:"10:30",icon:"⛴️",name:"RealNZ Classic Cruise · NZD $145/人",desc:""},
+      {time:"19:30",icon:"🥩",name:"晚餐 · Botswana Butchery",desc:""}
+    ],
+    hotel:{icon:"🏡",name:"皇后鎮住宿 A（連住）",desc:"",price:""}
+  },
+  {
+    id:"day-5",
+    date:"9/29 二",
+    title:"♨️ Deer Park + Moke Lake + 溫泉",
+    items:[
+      {time:"09:00",icon:"🦌",name:"Deer Park Heights · NZD $20/人",desc:""},
+      {time:"11:30",icon:"🏞️",name:"Moke Lake · 免費",desc:""},
+      {time:"13:30",icon:"🧺",name:"",desc:""},
+      {time:"15:30",icon:"♨️",name:"Onsen Hot Pools · NZD $61+/人",desc:""},
+      {time:"19:00",icon:"🍽️",name:"晚餐選項",desc:""}
+    ],
+    hotel:{icon:"🏡",name:"皇后鎮住宿 A（連住）",desc:"",price:""}
+  },
+  {
+    id:"day-6",
+    date:"9/30 三",
+    title:"🌸 Wanaka 一日遊 · Cardrona + 孤獨樹 + 鮭魚養殖場",
+    items:[
+      {time:"09:00",icon:"🚗",name:"皇后鎮出發 · 走 Crown Range Road 最美路線",desc:""},
+      {time:"09:45",icon:"📸",name:"Crown Range Summit Lookout",desc:""},
+      {time:"10:15",icon:"🏚",name:"Cardrona Hotel（1863年）",desc:"紐西蘭最古老酒店之一 · 淘金時代遺跡 · 最多人拍照的酒吧 · 咖啡 + 花園拍照 · 停30分鐘"},
+      {time:"11:30",icon:"🌳",name:"#ThatWanakaTree 孤獨的樹",desc:""},
+      {time:"12:15",icon:"🍽️",name:"Hook Wanaka 鮭魚養殖場午餐 ⭐",desc:"11:00–19:00 · Lake to Plate · Sashimi + Pizza + 葡萄酒 · 49 Monteith Road, Albert Town · 可自釣 NZD $10"},
+      {time:"14:00",icon:"🍇",name:"Rippon Vineyard 酒莊湖景",desc:""},
+      {time:"14:45",icon:"🏞",name:"Lake Hawea Lookout",desc:""},
+      {time:"16:00",icon:"💙",name:"Wanaka 湖畔 Roys Bay 散步",desc:""},
+      {time:"17:30",icon:"🚗",name:"走 SH6 回皇后鎮（經 Cromwell）",desc:""},
+      {time:"19:00",icon:"🌿",name:"晚餐 · Sherwood",desc:"2025 Cuisine 雙帽"}
+    ],
+    hotel:{icon:"🏡",name:"皇后鎮住宿 A（連住）",desc:"",price:""}
+  },
+  {
+    id:"day-7",
+    date:"10/1 四",
+    title:"🚢 TSS Earnslaw + Walter Peak 農場晚宴",
+    items:[
+      {time:"上午",icon:"🏙️",name:"",desc:""},
+      {time:"下午",icon:"🛍️",name:"",desc:""},
+      {time:"18:00",icon:"🚢",name:"TSS Earnslaw + Walter Peak BBQ · NZD $199/人",desc:""}
+    ],
+    hotel:{icon:"🏡",name:"皇后鎮住宿 A（連住）",desc:"",price:""}
+  },
+  {
+    id:"day-8",
+    date:"10/2 五",
+    title:"🚁 庫克山直升機 → Pukaki湖 → 蒂卡波觀星⭐",
+    items:[
+      {time:"07:00",icon:"🚗",name:"退房皇后鎮住宿 · 自駕庫克山 · 3.5hr",desc:""},
+      {time:"10:00",icon:"💙",name:"Peter's Lookout · Pukaki 湖觀景點（去程）",desc:""},
+      {time:"11:00",icon:"🚁",name:"塔斯曼冰川直升機 · TWD $36,564（2人）",desc:""},
+      {time:"12:30",icon:"🥗",name:"",desc:""},
+      {time:"14:00",icon:"📸",name:"回程再拍 Pukaki 湖（不同角度）",desc:""},
+      {time:"16:00",icon:"💒",name:"",desc:""},
+      {time:"18:30",icon:"🍽️",name:"蒂卡波晚餐（Kohan / Astro Cafe）",desc:""},
+      {time:"21:45",icon:"⭐",name:"Summit Experience (普通話) · NZD $139×2 = $278",desc:""}
+    ],
+    hotel:{icon:"🌌",name:"蒂卡波住宿（10/2–10/3 · 1晚）",desc:"三選一候選：Lot 7 / 特卡波湖景酒店 / Lakes Edge Holiday Park",price:""}
+  },
+  {
+    id:"day-9",
+    date:"10/3 六",
+    title:"🌅 蒂卡波晨光 → 皇后鎮 → Lake Hayes + 箭鎮",
+    items:[
+      {time:"07:30",icon:"☀️",name:"",desc:""},
+      {time:"09:30",icon:"🚗",name:"退房 · 自駕返回皇后鎮 · 2.5hr",desc:""},
+      {time:"12:30",icon:"🏨",name:"皇后鎮 check in 放行李",desc:""},
+      {time:"13:30",icon:"🌸",name:"Lake Hayes 環湖步道 · 免費 · 2hr",desc:""},
+      {time:"16:00",icon:"🏘️",name:"箭鎮歷史街區",desc:""},
+      {time:"19:00",icon:"🍽️",name:"晚餐選項",desc:""}
+    ],
+    hotel:{icon:"🏡",name:"皇后鎮住宿（10/3–10/4 · 1晚）",desc:"建議：延訂同一間住宿連住",price:""}
+  },
+  {
+    id:"day-10",
+    date:"10/4 日",
+    title:"✈️ 南島退房 → 飛奧克蘭 → Mt Eden",
+    items:[
+      {time:"早上",icon:"☕",name:"",desc:""},
+      {time:"13:05",icon:"✈️",name:"NZ0620 皇后鎮→奧克蘭",desc:""},
+      {time:"15:30",icon:"🚕",name:"",desc:""},
+      {time:"16:30",icon:"🌋",name:"Uber 到 Mt Eden 火山口 · 免費",desc:""},
+      {time:"19:00",icon:"🦞",name:"晚餐 · Depot",desc:""}
+    ],
+    hotel:{icon:"🏙️",name:"Queen St 21樓公寓（10/4–10/7 · 3晚）",desc:"市中心 · 免費停車 · 21樓景觀 · ⚠️ 需改訂日期",price:""}
+  },
+  {
+    id:"day-11",
+    date:"10/5 日",
+    title:"🧙 Hobbiton + ✨ Waitomo 一日團",
+    items:[
+      {time:"06:30",icon:"☕",name:"早餐 + 步行到 SkyCity Bus Terminal",desc:""},
+      {time:"07:15",icon:"🚌",name:"Hobbiton + Waitomo 一日團出發",desc:""},
+      {time:"09:30",icon:"🧙",name:"Hobbiton Movie Set 哈比村導覽",desc:""},
+      {time:"14:30",icon:"✨",name:"Waitomo 螢火蟲洞",desc:""},
+      {time:"17:30",icon:"🏙️",name:"",desc:""},
+      {time:"19:30",icon:"🌿",name:"晚餐選項",desc:""}
+    ],
+    hotel:{icon:"🏙️",name:"Queen St 21樓公寓（連住）",desc:"",price:""}
+  },
+  {
+    id:"day-12",
+    date:"10/6 一",
+    title:"⛴️ Waiheke Island 一日遊 + French Café 告別晚餐",
+    items:[
+      {time:"08:30",icon:"🚶",name:"步行到 Downtown Ferry Terminal",desc:""},
+      {time:"08:45",icon:"🎫",name:"Fullers360 售票處換票",desc:""},
+      {time:"09:00",icon:"⛴️",name:"渡輪 → Waiheke（40min）· 含 Hop-On Hop-Off 巴士套票",desc:""},
+      {time:"10:00",icon:"🚌",name:"Hop-On Hop-Off 環島巴士（1.5hr 完整一圈先聽導覽）",desc:""},
+      {time:"12:30",icon:"🍽️",name:"午餐 · Mudbrick Vineyard",desc:"山頂俯瞰 Hauraki Gulf · 需訂位"},
+      {time:"14:30",icon:"🎨",name:"",desc:""},
+      {time:"15:30",icon:"🏖️",name:"",desc:""},
+      {time:"17:30",icon:"⛴️",name:"",desc:""},
+      {time:"19:30",icon:"🥂",name:"告別晚餐 · The French Café",desc:"Symonds St · Uber 10min · 紐西蘭 Top 10 · 需訂位"}
+    ],
+    hotel:{icon:"🏙️",name:"Queen St 21樓公寓（連住）",desc:"",price:""}
+  },
+  {
+    id:"day-13",
+    date:"10/7 二",
+    title:"🚗 取車 → Rotorua 溫泉 + Mitai 毛利晚宴",
+    items:[
+      {time:"08:00",icon:"☕",name:"",desc:""},
+      {time:"08:30",icon:"🚗",name:"取北島租車 · 出發 Rotorua · 3hr",desc:""},
+      {time:"11:30",icon:"🏨",name:"Millennium Hotel 寄放行李（未到 check-in 時間）",desc:""},
+      {time:"12:00",icon:"♨️",name:"Polynesian Spa 溫泉",desc:"NZD $40+/人 · 3小時泡湯+午餐 · 湖景溫泉世界級"},
+      {time:"15:00",icon:"🏨",name:"",desc:""},
+      {time:"17:30",icon:"🌿",name:"Mitai Māori Village · NZD $169/人",desc:""}
+    ],
+    hotel:{icon:"🌋",name:"Millennium Hotel Rotorua（10/7–10/8 · 1晚）",desc:"市中心五星 · 免費停車 · ⚠️ 需改訂日期",price:""}
+  },
+  {
+    id:"day-14",
+    date:"10/8 三",
+    title:"🌋 Wai-O-Tapu 香檳池 → 還車 → Pullman",
+    items:[
+      {time:"08:30",icon:"☕",name:"",desc:""},
+      {time:"09:30",icon:"🌋",name:"Wai-O-Tapu Thermal Wonderland",desc:""},
+      {time:"12:30",icon:"🍽️",name:"Rotorua 午餐",desc:""},
+      {time:"14:00",icon:"🚗",name:"Rotorua → 奧克蘭機場 · 3hr",desc:""},
+      {time:"17:30",icon:"🔑",name:"",desc:""},
+      {time:"18:00",icon:"✈️",name:"Pullman Auckland Airport check in",desc:""},
+      {time:"19:30",icon:"🍽️",name:"晚餐 · Pullman 飯店 Grain Store",desc:""}
+    ],
+    hotel:{icon:"✈️",name:"Pullman Auckland Airport（10/8–10/9 · 1晚）",desc:"機場內 · 步行3分到國際出境",price:""}
+  },
+  {
+    id:"day-15",
+    date:"10/9 五",
+    title:"✈️ 回台灣",
+    items:[
+      {time:"07:30",icon:"🚶",name:"",desc:""},
+      {time:"10:40",icon:"✈️",name:"NZ0077 奧克蘭→台北",desc:""},
+      {time:"17:05",icon:"🏠",name:"",desc:""}
+    ],
+    hotel:{icon:"✈️",name:"航班上（機上返程）",desc:"",price:""}
+  },
+];
+var PLACES = [
+  // South Island – Hotels
+  {n:'皇后鎮住宿 A',              lat:-45.031, lng:168.663, type:'hotel', r:'south', d:'9/26–10/2', x:'皇后鎮 · 6晚 · 3選1候選'},
+  {n:'蒂卡波住宿',                lat:-44.004, lng:170.480, type:'hotel', r:'south', d:'10/2–10/3', x:'蒂卡波 · 1晚 · 3選1候選'},
+  {n:'皇后鎮住宿 B',              lat:-45.020, lng:168.700, type:'hotel', r:'south', d:'10/3–10/4', x:'皇后鎮 · 1晚 · 建議延訂同家'},
+  // South Island – Activities
+  {n:'Skyline Gondola',         lat:-45.027, lng:168.655, type:'act',   r:'south', d:'9/26',      x:"Bob's Peak全景纜車 · NZD $80/人"},
+  {n:'格林諾奇',                 lat:-44.860, lng:168.380, type:'act',   r:'south', d:'9/27',      x:'婚紗攝影全天 + Lighthorse騎馬'},
+  {n:'米佛峽灣 Milford Sound',   lat:-44.674, lng:167.924, type:'act',   r:'south', d:'9/28',      x:'RealNZ Classic Cruise · NZD $145/人'},
+  {n:'Deer Park Heights',       lat:-45.017, lng:168.717, type:'act',   r:'south', d:'9/29 上午', x:'魔戒洛汗國取景地 · NZD $20/人'},
+  {n:'Onsen Hot Pools',         lat:-45.006, lng:168.708, type:'act',   r:'south', d:'9/29 下午', x:'私人溫泉 · 俯瞰Shotover · NZD $61+/人'},
+  // Wanaka day trip (9/30)
+  {n:'Crown Range Summit',      lat:-44.933, lng:168.923, type:'act',   r:'south', d:'9/30 上午', x:'紐西蘭最高公路 1121m · 制高點'},
+  {n:'Cardrona Hotel',          lat:-44.867, lng:168.950, type:'act',   r:'south', d:'9/30 上午', x:'1863年百年酒店 · 淘金時代遺跡'},
+  {n:'#ThatWanakaTree',         lat:-44.700, lng:169.131, type:'act',   r:'south', d:'9/30 中午', x:'孤獨的樹 · 紐西蘭最有名的樹'},
+  {n:'Hook Wanaka 鮭魚養殖場',   lat:-44.680, lng:169.180, type:'act',   r:'south', d:'9/30 午餐', x:'Lake to Plate · 自釣自吃 · 11:00-19:00'},
+  {n:'Rippon Vineyard',         lat:-44.700, lng:169.115, type:'act',   r:'south', d:'9/30 下午', x:'免費湖景葡萄園 · 純拍照 · 30分鐘'},
+  {n:'Lake Hawea Lookout',      lat:-44.630, lng:169.249, type:'act',   r:'south', d:'9/30 下午', x:'比 Wanaka 更藍更原始的湖'},
+  // Mt Cook + Pukaki (10/2)
+  {n:"Peter's Lookout (Pukaki)",lat:-44.100, lng:170.170, type:'act',   r:'south', d:'10/2',      x:'Pukaki 湖+庫克山經典全景'},
+  {n:'庫克山 Mt Cook',           lat:-43.735, lng:170.099, type:'act',   r:'south', d:'10/2',      x:'塔斯曼冰川直升機 · TWD $36,564（已訂）'},
+  {n:'善牧教堂 Lake Tekapo',     lat:-44.006, lng:170.475, type:'act',   r:'south', d:'10/2–10/3', x:'Summit Experience (普通話) 9:45 PM'},
+  // TSS + Lake Hayes
+  {n:'TSS Earnslaw 碼頭',       lat:-45.035, lng:168.661, type:'act',   r:'south', d:'10/1',      x:'百年蒸汽船 + Walter Peak BBQ · NZD $199/人'},
+  {n:'Lake Hayes',              lat:-45.033, lng:168.783, type:'act',   r:'south', d:'10/3',      x:'環湖步道 · 春季櫻花倒影'},
+  {n:'箭鎮 Arrowtown',          lat:-44.950, lng:168.817, type:'act',   r:'south', d:'10/3',      x:'歷史街區 · 春季櫻花大道'},
+  // North Island – Hotels
+  {n:'Queen St 21樓公寓',       lat:-36.849, lng:174.766, type:'hotel', r:'north', d:'10/4–10/7', x:'奧克蘭市中心 · 3晚'},
+  {n:'Millennium Rotorua',      lat:-38.137, lng:176.250, type:'hotel', r:'north', d:'10/7–10/8', x:'Rotorua 市中心 · 1晚'},
+  {n:'Pullman Auckland Airport',lat:-37.008, lng:174.785, type:'hotel', r:'north', d:'10/8–10/9', x:'機場內 · 步行3分到國際出境'},
+  // North Island – Activities
+  {n:'Mt Eden 伊甸山',           lat:-36.878, lng:174.763, type:'act',   r:'north', d:'10/4',      x:'火山口全景 · 奧克蘭制高點'},
+  {n:'Hobbiton 哈比村',          lat:-37.872, lng:175.684, type:'act',   r:'north', d:'10/5',      x:'一日團 · SkyCity 7:15 出發'},
+  {n:'Waitomo 螢火蟲洞',         lat:-38.260, lng:175.106, type:'act',   r:'north', d:'10/5',      x:'一日團下午場 · 室內洞穴'},
+  {n:'Waiheke Island',          lat:-36.797, lng:175.081, type:'act',   r:'north', d:'10/6',      x:'渡輪一日遊 · Mudbrick + Oneroa'},
+  {n:'Polynesian Spa',          lat:-38.141, lng:176.258, type:'act',   r:'north', d:'10/7',      x:'Rotorua 湖畔溫泉'},
+  {n:'Mitai Māori Village',     lat:-38.105, lng:176.232, type:'act',   r:'north', d:'10/7',      x:'毛利晚宴+Haka · NZD $169/人'},
+  {n:'Wai-O-Tapu',              lat:-38.356, lng:176.366, type:'act',   r:'north', d:'10/8',      x:'香檳池+地熱奇觀 · NZD $40/人'},
+];
+var BOOKING_DATA = [
+  {section:"🏨 住宿",cat:"hotel",items:[
+    {id:"t1",text:"選定皇后鎮住宿（9/26–10/2 · 6晚）候選：美景酒店 / Whakatipu Bliss / 大漾閣別墅",done:false},
+    {id:"t2",text:"選定蒂卡波住宿（10/2–10/3 · 1晚）候選：Lot 7 / 特卡波湖景 / Lakes Edge",done:false},
+    {id:"t3",text:"皇后鎮住宿延訂（10/3–10/4 · 1晚）建議延訂同一家",done:false},
+    {id:"t4",text:"Queen St 21樓公寓改訂日期（10/4–10/7 · 3晚）原訂 10/7–10/9，需改成 10/4–10/7",done:false},
+    {id:"t5",text:"Millennium Hotel Rotorua 改訂日期（10/7–10/8 · 1晚）原訂 10/5–10/6 或 10/6–10/7，需改",done:false},
+    {id:"t6",text:"Pullman Auckland Airport（10/8–10/9 · 1晚）✅ 已改訂確認 · TWD $5,576",done:true},
+  ]},
+  {section:"✈️ 交通",cat:"transport",items:[
+    {id:"t7",text:"NZ0078 台北→奧克蘭（9/25 18:35）豪華商務艙✅ 已訂",done:true},
+    {id:"t8",text:"NZ0619 奧克蘭→皇后鎮（9/26 11:35）✅ 已訂",done:true},
+    {id:"t9",text:"NZ0620 皇后鎮→奧克蘭（10/4 13:05）✅ 已訂",done:true},
+    {id:"t10",text:"NZ0077 奧克蘭→台北（10/9 10:40）豪華經濟艙✅ 已訂",done:true},
+    {id:"t11",text:"南島租車（9/26取・10/4還・8天）→ Omega Rental",done:false},
+    {id:"t12",text:"北島租車（10/7取・10/8還・2天）奧克蘭 CBD 取車，機場還車→ Omega Rental",done:false},
+    {id:"t13",text:"機場→奧克蘭 CBD 交通（10/4）SkyBus NZD $17/人 或 Uber NZD $60",done:false},
+  ]},
+  {section:"🎡 活動",cat:"activity",items:[
+    {id:"t14",text:"Summit Experience 普通話觀星（10/2 9:45 PM）NZD $139/人 · 24hr可退→ 官網直訂（試 WELCOME10）",done:false},
+    {id:"t15",text:"Hobbiton + Waitomo 一日團 普通話（10/5）NZD $450/人估→ Hobbiton 普通話 / Cheeky Kiwi",done:false},
+    {id:"t16",text:"Waiheke Fullers360 渡輪+Hop-on套票（10/6）NZD $85/人→ Fullers360",done:false},
+    {id:"t17",text:"格林諾奇婚紗攝影師（9/27）小紅書/Instagram 聯絡🔴 立即聯絡",done:false},
+    {id:"t18",text:"Lighthorse Adventures 騎馬（9/27）NZD $230/人→ 官網預約",done:false},
+    {id:"t19",text:"米佛峽灣 RealNZ Classic Cruise（9/28 10:30）NZD $145/人→ RealNZ 官網",done:false},
+    {id:"t20",text:"Onsen Hot Pools 私人溫泉（9/29）NZD $61+/人 · 1–2週前訂→ 官網直訂",done:false},
+    {id:"t22",text:"TSS Earnslaw + Walter Peak BBQ（10/1 18:00）NZD $199/人 · 選 Vintage Steamship→ RealNZ 官網",done:false},
+    {id:"t23",text:"庫克山直升機（10/2）TWD $36,564（2人）✅ 已訂",done:true},
+    {id:"t24",text:"Mitai Māori Village 毛利晚宴（10/7 17:30）NZD $169/人→ 官網直訂",done:false},
+    {id:"t25",text:"Skyline Gondola + Luge（9/26）NZD $80/人→ 官網",done:false},
+  ]},
+  {section:"🍜 美食",cat:"food",items:[
+  ]},
+  {section:"🍽️ 餐廳訂位",cat:"restaurant",items:[
+    {id:"t26",text:"Rata（9/27 19:30）慶祝婚紗攝影完成→ 訂位",done:false},
+    {id:"t27",text:"Botswana Butchery（9/28 19:30）頂級牛排→ 訂位",done:false},
+    {id:"t28",text:"Sherwood（9/30 19:00）2025 Cuisine雙帽→ 訂位",done:false},
+    {id:"t29",text:"Mudbrick Vineyard（10/6 12:30）Waiheke Island 山頂午餐→ 訂位",done:false},
+    {id:"t30",text:"The French Café（10/6 19:30）告別晚餐 · 紐西蘭 Top 10→ 訂位",done:false},
+  ]},
+];
+var COST_GROUPS = [
+  {title:"✈️ 機票",rows:[
+    {key:"c1",label:"台北↔紐西蘭全程（2人，已重訂）",sub:"",budget:270000,display:"\u2248 TWD $270,000",editable:false},
+    {subtotal:true,id:"sub-ticket",label:"機票合計",display:"\u2248 TWD $270,000"},
+  ]},
+  {title:"🏨 住宿（12晚）",rows:[
+    {key:"c2",label:"皇后鎮住宿 A",sub:"9/26–10/2 · 6晚（大漾閣估）",budget:58058,display:"\u2248 TWD $58,058",editable:false},
+    {key:"c3",label:"蒂卡波住宿",sub:"10/2–10/3 · 1晚（湖景估）",budget:9939,display:"\u2248 TWD $9,939",editable:false},
+    {key:"c4",label:"皇后鎮住宿 B",sub:"10/3–10/4 · 1晚（延訂）",budget:9676,display:"\u2248 TWD $9,676",editable:false},
+    {key:"c5",label:"Queen St 21樓公寓",sub:"10/4–10/7 · 3晚",budget:16770,display:"\u2248 TWD $16,770",editable:false},
+    {key:"c6",label:"Millennium Rotorua",sub:"10/7–10/8 · 1晚",budget:3954,display:"TWD $3,954 \u2705",editable:false},
+    {key:"c7",label:"Pullman Auckland Airport",sub:"10/8–10/9 · 1晚",budget:5576,display:"TWD $5,576 \u2705",editable:false},
+    {subtotal:true,id:"sub-hotel",label:"住宿合計",display:"\u2248 TWD $103,973"},
+  ]},
+  {title:"🚗 交通（2人）",rows:[
+    {key:"c8",label:"南島租車",sub:"8天 NZD $80/天",budget:11840,display:"\u2248 TWD $11,840",editable:false},
+    {key:"c9",label:"南島油費",sub:"約1,800km",budget:9324,display:"\u2248 TWD $9,324",editable:false},
+    {key:"c10",label:"北島租車",sub:"2天（奧克蘭→Rotorua→機場）",budget:3700,display:"\u2248 TWD $3,700",editable:false},
+    {key:"c11",label:"北島油費",sub:"約600km",budget:3108,display:"\u2248 TWD $3,108",editable:false},
+    {key:"c12",label:"機場→CBD SkyBus/Uber",sub:"",budget:1200,display:"\u2248 TWD $1,200",editable:false},
+    {key:"c13",label:"Waiheke 渡輪+Hop-on套票",sub:"",budget:3145,display:"\u2248 TWD $3,145",editable:false},
+    {key:"c14",label:"零散 Uber（Mt Eden 來回等）",sub:"",budget:2000,display:"\u2248 TWD $2,000",editable:false},
+    {subtotal:true,id:"sub-trans",label:"交通合計",display:"\u2248 TWD $34,317"},
+  ]},
+  {title:"🎡 活動（2人合計）",rows:[
+    {key:"c15",label:"婚紗攝影",sub:"",budget:33300,display:"\u2248 TWD $33,300",editable:false},
+    {key:"c16",label:"騎馬 Lighthorse",sub:"",budget:8510,display:"\u2248 TWD $8,510",editable:false},
+    {key:"c17",label:"米佛峽灣遊船",sub:"",budget:5365,display:"\u2248 TWD $5,365",editable:false},
+    {key:"c18",label:"Deer Park + Onsen",sub:"",budget:2997,display:"\u2248 TWD $2,997",editable:false},
+    {key:"c19",label:"庫克山直升機",sub:"",budget:36564,display:"TWD $36,564 \u2705",editable:false},
+    {key:"c20",label:"Summit Experience 普通話觀星",sub:"",budget:5143,display:"\u2248 TWD $5,143",editable:false},
+    {key:"c21",label:"Skyline Gondola",sub:"",budget:2960,display:"\u2248 TWD $2,960",editable:false},
+    {key:"c22",label:"Wanaka 一日遊（Hook午餐+雜費）",sub:"",budget:3700,display:"\u2248 TWD $3,700",editable:false},
+    {key:"c23",label:"TSS Earnslaw + Walter Peak",sub:"",budget:7363,display:"\u2248 TWD $7,363",editable:false},
+    {key:"c24",label:"Hobbiton + Waitomo 一日團",sub:"",budget:16650,display:"\u2248 TWD $16,650",editable:false},
+    {key:"c25",label:"Polynesian Spa 溫泉",sub:"",budget:1480,display:"\u2248 TWD $1,480",editable:false},
+    {key:"c26",label:"Mitai 毛利晚宴",sub:"",budget:6253,display:"\u2248 TWD $6,253",editable:false},
+    {key:"c27",label:"Wai-O-Tapu",sub:"",budget:1480,display:"\u2248 TWD $1,480",editable:false},
+    {key:"c28",label:"Mt Eden（免費）",sub:"",budget:0,display:"\u514d\u8cbb",editable:false},
+    {subtotal:true,id:"sub-act",label:"活動合計",display:"\u2248 TWD $131,765"},
+  ]},
+  {title:"🍽️ 餐飲（不含早餐）",rows:[
+    {key:"c29",label:"午餐",sub:"15天 · TWD $700/人/天",budget:21000,display:"\u2248 TWD $21,000",editable:false},
+    {key:"c30",label:"一般晚餐×9",sub:"TWD $1,200/人/餐",budget:21600,display:"\u2248 TWD $21,600",editable:false},
+    {key:"c31",label:"特別晚餐×6",sub:"Rata/Botswana/Sherwood/Mudbrick/French Café/Pullman Grain Store",budget:30000,display:"\u2248 TWD $30,000",editable:false},
+    {subtotal:true,id:"sub-food",label:"餐飲合計",display:"\u2248 TWD $72,600"},
+  ]},
+  {title:"🧳 雜費",rows:[
+    {key:"c32",label:"旅遊保險",sub:"",budget:5000,display:"\u2248 TWD $5,000",editable:false},
+    {key:"c33",label:"購物・紀念品・小費",sub:"",budget:8000,display:"\u2248 TWD $8,000",editable:false},
+    {subtotal:true,id:"sub-misc",label:"雜費合計",display:"\u2248 TWD $13,000"},
+  ]},
+];
+</script>
+<script>
+/* ==========================================================================
+   NZ V2 — Main App Logic
+   ========================================================================== */
+'use strict';
+
+// ─── CONFIG ────────────────────────────────────────────────────────────────
+var FB_URL = 'https://nz-trip-2026-dd942-default-rtdb.asia-southeast1.firebasedatabase.app';
+var FB_NODE = 'nz26';  // shared with v1
+var FB_TODOS = FB_NODE + '/todos';
+var FB_COSTS = FB_NODE + '/costs';
+var FB_ITIN  = FB_NODE + '/itinerary_v2';  // separate so v2 edits don't break v1 UI
+var FB_BOOK  = FB_NODE + '/bookings_v2';
+
+// ─── UTILS ─────────────────────────────────────────────────────────────────
+function $id(id){return document.getElementById(id);}
+function $q(sel,p){return (p||document).querySelector(sel);}
+function $qa(sel,p){return Array.prototype.slice.call((p||document).querySelectorAll(sel));}
+function escHtml(s){if(s==null)return '';return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function toast(msg){var t=$id('toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove('show');},1600);}
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+var state = {
+  curDay: 0,
+  curView: 'itin',    // itin or map (per-day)
+  curNav: 'itin',     // itin / book / cost
+  editMode: false,
+  todoStates: {},     // todo id → done bool
+  costActuals: {},    // cost key → actual amount
+  itinDirty: false,
+  bookDirty: false,
+  longPressTimer: null,
+  longPressTab: null,
+  dragSrc: null,
+  dragSrcDay: null,
+};
+
+// ─── PROGRESS BAR ──────────────────────────────────────────────────────────
+function updateProgress(){
+  var done=0,total=0;
+  for(var i=0;i<BOOKING_DATA.length;i++){
+    var sec=BOOKING_DATA[i];
+    for(var j=0;j<sec.items.length;j++){
+      total++;
+      var id=sec.items[j].id;
+      if(state.todoStates[id]||sec.items[j].done) done++;
+    }
+  }
+  var pct = total>0?(done/total*100):0;
+  var fill=$id('progress-fill'); if(fill)fill.style.width=pct+'%';
+  var bp=$id('book-progress'); if(bp)bp.textContent=done+'/'+total;
+}
+
+// ─── RENDER DAY TABS ───────────────────────────────────────────────────────
+function renderTabs(){
+  var c=$id('day-tabs'); if(!c)return;
+  c.innerHTML='';
+  var wd={'一':'MON','二':'TUE','三':'WED','四':'THU','五':'FRI','六':'SAT','日':'SUN'};
+  for(var i=0;i<TRIP_DATA.length;i++){
+    var d=TRIP_DATA[i];
+    var parts=(d.date||'').split(' ');
+    var dt=parts[0]||'';
+    var w=parts[1]||'';
+    var icon=(d.title||'').match(/^(\p{Emoji}+)/u);
+    var iconChar=icon?icon[1]:'';
+    var btn=document.createElement('button');
+    btn.className='day-tab'+(i===state.curDay?' active':'');
+    btn.setAttribute('data-day',i);
+    btn.draggable=false;  // enabled in edit mode
+    btn.innerHTML=
+      (iconChar?'<span class="dt-icon">'+escHtml(iconChar)+'</span>':'')+
+      '<span class="dt-d">'+escHtml(dt)+'</span>'+
+      '<span class="dt-wd">'+escHtml(wd[w]||w)+'</span>';
+    c.appendChild(btn);
+  }
+}
+
+// ─── RENDER DAY PANEL ──────────────────────────────────────────────────────
+function renderPanel(idx){
+  var d=TRIP_DATA[idx]; if(!d)return;
+  var c=$id('panels-container'); if(!c)return;
+  c.innerHTML='';
+
+  var panel=document.createElement('section');
+  panel.className='day-panel active';
+  panel.id='day-panel';
+  panel.setAttribute('data-day',idx);
+
+  // Header
+  var hdr=document.createElement('div');
+  hdr.className='dp-header';
+  hdr.innerHTML='<div class="dp-title">'+escHtml(d.title||'')+'</div>'+
+                '<div class="dp-sub">'+escHtml(d.date||'')+' · 第 '+(idx+1)+' 天 / 共 '+TRIP_DATA.length+' 天</div>';
+  panel.appendChild(hdr);
+
+  // Toggle: 行程 / 地圖
+  var tg=document.createElement('div');
+  tg.className='dp-toggle';
+  tg.innerHTML='<button class="dp-btn '+(state.curView==='itin'?'active':'')+'" data-view="itin">📋 行程</button>'+
+               '<button class="dp-btn '+(state.curView==='map'?'active':'')+'" data-view="map">🗺 地圖</button>';
+  panel.appendChild(tg);
+
+  // ITINERARY
+  var itin=document.createElement('div');
+  itin.className='dp-itin'+(state.curView==='map'?' hidden':'');
+  itin.id='dp-itin';
+
+  // Render items with add-between
+  if(state.editMode){
+    itin.appendChild(makeAddBetween(idx,0));
+  }
+  for(var i=0;i<d.items.length;i++){
+    itin.appendChild(makeCard(d.items[i],idx,i));
+    if(state.editMode){
+      itin.appendChild(makeAddBetween(idx,i+1));
+    }
+  }
+  // Hotel card
+  if(d.hotel && (d.hotel.name||d.hotel.icon)){
+    itin.appendChild(makeHotelCard(d.hotel,idx));
+  }
+  panel.appendChild(itin);
+
+  // MAP container
+  var map=document.createElement('div');
+  map.className='dp-map'+(state.curView==='map'?' active':'');
+  map.id='dp-map';
+  map.innerHTML='<div class="dp-map-inner" id="map-inner"></div>';
+  panel.appendChild(map);
+
+  c.appendChild(panel);
+
+  if(state.curView==='map'){
+    setTimeout(function(){renderMap(idx);},50);
+  }
+}
+
+function makeCard(item,dayIdx,itemIdx){
+  var card=document.createElement('div');
+  card.className='card';
+  card.draggable=false;
+  card.setAttribute('data-day',dayIdx);
+  card.setAttribute('data-item',itemIdx);
+
+  // Drag handle
+  var dh=document.createElement('span');
+  dh.className='card-drag-handle';
+  dh.textContent='⋮⋮';
+  card.appendChild(dh);
+
+  // Delete button
+  var del=document.createElement('button');
+  del.className='card-del';
+  del.innerHTML='✕';
+  del.setAttribute('data-act','del-item');
+  card.appendChild(del);
+
+  // Content
+  var ct=document.createElement('div');
+  ct.className='ct';
+  ct.innerHTML=
+    '<span class="c-time" data-field="time" data-day="'+dayIdx+'" data-item="'+itemIdx+'">'+escHtml(item.time||'')+'</span>'+
+    '<span class="c-icon" data-field="icon" data-day="'+dayIdx+'" data-item="'+itemIdx+'">'+escHtml(item.icon||'')+'</span>'+
+    '<span class="c-name" data-field="name" data-day="'+dayIdx+'" data-item="'+itemIdx+'">'+escHtml(item.name||'')+'</span>';
+  card.appendChild(ct);
+
+  if(item.desc){
+    var desc=document.createElement('div');
+    desc.className='c-desc';
+    desc.setAttribute('data-field','desc');
+    desc.setAttribute('data-day',dayIdx);
+    desc.setAttribute('data-item',itemIdx);
+    desc.textContent=item.desc;
+    card.appendChild(desc);
+  } else if(state.editMode){
+    var desc=document.createElement('div');
+    desc.className='c-desc';
+    desc.setAttribute('data-field','desc');
+    desc.setAttribute('data-day',dayIdx);
+    desc.setAttribute('data-item',itemIdx);
+    desc.style.color='var(--txt3)';
+    desc.style.fontStyle='italic';
+    desc.textContent='(點擊新增說明)';
+    card.appendChild(desc);
+  }
+
+  if(item.link){
+    var lk=document.createElement('a');
+    lk.className='c-tag';
+    lk.style.color='var(--accent)';
+    lk.style.borderColor='rgba(45,212,191,0.3)';
+    lk.href=item.link;
+    lk.target='_blank';
+    lk.rel='noopener';
+    lk.textContent='→ 連結';
+    var tags=document.createElement('div');
+    tags.className='c-tags';
+    tags.appendChild(lk);
+    card.appendChild(tags);
+  }
+
+  return card;
+}
+
+function makeHotelCard(h,dayIdx){
+  var card=document.createElement('div');
+  card.className='card card-hotel';
+  card.setAttribute('data-day',dayIdx);
+  card.setAttribute('data-hotel','1');
+
+  var grid=document.createElement('div');
+  grid.className='hotel-grid';
+  grid.innerHTML=
+    '<span class="h-icon" data-field="hicon" data-day="'+dayIdx+'">'+escHtml(h.icon||'🏨')+'</span>'+
+    '<div>'+
+      '<div class="h-name" data-field="hname" data-day="'+dayIdx+'">'+escHtml(h.name||'')+'</div>'+
+      (h.desc?'<div class="h-desc" data-field="hdesc" data-day="'+dayIdx+'">'+escHtml(h.desc)+'</div>':
+       (state.editMode?'<div class="h-desc" data-field="hdesc" data-day="'+dayIdx+'" style="color:var(--txt3);font-style:italic">(點擊新增說明)</div>':''))+
+    '</div>'+
+    '<div class="h-price" data-field="hprice" data-day="'+dayIdx+'">'+escHtml(h.price||'')+'</div>';
+  card.appendChild(grid);
+  return card;
+}
+
+function makeAddBetween(dayIdx,insertAt){
+  var div=document.createElement('div');
+  div.className='card-add-between';
+  div.setAttribute('data-act','add-between');
+  div.setAttribute('data-day',dayIdx);
+  div.setAttribute('data-at',insertAt);
+  div.textContent='＋ 在此插入新項目';
+  return div;
+}
+
+// ─── SWITCH DAY ────────────────────────────────────────────────────────────
+function switchDay(idx){
+  if(idx<0||idx>=TRIP_DATA.length)return;
+  state.curDay=idx;
+  $qa('.day-tab').forEach(function(t,i){t.classList.toggle('active',i===idx);});
+  renderPanel(idx);
+  // scroll active tab into view
+  var active=$q('.day-tab.active');
+  if(active && active.scrollIntoView){active.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+}
+
+// ─── VIEW TOGGLE (itin/map per day) ────────────────────────────────────────
+function switchView(v){
+  state.curView=v;
+  renderPanel(state.curDay);
+}
+
+// ─── BOTTOM NAV ────────────────────────────────────────────────────────────
+function openSheet(which){
+  $id('ov-'+which).classList.add('show');
+  $id('sh-'+which).classList.add('show');
+}
+function closeSheets(){
+  $qa('.sheet-overlay').forEach(function(o){o.classList.remove('show');});
+  $qa('.sheet').forEach(function(s){s.classList.remove('show');});
+  $qa('.bnav-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-nav')==='itin');});
+  state.curNav='itin';
+}
+
+function handleNav(nav){
+  if(nav==='edit'){
+    toggleEditMode();
+    return;
+  }
+  state.curNav=nav;
+  $qa('.bnav-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-nav')===nav);});
+  if(nav==='itin'){
+    closeSheets();
+    return;
+  }
+  // book or cost
+  $qa('.sheet-overlay').forEach(function(o){o.classList.remove('show');});
+  $qa('.sheet').forEach(function(s){s.classList.remove('show');});
+  if(nav==='book'){
+    renderBooking();
+    openSheet('book');
+  } else if(nav==='cost'){
+    renderCost();
+    openSheet('cost');
+  }
+}
+
+// ─── BOOKING ───────────────────────────────────────────────────────────────
+function renderBooking(){
+  var c=$id('book-list');if(!c)return;
+  c.innerHTML='';
+  for(var i=0;i<BOOKING_DATA.length;i++){
+    var sec=BOOKING_DATA[i];
+    var div=document.createElement('div');
+    div.className='bs-section';
+    div.setAttribute('data-cat',sec.cat);
+    var title=document.createElement('div');
+    title.className='bs-section-title';
+    title.textContent=sec.section;
+    div.appendChild(title);
+    for(var j=0;j<sec.items.length;j++){
+      var it=sec.items[j];
+      var done=state.todoStates[it.id]!==undefined ? state.todoStates[it.id] : it.done;
+      var row=document.createElement('div');
+      row.className='bs-todo'+(done?' done':'');
+      row.setAttribute('data-id',it.id);
+      row.setAttribute('data-cat',sec.cat);
+      row.innerHTML=
+        '<div class="bs-todo-cb"></div>'+
+        '<div class="bs-todo-text">'+escHtml(it.text)+'</div>'+
+        '<div class="bs-todo-del" data-act="del-todo">✕</div>';
+      div.appendChild(row);
+    }
+    c.appendChild(div);
+  }
+  // Add-row at bottom (smart categorization)
+  var addRow=document.createElement('div');
+  addRow.className='bs-add-row';
+  addRow.innerHTML=
+    '<div class="row">'+
+      '<select id="new-todo-cat">'+
+        '<option value="auto">🪄 自動分類</option>'+
+        '<option value="hotel">🏨 住宿</option>'+
+        '<option value="transport">✈️ 交通</option>'+
+        '<option value="activity">🎡 活動</option>'+
+        '<option value="food">🍜 美食</option>'+
+        '<option value="restaurant">🍽️ 餐廳</option>'+
+      '</select>'+
+      '<input type="text" id="new-todo-text" placeholder="新增待辦事項...">'+
+    '</div>'+
+    '<button class="bs-add-btn" id="bs-add-btn">＋ 新增</button>';
+  c.appendChild(addRow);
+
+  // Attach handler — null-safe (rule 9)
+  var addBtn=$id('bs-add-btn');
+  if(addBtn){addBtn.addEventListener('click',handleAddTodo);}
+  var inp=$id('new-todo-text');
+  if(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter')handleAddTodo();});}
+
+  updateProgress();
+}
+
+function handleAddTodo(){
+  var inp=$id('new-todo-text'); if(!inp)return;
+  var text=inp.value.trim(); if(!text)return;
+  var sel=$id('new-todo-cat');
+  var cat=sel?sel.value:'auto';
+
+  if(cat==='auto') cat=guessCategory(text);
+
+  // Find target section
+  var target=null;
+  for(var i=0;i<BOOKING_DATA.length;i++){
+    if(BOOKING_DATA[i].cat===cat){target=BOOKING_DATA[i];break;}
+  }
+  if(!target) target=BOOKING_DATA[BOOKING_DATA.length-1];
+  var newId='t'+Date.now();
+  target.items.push({id:newId,text:text,done:false});
+  state.bookDirty=true;
+  inp.value='';
+  renderBooking();
+  toast('已新增到「'+target.section+'」');
+  syncBooking();
+}
+
+function guessCategory(text){
+  var t=text.toLowerCase();
+  var rules=[
+    ['hotel',/住宿|酒店|hotel|airbnb|民宿|villa|resort|hostel|入住|check\s*in/i],
+    ['transport',/機票|航班|轉機|租車|租機車|包車|計程車|uber|taxi|火車|高鐵|地鐵|公車|巴士|渡輪|船|ferry|flight|train|bus/i],
+    ['restaurant',/訂位|預約|reservation|餐廳|restaurant/i],
+    ['food',/吃|喝|早餐|午餐|晚餐|宵夜|甜點|小吃|brunch|breakfast|lunch|dinner|café|coffee|tea/i],
+    ['activity',/票|門票|預訂|booking|ticket|tour|體驗|spa|按摩|massage|gondola|cable|cruise|表演|show|博物館|museum/i],
+  ];
+  for(var i=0;i<rules.length;i++){
+    if(rules[i][1].test(t))return rules[i][0];
+  }
+  return 'activity';
+}
+
+// ─── COST ──────────────────────────────────────────────────────────────────
+function renderCost(){
+  var c=$id('cost-list');if(!c)return;
+  c.innerHTML='';
+
+  // Hint
+  var hint=document.createElement('div');
+  hint.className='cost-hint';
+  hint.textContent='💡 雙擊金額可輸入實際花費';
+  c.appendChild(hint);
+
+  // Live summary
+  var budget=0, actual=0;
+  for(var i=0;i<COST_GROUPS.length;i++){
+    var g=COST_GROUPS[i];
+    for(var j=0;j<g.rows.length;j++){
+      var r=g.rows[j];
+      if(r.subtotal)continue;
+      budget+=r.budget||0;
+      if(state.costActuals[r.key]!=null) actual+=state.costActuals[r.key];
+    }
+  }
+  var summ=document.createElement('div');
+  summ.className='cs-summary';
+  summ.innerHTML=
+    '<div class="cs-summary-card"><div class="label">預算合計</div><div class="value" id="cs-budget">TWD $'+budget.toLocaleString()+'</div></div>'+
+    '<div class="cs-summary-card"><div class="label">已知實際</div><div class="value" id="cs-actual" style="color:var(--ok)">TWD $'+actual.toLocaleString()+'</div></div>';
+  c.appendChild(summ);
+
+  // Groups
+  for(var i=0;i<COST_GROUPS.length;i++){
+    var g=COST_GROUPS[i];
+    var div=document.createElement('div');
+    div.className='cs-group';
+    var title=document.createElement('div');
+    title.className='cs-group-title';
+    title.textContent=g.title;
+    div.appendChild(title);
+    for(var j=0;j<g.rows.length;j++){
+      var r=g.rows[j];
+      if(r.subtotal){
+        var sr=document.createElement('div');
+        sr.className='cs-sub';
+        sr.innerHTML='<span>'+escHtml(r.label)+'</span><span class="am" id="'+escHtml(r.id)+'">'+escHtml(r.display)+'</span>';
+        div.appendChild(sr);
+      } else {
+        var rr=document.createElement('div');
+        rr.className='cs-row';
+        var hasActual=state.costActuals[r.key]!=null;
+        var displayAmount=hasActual ? 'TWD $'+state.costActuals[r.key].toLocaleString() : r.display;
+        rr.innerHTML=
+          '<div class="cl">'+escHtml(r.label)+(r.sub?'<span class="csub">'+escHtml(r.sub)+'</span>':'')+'</div>'+
+          '<span class="am editable'+(hasActual?' has-actual':'')+'" data-key="'+escHtml(r.key)+'" data-budget="'+r.budget+'">'+escHtml(displayAmount)+'</span>';
+        div.appendChild(rr);
+      }
+    }
+    c.appendChild(div);
+  }
+  // Grand total
+  var grand=document.createElement('div');
+  grand.className='cs-grand';
+  grand.innerHTML='<span>2人合計（預算）</span><span class="am" id="cs-grand">TWD $'+budget.toLocaleString()+'</span>';
+  c.appendChild(grand);
+
+  recalcCostSubtotals();
+}
+
+function recalcCostSubtotals(){
+  // For each group, sum visible amounts and update its subtotal row if present
+  for(var i=0;i<COST_GROUPS.length;i++){
+    var g=COST_GROUPS[i];
+    var sum=0;
+    for(var j=0;j<g.rows.length;j++){
+      var r=g.rows[j];
+      if(r.subtotal)continue;
+      sum += (state.costActuals[r.key]!=null) ? state.costActuals[r.key] : (r.budget||0);
+    }
+    for(var j=0;j<g.rows.length;j++){
+      var r=g.rows[j];
+      if(r.subtotal){
+        // null-safe (rule 10)
+        var el=$id(r.id);
+        if(el) el.textContent='≈ TWD $'+sum.toLocaleString();
+      }
+    }
+  }
+}
+
+function startCostEdit(span){
+  if(span.classList.contains('editing'))return;
+  var key=span.getAttribute('data-key');
+  var current=state.costActuals[key]!=null ? state.costActuals[key] : (parseInt(span.getAttribute('data-budget'),10)||0);
+  span.classList.add('editing');
+  var orig=span.textContent;
+  span.innerHTML='';
+  var inp=document.createElement('input');
+  inp.type='number';
+  inp.value=current;
+  inp.style.cssText='width:100px;background:transparent;border:none;color:inherit;font-size:inherit;font-weight:inherit;text-align:right;font-variant-numeric:tabular-nums';
+  span.appendChild(inp);
+  inp.focus();
+  inp.select();
+  var done=false;
+  function commit(){
+    if(done)return; done=true;
+    var v=parseInt(inp.value,10);
+    span.classList.remove('editing');
+    if(isNaN(v)){span.textContent=orig;return;}
+    state.costActuals[key]=v;
+    syncCosts();
+    renderCost();
+    toast('已記錄實際花費');
+  }
+  function cancel(){
+    if(done)return; done=true;
+    span.classList.remove('editing');
+    span.textContent=orig;
+  }
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();commit();}
+    else if(e.key==='Escape'){e.preventDefault();cancel();inp.blur();}
+  });
+}
+
+// ─── INLINE EDIT (item fields) ─────────────────────────────────────────────
+function startInlineEdit(el){
+  if(!state.editMode)return;
+  if(el.classList.contains('editing'))return;
+  var field=el.getAttribute('data-field');
+  var dayIdx=parseInt(el.getAttribute('data-day'),10);
+  var itemIdx=el.hasAttribute('data-item')?parseInt(el.getAttribute('data-item'),10):null;
+  var current=el.textContent;
+  // For placeholder texts (italic), start empty
+  if(el.style.fontStyle==='italic')current='';
+  var orig=current;
+  el.classList.add('editing');
+  el.innerHTML='';
+  var inp=document.createElement('input');
+  inp.className='edit-input';
+  inp.value=current;
+  el.appendChild(inp);
+  inp.focus();
+  inp.select();
+  var done=false;
+  function commit(){
+    if(done)return; done=true;
+    var v=inp.value;
+    el.classList.remove('editing');
+    el.style.fontStyle='';
+    el.style.color='';
+    el.textContent=v;
+    // Save into TRIP_DATA
+    var d=TRIP_DATA[dayIdx];
+    if(!d){return;}
+    if(itemIdx!=null && field.indexOf('h')!==0){
+      // item field: time/icon/name/desc
+      d.items[itemIdx][field]=v;
+    } else {
+      // hotel field: hicon/hname/hdesc/hprice
+      var map={hicon:'icon',hname:'name',hdesc:'desc',hprice:'price'};
+      var realField=map[field]||field;
+      if(!d.hotel)d.hotel={};
+      d.hotel[realField]=v;
+    }
+    state.itinDirty=true;
+    syncItin();
+    // Re-render to show empty placeholder if cleared
+    renderPanel(state.curDay);
+  }
+  function cancel(){
+    if(done)return; done=true;
+    el.classList.remove('editing');
+    el.innerHTML=escHtml(orig);
+  }
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();commit();}
+    else if(e.key==='Escape'){e.preventDefault();cancel();inp.blur();}
+  });
+}
+
+// ─── ADD-BETWEEN handler ───────────────────────────────────────────────────
+function handleAddBetween(dayIdx,insertAt){
+  if(!state.editMode)return;
+  var newItem={time:'',icon:'📌',name:'新行程',desc:'',link:''};
+  TRIP_DATA[dayIdx].items.splice(insertAt,0,newItem);
+  state.itinDirty=true;
+  syncItin();
+  renderPanel(state.curDay);
+  // Focus the new item's name
+  setTimeout(function(){
+    var newEl=$q('.c-name[data-day="'+dayIdx+'"][data-item="'+insertAt+'"]');
+    if(newEl)startInlineEdit(newEl);
+  },80);
+}
+
+// ─── DELETE item ───────────────────────────────────────────────────────────
+function deleteItem(dayIdx,itemIdx){
+  if(!confirm('確定刪除這個項目？'))return;
+  TRIP_DATA[dayIdx].items.splice(itemIdx,1);
+  state.itinDirty=true;
+  syncItin();
+  renderPanel(state.curDay);
+}
+
+// ─── DELETE entire day (long press) ────────────────────────────────────────
+function deleteDay(dayIdx){
+  if(!confirm('確定刪除整天「'+TRIP_DATA[dayIdx].date+'  '+TRIP_DATA[dayIdx].title+'」？'))return;
+  TRIP_DATA.splice(dayIdx,1);
+  state.itinDirty=true;
+  state.curDay=Math.min(state.curDay,TRIP_DATA.length-1);
+  if(state.curDay<0)state.curDay=0;
+  syncItin();
+  renderTabs();
+  renderPanel(state.curDay);
+  bindTabEvents();
+}
+
+// ─── EDIT MODE ─────────────────────────────────────────────────────────────
+function toggleEditMode(){
+  state.editMode=!state.editMode;
+  document.body.classList.toggle('edit-mode',state.editMode);
+  // Toggle draggable on cards and day-tabs
+  $qa('.day-tab').forEach(function(t){t.draggable=state.editMode;});
+  // Re-render so add-between buttons appear
+  renderPanel(state.curDay);
+  // Update bnav button highlight
+  $qa('.bnav-btn').forEach(function(b){
+    if(b.getAttribute('data-nav')==='edit') b.classList.toggle('active',state.editMode);
+  });
+  toast(state.editMode?'編輯模式已開啟':'已退出編輯模式');
+}
+
+// ─── DRAG & DROP (cards + day tabs) ────────────────────────────────────────
+function bindDragHandlers(){
+  var container=$id('panels-container');
+  if(!container)return;
+  container.addEventListener('dragstart',function(e){
+    if(!state.editMode)return;
+    var card=e.target.closest('.card');
+    if(!card)return;
+    if(card.hasAttribute('data-hotel'))return;  // hotel not draggable
+    card.draggable=true;
+    state.dragSrc=card;
+    state.dragSrcDay=parseInt(card.getAttribute('data-day'),10);
+    card.classList.add('dragging');
+    e.dataTransfer.effectAllowed='move';
+    try{e.dataTransfer.setData('text/plain',card.getAttribute('data-item'));}catch(_e){}
+  });
+  container.addEventListener('dragover',function(e){
+    if(!state.editMode||!state.dragSrc)return;
+    e.preventDefault();
+    var card=e.target.closest('.card');
+    if(card && card!==state.dragSrc && !card.hasAttribute('data-hotel')){
+      $qa('.card.drag-over').forEach(function(c){c.classList.remove('drag-over');});
+      card.classList.add('drag-over');
+    }
+  });
+  container.addEventListener('drop',function(e){
+    if(!state.editMode||!state.dragSrc)return;
+    e.preventDefault();
+    var target=e.target.closest('.card');
+    if(!target || target===state.dragSrc || target.hasAttribute('data-hotel')){cleanupDrag();return;}
+    var srcIdx=parseInt(state.dragSrc.getAttribute('data-item'),10);
+    var tgtIdx=parseInt(target.getAttribute('data-item'),10);
+    if(state.dragSrcDay===state.curDay){
+      // same day reorder
+      var item=TRIP_DATA[state.curDay].items.splice(srcIdx,1)[0];
+      TRIP_DATA[state.curDay].items.splice(tgtIdx,0,item);
+      state.itinDirty=true;
+      syncItin();
+      renderPanel(state.curDay);
+    }
+    cleanupDrag();
+  });
+  container.addEventListener('dragend',function(e){
+    cleanupDrag();
+  });
+
+  // Day tabs: drag tab to reorder day, OR drop card on tab to move item
+  var tabsC=$id('day-tabs');
+  if(tabsC){
+    tabsC.addEventListener('dragstart',function(e){
+      if(!state.editMode)return;
+      var t=e.target.closest('.day-tab');
+      if(!t)return;
+      // If dragging a tab itself
+      if(!state.dragSrc){
+        state.dragSrc=t;
+        state.dragSrcDay='__tab__';
+        t.classList.add('dragging');
+        e.dataTransfer.effectAllowed='move';
+      }
+    });
+    tabsC.addEventListener('dragover',function(e){
+      if(!state.editMode||!state.dragSrc)return;
+      e.preventDefault();
+      var t=e.target.closest('.day-tab');
+      if(t && t!==state.dragSrc){
+        $qa('.day-tab.drag-over').forEach(function(x){x.classList.remove('drag-over');});
+        t.classList.add('drag-over');
+      }
+    });
+    tabsC.addEventListener('drop',function(e){
+      if(!state.editMode||!state.dragSrc)return;
+      e.preventDefault();
+      var t=e.target.closest('.day-tab');
+      if(!t){cleanupDrag();return;}
+      var tgtDay=parseInt(t.getAttribute('data-day'),10);
+
+      if(state.dragSrcDay==='__tab__'){
+        // reorder days
+        var srcDay=parseInt(state.dragSrc.getAttribute('data-day'),10);
+        if(srcDay!==tgtDay){
+          var d=TRIP_DATA.splice(srcDay,1)[0];
+          TRIP_DATA.splice(tgtDay,0,d);
+          state.itinDirty=true;
+          state.curDay=tgtDay;
+          syncItin();
+          renderTabs();
+          renderPanel(state.curDay);
+          bindTabEvents();
+        }
+      } else if(typeof state.dragSrcDay==='number' && state.dragSrcDay!==tgtDay){
+        // cross-day item move
+        var srcIdx=parseInt(state.dragSrc.getAttribute('data-item'),10);
+        var item=TRIP_DATA[state.dragSrcDay].items.splice(srcIdx,1)[0];
+        TRIP_DATA[tgtDay].items.push(item);
+        state.itinDirty=true;
+        syncItin();
+        renderPanel(state.curDay);
+        toast('已移至 '+TRIP_DATA[tgtDay].date);
+      }
+      cleanupDrag();
+    });
+  }
+}
+
+function cleanupDrag(){
+  $qa('.dragging').forEach(function(x){x.classList.remove('dragging');});
+  $qa('.drag-over').forEach(function(x){x.classList.remove('drag-over');});
+  $qa('.card[draggable="true"]').forEach(function(c){c.draggable=false;});
+  state.dragSrc=null;
+  state.dragSrcDay=null;
+}
+
+// ─── DAY TAB EVENTS (click + long press) ───────────────────────────────────
+function bindTabEvents(){
+  $qa('.day-tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      if(state.longPressTab===t){return;}  // suppress click after long-press
+      switchDay(parseInt(t.getAttribute('data-day'),10));
+    });
+    // long press to delete day
+    var startLP=function(){
+      if(!state.editMode)return;
+      state.longPressTimer=setTimeout(function(){
+        state.longPressTab=t;
+        deleteDay(parseInt(t.getAttribute('data-day'),10));
+        setTimeout(function(){state.longPressTab=null;},300);
+      },650);
+    };
+    var cancelLP=function(){clearTimeout(state.longPressTimer);};
+    t.addEventListener('mousedown',startLP);
+    t.addEventListener('touchstart',startLP,{passive:true});
+    t.addEventListener('mouseup',cancelLP);
+    t.addEventListener('mouseleave',cancelLP);
+    t.addEventListener('touchend',cancelLP);
+    t.addEventListener('touchcancel',cancelLP);
+  });
+}
+
+// ─── SWIPE / KEYBOARD navigation ───────────────────────────────────────────
+function bindSwipe(){
+  var sx=0,sy=0,active=false;
+  document.addEventListener('touchstart',function(e){
+    if(e.touches.length!==1)return;
+    var t=e.target;
+    // Don't intercept inside sheets, inputs, or day-tabs
+    if(t.closest('.sheet')||t.closest('input,textarea,select')||t.closest('.day-tabs-wrap'))return;
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY; active=true;
+  },{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(!active)return; active=false;
+    var tch=e.changedTouches[0]; if(!tch)return;
+    var dx=tch.clientX-sx, dy=tch.clientY-sy;
+    if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)*1.5){
+      if(dx<0) switchDay(state.curDay+1);
+      else switchDay(state.curDay-1);
+    }
+  },{passive:true});
+  document.addEventListener('keydown',function(e){
+    if(e.target.closest('input,textarea,select'))return;
+    if(e.key==='ArrowRight') switchDay(state.curDay+1);
+    else if(e.key==='ArrowLeft') switchDay(state.curDay-1);
+  });
+}
+
+// ─── GLOBAL CLICK DELEGATE ─────────────────────────────────────────────────
+function bindGlobalClicks(){
+  document.addEventListener('click',function(e){
+    var t=e.target;
+
+    // close sheet
+    if(t.hasAttribute('data-close')||t.closest('[data-close]')){closeSheets();return;}
+
+    // dp-btn (itin/map toggle)
+    var dpBtn=t.closest('.dp-btn');
+    if(dpBtn){switchView(dpBtn.getAttribute('data-view'));return;}
+
+    // bnav
+    var nav=t.closest('.bnav-btn');
+    if(nav){handleNav(nav.getAttribute('data-nav'));return;}
+
+    // edit mode actions
+    if(state.editMode){
+      // delete item card
+      if(t.closest('[data-act="del-item"]')){
+        var card=t.closest('.card');
+        if(card){
+          var di=parseInt(card.getAttribute('data-day'),10);
+          var ii=parseInt(card.getAttribute('data-item'),10);
+          deleteItem(di,ii);
+        }
+        return;
+      }
+      // add-between
+      if(t.closest('[data-act="add-between"]')){
+        var ab=t.closest('[data-act="add-between"]');
+        handleAddBetween(parseInt(ab.getAttribute('data-day'),10),parseInt(ab.getAttribute('data-at'),10));
+        return;
+      }
+      // inline edit
+      if(t.hasAttribute('data-field')){startInlineEdit(t);return;}
+    }
+
+    // bs-todo toggle (works always, not just edit mode)
+    var todo=t.closest('.bs-todo');
+    if(todo){
+      // del button
+      if(t.closest('[data-act="del-todo"]')){
+        if(state.editMode){
+          var id=todo.getAttribute('data-id');
+          // remove from BOOKING_DATA
+          for(var i=0;i<BOOKING_DATA.length;i++){
+            var sec=BOOKING_DATA[i];
+            for(var j=0;j<sec.items.length;j++){
+              if(sec.items[j].id===id){sec.items.splice(j,1);break;}
+            }
+          }
+          state.bookDirty=true;
+          syncBooking();
+          renderBooking();
+        }
+        return;
+      }
+      // toggle done
+      var tid=todo.getAttribute('data-id');
+      var current=todo.classList.contains('done');
+      state.todoStates[tid]=!current;
+      todo.classList.toggle('done');
+      syncTodos();
+      updateProgress();
+      return;
+    }
+  });
+
+  // Double-click for cost edit
+  document.addEventListener('dblclick',function(e){
+    var am=e.target.closest('.am.editable');
+    if(am){startCostEdit(am);}
+  });
+}
+
+// ─── MAP (per-day) ─────────────────────────────────────────────────────────
+var GMAPS_READY=false;
+var GMAPS_LOADING=false;
+var mapInst=null;
+window.gmapsReady=function(){GMAPS_READY=true;if(state.curView==='map')renderMap(state.curDay);};
+
+function loadGMaps(){
+  if(GMAPS_READY||GMAPS_LOADING)return;
+  GMAPS_LOADING=true;
+  var s=document.createElement('script');
+  s.src='https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&callback=gmapsReady&loading=async&libraries=marker';
+  s.async=true; s.defer=true;
+  document.head.appendChild(s);
+}
+
+function getDayPlaces(dayIdx){
+  var d=TRIP_DATA[dayIdx];
+  if(!d)return [];
+  var dateKey=(d.date||'').split(' ')[0];  // e.g. "9/26"
+  return PLACES.filter(function(p){
+    if(!p.d)return false;
+    if(p.d.indexOf(',')>=0){return p.d.split(',').indexOf(dateKey)>=0;}
+    if(p.d.indexOf('–')>=0){
+      var parts=p.d.split('–');
+      // assume same month for simplicity, e.g., "10/2–10/3"
+      var s=parts[0].trim(), e=parts[1].trim();
+      return dateKey===s||dateKey===e;
+    }
+    return p.d===dateKey;
+  });
+}
+
+function renderMap(dayIdx){
+  if(!GMAPS_READY){loadGMaps();
+    var inner=$id('map-inner');
+    if(inner)inner.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--txt2);font-size:12px">載入地圖中...</div>';
+    return;
+  }
+  var inner=$id('map-inner'); if(!inner)return;
+  var places=getDayPlaces(dayIdx);
+  if(places.length===0){
+    inner.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--txt2);font-size:12px">這天沒有地圖資料</div>';
+    return;
+  }
+  inner.innerHTML='';
+  var center={lat:places[0].lat,lng:places[0].lng};
+  var darkStyle=[
+    {elementType:'geometry',stylers:[{color:'#0a0e1a'}]},
+    {elementType:'labels.text.stroke',stylers:[{color:'#0a0e1a'}]},
+    {elementType:'labels.text.fill',stylers:[{color:'#9ca3af'}]},
+    {featureType:'road',elementType:'geometry',stylers:[{color:'#1e2235'}]},
+    {featureType:'road',elementType:'labels.text.fill',stylers:[{color:'#6b7280'}]},
+    {featureType:'water',elementType:'geometry',stylers:[{color:'#141827'}]},
+    {featureType:'poi',stylers:[{visibility:'off'}]},
+    {featureType:'administrative',elementType:'geometry',stylers:[{color:'#1e2235'}]},
+    {featureType:'landscape',elementType:'geometry',stylers:[{color:'#0f1320'}]},
+    {featureType:'transit',stylers:[{visibility:'off'}]}
+  ];
+  mapInst=new google.maps.Map(inner,{
+    center:center, zoom:11,
+    styles:darkStyle,
+    disableDefaultUI:true, zoomControl:true, gestureHandling:'greedy'
+  });
+  var bounds=new google.maps.LatLngBounds();
+  places.forEach(function(p,i){
+    var m=new google.maps.Marker({
+      position:{lat:p.lat,lng:p.lng}, map:mapInst,
+      label:{text:String(i+1),color:'#0a0e1a',fontWeight:'600'},
+      title:p.n
+    });
+    var iw=new google.maps.InfoWindow({
+      content:'<div style="color:#0a0e1a;font-size:13px;font-family:system-ui;max-width:240px"><b>'+escHtml(p.n)+'</b><div style="font-size:11px;color:#374151;margin-top:4px">'+escHtml(p.x||'')+'</div><a href="https://www.google.com/maps/dir/?api=1&destination='+p.lat+','+p.lng+'" target="_blank" style="display:inline-block;margin-top:8px;font-size:12px;color:#2563eb;text-decoration:none">🧭 導航</a></div>'
+    });
+    m.addListener('click',function(){iw.open(mapInst,m);});
+    bounds.extend(new google.maps.LatLng(p.lat,p.lng));
+  });
+  if(places.length>1){
+    mapInst.fitBounds(bounds);
+    setTimeout(function(){if(mapInst.getZoom()>14)mapInst.setZoom(14);},200);
+  }
+}
+
+// ─── FIREBASE SYNC ─────────────────────────────────────────────────────────
+function setSync(state){
+  var dot=$id('sync-dot'), text=$id('sync-text'), badge=$id('sync-badge');
+  if(!dot||!text||!badge)return;
+  badge.classList.remove('syncing','ok','err');
+  if(state==='syncing'){dot.textContent='◌';text.textContent='同步中';badge.classList.add('syncing');}
+  else if(state==='ok'){dot.textContent='●';text.textContent='已同步';badge.classList.add('ok');}
+  else if(state==='err'){dot.textContent='⚠';text.textContent='同步失敗';badge.classList.add('err');}
+  else {dot.textContent='○';text.textContent='待同步';}
+}
+
+function fbPut(path,data){
+  setSync('syncing');
+  return fetch(FB_URL+'/'+path+'.json',{method:'PUT',body:JSON.stringify(data)})
+    .then(function(r){if(!r.ok)throw new Error('http '+r.status); setSync('ok');})
+    .catch(function(e){setSync('err');console.warn('sync err',e);});
+}
+function fbGet(path){
+  return fetch(FB_URL+'/'+path+'.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
+}
+
+var syncTodosDeb=null;
+function syncTodos(){
+  clearTimeout(syncTodosDeb);
+  syncTodosDeb=setTimeout(function(){fbPut(FB_TODOS,state.todoStates);},400);
+}
+var syncCostsDeb=null;
+function syncCosts(){
+  clearTimeout(syncCostsDeb);
+  syncCostsDeb=setTimeout(function(){fbPut(FB_COSTS,state.costActuals);},400);
+}
+var syncItinDeb=null;
+function syncItin(){
+  clearTimeout(syncItinDeb);
+  syncItinDeb=setTimeout(function(){fbPut(FB_ITIN,TRIP_DATA);},600);
+}
+var syncBookDeb=null;
+function syncBooking(){
+  clearTimeout(syncBookDeb);
+  syncBookDeb=setTimeout(function(){fbPut(FB_BOOK,BOOKING_DATA);},600);
+}
+
+function pullInitial(){
+  setSync('syncing');
+  Promise.all([fbGet(FB_TODOS),fbGet(FB_COSTS),fbGet(FB_ITIN),fbGet(FB_BOOK)])
+    .then(function(arr){
+      var todos=arr[0],costs=arr[1],itin=arr[2],book=arr[3];
+      if(todos)state.todoStates=todos;
+      if(costs)state.costActuals=costs;
+      if(itin && Array.isArray(itin) && itin.length>0){
+        TRIP_DATA.length=0;
+        for(var i=0;i<itin.length;i++)TRIP_DATA.push(itin[i]);
+      }
+      if(book && Array.isArray(book) && book.length>0){
+        BOOKING_DATA.length=0;
+        for(var i=0;i<book.length;i++)BOOKING_DATA.push(book[i]);
+      }
+      setSync('ok');
+      renderTabs();
+      renderPanel(state.curDay);
+      bindTabEvents();
+      updateProgress();
+    });
+}
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+function init(){
+  renderTabs();
+  renderPanel(state.curDay);
+  bindTabEvents();
+  bindDragHandlers();
+  bindGlobalClicks();
+  bindSwipe();
+  updateProgress();
+  pullInitial();
+  // Preload map (lazy, but warm)
+  setTimeout(loadGMaps,800);
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',init);
+} else {
+  init();
+}
+
+</script>
+</body>
+</html>
