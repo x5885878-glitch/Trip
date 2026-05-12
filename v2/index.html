@@ -373,7 +373,7 @@ var TRIP_DATA = [
       {time:"18:35",icon:"✈️",name:"NZ0078 台北→奧克蘭",desc:"豪華商務艙 · 10h40m · 翌日 09:15 抵奧克蘭",tags:["✓ 已訂"]},
       {time:"翌日",icon:"🔄",name:"奧克蘭轉機 → NZ0619 11:35 飛皇后鎮",desc:"09:15抵奧克蘭 · 候機2h20m · 13:30抵皇后鎮",tags:["✓ 已訂"]},
     ],
-    hotel:{icon:"✈️",name:"航班上（機上過夜）",desc:"台北→奧克蘭 NZ0078",price:""}
+    hotel:{desc:"台北→奧克蘭 NZ0078",icon:"✈️",name:"航班上（機上過夜）",price:""}
   },
   {
     id:"day-2",
@@ -384,47 +384,22 @@ var TRIP_DATA = [
       {time:"16:30",icon:"🚡",name:"Skyline Gondola + Luge",desc:"NZD $80/人 · Bob's Peak全景",tags:["⚡ 需預約"],links:[{url:"https://www.skyline.co.nz/queenstown/",text:"官網"}]},
       {time:"19:00",icon:"🍔",name:"晚餐 · Fergburger",desc:"18:30前到避免排隊"},
     ],
-    hotel:{icon:"🏡",name:"皇后鎮住宿（9/26–10/2 · 6晚）",desc:"三選一候選：美景酒店 / Whakatipu Bliss / 大漾閣別墅",price:"🔴 待選定"}
+    hotel:{desc:"三選一候選：美景酒店 / Whakatipu Bliss / 大漾閣別墅",icon:"🏡",name:"皇后鎮住宿（9/26–10/2 · 6晚）",price:"🔴 待選定"}
   },
   {
     id:"day-3",
     date:"9/27 日",
-    title:"📸 格林諾奇婚紗攝影 + 騎馬",
-    items:[
-      {time:"07:30",icon:"🚗",name:"自駕格林諾奇 · 45min",desc:"途中 Bennett's Bluff Lookout · 週日攝影師可能較搶手"},
-      {time:"08:30",icon:"📸",name:"婚紗攝影全天 · NZD $1,800估",desc:"",tags:["🔴 立即聯絡攝影師"]},
-      {time:"14:30",icon:"🐴",name:"Lighthorse Adventures 騎馬 · NZD $230/人",desc:"",tags:["⚡ 4–6週前訂"],links:[{url:"https://www.lighthorseadventures.com/",text:"官網"}]},
-      {time:"19:30",icon:"🍽️",name:"慶祝晚餐 · Rata",desc:"",links:[{url:"https://www.ratadining.co.nz/",text:"訂位"}]},
-    ],
-    hotel:{icon:"🏡",name:"皇后鎮住宿 A（連住）",desc:"同 9/26 住宿 · 第 2 晚 / 共 6 晚",price:""}
-  },
-  {
-    id:"day-4",
-    date:"9/28 一",
     title:"⛴️ 米佛峽灣全天",
     items:[
       {time:"06:00",icon:"🚗",name:"自駕米佛峽灣 · 4hr",desc:"途中 Mirror Lakes 停拍 · 帶便當"},
       {time:"10:30",icon:"⛴️",name:"RealNZ Classic Cruise · NZD $145/人",desc:"2hr · 春雨瀑布最壯觀 · 幾乎不取消",tags:["⚡ 3–4週前訂"],links:[{url:"https://www.realnz.com/en/experiences/day-cruises/milford-sound-classic-cruise/",text:"RealNZ"}]},
       {time:"19:30",icon:"🥩",name:"晚餐 · Botswana Butchery",desc:"",links:[{url:"https://www.botswanabutchery.co.nz/",text:"訂位"}]},
     ],
-    hotel:{icon:"🏡",name:"皇后鎮住宿 A（連住）",desc:"同 9/26 住宿 · 第 3 晚 / 共 6 晚",price:""}
+    hotel:{desc:"同 9/26 住宿 · 第 2 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
   },
   {
-    id:"day-5",
-    date:"9/29 二",
-    title:"♨️ Deer Park + Moke Lake + 溫泉",
-    items:[
-      {time:"09:00",icon:"🦌",name:"Deer Park Heights · NZD $20/人",desc:"魔戒洛汗國取景地 · 360度全景"},
-      {time:"11:30",icon:"🏞️",name:"Moke Lake · 免費",desc:"環湖步道1.5hr · 遊客極少"},
-      {time:"13:30",icon:"🧺",name:"回住宿洗衣烘乾",desc:""},
-      {time:"15:30",icon:"♨️",name:"Onsen Hot Pools · NZD $61+/人",desc:"每天11am–11pm · 俯瞰Shotover Canyon",tags:["⚡ 1–2週前訂"],links:[{url:"https://www.onsen.co.nz/",text:"官網"}]},
-      {time:"19:00",icon:"🍽️",name:"晚餐選項",desc:"· The Bunker（當地人推） · Jervois Steak House · Blue Kanu"},
-    ],
-    hotel:{icon:"🏡",name:"皇后鎮住宿 A（連住）",desc:"同 9/26 住宿 · 第 4 晚 / 共 6 晚",price:""}
-  },
-  {
-    id:"day-6",
-    date:"9/30 三",
+    id:"day-4",
+    date:"9/28 一",
     title:"🌸 Wanaka 一日遊 · Cardrona + 孤獨樹 + 鮭魚養殖場",
     items:[
       {time:"09:00",icon:"🚗",name:"皇后鎮出發 · 走 Crown Range Road 最美路線",desc:"紐西蘭最高主要公路 · 1121m · 70km · 約1h10min"},
@@ -438,18 +413,43 @@ var TRIP_DATA = [
       {time:"17:30",icon:"🚗",name:"走 SH6 回皇后鎮（經 Cromwell）",desc:"回程不重複風景 · 經 Lake Dunstan + Kawarau Gorge · 約1.5h"},
       {time:"19:00",icon:"🌿",name:"晚餐 · Sherwood",desc:"2025 Cuisine 雙帽",links:[{url:"https://www.sherwoodqueenstown.nz/",text:"訂位"}]},
     ],
-    hotel:{icon:"🏡",name:"皇后鎮住宿 A（連住）",desc:"同 9/26 住宿 · 第 5 晚 / 共 6 晚",price:""}
+    hotel:{desc:"同 9/26 住宿 · 第 3 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
   },
   {
-    id:"day-7",
-    date:"10/1 四",
+    id:"day-5",
+    date:"9/29 二",
     title:"🚢 TSS Earnslaw + Walter Peak 農場晚宴",
     items:[
       {time:"上午",icon:"🏙️",name:"皇后鎮市區輕鬆走 · 購物",desc:""},
       {time:"下午",icon:"🛍️",name:"Queenstown Mall · Patagonia · Icebreaker",desc:""},
       {time:"18:00",icon:"🚢",name:"TSS Earnslaw + Walter Peak BBQ · NZD $199/人",desc:"22:00返回 · ✅ 2026保養5/18–6/26，10/1是真蒸汽船",tags:["⚡ 選Vintage Steamship"],links:[{url:"https://www.realnz.com/en/experiences/tss-earnslaw-walter-peak-experiences/walter-peak-gourmet-bbq-dining/",text:"RealNZ"}]},
     ],
-    hotel:{icon:"🏡",name:"皇后鎮住宿 A（連住）",desc:"同 9/26 住宿 · 第 6 晚 / 共 6 晚",price:""}
+    hotel:{desc:"同 9/26 住宿 · 第 4 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
+  },
+  {
+    id:"day-6",
+    date:"9/30 三",
+    title:"📸 格林諾奇婚紗攝影 + 騎馬",
+    items:[
+      {time:"07:30",icon:"🚗",name:"自駕格林諾奇 · 45min",desc:"途中 Bennett's Bluff Lookout · 週日攝影師可能較搶手"},
+      {time:"08:30",icon:"📸",name:"婚紗攝影全天 · TWD $88983",desc:"",tags:["🔴 立即聯絡攝影師"]},
+      {time:"14:30",icon:"🐴",name:"Lighthorse Adventures 騎馬 · NZD $230/人",desc:"",tags:["⚡ 4–6週前訂"],links:[{url:"https://www.lighthorseadventures.com/",text:"官網"}]},
+      {time:"19:30",icon:"🍽️",name:"慶祝晚餐 · Rata",desc:"",links:[{url:"https://www.ratadining.co.nz/",text:"訂位"}]},
+    ],
+    hotel:{desc:"同 9/26 住宿 · 第 5 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
+  },
+  {
+    id:"day-7",
+    date:"10/1 四",
+    title:"♨️ Deer Park + Moke Lake + 溫泉",
+    items:[
+      {time:"09:00",icon:"🦌",name:"Deer Park Heights · NZD $20/人",desc:"魔戒洛汗國取景地 · 360度全景"},
+      {time:"11:30",icon:"🏞️",name:"Moke Lake · 免費",desc:"環湖步道1.5hr · 遊客極少"},
+      {time:"13:30",icon:"🧺",name:"回住宿洗衣烘乾",desc:""},
+      {time:"15:30",icon:"♨️",name:"Onsen Hot Pools · NZD $61+/人",desc:"每天11am–11pm · 俯瞰Shotover Canyon",tags:["⚡ 1–2週前訂"],links:[{url:"https://www.onsen.co.nz/",text:"官網"}]},
+      {time:"19:00",icon:"🍽️",name:"晚餐選項",desc:"· The Bunker（當地人推） · Jervois Steak House · Blue Kanu"},
+    ],
+    hotel:{desc:"同 9/26 住宿 · 第 6 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
   },
   {
     id:"day-8",
@@ -465,7 +465,7 @@ var TRIP_DATA = [
       {time:"18:30",icon:"🍽️",name:"蒂卡波晚餐（Kohan / Astro Cafe）",desc:"蒂卡波選擇不多，早點吃"},
       {time:"21:45",icon:"⭐",name:"Summit Experience (普通話) · NZD $139×2 = $278",desc:"Mt John 觀星 · 24hr前可免費取消 試折扣碼 WELCOME10",tags:["🔴 立即訂"],links:[{url:"https://www.darkskyproject.co.nz/",text:"darkskyproject.co.nz"}]},
     ],
-    hotel:{icon:"🌌",name:"蒂卡波住宿（10/2–10/3 · 1晚）",desc:"三選一候選：Lot 7 / 特卡波湖景酒店 / Lakes Edge Holiday Park",price:"🔴 待選定"}
+    hotel:{desc:"三選一候選：Lot 7 / 特卡波湖景酒店 / Lakes Edge Holiday Park",icon:"🌌",name:"蒂卡波住宿（10/2–10/3 · 1晚）",price:"🔴 待選定"}
   },
   {
     id:"day-9",
@@ -479,7 +479,7 @@ var TRIP_DATA = [
       {time:"16:00",icon:"🏘️",name:"箭鎮歷史街區",desc:"Devon Street 春季櫻花大道"},
       {time:"19:00",icon:"🍽️",name:"晚餐選項",desc:"· Margo's · Pier · Public Kitchen"},
     ],
-    hotel:{icon:"🏡",name:"皇后鎮住宿（10/3–10/4 · 1晚）",desc:"建議：延訂同一間住宿連住",price:"🔴 待訂"}
+    hotel:{desc:"建議：延訂同一間住宿連住",icon:"🏡",name:"皇后鎮住宿（10/3–10/4 · 1晚）",price:"🔴 待訂"}
   },
   {
     id:"day-10",
@@ -492,7 +492,7 @@ var TRIP_DATA = [
       {time:"16:30",icon:"🌋",name:"Uber 到 Mt Eden 火山口 · 免費",desc:"360度奧克蘭全景 · 夕陽最美"},
       {time:"19:00",icon:"🦞",name:"晚餐 · Depot",desc:"Federal St · 步行5min"},
     ],
-    hotel:{icon:"🏙️",name:"Queen St 21樓公寓（10/4–10/7 · 3晚）",desc:"市中心 · 免費停車 · 21樓景觀 · ⚠️ 需改訂日期",price:"原 TWD $11,180（2晚）· 3晚約 $16,770"}
+    hotel:{desc:"市中心 · 免費停車 · 21樓景觀 · ⚠️ 需改訂日期",icon:"🏙️",name:"Queen St 21樓公寓（10/4–10/7 · 3晚）",price:"原 TWD $11,180（2晚）· 3晚約 $16,770"}
   },
   {
     id:"day-11",
@@ -506,7 +506,7 @@ var TRIP_DATA = [
       {time:"17:30",icon:"🏙️",name:"回到 SkyCity Terminal · 步行回住宿",desc:""},
       {time:"19:30",icon:"🌿",name:"晚餐選項",desc:"· Ahi（紐西蘭在地食材）· Cassia（印度創新）· Queen's Rooftop"},
     ],
-    hotel:{icon:"🏙️",name:"Queen St 21樓公寓（連住）",desc:"同 10/4 住宿 · 第 2 晚 / 共 3 晚",price:""}
+    hotel:{desc:"同 10/4 住宿 · 第 2 晚 / 共 3 晚",icon:"🏙️",name:"Queen St 21樓公寓（連住）",price:""}
   },
   {
     id:"day-12",
@@ -523,7 +523,7 @@ var TRIP_DATA = [
       {time:"17:30",icon:"⛴️",name:"渡輪返回奧克蘭（18:10 抵達）",desc:""},
       {time:"19:30",icon:"🥂",name:"告別晚餐 · The French Café",desc:"Symonds St · Uber 10min · 紐西蘭 Top 10 · 需訂位",links:[{url:"https://thefrenchcafe.co.nz/",text:"訂位"}]},
     ],
-    hotel:{icon:"🏙️",name:"Queen St 21樓公寓（連住）",desc:"同 10/4 住宿 · 第 3 晚 / 共 3 晚",price:""}
+    hotel:{desc:"同 10/4 住宿 · 第 3 晚 / 共 3 晚",icon:"🏙️",name:"Queen St 21樓公寓（連住）",price:""}
   },
   {
     id:"day-13",
@@ -537,7 +537,7 @@ var TRIP_DATA = [
       {time:"15:00",icon:"🏨",name:"回飯店 check in · 休息",desc:""},
       {time:"17:30",icon:"🌿",name:"Mitai Māori Village · NZD $169/人",desc:"傳統晚宴+Haka舞+螢火蟲步道 · 20:30結束",tags:["⚡ 4–6週前訂"],links:[{url:"https://www.mitai.co.nz/",text:"官網直訂"}]},
     ],
-    hotel:{icon:"🌋",name:"Millennium Hotel Rotorua（10/7–10/8 · 1晚）",desc:"市中心五星 · 免費停車 · ⚠️ 需改訂日期",price:"TWD $3,954 ✅ 已訂"}
+    hotel:{desc:"市中心五星 · 免費停車 · ⚠️ 需改訂日期",icon:"🌋",name:"Millennium Hotel Rotorua（10/7–10/8 · 1晚）",price:"TWD $3,954 ✅ 已訂"}
   },
   {
     id:"day-14",
@@ -552,7 +552,7 @@ var TRIP_DATA = [
       {time:"18:00",icon:"✈️",name:"Pullman Auckland Airport check in",desc:"步行3分到國際航廈"},
       {time:"19:30",icon:"🍽️",name:"晚餐 · Pullman 飯店 Grain Store",desc:"飯店內 fine dining · 輕鬆收尾"},
     ],
-    hotel:{icon:"✈️",name:"Pullman Auckland Airport（10/8–10/9 · 1晚）",desc:"機場內 · 步行3分到國際出境",price:"TWD $5,576 ✅ 已訂"}
+    hotel:{desc:"機場內 · 步行3分到國際出境",icon:"✈️",name:"Pullman Auckland Airport（10/8–10/9 · 1晚）",price:"TWD $5,576 ✅ 已訂"}
   },
   {
     id:"day-15",
@@ -563,7 +563,7 @@ var TRIP_DATA = [
       {time:"10:40",icon:"✈️",name:"NZ0077 奧克蘭→台北",desc:"豪華經濟艙 · 11h25m",tags:["✓ 已訂"]},
       {time:"17:05",icon:"🏠",name:"抵達桃園 · 回家！",desc:""},
     ],
-    hotel:{icon:"✈️",name:"航班上（機上返程）",desc:"奧克蘭→台北 NZ0077",price:"' + escHtml(hpVal) + '"}
+    hotel:{desc:"奧克蘭→台北 NZ0077",icon:"✈️",name:"航班上（機上返程）",price:"' + escHtml(hpVal) + '"}
   },
 ];
 var PLACES = [
@@ -627,11 +627,11 @@ var BOOKING_DATA = [
     {id:"t14",text:"Summit Experience 普通話觀星（10/2 9:45 PM）NZD $139/人 · 24hr可退→ 官網直訂（試 WELCOME10）",done:false},
     {id:"t15",text:"Hobbiton + Waitomo 一日團 普通話（10/5）NZD $450/人估→ Hobbiton 普通話 / Cheeky Kiwi",done:false},
     {id:"t16",text:"Waiheke Fullers360 渡輪+Hop-on套票（10/6）NZD $85/人→ Fullers360",done:false},
-    {id:"t17",text:"格林諾奇婚紗攝影師（9/27）小紅書/Instagram 聯絡🔴 立即聯絡",done:false},
-    {id:"t18",text:"Lighthorse Adventures 騎馬（9/27）NZD $230/人→ 官網預約",done:false},
-    {id:"t19",text:"米佛峽灣 RealNZ Classic Cruise（9/28 10:30）NZD $145/人→ RealNZ 官網",done:false},
-    {id:"t20",text:"Onsen Hot Pools 私人溫泉（9/29）NZD $61+/人 · 1–2週前訂→ 官網直訂",done:false},
-    {id:"t22",text:"TSS Earnslaw + Walter Peak BBQ（10/1 18:00）NZD $199/人 · 選 Vintage Steamship→ RealNZ 官網",done:false},
+    {id:"t17",text:"格林諾奇婚紗攝影師（9/30）小紅書/Instagram 聯絡🔴 立即聯絡",done:false},
+    {id:"t18",text:"Lighthorse Adventures 騎馬（9/30）NZD $230/人→ 官網預約",done:false},
+    {id:"t19",text:"米佛峽灣 RealNZ Classic Cruise（9/27 10:30）NZD $145/人→ RealNZ 官網",done:false},
+    {id:"t20",text:"Onsen Hot Pools 私人溫泉（10/1）NZD $61+/人 · 1–2週前訂→ 官網直訂",done:false},
+    {id:"t22",text:"TSS Earnslaw + Walter Peak BBQ（9/29 18:00）NZD $199/人 · 選 Vintage Steamship→ RealNZ 官網",done:false},
     {id:"t23",text:"庫克山直升機（10/2）TWD $36,564（2人）✅ 已訂",done:true},
     {id:"t24",text:"Mitai Māori Village 毛利晚宴（10/7 17:30）NZD $169/人→ 官網直訂",done:false},
     {id:"t25",text:"Skyline Gondola + Luge（9/26）NZD $80/人→ 官網",done:false},
@@ -639,9 +639,9 @@ var BOOKING_DATA = [
   {section:"🍜 美食",cat:"food",items:[
   ]},
   {section:"🍽️ 餐廳訂位",cat:"restaurant",items:[
-    {id:"t26",text:"Rata（9/27 19:30）慶祝婚紗攝影完成→ 訂位",done:false},
-    {id:"t27",text:"Botswana Butchery（9/28 19:30）頂級牛排→ 訂位",done:false},
-    {id:"t28",text:"Sherwood（9/30 19:00）2025 Cuisine雙帽→ 訂位",done:false},
+    {id:"t26",text:"Rata（9/30 19:30）慶祝婚紗攝影完成→ 訂位",done:false},
+    {id:"t27",text:"Botswana Butchery（9/27 19:30）頂級牛排→ 訂位",done:false},
+    {id:"t28",text:"Sherwood（9/28 19:00）2025 Cuisine雙帽→ 訂位",done:false},
     {id:"t29",text:"Mudbrick Vineyard（10/6 12:30）Waiheke Island 山頂午餐→ 訂位",done:false},
     {id:"t30",text:"The French Café（10/6 19:30）告別晚餐 · 紐西蘭 Top 10→ 訂位",done:false},
   ]},
