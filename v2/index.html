@@ -196,6 +196,79 @@ a{color:var(--accent);text-decoration:none}
 
 .cost-hint{font-size:11px;color:var(--txt3);text-align:center;padding:6px;background:var(--glass);border-radius:6px;margin-bottom:10px}
 
+/* Cost FX setting */
+.cost-fx{display:flex;align-items:center;gap:6px;padding:10px;background:var(--glass);border-radius:var(--rad2);margin-bottom:10px;font-size:12px}
+.cost-fx .fx-label{font-weight:600;color:var(--txt)}
+.cost-fx .fx-pair{color:var(--txt2)}
+.cost-fx input{background:var(--bg);border:1px solid var(--glass2);border-radius:6px;padding:4px 8px;color:var(--accent);font-weight:600;font-size:13px;font-family:inherit;text-align:right}
+.cost-fx input:focus{outline:none;border-color:var(--accent)}
+.cost-fx .fx-hint{margin-left:auto;font-size:10px;color:var(--txt3)}
+
+/* Pull from itinerary button */
+.cost-pull-btn{width:100%;padding:10px;background:linear-gradient(135deg,rgba(45,212,191,0.15),rgba(139,92,246,0.15));border:1px dashed var(--accent);border-radius:var(--rad2);color:var(--accent);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:10px;font-family:inherit}
+.cost-pull-btn:hover{background:linear-gradient(135deg,rgba(45,212,191,0.25),rgba(139,92,246,0.25))}
+
+/* Group title row */
+.cs-group-title-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;padding-left:2px}
+.cs-group-title{font-size:13px;font-weight:600;color:var(--txt2);flex:1;cursor:pointer;padding:2px 4px;border-radius:4px}
+body.edit-mode .cs-group-title:hover{background:var(--glass);outline:1px solid var(--accent)}
+.cs-del-group{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:var(--danger);border-radius:6px;padding:2px 6px;font-size:11px;cursor:pointer}
+.cs-del-group:hover{background:var(--danger);color:#fff}
+
+/* Cost row: drag handle + del */
+.cs-row{position:relative;gap:8px}
+.cs-drag-handle{color:var(--txt3);cursor:grab;user-select:none;line-height:1;font-size:12px;flex-shrink:0}
+.cs-row.dragging{opacity:0.4}
+.cs-row.drag-over{outline:2px solid var(--accent)}
+.cs-group.drag-over{outline:2px dashed var(--accent);outline-offset:2px;border-radius:var(--rad2)}
+
+.cs-del-row{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:var(--danger);border-radius:50%;width:22px;height:22px;font-size:11px;cursor:pointer;flex-shrink:0;line-height:1;padding:0}
+.cs-del-row:hover{background:var(--danger);color:#fff}
+
+.cs-curr-picker{background:var(--bg);border:1px solid var(--glass2);border-radius:6px;color:var(--txt2);font-size:10px;padding:2px 4px;font-family:inherit;cursor:pointer}
+
+/* Editable cost text */
+.cl{flex:1;cursor:default}
+.cl-label{cursor:pointer;padding:2px 4px;border-radius:4px;display:inline-block}
+body.edit-mode .cl-label:hover{background:var(--glass);outline:1px solid var(--accent)}
+.csub{cursor:default;display:block;font-size:11px;color:var(--txt3);margin-top:2px;padding:1px 4px;border-radius:3px}
+body.edit-mode .csub{cursor:pointer}
+body.edit-mode .csub:hover{background:var(--glass);outline:1px solid var(--accent)}
+.csub-empty{font-style:italic;opacity:0.6}
+.csub-inline{font-size:10px;color:var(--txt3);font-weight:400;margin-left:2px}
+.cost-edit-input{width:100%;background:var(--bg);border:1px solid var(--accent);border-radius:4px;color:var(--txt);font-size:inherit;font-family:inherit;padding:2px 6px}
+
+/* Cost row layout for edit mode */
+body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
+
+/* Add buttons */
+.cs-add-row-btn{width:100%;background:var(--glass);border:1px dashed var(--glass3);border-radius:var(--rad3);color:var(--txt2);padding:8px;font-size:11px;cursor:pointer;font-family:inherit;margin-top:4px}
+.cs-add-row-btn:hover{background:var(--glass2);color:var(--accent);border-color:var(--accent)}
+.cs-add-group-btn{width:100%;background:linear-gradient(135deg,rgba(45,212,191,0.08),rgba(139,92,246,0.08));border:1px dashed var(--accent);border-radius:var(--rad2);color:var(--accent);padding:12px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:6px}
+.cs-add-group-btn:hover{background:linear-gradient(135deg,rgba(45,212,191,0.18),rgba(139,92,246,0.18))}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:400;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:fadeIn 0.2s ease}
+.modal-box{background:var(--bg2);border-radius:16px;width:100%;max-width:480px;max-height:90vh;display:flex;flex-direction:column;animation:slideUp 0.3s cubic-bezier(0.2,0.8,0.2,1)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--glass);font-size:15px;font-weight:600}
+.modal-close{background:none;border:none;color:var(--txt2);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px}
+.modal-close:hover{background:var(--glass)}
+.modal-body{padding:14px 16px;overflow-y:auto;flex:1}
+.modal-footer{padding:12px 16px;border-top:1px solid var(--glass);display:flex;gap:8px;justify-content:flex-end}
+.modal-btn{padding:8px 16px;border-radius:8px;background:var(--glass);color:var(--txt);border:1px solid var(--glass2);cursor:pointer;font-size:13px;font-family:inherit}
+.modal-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0e1a;border:none;font-weight:600}
+.modal-btn:hover{filter:brightness(1.1)}
+
+.mp-hint{font-size:11px;color:var(--txt3);margin-bottom:10px;padding:8px;background:var(--glass);border-radius:6px}
+.mp-row{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;margin-bottom:4px;background:var(--glass);cursor:pointer}
+.mp-row:hover{background:var(--glass2)}
+.mp-row input[type="checkbox"]{flex-shrink:0}
+.mp-name{flex:1;min-width:0;font-size:12px}
+.mp-name>div:first-child{color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mp-amt{color:var(--accent);font-size:11px;margin-top:2px;font-weight:500}
+.mp-row select{background:var(--bg);border:1px solid var(--glass2);border-radius:6px;color:var(--txt);font-size:11px;padding:4px 6px;font-family:inherit;cursor:pointer;flex-shrink:0;max-width:120px}
+.mp-empty{text-align:center;color:var(--txt3);font-size:12px;padding:24px}
+
 /* SYNC BADGE */
 .sync-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--txt3);margin-left:6px}
 .sync-badge.syncing{color:var(--warn)}
@@ -574,55 +647,55 @@ var BOOKING_DATA = [
   ]},
 ];
 var COST_GROUPS = [
-  {title:"✈️ 機票",rows:[
-    {key:"c1",label:"台北↔紐西蘭全程（2人，已重訂）",sub:"",budget:270000,display:"\u2248 TWD $270,000",editable:false},
+  {id:"g1",title:"✈️ 機票",rows:[
+    {id:"c1",label:"台北↔紐西蘭全程（2人，已重訂）",sub:"",budget:270000,currency:"TWD",display:"\u2248 TWD $270,000"},
     {subtotal:true,id:"sub-ticket",label:"機票合計",display:"\u2248 TWD $270,000"},
   ]},
-  {title:"🏨 住宿（12晚）",rows:[
-    {key:"c2",label:"皇后鎮住宿 A",sub:"9/26–10/2 · 6晚（大漾閣估）",budget:58058,display:"\u2248 TWD $58,058",editable:false},
-    {key:"c3",label:"蒂卡波住宿",sub:"10/2–10/3 · 1晚（湖景估）",budget:9939,display:"\u2248 TWD $9,939",editable:false},
-    {key:"c4",label:"皇后鎮住宿 B",sub:"10/3–10/4 · 1晚（延訂）",budget:9676,display:"\u2248 TWD $9,676",editable:false},
-    {key:"c5",label:"Queen St 21樓公寓",sub:"10/4–10/7 · 3晚",budget:16770,display:"\u2248 TWD $16,770",editable:false},
-    {key:"c6",label:"Millennium Rotorua",sub:"10/7–10/8 · 1晚",budget:3954,display:"TWD $3,954 \u2705",editable:false},
-    {key:"c7",label:"Pullman Auckland Airport",sub:"10/8–10/9 · 1晚",budget:5576,display:"TWD $5,576 \u2705",editable:false},
+  {id:"g2",title:"🏨 住宿（12晚）",rows:[
+    {id:"c2",label:"皇后鎮住宿 A",sub:"9/26–10/2 · 6晚（大漾閣估）",budget:58058,currency:"TWD",display:"\u2248 TWD $58,058"},
+    {id:"c3",label:"蒂卡波住宿",sub:"10/2–10/3 · 1晚（湖景估）",budget:9939,currency:"TWD",display:"\u2248 TWD $9,939"},
+    {id:"c4",label:"皇后鎮住宿 B",sub:"10/3–10/4 · 1晚（延訂）",budget:9676,currency:"TWD",display:"\u2248 TWD $9,676"},
+    {id:"c5",label:"Queen St 21樓公寓",sub:"10/4–10/7 · 3晚",budget:16770,currency:"TWD",display:"\u2248 TWD $16,770"},
+    {id:"c6",label:"Millennium Rotorua",sub:"10/7–10/8 · 1晚",budget:3954,currency:"TWD",display:"TWD $3,954 \u2705"},
+    {id:"c7",label:"Pullman Auckland Airport",sub:"10/8–10/9 · 1晚",budget:5576,currency:"TWD",display:"TWD $5,576 \u2705"},
     {subtotal:true,id:"sub-hotel",label:"住宿合計",display:"\u2248 TWD $103,973"},
   ]},
-  {title:"🚗 交通（2人）",rows:[
-    {key:"c8",label:"南島租車",sub:"8天 NZD $80/天",budget:11840,display:"\u2248 TWD $11,840",editable:false},
-    {key:"c9",label:"南島油費",sub:"約1,800km",budget:9324,display:"\u2248 TWD $9,324",editable:false},
-    {key:"c10",label:"北島租車",sub:"2天（奧克蘭→Rotorua→機場）",budget:3700,display:"\u2248 TWD $3,700",editable:false},
-    {key:"c11",label:"北島油費",sub:"約600km",budget:3108,display:"\u2248 TWD $3,108",editable:false},
-    {key:"c12",label:"機場→CBD SkyBus/Uber",sub:"",budget:1200,display:"\u2248 TWD $1,200",editable:false},
-    {key:"c13",label:"Waiheke 渡輪+Hop-on套票",sub:"",budget:3145,display:"\u2248 TWD $3,145",editable:false},
-    {key:"c14",label:"零散 Uber（Mt Eden 來回等）",sub:"",budget:2000,display:"\u2248 TWD $2,000",editable:false},
+  {id:"g3",title:"🚗 交通（2人）",rows:[
+    {id:"c8",label:"南島租車",sub:"8天 NZD $80/天",budget:11840,currency:"TWD",display:"\u2248 TWD $11,840"},
+    {id:"c9",label:"南島油費",sub:"約1,800km",budget:9324,currency:"TWD",display:"\u2248 TWD $9,324"},
+    {id:"c10",label:"北島租車",sub:"2天（奧克蘭→Rotorua→機場）",budget:3700,currency:"TWD",display:"\u2248 TWD $3,700"},
+    {id:"c11",label:"北島油費",sub:"約600km",budget:3108,currency:"TWD",display:"\u2248 TWD $3,108"},
+    {id:"c12",label:"機場→CBD SkyBus/Uber",sub:"",budget:1200,currency:"TWD",display:"\u2248 TWD $1,200"},
+    {id:"c13",label:"Waiheke 渡輪+Hop-on套票",sub:"",budget:3145,currency:"TWD",display:"\u2248 TWD $3,145"},
+    {id:"c14",label:"零散 Uber（Mt Eden 來回等）",sub:"",budget:2000,currency:"TWD",display:"\u2248 TWD $2,000"},
     {subtotal:true,id:"sub-trans",label:"交通合計",display:"\u2248 TWD $34,317"},
   ]},
-  {title:"🎡 活動（2人合計）",rows:[
-    {key:"c15",label:"婚紗攝影",sub:"",budget:33300,display:"\u2248 TWD $33,300",editable:false},
-    {key:"c16",label:"騎馬 Lighthorse",sub:"",budget:8510,display:"\u2248 TWD $8,510",editable:false},
-    {key:"c17",label:"米佛峽灣遊船",sub:"",budget:5365,display:"\u2248 TWD $5,365",editable:false},
-    {key:"c18",label:"Deer Park + Onsen",sub:"",budget:2997,display:"\u2248 TWD $2,997",editable:false},
-    {key:"c19",label:"庫克山直升機",sub:"",budget:36564,display:"TWD $36,564 \u2705",editable:false},
-    {key:"c20",label:"Summit Experience 普通話觀星",sub:"",budget:5143,display:"\u2248 TWD $5,143",editable:false},
-    {key:"c21",label:"Skyline Gondola",sub:"",budget:2960,display:"\u2248 TWD $2,960",editable:false},
-    {key:"c22",label:"Wanaka 一日遊（Hook午餐+雜費）",sub:"",budget:3700,display:"\u2248 TWD $3,700",editable:false},
-    {key:"c23",label:"TSS Earnslaw + Walter Peak",sub:"",budget:7363,display:"\u2248 TWD $7,363",editable:false},
-    {key:"c24",label:"Hobbiton + Waitomo 一日團",sub:"",budget:16650,display:"\u2248 TWD $16,650",editable:false},
-    {key:"c25",label:"Polynesian Spa 溫泉",sub:"",budget:1480,display:"\u2248 TWD $1,480",editable:false},
-    {key:"c26",label:"Mitai 毛利晚宴",sub:"",budget:6253,display:"\u2248 TWD $6,253",editable:false},
-    {key:"c27",label:"Wai-O-Tapu",sub:"",budget:1480,display:"\u2248 TWD $1,480",editable:false},
-    {key:"c28",label:"Mt Eden（免費）",sub:"",budget:0,display:"\u514d\u8cbb",editable:false},
+  {id:"g4",title:"🎡 活動（2人合計）",rows:[
+    {id:"c15",label:"婚紗攝影",sub:"",budget:33300,currency:"TWD",display:"\u2248 TWD $33,300"},
+    {id:"c16",label:"騎馬 Lighthorse",sub:"",budget:8510,currency:"TWD",display:"\u2248 TWD $8,510"},
+    {id:"c17",label:"米佛峽灣遊船",sub:"",budget:5365,currency:"TWD",display:"\u2248 TWD $5,365"},
+    {id:"c18",label:"Deer Park + Onsen",sub:"",budget:2997,currency:"TWD",display:"\u2248 TWD $2,997"},
+    {id:"c19",label:"庫克山直升機",sub:"",budget:36564,currency:"TWD",display:"TWD $36,564 \u2705"},
+    {id:"c20",label:"Summit Experience 普通話觀星",sub:"",budget:5143,currency:"TWD",display:"\u2248 TWD $5,143"},
+    {id:"c21",label:"Skyline Gondola",sub:"",budget:2960,currency:"TWD",display:"\u2248 TWD $2,960"},
+    {id:"c22",label:"Wanaka 一日遊（Hook午餐+雜費）",sub:"",budget:3700,currency:"TWD",display:"\u2248 TWD $3,700"},
+    {id:"c23",label:"TSS Earnslaw + Walter Peak",sub:"",budget:7363,currency:"TWD",display:"\u2248 TWD $7,363"},
+    {id:"c24",label:"Hobbiton + Waitomo 一日團",sub:"",budget:16650,currency:"TWD",display:"\u2248 TWD $16,650"},
+    {id:"c25",label:"Polynesian Spa 溫泉",sub:"",budget:1480,currency:"TWD",display:"\u2248 TWD $1,480"},
+    {id:"c26",label:"Mitai 毛利晚宴",sub:"",budget:6253,currency:"TWD",display:"\u2248 TWD $6,253"},
+    {id:"c27",label:"Wai-O-Tapu",sub:"",budget:1480,currency:"TWD",display:"\u2248 TWD $1,480"},
+    {id:"c28",label:"Mt Eden（免費）",sub:"",budget:0,currency:"TWD",display:"\u514d\u8cbb"},
     {subtotal:true,id:"sub-act",label:"活動合計",display:"\u2248 TWD $131,765"},
   ]},
-  {title:"🍽️ 餐飲（不含早餐）",rows:[
-    {key:"c29",label:"午餐",sub:"15天 · TWD $700/人/天",budget:21000,display:"\u2248 TWD $21,000",editable:false},
-    {key:"c30",label:"一般晚餐×9",sub:"TWD $1,200/人/餐",budget:21600,display:"\u2248 TWD $21,600",editable:false},
-    {key:"c31",label:"特別晚餐×6",sub:"Rata/Botswana/Sherwood/Mudbrick/French Café/Pullman Grain Store",budget:30000,display:"\u2248 TWD $30,000",editable:false},
+  {id:"g5",title:"🍽️ 餐飲（不含早餐）",rows:[
+    {id:"c29",label:"午餐",sub:"15天 · TWD $700/人/天",budget:21000,currency:"TWD",display:"\u2248 TWD $21,000"},
+    {id:"c30",label:"一般晚餐×9",sub:"TWD $1,200/人/餐",budget:21600,currency:"TWD",display:"\u2248 TWD $21,600"},
+    {id:"c31",label:"特別晚餐×6",sub:"Rata/Botswana/Sherwood/Mudbrick/French Café/Pullman Grain Store",budget:30000,currency:"TWD",display:"\u2248 TWD $30,000"},
     {subtotal:true,id:"sub-food",label:"餐飲合計",display:"\u2248 TWD $72,600"},
   ]},
-  {title:"🧳 雜費",rows:[
-    {key:"c32",label:"旅遊保險",sub:"",budget:5000,display:"\u2248 TWD $5,000",editable:false},
-    {key:"c33",label:"購物・紀念品・小費",sub:"",budget:8000,display:"\u2248 TWD $8,000",editable:false},
+  {id:"g6",title:"🧳 雜費",rows:[
+    {id:"c32",label:"旅遊保險",sub:"",budget:5000,currency:"TWD",display:"\u2248 TWD $5,000"},
+    {id:"c33",label:"購物・紀念品・小費",sub:"",budget:8000,currency:"TWD",display:"\u2248 TWD $8,000"},
     {subtotal:true,id:"sub-misc",label:"雜費合計",display:"\u2248 TWD $13,000"},
   ]},
 ];
@@ -638,15 +711,17 @@ var FB_URL = 'https://nz-trip-2026-dd942-default-rtdb.asia-southeast1.firebaseda
 var FB_NODE = 'nz26';  // shared with v1
 var FB_TODOS = FB_NODE + '/todos';
 var FB_COSTS = FB_NODE + '/costs';
-var FB_ITIN  = FB_NODE + '/itinerary_v2';  // separate so v2 edits don't break v1 UI
+var FB_ITIN  = FB_NODE + '/itinerary_v2';
 var FB_BOOK  = FB_NODE + '/bookings_v2';
+var FB_CG    = FB_NODE + '/cost_groups_v2';   // editable COST_GROUPS persistence
+var FB_FX    = FB_NODE + '/fx_v2';            // {nzd: 19.5}
 var FB_META  = FB_NODE + '/v2_meta';
 
-// Bump DATA_VERSION whenever HTML's TRIP_DATA/BOOKING_DATA structure changes.
-// pullInitial() rejects Firebase-stored data if version doesn't match,
-// forcing the HTML's version to become the new source of truth.
-// This prevents the footgun: "stale Firebase data overwrites enriched HTML data".
-var DATA_VERSION = 2;
+// Bump DATA_VERSION whenever HTML's TRIP_DATA/BOOKING_DATA/COST_GROUPS structure changes.
+var DATA_VERSION = 3;
+
+// Default FX rate (TWD per 1 NZD) — editable by user.
+var DEFAULT_NZD_RATE = 19.5;
 
 // ─── UTILS ─────────────────────────────────────────────────────────────────
 function $id(id){return document.getElementById(id);}
@@ -662,13 +737,16 @@ var state = {
   curNav: 'itin',     // itin / book / cost
   editMode: false,
   todoStates: {},     // todo id → done bool
-  costActuals: {},    // cost key → actual amount
+  costActuals: {},    // cost key → actual amount (in row's currency)
+  costDirty: false,
+  fxRate: DEFAULT_NZD_RATE,  // TWD per NZD; editable
   itinDirty: false,
   bookDirty: false,
   longPressTimer: null,
   longPressTab: null,
   dragSrc: null,
   dragSrcDay: null,
+  costDragSrc: null,        // {gIdx, rIdx}
 };
 
 // ─── PROGRESS BAR ──────────────────────────────────────────────────────────
@@ -1038,104 +1116,236 @@ function guessCategory(text){
 }
 
 // ─── COST ──────────────────────────────────────────────────────────────────
+// FX conversion: returns TWD amount given (amount, currency)
+function toTWD(amount, currency){
+  if(!currency || currency==='TWD') return amount;
+  if(currency==='NZD') return Math.round(amount * state.fxRate);
+  return amount;
+}
+function fmtMoney(twdAmount){
+  return 'TWD $' + Math.round(twdAmount).toLocaleString();
+}
+function fmtMoneyWithCurr(amount, currency){
+  // Display "NZD $123 (≈ TWD $2,400)" if currency is not TWD; else just "TWD $X"
+  if(!currency || currency==='TWD'){
+    return 'TWD $' + amount.toLocaleString();
+  }
+  var twd = toTWD(amount, currency);
+  return currency + ' $' + amount.toLocaleString() + ' <span class="csub-inline">≈ ' + fmtMoney(twd) + '</span>';
+}
+// rowActualTWD: returns the TWD value of a row using actual if set, else budget
+function rowActualTWD(row){
+  if(row.subtotal) return 0;
+  var amt = (state.costActuals[row.id]!=null) ? state.costActuals[row.id] : (row.budget||0);
+  return toTWD(amt, row.currency||'TWD');
+}
+
 function renderCost(){
   var c=$id('cost-list');if(!c)return;
   c.innerHTML='';
 
-  // Hint
+  // ── FX setting row ──
+  var fxRow=document.createElement('div');
+  fxRow.className='cost-fx';
+  fxRow.innerHTML=
+    '<span class="fx-label">💱 匯率</span>'+
+    '<span class="fx-pair">1 NZD =</span>'+
+    '<input type="number" id="fx-input" step="0.1" min="0" value="'+state.fxRate+'" style="width:60px">'+
+    '<span class="fx-pair">TWD</span>'+
+    '<span class="fx-hint" id="fx-hint"></span>';
+  c.appendChild(fxRow);
+
+  // ── Hint ──
   var hint=document.createElement('div');
   hint.className='cost-hint';
-  hint.textContent='💡 雙擊金額可輸入實際花費';
+  hint.innerHTML=state.editMode ?
+    '✏️ 編輯模式：拖曳項目重排/搬家 · ✕ 刪除 · ＋ 新增 · 雙擊任意文字編輯' :
+    '💡 雙擊金額可輸入實際花費 · 點右下「✏️ 編輯」進入完整編輯模式';
   c.appendChild(hint);
 
-  // Live summary
+  // ── Live summary (will be recalculated after FX changes) ──
   var budget=0, actual=0;
   for(var i=0;i<COST_GROUPS.length;i++){
     var g=COST_GROUPS[i];
     for(var j=0;j<g.rows.length;j++){
       var r=g.rows[j];
       if(r.subtotal)continue;
-      budget+=r.budget||0;
-      if(state.costActuals[r.key]!=null) actual+=state.costActuals[r.key];
+      var bTWD = toTWD(r.budget||0, r.currency||'TWD');
+      budget += bTWD;
+      if(state.costActuals[r.id]!=null){
+        actual += toTWD(state.costActuals[r.id], r.currency||'TWD');
+      }
     }
   }
   var summ=document.createElement('div');
   summ.className='cs-summary';
   summ.innerHTML=
-    '<div class="cs-summary-card"><div class="label">預算合計</div><div class="value" id="cs-budget">TWD $'+budget.toLocaleString()+'</div></div>'+
-    '<div class="cs-summary-card"><div class="label">已知實際</div><div class="value" id="cs-actual" style="color:var(--ok)">TWD $'+actual.toLocaleString()+'</div></div>';
+    '<div class="cs-summary-card"><div class="label">預算合計</div><div class="value">'+fmtMoney(budget)+'</div></div>'+
+    '<div class="cs-summary-card"><div class="label">已知實際</div><div class="value" style="color:var(--ok)">'+fmtMoney(actual)+'</div></div>';
   c.appendChild(summ);
 
-  // Groups
-  for(var i=0;i<COST_GROUPS.length;i++){
-    var g=COST_GROUPS[i];
+  // ── D feature: "Pull amounts from itinerary" button (edit mode only) ──
+  if(state.editMode){
+    var pullBtn=document.createElement('button');
+    pullBtn.className='cost-pull-btn';
+    pullBtn.id='cost-pull-btn';
+    pullBtn.innerHTML='🪄 從行程吸取金額';
+    pullBtn.title='掃描行程，找出含金額但尚未列在費用裡的項目';
+    c.appendChild(pullBtn);
+  }
+
+  // ── Groups ──
+  for(var gi=0;gi<COST_GROUPS.length;gi++){
+    var g=COST_GROUPS[gi];
     var div=document.createElement('div');
     div.className='cs-group';
-    var title=document.createElement('div');
+    div.setAttribute('data-gid',g.id);
+    div.setAttribute('data-gidx',gi);
+
+    var titleRow=document.createElement('div');
+    titleRow.className='cs-group-title-row';
+    var title=document.createElement('span');
     title.className='cs-group-title';
+    title.setAttribute('data-field','group-title');
+    title.setAttribute('data-gidx',gi);
     title.textContent=g.title;
-    div.appendChild(title);
-    for(var j=0;j<g.rows.length;j++){
-      var r=g.rows[j];
+    titleRow.appendChild(title);
+    if(state.editMode){
+      var delGroup=document.createElement('button');
+      delGroup.className='cs-del-group';
+      delGroup.setAttribute('data-act','del-group');
+      delGroup.setAttribute('data-gidx',gi);
+      delGroup.title='刪除整組';
+      delGroup.innerHTML='🗑';
+      titleRow.appendChild(delGroup);
+    }
+    div.appendChild(titleRow);
+
+    for(var ri=0;ri<g.rows.length;ri++){
+      var r=g.rows[ri];
       if(r.subtotal){
+        // recalculate live subtotal in TWD
+        var subSum=0;
+        for(var k=0;k<g.rows.length;k++){
+          if(g.rows[k].subtotal)continue;
+          subSum += rowActualTWD(g.rows[k]);
+        }
         var sr=document.createElement('div');
         sr.className='cs-sub';
-        sr.innerHTML='<span>'+escHtml(r.label)+'</span><span class="am" id="'+escHtml(r.id)+'">'+escHtml(r.display)+'</span>';
+        sr.innerHTML='<span>'+escHtml(r.label)+'</span><span class="am">'+fmtMoney(subSum)+'</span>';
         div.appendChild(sr);
       } else {
         var rr=document.createElement('div');
         rr.className='cs-row';
-        var hasActual=state.costActuals[r.key]!=null;
-        var displayAmount=hasActual ? 'TWD $'+state.costActuals[r.key].toLocaleString() : r.display;
+        rr.setAttribute('data-gidx',gi);
+        rr.setAttribute('data-ridx',ri);
+        rr.setAttribute('data-rid',r.id);
+        rr.draggable=false;
+
+        var hasActual=state.costActuals[r.id]!=null;
+        var displayAmt=hasActual ? state.costActuals[r.id] : (r.budget||0);
+        var curr=r.currency||'TWD';
+
+        var dh='';
+        if(state.editMode){
+          dh='<span class="cs-drag-handle">⋮⋮</span>';
+        }
+        var delBtn='';
+        if(state.editMode){
+          delBtn='<button class="cs-del-row" data-act="del-row" data-gidx="'+gi+'" data-ridx="'+ri+'">✕</button>';
+        }
+        // Currency picker (edit-mode only)
+        var currPicker='';
+        if(state.editMode){
+          currPicker='<select class="cs-curr-picker" data-act="curr" data-gidx="'+gi+'" data-ridx="'+ri+'">'+
+            '<option value="TWD"'+(curr==='TWD'?' selected':'')+'>TWD</option>'+
+            '<option value="NZD"'+(curr==='NZD'?' selected':'')+'>NZD</option>'+
+          '</select>';
+        }
+
         rr.innerHTML=
-          '<div class="cl">'+escHtml(r.label)+(r.sub?'<span class="csub">'+escHtml(r.sub)+'</span>':'')+'</div>'+
-          '<span class="am editable'+(hasActual?' has-actual':'')+'" data-key="'+escHtml(r.key)+'" data-budget="'+r.budget+'">'+escHtml(displayAmount)+'</span>';
+          dh+
+          '<div class="cl">'+
+            '<span class="cl-label" data-field="label" data-gidx="'+gi+'" data-ridx="'+ri+'">'+escHtml(r.label)+'</span>'+
+            (r.sub?'<span class="csub" data-field="sub" data-gidx="'+gi+'" data-ridx="'+ri+'">'+escHtml(r.sub)+'</span>'
+                  : (state.editMode?'<span class="csub csub-empty" data-field="sub" data-gidx="'+gi+'" data-ridx="'+ri+'">(點擊新增說明)</span>':''))+
+          '</div>'+
+          currPicker+
+          '<span class="am editable'+(hasActual?' has-actual':'')+'" data-key="'+escHtml(r.id)+'" data-gidx="'+gi+'" data-ridx="'+ri+'">'+
+            fmtMoneyWithCurr(displayAmt, curr)+
+          '</span>'+
+          delBtn;
         div.appendChild(rr);
       }
     }
+
+    // ＋ add row (edit mode)
+    if(state.editMode){
+      var addBtn=document.createElement('button');
+      addBtn.className='cs-add-row-btn';
+      addBtn.setAttribute('data-act','add-row');
+      addBtn.setAttribute('data-gidx',gi);
+      addBtn.textContent='＋ 新增項目';
+      div.appendChild(addBtn);
+    }
+
     c.appendChild(div);
   }
-  // Grand total
+
+  // ＋ add group (edit mode)
+  if(state.editMode){
+    var addGroupBtn=document.createElement('button');
+    addGroupBtn.className='cs-add-group-btn';
+    addGroupBtn.setAttribute('data-act','add-group');
+    addGroupBtn.textContent='＋ 新增分組';
+    c.appendChild(addGroupBtn);
+  }
+
+  // ── Grand total ──
   var grand=document.createElement('div');
   grand.className='cs-grand';
-  grand.innerHTML='<span>2人合計（預算）</span><span class="am" id="cs-grand">TWD $'+budget.toLocaleString()+'</span>';
+  grand.innerHTML='<span>2人合計（預算）</span><span class="am">'+fmtMoney(budget)+'</span>';
   c.appendChild(grand);
 
-  recalcCostSubtotals();
-}
-
-function recalcCostSubtotals(){
-  // For each group, sum visible amounts and update its subtotal row if present
-  for(var i=0;i<COST_GROUPS.length;i++){
-    var g=COST_GROUPS[i];
-    var sum=0;
-    for(var j=0;j<g.rows.length;j++){
-      var r=g.rows[j];
-      if(r.subtotal)continue;
-      sum += (state.costActuals[r.key]!=null) ? state.costActuals[r.key] : (r.budget||0);
-    }
-    for(var j=0;j<g.rows.length;j++){
-      var r=g.rows[j];
-      if(r.subtotal){
-        // null-safe (rule 10)
-        var el=$id(r.id);
-        if(el) el.textContent='≈ TWD $'+sum.toLocaleString();
-      }
-    }
+  // ── Bind FX input ──
+  var fxInp=$id('fx-input');
+  if(fxInp){
+    fxInp.addEventListener('change',function(){
+      var v=parseFloat(fxInp.value);
+      if(isNaN(v)||v<=0){fxInp.value=state.fxRate;return;}
+      state.fxRate=v;
+      syncFX();
+      renderCost();
+      toast('匯率已更新');
+    });
+  }
+  // Bind D button
+  var pullEl=$id('cost-pull-btn');
+  if(pullEl){
+    pullEl.addEventListener('click',openCostPullModal);
   }
 }
 
 function startCostEdit(span){
   if(span.classList.contains('editing'))return;
   var key=span.getAttribute('data-key');
-  var current=state.costActuals[key]!=null ? state.costActuals[key] : (parseInt(span.getAttribute('data-budget'),10)||0);
+  var gidx=parseInt(span.getAttribute('data-gidx'),10);
+  var ridx=parseInt(span.getAttribute('data-ridx'),10);
+  var row=COST_GROUPS[gidx] && COST_GROUPS[gidx].rows[ridx];
+  if(!row)return;
+  var curr=row.currency||'TWD';
+  var current=state.costActuals[key]!=null ? state.costActuals[key] : (row.budget||0);
   span.classList.add('editing');
-  var orig=span.textContent;
+  var orig=span.innerHTML;
   span.innerHTML='';
   var inp=document.createElement('input');
   inp.type='number';
   inp.value=current;
-  inp.style.cssText='width:100px;background:transparent;border:none;color:inherit;font-size:inherit;font-weight:inherit;text-align:right;font-variant-numeric:tabular-nums';
+  inp.style.cssText='width:90px;background:transparent;border:none;color:inherit;font-size:inherit;font-weight:inherit;text-align:right;font-variant-numeric:tabular-nums';
+  var prefix=document.createElement('span');
+  prefix.textContent=curr+' $';
+  prefix.style.cssText='color:inherit;margin-right:2px';
+  span.appendChild(prefix);
   span.appendChild(inp);
   inp.focus();
   inp.select();
@@ -1144,7 +1354,7 @@ function startCostEdit(span){
     if(done)return; done=true;
     var v=parseInt(inp.value,10);
     span.classList.remove('editing');
-    if(isNaN(v)){span.textContent=orig;return;}
+    if(isNaN(v)){span.innerHTML=orig;return;}
     state.costActuals[key]=v;
     syncCosts();
     renderCost();
@@ -1153,12 +1363,342 @@ function startCostEdit(span){
   function cancel(){
     if(done)return; done=true;
     span.classList.remove('editing');
-    span.textContent=orig;
+    span.innerHTML=orig;
   }
   inp.addEventListener('blur',commit);
   inp.addEventListener('keydown',function(e){
     if(e.key==='Enter'){e.preventDefault();commit();}
     else if(e.key==='Escape'){e.preventDefault();cancel();inp.blur();}
+  });
+}
+
+// ─── E: edit cost label/sub (inline text editing) ──────────────────────────
+function startCostTextEdit(el){
+  if(el.classList.contains('editing'))return;
+  var field=el.getAttribute('data-field');  // 'label' | 'sub' | 'group-title'
+  var gidx=parseInt(el.getAttribute('data-gidx'),10);
+  var ridx=el.hasAttribute('data-ridx')?parseInt(el.getAttribute('data-ridx'),10):null;
+  var orig=el.textContent;
+  if(el.classList.contains('csub-empty'))orig='';
+  el.classList.add('editing');
+  var w=document.createElement('input');
+  w.className='cost-edit-input';
+  w.value=orig;
+  el.innerHTML='';
+  el.appendChild(w);
+  w.focus();
+  w.select();
+  var done=false;
+  function commit(){
+    if(done)return; done=true;
+    var v=w.value.trim();
+    el.classList.remove('editing','csub-empty');
+    if(field==='group-title'){
+      if(COST_GROUPS[gidx]){COST_GROUPS[gidx].title = v || COST_GROUPS[gidx].title;}
+    } else if(COST_GROUPS[gidx] && COST_GROUPS[gidx].rows[ridx]){
+      COST_GROUPS[gidx].rows[ridx][field] = v;
+    }
+    state.costDirty=true;
+    syncCostGroups();
+    renderCost();
+  }
+  function cancel(){
+    if(done)return; done=true;
+    el.classList.remove('editing');
+    el.textContent=orig;
+  }
+  w.addEventListener('blur',commit);
+  w.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();commit();}
+    else if(e.key==='Escape'){e.preventDefault();cancel();w.blur();}
+  });
+}
+
+// ─── A: add/del row/group, currency change ─────────────────────────────────
+function nextCostId(){
+  var max=0;
+  for(var i=0;i<COST_GROUPS.length;i++){
+    for(var j=0;j<COST_GROUPS[i].rows.length;j++){
+      var id=COST_GROUPS[i].rows[j].id||'';
+      var m=id.match(/^c(\d+)$/);
+      if(m){var n=parseInt(m[1],10);if(n>max)max=n;}
+    }
+  }
+  return 'c'+(max+1);
+}
+
+function addCostRow(gidx){
+  if(!COST_GROUPS[gidx])return;
+  var name=prompt('項目名稱（例：纜車票）');
+  if(!name)return;
+  var sub=prompt('子說明（可空，例：NZD $80/人）','')||'';
+  var bs=prompt('預算金額（純數字）','0');
+  var b=parseInt(bs,10); if(isNaN(b))b=0;
+  var curr=(prompt('幣別 TWD 或 NZD','TWD')||'TWD').toUpperCase();
+  if(curr!=='TWD'&&curr!=='NZD')curr='TWD';
+  // Insert before first subtotal row, else at end
+  var insertAt=COST_GROUPS[gidx].rows.length;
+  for(var i=0;i<COST_GROUPS[gidx].rows.length;i++){
+    if(COST_GROUPS[gidx].rows[i].subtotal){insertAt=i;break;}
+  }
+  var newRow={id:nextCostId(),label:name,sub:sub,budget:b,currency:curr,display:''};
+  COST_GROUPS[gidx].rows.splice(insertAt,0,newRow);
+  state.costDirty=true;
+  syncCostGroups();
+  renderCost();
+  toast('已新增項目');
+}
+
+function delCostRow(gidx,ridx){
+  if(!COST_GROUPS[gidx]||!COST_GROUPS[gidx].rows[ridx])return;
+  var row=COST_GROUPS[gidx].rows[ridx];
+  if(!confirm('確定刪除「'+row.label+'」？'))return;
+  if(state.costActuals[row.id]!=null)delete state.costActuals[row.id];
+  COST_GROUPS[gidx].rows.splice(ridx,1);
+  state.costDirty=true;
+  syncCostGroups();
+  syncCosts();
+  renderCost();
+}
+
+function addCostGroup(){
+  var name=prompt('分組名稱（含 emoji，例：🎁 紀念品）');
+  if(!name)return;
+  COST_GROUPS.push({id:'g'+Date.now(), title:name, rows:[]});
+  state.costDirty=true;
+  syncCostGroups();
+  renderCost();
+}
+
+function delCostGroup(gidx){
+  if(!COST_GROUPS[gidx])return;
+  if(!confirm('刪除整組「'+COST_GROUPS[gidx].title+'」？所有項目都會一併刪除'))return;
+  // Clean actuals for rows in this group
+  COST_GROUPS[gidx].rows.forEach(function(r){
+    if(r.id && state.costActuals[r.id]!=null)delete state.costActuals[r.id];
+  });
+  COST_GROUPS.splice(gidx,1);
+  state.costDirty=true;
+  syncCostGroups();
+  syncCosts();
+  renderCost();
+}
+
+function setRowCurrency(gidx,ridx,curr){
+  if(!COST_GROUPS[gidx]||!COST_GROUPS[gidx].rows[ridx])return;
+  COST_GROUPS[gidx].rows[ridx].currency=curr;
+  state.costDirty=true;
+  syncCostGroups();
+  renderCost();
+}
+
+// ─── B: cost row drag-and-drop (within/across groups) ──────────────────────
+function bindCostDragHandlers(){
+  var list=$id('cost-list');
+  if(!list)return;
+  list.addEventListener('dragstart',function(e){
+    if(!state.editMode)return;
+    var row=e.target.closest('.cs-row');
+    if(!row)return;
+    state.costDragSrc={
+      gidx: parseInt(row.getAttribute('data-gidx'),10),
+      ridx: parseInt(row.getAttribute('data-ridx'),10)
+    };
+    row.classList.add('dragging');
+    e.dataTransfer.effectAllowed='move';
+    try{e.dataTransfer.setData('text/plain',row.getAttribute('data-rid'));}catch(_e){}
+  });
+  list.addEventListener('dragover',function(e){
+    if(!state.editMode||!state.costDragSrc)return;
+    e.preventDefault();
+    // Highlight target group
+    var grp=e.target.closest('.cs-group');
+    $qa('.cs-group.drag-over').forEach(function(g){g.classList.remove('drag-over');});
+    $qa('.cs-row.drag-over').forEach(function(r){r.classList.remove('drag-over');});
+    if(grp)grp.classList.add('drag-over');
+    var tRow=e.target.closest('.cs-row');
+    if(tRow)tRow.classList.add('drag-over');
+  });
+  list.addEventListener('drop',function(e){
+    if(!state.editMode||!state.costDragSrc)return;
+    e.preventDefault();
+    var src=state.costDragSrc;
+    var tRow=e.target.closest('.cs-row');
+    var tGrp=e.target.closest('.cs-group');
+    if(!tGrp){cleanupCostDrag();return;}
+    var tGidx=parseInt(tGrp.getAttribute('data-gidx'),10);
+    if(isNaN(tGidx)){cleanupCostDrag();return;}
+
+    // Move row
+    var srcRow=COST_GROUPS[src.gidx].rows.splice(src.ridx,1)[0];
+    if(!srcRow){cleanupCostDrag();return;}
+
+    if(tRow){
+      var tRidx=parseInt(tRow.getAttribute('data-ridx'),10);
+      // If dropping into same group, adjust target idx for the removal
+      if(src.gidx===tGidx && tRidx>src.ridx)tRidx--;
+      COST_GROUPS[tGidx].rows.splice(tRidx,0,srcRow);
+    } else {
+      // Dropped on group area, not specific row: insert before first subtotal
+      var insertAt=COST_GROUPS[tGidx].rows.length;
+      for(var i=0;i<COST_GROUPS[tGidx].rows.length;i++){
+        if(COST_GROUPS[tGidx].rows[i].subtotal){insertAt=i;break;}
+      }
+      COST_GROUPS[tGidx].rows.splice(insertAt,0,srcRow);
+    }
+    state.costDirty=true;
+    syncCostGroups();
+    renderCost();
+    if(src.gidx!==tGidx)toast('已搬到「'+COST_GROUPS[tGidx].title+'」');
+    cleanupCostDrag();
+  });
+  list.addEventListener('dragend',cleanupCostDrag);
+}
+function cleanupCostDrag(){
+  $qa('.cs-row.dragging,.cs-row.drag-over,.cs-group.drag-over').forEach(function(el){
+    el.classList.remove('dragging','drag-over');
+  });
+  $qa('.cs-row[draggable="true"]').forEach(function(r){r.draggable=false;});
+  state.costDragSrc=null;
+}
+
+// ─── D: pull amounts from itinerary ───────────────────────────────────────
+function scanItineraryAmounts(){
+  // Find all items in TRIP_DATA with money mentions in name/desc
+  var found=[];
+  var moneyRe=/(?:NZD|TWD|nt\$|\$)\s*([\d,]+(?:\.\d+)?)/gi;
+  for(var di=0;di<TRIP_DATA.length;di++){
+    var d=TRIP_DATA[di];
+    for(var ii=0;ii<d.items.length;ii++){
+      var it=d.items[ii];
+      var text=(it.name||'')+' '+(it.desc||'');
+      moneyRe.lastIndex=0;
+      var matches=[];
+      var m;
+      while((m=moneyRe.exec(text))!==null){
+        // Detect currency from preceding token
+        var pre=text.substring(Math.max(0,m.index-5),m.index).toUpperCase();
+        var currency = pre.indexOf('NZD')>=0 ? 'NZD' : (pre.indexOf('TWD')>=0||pre.indexOf('NT')>=0?'TWD':'TWD');
+        var amt=parseInt(m[1].replace(/,/g,''),10);
+        if(isNaN(amt)||amt<=0)continue;
+        matches.push({amount:amt,currency:currency,raw:m[0]});
+      }
+      if(matches.length>0){
+        found.push({
+          dayIdx:di, itemIdx:ii,
+          date:d.date, name:it.name,
+          matches:matches
+        });
+      }
+    }
+  }
+  return found;
+}
+
+function existsInCost(name){
+  for(var i=0;i<COST_GROUPS.length;i++){
+    for(var j=0;j<COST_GROUPS[i].rows.length;j++){
+      var r=COST_GROUPS[i].rows[j];
+      if(r.subtotal)continue;
+      // Match if label contains a substring of name (first 6 chars), case-insensitive
+      var n=(name||'').slice(0,10).toLowerCase();
+      var l=(r.label||'').toLowerCase();
+      if(n && l && (l.indexOf(n)>=0 || n.indexOf(l.slice(0,6))>=0))return true;
+    }
+  }
+  return false;
+}
+
+function openCostPullModal(){
+  var found=scanItineraryAmounts();
+  var candidates=found.filter(function(f){return !existsInCost(f.name);});
+  if(candidates.length===0){
+    toast('沒找到尚未列入費用的金額項目');
+    return;
+  }
+  // Build modal
+  var overlay=document.createElement('div');
+  overlay.className='modal-overlay';
+  overlay.id='cost-pull-modal';
+  var box=document.createElement('div');
+  box.className='modal-box';
+  var groupOpts='';
+  for(var gi=0;gi<COST_GROUPS.length;gi++){
+    groupOpts+='<option value="'+gi+'">'+escHtml(COST_GROUPS[gi].title)+'</option>';
+  }
+  var rowsHtml='';
+  for(var ci=0;ci<candidates.length;ci++){
+    var c=candidates[ci];
+    // Pick the most informative match (largest amount)
+    var best=c.matches[0];
+    for(var k=1;k<c.matches.length;k++){if(c.matches[k].amount>best.amount)best=c.matches[k];}
+    rowsHtml +=
+      '<label class="mp-row">'+
+        '<input type="checkbox" data-i="'+ci+'" checked>'+
+        '<div class="mp-name">'+
+          '<div>'+escHtml(c.date)+' · '+escHtml(c.name)+'</div>'+
+          '<div class="mp-amt">'+best.currency+' $'+best.amount.toLocaleString()+'</div>'+
+        '</div>'+
+        '<select data-g="'+ci+'">'+groupOpts+'</select>'+
+      '</label>';
+  }
+  box.innerHTML=
+    '<div class="modal-header">🪄 從行程吸取金額'+
+      '<button class="modal-close" id="mp-cancel">✕</button>'+
+    '</div>'+
+    '<div class="modal-body">'+
+      '<div class="mp-hint">勾選想加入費用的項目，並選擇分組</div>'+
+      rowsHtml+
+      (candidates.length===0?'<div class="mp-empty">沒有需要加入的項目</div>':'')+
+    '</div>'+
+    '<div class="modal-footer">'+
+      '<button class="modal-btn" id="mp-cancel-btn">取消</button>'+
+      '<button class="modal-btn primary" id="mp-confirm">加入選取的項目</button>'+
+    '</div>';
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  function closeModal(){
+    var ov=$id('cost-pull-modal');
+    if(ov && ov.parentNode)ov.parentNode.removeChild(ov);
+  }
+  $id('mp-cancel').addEventListener('click',closeModal);
+  $id('mp-cancel-btn').addEventListener('click',closeModal);
+  overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
+
+  $id('mp-confirm').addEventListener('click',function(){
+    var added=0;
+    $qa('input[data-i]', box).forEach(function(cb){
+      if(!cb.checked)return;
+      var i=parseInt(cb.getAttribute('data-i'),10);
+      var c=candidates[i];
+      var grpSel=box.querySelector('select[data-g="'+i+'"]');
+      var gidx=parseInt(grpSel.value,10);
+      // Use the largest match's amount as budget
+      var best=c.matches[0];
+      for(var k=1;k<c.matches.length;k++){if(c.matches[k].amount>best.amount)best=c.matches[k];}
+      // Insert before first subtotal
+      var insertAt=COST_GROUPS[gidx].rows.length;
+      for(var k2=0;k2<COST_GROUPS[gidx].rows.length;k2++){
+        if(COST_GROUPS[gidx].rows[k2].subtotal){insertAt=k2;break;}
+      }
+      COST_GROUPS[gidx].rows.splice(insertAt,0,{
+        id: nextCostId(),
+        label: c.name,
+        sub: c.date,
+        budget: best.amount,
+        currency: best.currency,
+        display: ''
+      });
+      added++;
+    });
+    if(added>0){
+      state.costDirty=true;
+      syncCostGroups();
+      renderCost();
+      toast('已加入 '+added+' 個項目');
+    }
+    closeModal();
   });
 }
 
@@ -1508,8 +2048,66 @@ function bindGlobalClicks(){
   // Double-click for cost edit
   document.addEventListener('dblclick',function(e){
     var am=e.target.closest('.am.editable');
-    if(am){startCostEdit(am);}
+    if(am){startCostEdit(am); return;}
+    // E: double-click cost label/sub/group-title to edit text
+    var tf=e.target.closest('[data-field="label"],[data-field="sub"],[data-field="group-title"]');
+    if(tf){startCostTextEdit(tf); return;}
   });
+
+  // Cost editing actions (delegated)
+  var costList=$id('cost-list');
+  if(costList){
+    costList.addEventListener('click',function(e){
+      var t=e.target;
+      // A: delete row
+      var delR=t.closest('[data-act="del-row"]');
+      if(delR){
+        delCostRow(parseInt(delR.getAttribute('data-gidx'),10), parseInt(delR.getAttribute('data-ridx'),10));
+        return;
+      }
+      // A: delete group
+      var delG=t.closest('[data-act="del-group"]');
+      if(delG){
+        delCostGroup(parseInt(delG.getAttribute('data-gidx'),10));
+        return;
+      }
+      // A: add row
+      var addR=t.closest('[data-act="add-row"]');
+      if(addR){
+        addCostRow(parseInt(addR.getAttribute('data-gidx'),10));
+        return;
+      }
+      // A: add group
+      if(t.closest('[data-act="add-group"]')){
+        addCostGroup();
+        return;
+      }
+    });
+    // Currency change
+    costList.addEventListener('change',function(e){
+      var sel=e.target.closest('[data-act="curr"]');
+      if(sel){
+        setRowCurrency(parseInt(sel.getAttribute('data-gidx'),10), parseInt(sel.getAttribute('data-ridx'),10), sel.value);
+      }
+    });
+    // Enable drag on rows in edit mode
+    costList.addEventListener('mousedown',function(e){
+      if(!state.editMode)return;
+      var dh=e.target.closest('.cs-drag-handle');
+      if(dh){
+        var row=dh.closest('.cs-row');
+        if(row)row.draggable=true;
+      }
+    });
+    costList.addEventListener('touchstart',function(e){
+      if(!state.editMode)return;
+      var dh=e.target.closest('.cs-drag-handle');
+      if(dh){
+        var row=dh.closest('.cs-row');
+        if(row)row.draggable=true;
+      }
+    },{passive:true});
+  }
 }
 
 // ─── MAP (per-day) ─────────────────────────────────────────────────────────
@@ -1625,6 +2223,19 @@ function syncCosts(){
   clearTimeout(syncCostsDeb);
   syncCostsDeb=setTimeout(function(){fbPut(FB_COSTS,state.costActuals);},400);
 }
+var syncCGDeb=null;
+function syncCostGroups(){
+  clearTimeout(syncCGDeb);
+  syncCGDeb=setTimeout(function(){
+    fbPut(FB_CG, COST_GROUPS);
+    fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'cg'});
+  },600);
+}
+var syncFXDeb=null;
+function syncFX(){
+  clearTimeout(syncFXDeb);
+  syncFXDeb=setTimeout(function(){fbPut(FB_FX,{nzd:state.fxRate});},400);
+}
 var syncItinDeb=null;
 function syncItin(){
   clearTimeout(syncItinDeb);
@@ -1644,48 +2255,51 @@ function syncBooking(){
 
 function pullInitial(){
   setSync('syncing');
-  Promise.all([fbGet(FB_TODOS),fbGet(FB_COSTS),fbGet(FB_ITIN),fbGet(FB_BOOK),fbGet(FB_META)])
-    .then(function(arr){
-      var todos=arr[0],costs=arr[1],itin=arr[2],book=arr[3],meta=arr[4];
-      if(todos)state.todoStates=todos;
-      if(costs)state.costActuals=costs;
+  Promise.all([
+    fbGet(FB_TODOS), fbGet(FB_COSTS), fbGet(FB_ITIN),
+    fbGet(FB_BOOK), fbGet(FB_CG), fbGet(FB_FX), fbGet(FB_META)
+  ]).then(function(arr){
+    var todos=arr[0],costs=arr[1],itin=arr[2],book=arr[3],cg=arr[4],fx=arr[5],meta=arr[6];
+    if(todos)state.todoStates=todos;
+    if(costs)state.costActuals=costs;
+    if(fx && typeof fx==='object' && typeof fx.nzd==='number') state.fxRate=fx.nzd;
 
-      // Version gate: only accept Firebase-stored TRIP_DATA/BOOKING_DATA
-      // if it was saved by a matching DATA_VERSION. Otherwise the HTML
-      // (which has the latest schema) takes precedence, and we re-push it.
-      var versionOK = meta && typeof meta==='object' && meta.version===DATA_VERSION;
-
-      if(versionOK){
-        if(itin && Array.isArray(itin) && itin.length>0){
-          TRIP_DATA.length=0;
-          for(var i=0;i<itin.length;i++)TRIP_DATA.push(itin[i]);
-        }
-        if(book && Array.isArray(book) && book.length>0){
-          BOOKING_DATA.length=0;
-          for(var i=0;i<book.length;i++)BOOKING_DATA.push(book[i]);
-        }
-      } else {
-        // Firebase data is stale or missing — push HTML data as new baseline
-        if(!meta || !meta.version){
-          // never initialized; do silent push
-          fbPut(FB_ITIN, TRIP_DATA);
-          fbPut(FB_BOOK, BOOKING_DATA);
-          fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'baseline'});
-        } else {
-          // version mismatch — HTML wins, log it
-          console.log('[v2] data version bump '+meta.version+' → '+DATA_VERSION+'; HTML data wins');
-          fbPut(FB_ITIN, TRIP_DATA);
-          fbPut(FB_BOOK, BOOKING_DATA);
-          fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'upgrade'});
-          toast('資料已更新到新版本');
-        }
+    var versionOK = meta && typeof meta==='object' && meta.version===DATA_VERSION;
+    if(versionOK){
+      if(itin && Array.isArray(itin) && itin.length>0){
+        TRIP_DATA.length=0;
+        for(var i=0;i<itin.length;i++)TRIP_DATA.push(itin[i]);
       }
-      setSync('ok');
-      renderTabs();
-      renderPanel(state.curDay);
-      bindTabEvents();
-      updateProgress();
-    });
+      if(book && Array.isArray(book) && book.length>0){
+        BOOKING_DATA.length=0;
+        for(var i=0;i<book.length;i++)BOOKING_DATA.push(book[i]);
+      }
+      if(cg && Array.isArray(cg) && cg.length>0){
+        COST_GROUPS.length=0;
+        for(var i=0;i<cg.length;i++)COST_GROUPS.push(cg[i]);
+      }
+    } else {
+      // Push HTML baseline
+      if(!meta || !meta.version){
+        fbPut(FB_ITIN, TRIP_DATA);
+        fbPut(FB_BOOK, BOOKING_DATA);
+        fbPut(FB_CG, COST_GROUPS);
+        fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'baseline'});
+      } else {
+        console.log('[v2] data version bump '+meta.version+' → '+DATA_VERSION+'; HTML data wins');
+        fbPut(FB_ITIN, TRIP_DATA);
+        fbPut(FB_BOOK, BOOKING_DATA);
+        fbPut(FB_CG, COST_GROUPS);
+        fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'upgrade'});
+        toast('資料已更新到新版本');
+      }
+    }
+    setSync('ok');
+    renderTabs();
+    renderPanel(state.curDay);
+    bindTabEvents();
+    updateProgress();
+  });
 }
 
 // ─── INIT ──────────────────────────────────────────────────────────────────
@@ -1698,7 +2312,26 @@ function init(){
   bindSwipe();
   updateProgress();
   pullInitial();
-  // Preload map (lazy, but warm)
+  // Cost drag handlers bind once; cost-list is created lazily but the handler is on parent
+  setTimeout(function(){
+    if($id('cost-list'))bindCostDragHandlers();
+    else {
+      // Bind after first cost sheet open
+      var origRender=renderCost;
+      // Wrap once
+      if(!window._costDragBound){
+        window._costDragBound=true;
+        var prevOpen=openSheet;
+        openSheet=function(which){
+          prevOpen(which);
+          if(which==='cost' && !window._costDragBoundDone){
+            window._costDragBoundDone=true;
+            bindCostDragHandlers();
+          }
+        };
+      }
+    }
+  },100);
   setTimeout(loadGMaps,800);
 }
 
