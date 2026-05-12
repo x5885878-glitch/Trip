@@ -454,19 +454,19 @@ var TRIP_DATA = [
     hotel:{desc:"同 9/26 住宿 · 第 5 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
   },
   {
-    id:"day-7",date:"10/1 四",title:"♨️ Shotover Jet + 採購自炊 + 輕鬆日",
+    id:"day-7",date:"10/1 四",title:"🦌 Deer Park + Moke Lake + Shotover Jet",
     items:[
-      {time:"09:00",icon:"☕",name:"飯店悠閒早餐",desc:"昨天婚紗整日累，今天慢慢來"},
-      {time:"10:00",icon:"🛒",name:"Pak'nSave Frankton 採購",desc:"紐西蘭最便宜超市 (15min 車程)。買晚上義大利麵食材：NZ 番茄、Pasta、Parmesan、新鮮 basil、培根/羊絞肉、Bluff oysters (季節對！)、NZ 葡萄酒 (Pinot Noir 中央奧塔哥產區)",links:[{url:"https://www.paknsave.co.nz/",text:"Pak'nSave"}]},
-      {time:"11:30",icon:"🏠",name:"回飯店冰食材 · 略事休息",desc:""},
-      {time:"12:00",icon:"🍔",name:"午餐 · Fergburger ⭐",desc:"你的第二次！Ferg Deluxe (招牌)、Sweet Bambi (鹿肉) 或 Cock-a-doodle (雞)。隔壁 Mrs Ferg Gelateria 加 ice cream",tags:["📌 你說想再吃一次"]},
-      {time:"13:30",icon:"☕",name:"湖邊散步 · Queenstown Gardens",desc:"從鎮中心走進去 10min，半島地形 + frisbee golf + 湖景。完全免費"},
-      {time:"14:30",icon:"🚐",name:"Shotover Jet 接駁 (從鎮中心免費接駁)",desc:"Arthurs Point 約 15min 車程。也可自駕去 Shotover Jet Beach 直接停車",links:[{url:"https://www.shotoverjet.com/",text:"Shotover Jet"}]},
-      {time:"15:00",icon:"🚤",name:"Shotover Jet · 25 min 刺激體驗",desc:"NZD$170/人。Shotover River canyon 15+ 個 360° 旋轉，距岩壁只有 10cm。NZ 最有名 jet boat",tags:["🟡 1週前訂"]},
-      {time:"16:00",icon:"🚐",name:"接駁回 Queenstown",desc:""},
+      {time:"08:30",icon:"☕",name:"飯店早餐",desc:"今天景點+刺激體驗+自炊，全天輕鬆"},
+      {time:"09:30",icon:"🛒",name:"Pak'nSave Frankton 採購",desc:"NZ 番茄/pasta/Parmesan/培根/Bluff oysters/Pinot Noir (Central Otago 產區)",links:[{url:"https://www.paknsave.co.nz/",text:"Pak'nSave"}]},
+      {time:"11:00",icon:"🦌",name:"Deer Park Heights · NZD $20/人",desc:"魔戒洛汗國取景地 + 餵鹿、餵羊。湖景開車繞園 30-45min",tags:["🟢 現場買票"]},
+      {time:"12:30",icon:"🍔",name:"午餐 · Fergburger ⭐ 你的第二次",desc:"回鎮中心吃。中午排隊比晚上短。或外帶到 Moke Lake 野餐"},
+      {time:"13:30",icon:"🏞️",name:"Moke Lake · 免費",desc:"寧靜湖泊、露營熱點。走 Moke Lake Loop walk 1hr 繞湖一周 + 拍照"},
+      {time:"15:00",icon:"🚐",name:"Shotover Jet 接駁",desc:"從鎮中心免費接駁去 Arthurs Point (15min)"},
+      {time:"15:30",icon:"🚤",name:"Shotover Jet · 25min 刺激體驗",desc:"NZD $170/人 · 15+ 個 360° 旋轉、距岩壁 10cm。NZ 最有名 jet boat",tags:["🟡 1週前訂"],links:[{url:"https://www.shotoverjet.com/",text:"Shotover Jet"}]},
+      {time:"16:30",icon:"🚐",name:"接駁回 Queenstown",desc:""},
       {time:"17:00",icon:"🏠",name:"回飯店準備晚餐",desc:""},
-      {time:"19:00",icon:"🍝",name:"晚餐 · 自炊義大利麵 (A 方案)",desc:"用早上採購的 NZ 食材，配中央奧塔哥 Pinot Noir。建議：Carbonara 或 Bluff oyster pasta"},
-      {time:"🍴",icon:"🍴",name:"晚餐 Alternative · 出去吃 (任選)",desc:"Margo's (Mexican $25-40)、Public Kitchen (湖邊 share plates $30-50)、Finz (Steamer Wharf 海鮮 $40-60)、Blue Kanu (如 9/28 沒吃可改今晚)。心血來潮的話"},
+      {time:"19:00",icon:"🍝",name:"晚餐 · 自炊義大利麵 (A 方案)",desc:"用早上採購的食材，配中央奧塔哥 Pinot Noir。建議 Carbonara 或 Bluff oyster pasta"},
+      {time:"🍴",icon:"🍴",name:"Alternative · 出去吃 (心血來潮)",desc:"Margo's (Mexican $25-40)、Public Kitchen (湖邊 $30-50)、Finz (海鮮 $40-60)、Blue Kanu (如 9/28 沒吃可改今晚)"},
     ],
     hotel:{desc:"同 9/26 住宿 · 第 6 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
   },
@@ -579,43 +579,46 @@ var TRIP_DATA = [
   },
 ];
 var PLACES = [
-  // South Island – Hotels
-  {n:'皇后鎮住宿 A',              lat:-45.031, lng:168.663, type:'hotel', r:'south', d:'9/26–10/2', x:'皇后鎮 · 6晚 · 3選1候選'},
-  {n:'蒂卡波住宿',                lat:-44.004, lng:170.480, type:'hotel', r:'south', d:'10/2–10/3', x:'蒂卡波 · 1晚 · 3選1候選'},
-  {n:'皇后鎮住宿 B',              lat:-45.020, lng:168.700, type:'hotel', r:'south', d:'10/3–10/4', x:'皇后鎮 · 1晚 · 建議延訂同家'},
-  // South Island – Activities
-  {n:'Skyline Gondola',         lat:-45.027, lng:168.655, type:'act',   r:'south', d:'9/26',      x:"Bob's Peak全景纜車 · NZD $80/人"},
-  {n:'格林諾奇',                 lat:-44.860, lng:168.380, type:'act',   r:'south', d:'9/27',      x:'婚紗攝影全天 + Lighthorse騎馬'},
-  {n:'米佛峽灣 Milford Sound',   lat:-44.674, lng:167.924, type:'act',   r:'south', d:'9/28',      x:'RealNZ Classic Cruise · NZD $145/人'},
-  {n:'Deer Park Heights',       lat:-45.017, lng:168.717, type:'act',   r:'south', d:'9/29 上午', x:'魔戒洛汗國取景地 · NZD $20/人'},
-  {n:'Onsen Hot Pools',         lat:-45.006, lng:168.708, type:'act',   r:'south', d:'9/29 下午', x:'私人溫泉 · 俯瞰Shotover · NZD $61+/人'},
-  // Wanaka day trip (9/30)
-  {n:'Crown Range Summit',      lat:-44.933, lng:168.923, type:'act',   r:'south', d:'9/30 上午', x:'紐西蘭最高公路 1121m · 制高點'},
-  {n:'Cardrona Hotel',          lat:-44.867, lng:168.950, type:'act',   r:'south', d:'9/30 上午', x:'1863年百年酒店 · 淘金時代遺跡'},
-  {n:'#ThatWanakaTree',         lat:-44.700, lng:169.131, type:'act',   r:'south', d:'9/30 中午', x:'孤獨的樹 · 紐西蘭最有名的樹'},
-  {n:'Hook Wanaka 鮭魚養殖場',   lat:-44.680, lng:169.180, type:'act',   r:'south', d:'9/30 午餐', x:'Lake to Plate · 自釣自吃 · 11:00-19:00'},
-  {n:'Rippon Vineyard',         lat:-44.700, lng:169.115, type:'act',   r:'south', d:'9/30 下午', x:'免費湖景葡萄園 · 純拍照 · 30分鐘'},
-  {n:'Lake Hawea Lookout',      lat:-44.630, lng:169.249, type:'act',   r:'south', d:'9/30 下午', x:'比 Wanaka 更藍更原始的湖'},
-  // Mt Cook + Pukaki (10/2)
-  {n:"Peter's Lookout (Pukaki)",lat:-44.100, lng:170.170, type:'act',   r:'south', d:'10/2',      x:'Pukaki 湖+庫克山經典全景'},
-  {n:'庫克山 Mt Cook',           lat:-43.735, lng:170.099, type:'act',   r:'south', d:'10/2',      x:'塔斯曼冰川直升機 · TWD $36,564（已訂）'},
-  {n:'善牧教堂 Lake Tekapo',     lat:-44.006, lng:170.475, type:'act',   r:'south', d:'10/2–10/3', x:'Summit Experience (普通話) 9:45 PM'},
-  // TSS + Lake Hayes
-  {n:'TSS Earnslaw 碼頭',       lat:-45.035, lng:168.661, type:'act',   r:'south', d:'10/1',      x:'百年蒸汽船 + Walter Peak BBQ · NZD $199/人'},
-  {n:'Lake Hayes',              lat:-45.033, lng:168.783, type:'act',   r:'south', d:'10/3',      x:'環湖步道 · 春季櫻花倒影'},
-  {n:'箭鎮 Arrowtown',          lat:-44.950, lng:168.817, type:'act',   r:'south', d:'10/3',      x:'歷史街區 · 春季櫻花大道'},
-  // North Island – Hotels
-  {n:'Queen St 21樓公寓',       lat:-36.849, lng:174.766, type:'hotel', r:'north', d:'10/4–10/7', x:'奧克蘭市中心 · 3晚'},
-  {n:'Millennium Rotorua',      lat:-38.137, lng:176.250, type:'hotel', r:'north', d:'10/7–10/8', x:'Rotorua 市中心 · 1晚'},
-  {n:'Pullman Auckland Airport',lat:-37.008, lng:174.785, type:'hotel', r:'north', d:'10/8–10/9', x:'機場內 · 步行3分到國際出境'},
-  // North Island – Activities
-  {n:'Mt Eden 伊甸山',           lat:-36.878, lng:174.763, type:'act',   r:'north', d:'10/4',      x:'火山口全景 · 奧克蘭制高點'},
-  {n:'Hobbiton 哈比村',          lat:-37.872, lng:175.684, type:'act',   r:'north', d:'10/5',      x:'一日團 · SkyCity 7:15 出發'},
-  {n:'Waitomo 螢火蟲洞',         lat:-38.260, lng:175.106, type:'act',   r:'north', d:'10/5',      x:'一日團下午場 · 室內洞穴'},
-  {n:'Waiheke Island',          lat:-36.797, lng:175.081, type:'act',   r:'north', d:'10/6',      x:'渡輪一日遊 · Mudbrick + Oneroa'},
-  {n:'Polynesian Spa',          lat:-38.141, lng:176.258, type:'act',   r:'north', d:'10/7',      x:'Rotorua 湖畔溫泉'},
-  {n:'Mitai Māori Village',     lat:-38.105, lng:176.232, type:'act',   r:'north', d:'10/7',      x:'毛利晚宴+Haka · NZD $169/人'},
-  {n:'Wai-O-Tapu',              lat:-38.356, lng:176.366, type:'act',   r:'north', d:'10/8',      x:'香檳池+地熱奇觀 · NZD $40/人'},
+  {n:'皇后鎮住宿 A',lat:-45.031,lng:168.663,type:'hotel',r:'south',d:'9/26–10/2',x:'皇后鎮 · 6晚 · 3選1候選'},
+  {n:'蒂卡波住宿',lat:-44.004,lng:170.48,type:'hotel',r:'south',d:'10/2–10/3',x:'蒂卡波 · 1晚 · 3選1候選'},
+  {n:'皇后鎮住宿 B',lat:-45.02,lng:168.7,type:'hotel',r:'south',d:'10/3–10/4',x:'皇后鎮 · 1晚 · 建議延訂同家'},
+  {n:'Skyline Gondola',lat:-45.027,lng:168.655,type:'act',r:'south',d:'9/26',x:'Bob\'s Peak全景纜車 · NZD $80/人'},
+  {n:'格林諾奇',lat:-44.86,lng:168.38,type:'act',r:'south',d:'9/30',x:'婚紗攝影全天 + Lighthorse騎馬'},
+  {n:'米佛峽灣 Milford Sound',lat:-44.674,lng:167.924,type:'act',r:'south',d:'9/27',x:'RealNZ Classic Cruise · NZD $145/人'},
+  {n:'Deer Park Heights',lat:-45.017,lng:168.717,type:'act',r:'south',d:'10/1 上午',x:'魔戒洛汗國取景地 · NZD $20/人'},
+  {n:'Crown Range Summit',lat:-44.933,lng:168.923,type:'act',r:'south',d:'9/28 上午',x:'紐西蘭最高公路 1121m · 制高點'},
+  {n:'Cardrona Hotel',lat:-44.867,lng:168.95,type:'act',r:'south',d:'9/28 上午',x:'1863年百年酒店 · 淘金時代遺跡'},
+  {n:'#ThatWanakaTree',lat:-44.7,lng:169.131,type:'act',r:'south',d:'9/28 中午',x:'孤獨的樹 · 紐西蘭最有名的樹'},
+  {n:'Hook Wanaka 鮭魚養殖場',lat:-44.68,lng:169.18,type:'act',r:'south',d:'9/28 午餐',x:'Lake to Plate · 自釣自吃 · 11:00-19:00'},
+  {n:'Rippon Vineyard',lat:-44.7,lng:169.115,type:'act',r:'south',d:'9/28 下午',x:'免費湖景葡萄園 · 純拍照 · 30分鐘'},
+  {n:'Lake Hawea Lookout',lat:-44.63,lng:169.249,type:'act',r:'south',d:'9/28 下午',x:'比 Wanaka 更藍更原始的湖'},
+  {n:'Peter\'s Lookout (Pukaki)',lat:-44.1,lng:170.17,type:'act',r:'south',d:'10/2',x:'Pukaki 湖+庫克山經典全景'},
+  {n:'庫克山 Mt Cook',lat:-43.735,lng:170.099,type:'act',r:'south',d:'10/2',x:'塔斯曼冰川直升機 · TWD $36,564（已訂）'},
+  {n:'善牧教堂 Lake Tekapo',lat:-44.006,lng:170.475,type:'act',r:'south',d:'10/2–10/3',x:'Summit Experience (普通話) 9:45 PM'},
+  {n:'TSS Earnslaw 碼頭',lat:-45.035,lng:168.661,type:'act',r:'south',d:'9/29',x:'百年蒸汽船 + Walter Peak BBQ · NZD $199/人'},
+  {n:'Lake Hayes',lat:-45.033,lng:168.783,type:'act',r:'south',d:'10/3',x:'環湖步道 · 春季櫻花倒影'},
+  {n:'箭鎮 Arrowtown',lat:-44.95,lng:168.817,type:'act',r:'south',d:'10/3',x:'歷史街區 · 春季櫻花大道'},
+  {n:'Queen St 21樓公寓',lat:-36.849,lng:174.766,type:'hotel',r:'north',d:'10/4–10/7',x:'奧克蘭市中心 · 3晚'},
+  {n:'Millennium Rotorua',lat:-38.137,lng:176.25,type:'hotel',r:'north',d:'10/7–10/8',x:'Rotorua 市中心 · 1晚'},
+  {n:'Pullman Auckland Airport',lat:-37.008,lng:174.785,type:'hotel',r:'north',d:'10/8–10/9',x:'機場內 · 步行3分到國際出境'},
+  {n:'Mt Eden 伊甸山',lat:-36.878,lng:174.763,type:'act',r:'north',d:'10/4',x:'火山口全景 · 奧克蘭制高點'},
+  {n:'Hobbiton 哈比村',lat:-37.872,lng:175.684,type:'act',r:'north',d:'10/5',x:'一日團 · SkyCity 7:15 出發'},
+  {n:'Waitomo 螢火蟲洞',lat:-38.26,lng:175.106,type:'act',r:'north',d:'10/5',x:'一日團下午場 · 室內洞穴'},
+  {n:'Waiheke Island',lat:-36.797,lng:175.081,type:'act',r:'north',d:'10/6',x:'渡輪一日遊 · Mudbrick + Oneroa'},
+  {n:'Polynesian Spa',lat:-38.141,lng:176.258,type:'act',r:'north',d:'10/7',x:'Rotorua 湖畔溫泉'},
+  {n:'Mitai Māori Village',lat:-38.105,lng:176.232,type:'act',r:'north',d:'10/7',x:'毛利晚宴+Haka · NZD $169/人'},
+  {n:'Wai-O-Tapu',lat:-38.356,lng:176.366,type:'act',r:'north',d:'10/8',x:'香檳池+地熱奇觀 · NZD $40/人'},
+  {n:'Shotover Jet Beach',lat:-44.962,lng:168.762,type:'act',r:'south',d:'10/1 下午',x:'Arthurs Point · 25min 刺激 360° · NZD $170/人'},
+  {n:'Moke Lake',lat:-44.967,lng:168.602,type:'act',r:'south',d:'10/1 上午',x:'寧靜湖 · 露營熱點 · 走 Moke Lake Loop 1hr'},
+  {n:'Walter Peak High Country Farm',lat:-45.067,lng:168.555,type:'act',r:'south',d:'9/29 晚上',x:'TSS Earnslaw 終點 · BBQ Dinner + 牧羊犬秀'},
+  {n:'Glenorchy Wharf',lat:-44.852,lng:168.38,type:'act',r:'south',d:'9/30 中午',x:'婚紗第二套 · 紅屋小棚招牌 + Mt Earnslaw 雪景'},
+  {n:'Mt John Observatory',lat:-43.987,lng:170.464,type:'act',r:'south',d:'10/2 晚上',x:'Summit Experience 觀星 · NZD $139/人 · 暗空保護區'},
+  {n:'Paradise (LOTR Lothlorien)',lat:-44.733,lng:168.367,type:'act',r:'south',d:'9/30 下午',x:'魔戒 Lothlorien 場景 · Glenorchy 內陸 20min'},
+  {n:'High Country Salmon (Twizel)',lat:-44.246,lng:170.106,type:'act',r:'south',d:'10/2 下午',x:'順路停 · 鮭魚刺身/薯餅 · 餵魚'},
+  {n:'Pak\'nSave Frankton',lat:-45.027,lng:168.738,type:'act',r:'south',d:'10/1 上午',x:'最便宜超市 · NZ 食材 + 葡萄酒'},
+  {n:'Mt Cook Airport',lat:-43.765,lng:170.133,type:'act',r:'south',d:'10/2 中午',x:'Klook 滑雪飛機+直升機 · 11:30 報到 · 12:30 起飛'},
+  {n:'Te Anau Coffee Stop',lat:-45.414,lng:167.717,type:'act',r:'south',d:'9/27 上午',x:'米佛路途中休息點 · 廁所+咖啡'},
+  {n:'Milford Sound Airport',lat:-44.673,lng:167.923,type:'act',r:'south',d:'9/27 下午',x:'scenic flight 起飛點 · 45min 回 Queenstown'},
 ];
 var BOOKING_DATA = [
   {section:"🏨 住宿",cat:"hotel",items:[
@@ -2151,16 +2154,30 @@ function getDayPlaces(dayIdx){
   var d=TRIP_DATA[dayIdx];
   if(!d)return [];
   var dateKey=(d.date||'').split(' ')[0];  // e.g. "9/26"
+  // Helper: parse "M/D" into ordinal day-of-year-ish for range comparison
+  function dateOrd(s){
+    var m=s.match(/(\d+)\/(\d+)/);
+    if(!m)return 0;
+    return parseInt(m[1],10)*100 + parseInt(m[2],10);
+  }
+  var keyOrd = dateOrd(dateKey);
   return PLACES.filter(function(p){
     if(!p.d)return false;
-    if(p.d.indexOf(',')>=0){return p.d.split(',').indexOf(dateKey)>=0;}
-    if(p.d.indexOf('–')>=0){
-      var parts=p.d.split('–');
-      // assume same month for simplicity, e.g., "10/2–10/3"
-      var s=parts[0].trim(), e=parts[1].trim();
-      return dateKey===s||dateKey===e;
+    // Strip time-of-day suffix: 上午/下午/中午/晚上/早晨/傍晚/午餐/早餐/晚餐
+    var pDate = p.d.replace(/\s+(上午|下午|中午|晚上|早晨|傍晚|午餐|早餐|晚餐).*$/, '');
+    // Comma-separated multiple dates
+    if(pDate.indexOf(',')>=0){
+      return pDate.split(',').map(function(s){return s.trim();}).indexOf(dateKey)>=0;
     }
-    return p.d===dateKey;
+    // Date range with – or -
+    var sep = pDate.indexOf('–')>=0 ? '–' : (pDate.indexOf('-')>=0 ? '-' : null);
+    if(sep){
+      var parts=pDate.split(sep);
+      var startOrd=dateOrd(parts[0].trim()), endOrd=dateOrd(parts[1].trim());
+      // Inclusive range check
+      return keyOrd>=startOrd && keyOrd<=endOrd;
+    }
+    return pDate===dateKey;
   });
 }
 
