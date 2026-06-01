@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Xi++ 2026/08 福岡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e1a; --bg2:#141827; --bg3:#1e2235;
+  --glass:rgba(255,255,255,0.06); --glass2:rgba(255,255,255,0.10);
+  --txt:#e8e8ec; --txt2:#9ca3af; --txt3:#6b7280;
+  --accent:#2dd4bf; --accent2:#8b5cf6;
+  --food:#34d399; --shop:#60a5fa; --sight:#fbbf24; --transport:#f87171; --exp:#c084fc; --hotel:#f472b6;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Outfit','Noto Sans TC',sans-serif;background:var(--bg);color:var(--txt);
+  padding-bottom:78px;overflow-x:hidden;line-height:1.5}
+body::before{content:'';position:fixed;inset:0;z-index:-1;
+  background:radial-gradient(800px circle at 20% 0%,rgba(139,92,246,.14),transparent 55%),
+             radial-gradient(700px circle at 90% 30%,rgba(45,212,191,.10),transparent 50%)}
+
+/* Topbar */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(10,14,26,.82);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--glass);padding:14px 16px 10px}
+.tb-title{font-size:22px;font-weight:800;letter-spacing:.3px;
+  background:linear-gradient(100deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.tb-sub{font-size:12.5px;color:var(--txt2);margin-top:2px}
+.tb-badges{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.tb-badge{font-size:11px;color:var(--txt2);background:var(--glass);border:1px solid var(--glass2);
+  padding:4px 9px;border-radius:20px}
+
+/* Day tabs */
+.day-tabs{position:sticky;top:84px;z-index:40;display:flex;gap:8px;overflow-x:auto;
+  padding:11px 16px;background:rgba(10,14,26,.82);backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);scrollbar-width:none}
+.day-tabs::-webkit-scrollbar{display:none}
+.day-tab{flex:0 0 auto;padding:8px 14px;border-radius:13px;background:var(--glass);
+  border:1px solid var(--glass2);cursor:pointer;transition:.25s;min-width:64px;text-align:center}
+.day-tab .dt-d{font-size:14px;font-weight:700;color:var(--txt)}
+.day-tab .dt-t{font-size:10px;color:var(--txt3);margin-top:1px;white-space:nowrap}
+.day-tab.active{background:linear-gradient(120deg,var(--accent),var(--accent2));border-color:transparent}
+.day-tab.active .dt-d,.day-tab.active .dt-t{color:#04121a}
+
+/* progress */
+.progress-wrap{padding:10px 16px 2px}
+.progress-bar-container{height:5px;background:var(--glass);border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:10px;transition:width .4s}
+.progress-label{font-size:11px;color:var(--txt3);margin-top:5px}
+
+/* legend */
+.legend{display:flex;gap:5px;flex-wrap:wrap;padding:8px 16px 4px}
+.lg{font-size:10.5px;color:var(--txt2);display:flex;align-items:center;gap:4px}
+.lg i{width:9px;height:9px;border-radius:3px;display:inline-block}
+
+/* panels */
+.day-panel{display:none;padding:8px 16px 20px;animation:fade .35s}
+.day-panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.dp-header{display:flex;justify-content:space-between;align-items:center;margin:6px 0 12px}
+.dp-title{font-size:16px;font-weight:700}
+.dp-toggle{display:flex;gap:4px;background:var(--glass);border-radius:10px;padding:3px}
+.dp-btn{font-size:12px;padding:5px 11px;border-radius:8px;color:var(--txt2);cursor:pointer;border:none;background:transparent}
+.dp-btn.active{background:var(--glass2);color:var(--txt)}
+
+/* card */
+.card{position:relative;background:var(--glass);border:1px solid var(--glass2);border-radius:16px;
+  padding:13px 14px;margin-bottom:10px;backdrop-filter:blur(6px);transition:.25s;animation:rise .4s both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35);border-color:rgba(255,255,255,.18)}
+.c-top{display:flex;gap:11px;align-items:flex-start}
+.c-icon{font-size:21px;flex:0 0 auto;width:30px;text-align:center}
+.c-body{flex:1;min-width:0}
+.c-time{font-size:16px;font-weight:700;color:var(--accent)}
+.c-name{font-size:15px;font-weight:600;margin-top:1px}
+.c-desc{font-size:12.5px;color:var(--txt2);margin-top:3px}
+.c-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.c-tag{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:500}
+.c-act{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.c-act a,.c-act button{font-size:11px;color:var(--txt2);background:var(--bg3);border:1px solid var(--glass2);
+  border-radius:8px;padding:5px 9px;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:3px}
+.c-act a:active{background:var(--glass2)}
+.card-expand-btn{font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;margin-top:8px;padding:0}
+.card-details{margin-top:8px;padding-top:8px;border-top:1px dashed var(--glass2);display:none}
+.card-details.open{display:block}
+.rec-item{font-size:12px;color:var(--txt2);padding:5px 0 5px 16px;position:relative}
+.rec-item::before{content:'📌';position:absolute;left:0;font-size:10px}
+
+/* hotel card */
+.card-hotel{background:linear-gradient(120deg,rgba(244,114,182,.13),rgba(139,92,246,.10));
+  border:1px solid rgba(244,114,182,.30)}
+.card-hotel .c-time{color:var(--hotel)}
+
+/* add between */
+.card-add-between{display:none;text-align:center;margin:-3px 0 9px}
+.edit-mode .card-add-between{display:block}
+.card-add-between button{font-size:11px;color:var(--accent);background:var(--glass);
+  border:1px dashed var(--glass2);border-radius:10px;padding:6px 14px;cursor:pointer}
+
+/* edit mode */
+.edit-banner{display:none;background:linear-gradient(120deg,var(--accent),var(--accent2));
+  color:#04121a;font-size:12px;font-weight:600;padding:8px 16px;text-align:center}
+.edit-mode .edit-banner{display:block}
+.card-del,.card-drag{display:none;position:absolute;top:10px;width:26px;height:26px;border-radius:8px;
+  border:none;cursor:pointer;font-size:13px;align-items:center;justify-content:center}
+.card-del{right:10px;background:rgba(248,113,113,.2);color:#fca5a5}
+.card-drag{right:42px;background:var(--glass2);color:var(--txt2);cursor:grab}
+.edit-mode .card-del,.edit-mode .card-drag{display:inline-flex}
+.edit-mode .card{border-style:dashed}
+.card.dragging{opacity:.4}
+.edit-input{font-family:inherit;background:var(--bg);border:1px solid var(--accent);color:var(--txt);
+  border-radius:6px;padding:3px 6px;font-size:14px;width:100%}
+.editable{cursor:text;border-radius:4px}
+.edit-mode .editable:hover{background:var(--glass2);outline:1px dashed var(--glass2)}
+
+/* map */
+.map-box{display:none;height:420px;border-radius:16px;overflow:hidden;border:1px solid var(--glass2)}
+.map-box.show{display:block}
+.cards-box.hide{display:none}
+
+/* bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:60;display:flex;
+  background:rgba(13,17,30,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-top:1px solid var(--glass)}
+.nav-item{flex:1;text-align:center;padding:10px 0 11px;cursor:pointer;color:var(--txt3);font-size:10.5px}
+.nav-item .ni-ic{font-size:19px;display:block;margin-bottom:2px}
+.nav-item.active{color:var(--accent)}
+
+/* bottom sheet */
+.bs-overlay{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:.3s}
+.bs-overlay.open{opacity:1;pointer-events:auto}
+.bottom-sheet{position:fixed;left:0;right:0;bottom:0;z-index:71;background:var(--bg2);
+  border-radius:22px 22px 0 0;border-top:1px solid var(--glass2);transform:translateY(100%);
+  transition:transform .34s cubic-bezier(.3,.9,.3,1);max-height:82vh;overflow-y:auto;padding:8px 18px 30px}
+.bottom-sheet.open{transform:translateY(0)}
+.bs-handle{width:38px;height:4px;background:var(--glass2);border-radius:4px;margin:8px auto 14px}
+.bs-h{font-size:18px;font-weight:700;margin-bottom:4px}
+.bs-section-title{font-size:13px;font-weight:700;color:var(--accent);margin:16px 0 7px}
+.bs-todo{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;background:var(--glass);
+  border:1px solid var(--glass2);border-radius:12px;margin-bottom:7px;cursor:pointer}
+.bs-todo-cb{flex:0 0 auto;width:20px;height:20px;border-radius:6px;border:2px solid var(--txt3);
+  margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:12px;transition:.2s}
+.bs-todo.done .bs-todo-cb{background:var(--accent);border-color:var(--accent);color:#04121a}
+.bs-todo.done .bs-todo-text{opacity:.5;text-decoration:line-through}
+.bs-todo-text{font-size:13px}
+.bs-todo-text b{display:block;font-size:13.5px;font-weight:600;margin-bottom:1px}
+.bs-todo-text span{font-size:11.5px;color:var(--txt2)}
+.bs-prog{height:6px;background:var(--glass);border-radius:6px;overflow:hidden;margin:6px 0 4px}
+.bs-prog-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.4s}
+
+/* cost */
+.cs-group{margin-bottom:14px}
+.cs-group-title{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px}
+.cs-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 2px;border-bottom:1px solid var(--glass)}
+.cs-label{color:var(--txt2)}
+.cs-amount{font-weight:600}
+.cs-grand{display:flex;justify-content:space-between;align-items:center;margin-top:16px;
+  background:linear-gradient(120deg,rgba(45,212,191,.14),rgba(139,92,246,.12));
+  border:1px solid var(--glass2);border-radius:14px;padding:14px 16px}
+.cs-grand-label{font-size:13px;color:var(--txt2)}
+.cs-grand-amount{font-size:20px;font-weight:800;
+  background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;
+  background-clip:text;-webkit-text-fill-color:transparent}
+.cs-note{font-size:11px;color:var(--txt3);margin-top:10px;line-height:1.6}
+.warn{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.35);border-radius:12px;
+  padding:10px 12px;font-size:12px;color:#fcd34d;margin:4px 0 12px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-title">Xi++ 2026/08 福岡</div>
+  <div class="tb-sub">8/3–8/7 · 5天4夜 · 2–4人 · 享受型</div>
+  <div class="tb-badges">
+    <span class="tb-badge">🎤 8/4 演唱會</span>
+    <span class="tb-badge">🚗 糸島自駕</span>
+    <span class="tb-badge">🚌 高千穗+阿蘇</span>
+    <span class="tb-badge">⛩ 太宰府</span>
+    <span class="tb-badge">🏯 小倉城</span>
+  </div>
+</div>
+
+<div class="edit-banner">✏️ 編輯模式：點文字可改、拖曳 ⠿ 排序、× 刪除、＋ 新增</div>
+
+<div class="day-tabs" id="dayTabs"></div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-container"><div class="progress-fill" id="progFill"></div></div>
+  <div class="progress-label" id="progLabel"></div>
+</div>
+
+<div class="legend">
+  <span class="lg"><i style="background:var(--food)"></i>餐飲</span>
+  <span class="lg"><i style="background:var(--shop)"></i>購物</span>
+  <span class="lg"><i style="background:var(--sight)"></i>觀光</span>
+  <span class="lg"><i style="background:var(--transport)"></i>交通</span>
+  <span class="lg"><i style="background:var(--exp)"></i>體驗</span>
+  <span class="lg"><i style="background:var(--hotel)"></i>住宿</span>
+</div>
+
+<div id="panels"></div>
+
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+  <div class="nav-item active" data-nav="itin"><span class="ni-ic">🗓</span>行程</div>
+  <div class="nav-item" data-nav="book"><span class="ni-ic">✅</span>訂票</div>
+  <div class="nav-item" data-nav="cost"><span class="ni-ic">💰</span>費用</div>
+  <div class="nav-item" data-nav="edit"><span class="ni-ic">✏️</span>編輯</div>
+</div>
+
+<!-- Booking sheet -->
+<div class="bs-overlay" id="bookOverlay"></div>
+<div class="bottom-sheet" id="bookSheet">
+  <div class="bs-handle"></div>
+  <div class="bs-h">✅ 訂票清單</div>
+  <div class="bs-prog"><div class="bs-prog-fill" id="bookProg"></div></div>
+  <div class="progress-label" id="bookProgLabel" style="margin-bottom:4px"></div>
+
+  <div class="warn">⚠️ 阿蘇火口因直升機事故仍封閉中，8月能否看火口請出發前查官網；草千里正常開放。</div>
+
+  <div class="bs-section-title">🎤 立即處理</div>
+  <div class="bs-todo" data-id="t6"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>高千穗+阿蘇一日團（KKday/Klook）</b><span>福岡博多出發，含划船加購。KKday 287625 / 181723，Klook TKNKL-155508。早鳥易滿，先訂</span></div></div>
+  <div class="bs-todo" data-id="t5"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>演唱會門票</b><span>確認 8/4 會場、開演時間、入場方式</span></div></div>
+  <div class="bs-todo" data-id="t7"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>高千穗峽划船</b><span>跟團可由旅行社代訂；自行訂則乘船日 2 週前 9:00 線上搶（夏天 30 分秒殺）</span></div></div>
+
+  <div class="bs-section-title">🏨 住宿</div>
+  <div class="bs-todo" data-id="t1"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>都ホテル博多 4 晚（8/3・4・5・6）</b><span>首選；備選 Grand Hyatt／THE BLOSSOM HAKATA Premier／JR Kyushu Blossom</span></div></div>
+
+  <div class="bs-section-title">🚗 交通</div>
+  <div class="bs-todo" data-id="t2"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>機票 CI110／CI117 ✅</b><span>去程需改 8/3 早班 CI110 06:50→09:55；回 8/7 21:00→22:30</span></div></div>
+  <div class="bs-todo" data-id="t3"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>糸島租車 8/5</b><span>博多取還；備好駕照日文譯本（JAF）</span></div></div>
+  <div class="bs-todo" data-id="t4"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>小倉新幹線（8/7）</b><span>博多→小倉約 16–20 分，免預約當日購票即可</span></div></div>
+</div>
+
+<!-- Cost sheet -->
+<div class="bs-overlay" id="costOverlay"></div>
+<div class="bottom-sheet" id="costSheet">
+  <div class="bs-handle"></div>
+  <div class="bs-h">💰 費用總覽</div>
+  <div class="cs-note" style="margin-top:0;margin-bottom:8px">2 人估算 · 台幣 · 不含機票（已訂）· 匯率約 1 JPY≈0.21 TWD</div>
+
+  <div class="cs-group">
+    <div class="cs-group-title">🏨 住宿</div>
+    <div class="cs-row"><span class="cs-label">都ホテル博多 4 晚（2人）</span><span class="cs-amount">$24,000</span></div>
+  </div>
+  <div class="cs-group">
+    <div class="cs-group-title">🚌 活動・團費</div>
+    <div class="cs-row"><span class="cs-label">高千穗+阿蘇一日團 2人（含划船）</span><span class="cs-amount">$7,500</span></div>
+    <div class="cs-row"><span class="cs-label">小倉城／太宰府門票・雜支</span><span class="cs-amount">$1,500</span></div>
+  </div>
+  <div class="cs-group">
+    <div class="cs-group-title">🚗 交通</div>
+    <div class="cs-row"><span class="cs-label">糸島租車＋油＋停車（1天）</span><span class="cs-amount">$3,000</span></div>
+    <div class="cs-row"><span class="cs-label">市內交通・新幹線小倉來回</span><span class="cs-amount">$2,500</span></div>
+  </div>
+  <div class="cs-group">
+    <div class="cs-group-title">🍽 餐飲</div>
+    <div class="cs-row"><span class="cs-label">4 天 2 人（含拉麵・牛腸鍋・海鮮）</span><span class="cs-amount">$13,000</span></div>
+  </div>
+  <div class="cs-group">
+    <div class="cs-group-title">🛍 購物・雜費</div>
+    <div class="cs-row"><span class="cs-label">天神逛街・伴手禮等</span><span class="cs-amount">$8,000</span></div>
+  </div>
+  <div class="cs-grand"><span class="cs-grand-label">2 人總計（不含機票）</span><span class="cs-grand-amount">≈ TWD $59,500</span></div>
+  <div class="cs-note">數字為估算，實際依訂房與消費而定。雙擊金額即可在編輯模式自行修改。</div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+
+var TRIP_DATA = [
+ {id:"day-1",date:"8/3 一",title:"✈️ 抵達 · 太宰府",items:[
+   {time:"06:50",icon:"✈️",name:"CI110 台北桃園 → 福岡",desc:"09:55 抵達 · 去程需改 8/3 早班",link:""},
+   {time:"10:30",icon:"🛬",name:"福岡機場入境 → 地鐵到博多",desc:"機場到博多站僅 2 站約 6 分鐘",link:""},
+   {time:"11:00",icon:"🏨",name:"飯店寄放行李（輕裝出門）",desc:"正常 check in 15:00，先寄行李",link:""},
+   {time:"12:00",icon:"🍜",name:"博多拉麵 / 牛腸鍋 午餐",desc:"博多站周邊",link:""},
+   {time:"13:30",icon:"⛩",name:"太宰府天満宮",desc:"旅人巴士/西鐵；本殿2026剛修復＋參道梅枝餅、隈研吾星巴克",link:"https://www.google.com/maps/search/?api=1&query=33.5213697,130.5348239"},
+   {time:"16:30",icon:"🛎",name:"回博多 check in・休息",desc:"正式入住、養精神",link:""},
+   {time:"18:30",icon:"🍢",name:"中洲屋台 / 博多晚餐",desc:"屋台拉麵、關東煮體驗",link:"https://www.google.com/maps/search/?api=1&query=33.5899407,130.4089399"}
+ ],hotel:{icon:"🏨",name:"都ホテル博多（8/3–8/7 · 4晚）",desc:"博多站筑紫口直結 · 首選",price:"待訂"}},
+
+ {id:"day-2",date:"8/4 二",title:"🛍 天神逛街 · 演唱會",items:[
+   {time:"10:00",icon:"🛍",name:"天神逛街",desc:"天神地下街・PARCO・大名・西通り",link:"https://www.google.com/maps/search/?api=1&query=33.5887201,130.3999565"},
+   {time:"12:30",icon:"🍜",name:"牛腸鍋 / 拉麵 午餐",desc:"天神一帶名店",link:""},
+   {time:"15:00",icon:"☕",name:"咖啡・繼續逛",desc:"逛累了找間復古咖啡廳歇腳",link:""},
+   {time:"17:30",icon:"🛎",name:"回飯店換裝・休息",desc:"養足精神看演唱會",link:""},
+   {time:"18:30",icon:"🍽",name:"演唱會場附近晚餐",desc:"視會場位置安排",link:""},
+   {time:"19:00",icon:"🎤",name:"演唱會",desc:"會場・開演時間待你確認後填入",link:""}
+ ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/3 住宿 · 第 2 晚 / 共 4 晚",price:""}},
+
+ {id:"day-3",date:"8/5 三",title:"🚗 糸島自駕一日",items:[
+   {time:"09:00",icon:"🚗",name:"博多取租車出發",desc:"備好駕照日文譯本（JAF）",link:""},
+   {time:"10:00",icon:"⛩",name:"二見ヶ浦 夫婦岩 + 白色鳥居",desc:"糸島地標，海上鳥居與夫婦岩",link:"https://www.google.com/maps/search/?api=1&query=33.640495,130.1964802"},
+   {time:"11:30",icon:"☕",name:"海邊咖啡 / 椰子樹鞦韆",desc:"ヤシの木ブランコ，海景打卡",link:""},
+   {time:"13:00",icon:"🦞",name:"糸島海鮮 BBQ / ざうお 午餐",desc:"現釣現烤海鮮",link:""},
+   {time:"14:30",icon:"💧",name:"白糸の滝",desc:"瀑布消暑＋夏季限定流水麵",link:"https://www.google.com/maps/search/?api=1&query=33.4801994,130.1754495"},
+   {time:"17:00",icon:"🌅",name:"二見ヶ浦看夕陽",desc:"糸島精華，傍晚回頭看夕陽最美",link:""},
+   {time:"19:00",icon:"🚗",name:"還車回博多・市區晚餐",desc:"還車後輕鬆覓食",link:""}
+ ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/3 住宿 · 第 3 晚 / 共 4 晚",price:""}},
+
+ {id:"day-4",date:"8/6 四",title:"🚌 高千穗峽 + 阿蘇一日團",items:[
+   {time:"08:00",icon:"🚌",name:"博多筑紫口集合出發",desc:"KKday/Klook 中文一日團（Lawson 福岡東方飯店前）",link:""},
+   {time:"11:00",icon:"⛩",name:"天岩戸神社 + 天安河原",desc:"日本神話天照大神傳說地",link:"https://www.google.com/maps/search/?api=1&query=32.7344861,131.3507125"},
+   {time:"12:30",icon:"🥩",name:"高千穗牛 午餐",desc:"團費多已含",link:""},
+   {time:"14:00",icon:"🚣",name:"高千穗峽（真名井瀑布・可選划船）",desc:"日本百大瀑布；划船可加購由團代訂",link:"https://www.google.com/maps/search/?api=1&query=32.7024539,131.300921"},
+   {time:"16:00",icon:"🌋",name:"阿蘇 草千里ヶ浜",desc:"火山大草原；火口視解封狀況",link:"https://www.google.com/maps/search/?api=1&query=32.8818249,131.0533279"},
+   {time:"19:30",icon:"🚌",name:"回到博多",desc:"約 19:30–20:00 抵達博多站",link:""},
+   {time:"20:15",icon:"🍜",name:"宵夜拉麵",desc:"博多站周邊 / 中洲屋台",link:"https://www.google.com/maps/search/?api=1&query=33.5899407,130.4089399"}
+ ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/3 住宿 · 第 4 晚 / 共 4 晚",price:""}},
+
+ {id:"day-5",date:"8/7 五",title:"🏯 小倉城 · 回程",items:[
+   {time:"09:00",icon:"🧳",name:"退房・寄放行李",desc:"行李寄飯店或博多站置物櫃",link:""},
+   {time:"10:00",icon:"🏯",name:"小倉城 + 旦過市場",desc:"新幹線約20分到小倉；福岡唯一天守閣",link:"https://www.google.com/maps/search/?api=1&query=33.8844357,130.8742541"},
+   {time:"13:00",icon:"🍜",name:"小倉 / 博多 午餐",desc:"旦過市場小吃或回博多",link:""},
+   {time:"15:00",icon:"🛍",name:"回博多取行李・最後採買",desc:"博多站伴手禮",link:""},
+   {time:"18:30",icon:"🚇",name:"地鐵前往福岡機場",desc:"博多→機場約 6 分鐘",link:""},
+   {time:"21:00",icon:"✈️",name:"CI117 福岡 → 台北桃園",desc:"22:30 抵達 · 飛行 2h30m",link:""}
+ ],hotel:{icon:"✈️",name:"航班上（機上返程）",desc:"CI117 21:00 起飛",price:""}}
+];
+
+var PLACES = [
+ {n:"都ホテル博多",lat:33.5897507,lng:130.4228429,type:"hotel",d:"8/3,8/4,8/5,8/6",x:"住宿基地・博多站筑紫口直結"},
+ {n:"太宰府天満宮",lat:33.5213697,lng:130.5348239,type:"act",d:"8/3",x:"學問之神・本殿剛修復"},
+ {n:"中洲屋台",lat:33.5899407,lng:130.4089399,type:"act",d:"8/3,8/6",x:"屋台拉麵・宵夜"},
+ {n:"天神地下街（逛街）",lat:33.5887201,lng:130.3999565,type:"act",d:"8/4",x:"天神購物核心"},
+ {n:"二見ヶ浦 夫婦岩",lat:33.640495,lng:130.1964802,type:"act",d:"8/5",x:"糸島地標・海上鳥居"},
+ {n:"白糸の滝",lat:33.4801994,lng:130.1754495,type:"act",d:"8/5",x:"瀑布・流水麵"},
+ {n:"天岩戸神社",lat:32.7344861,lng:131.3507125,type:"act",d:"8/6",x:"神話舞台"},
+ {n:"高千穗峽 真名井瀑布",lat:32.7024539,lng:131.300921,type:"act",d:"8/6",x:"日本百大瀑布・划船"},
+ {n:"白川水源",lat:32.8253719,lng:131.0953099,type:"act",d:"8/6",x:"南阿蘇名水（部分團含）"},
+ {n:"阿蘇 草千里ヶ浜",lat:32.8818249,lng:131.0533279,type:"act",d:"8/6",x:"火山大草原"},
+ {n:"小倉城",lat:33.8844357,lng:130.8742541,type:"act",d:"8/7",x:"福岡唯一天守閣"}
+];
+
+var RECS = {
+ "天神":{recs:["PARCO — 年輕潮流，CHIIKAWA LAND 等動漫專賣","大名・西通り — 個性小店與咖啡","唐吉訶德天神 — 24h 藥妝零食一站買齊"],urgency:"free",urgencyText:"✓ 免預約"},
+ "二見ヶ浦":{recs:["白色鳥居與夫婦岩 — 必拍","附近 PALM BEACH 海景咖啡","傍晚回來看夕陽最美"],urgency:"free",urgencyText:"✓ 免費"},
+ "白糸の滝":{recs:["夏季限定流水麵","瀑布步道約 25 分鐘，穿好走的鞋","ヤマメ釣り體驗"],urgency:"free",urgencyText:"✓ 免費"},
+ "高千穗峽":{recs:["划船看真名井瀑布（精華）","千穂之家 元祖流水麵（15:30 前）","槍飛橋看三橋同框"],urgency:"book",urgencyText:"⚡ 划船需預約"},
+ "草千里":{recs:["火山大草原＋放牧馬","火口目前封閉，草千里照常開","火山博物館可避暑"],urgency:"free",urgencyText:"✓ 免費"},
+ "太宰府":{recs:["參道梅枝餅必吃","本殿2026剛修復完工","星巴克太宰府表參道店（隈研吾設計）"],urgency:"free",urgencyText:"✓ 免預約"},
+ "小倉城":{recs:["天守閣最上層咖啡看市景","旦過市場逛吃","入城費一般約500日元"],urgency:"free",urgencyText:"✓ 免預約"}
+};
+
+/* ============ Firebase ============ */
+var FB_URL='https://nz-trip-2026-dd942-default-rtdb.asia-southeast1.firebasedatabase.app';
+var FB_NODE='fuk26';
+
+/* ============ Logic ============ */
+function categorize(it){
+  var s=(it.icon||'')+(it.name||'')+(it.desc||'');
+  if(/🍔|🍜|🍽|🥩|☕|🦞|早餐|午餐|晚餐|拉麵|宵夜|café|咖啡/.test(s))return['food','餐飲','var(--food)'];
+  if(/✈️|🚗|🛬|🚕|🚌|⛴|🚇|🧳|check|退房|轉機|地鐵|新幹線|租車/.test(s))return['transport','交通','var(--transport)'];
+  if(/♨️|🚁|⭐|🚢|✨|🚣|🌅/.test(s))return['exp','體驗','var(--exp)'];
+  if(/🛍|逛街|採買|購物/.test(s))return['shop','購物','var(--shop)'];
+  return['sight','觀光','var(--sight)'];
+}
+function recKey(name){for(var k in RECS){if(name.indexOf(k)>-1)return k;}return null;}
+
+var cur=0,map=null,markers=[],mapsReady=false;
+
+function buildTabs(){
+  var t=document.getElementById('dayTabs');t.innerHTML='';
+  TRIP_DATA.forEach(function(d,i){
+    var el=document.createElement('div');el.className='day-tab'+(i===cur?' active':'');
+    el.innerHTML='<div class="dt-d">'+d.date+'</div><div class="dt-t">'+d.title.replace(/^[^\s]+\s/,'')+'</div>';
+    el.onclick=function(){cur=i;render();};
+    t.appendChild(el);
+  });
+}
+function buildPanels(){
+  var p=document.getElementById('panels');p.innerHTML='';
+  TRIP_DATA.forEach(function(d,i){
+    var panel=document.createElement('div');panel.className='day-panel'+(i===cur?' active':'');panel.id=d.id;
+    var h='<div class="dp-header"><div class="dp-title">'+d.title+'</div>'+
+      '<div class="dp-toggle"><button class="dp-btn active" onclick="toggleView('+i+',0)">行程</button>'+
+      '<button class="dp-btn" onclick="toggleView('+i+',1)">地圖</button></div></div>';
+    h+='<div class="cards-box" id="cards-'+i+'">';
+    d.items.forEach(function(it,j){
+      h+='<div class="card-add-between"><button onclick="addItem('+i+','+j+')">＋ 在此加入</button></div>';
+      h+=cardHTML(it,i,j);
+    });
+    h+='<div class="card-add-between"><button onclick="addItem('+i+','+d.items.length+')">＋ 加到最後</button></div>';
+    h+=hotelHTML(d.hotel,i);
+    h+='</div>';
+    h+='<div class="map-box" id="map-'+i+'"></div>';
+    panel.innerHTML=h;
+    p.appendChild(panel);
+  });
+  bindDrag();
+}
+function cardHTML(it,i,j){
+  var c=categorize(it);var rk=recKey(it.name);
+  var h='<div class="card" data-day="'+i+'" data-idx="'+j+'" draggable="false">';
+  h+='<button class="card-drag" title="拖曳">⠿</button><button class="card-del" onclick="delItem('+i+','+j+')">×</button>';
+  h+='<div class="c-top"><div class="c-icon">'+(it.icon||'📍')+'</div><div class="c-body">';
+  h+='<div class="c-time editable" data-f="time" data-day="'+i+'" data-idx="'+j+'">'+(it.time||'')+'</div>';
+  h+='<div class="c-name editable" data-f="name" data-day="'+i+'" data-idx="'+j+'">'+it.name+'</div>';
+  if(it.desc)h+='<div class="c-desc editable" data-f="desc" data-day="'+i+'" data-idx="'+j+'">'+it.desc+'</div>';
+  h+='<div class="c-tags"><span class="c-tag" style="background:'+c[2]+'22;color:'+c[2]+'">'+c[1]+'</span>';
+  if(rk)h+='<span class="c-tag" style="background:var(--glass2);color:var(--txt2)">'+RECS[rk].urgencyText+'</span>';
+  h+='</div>';
+  var q=it.link&&it.link.indexOf('query=')>-1?it.link:('https://www.google.com/maps/search/'+encodeURIComponent(it.name+' 福岡'));
+  h+='<div class="c-act"><a href="'+q+'" target="_blank">🗺 導航</a>';
+  h+='<a href="https://www.google.com/maps/search/'+encodeURIComponent('restaurant near '+it.name)+'" target="_blank">🍽 附近</a>';
+  if(it.link&&it.link.indexOf('http')===0&&it.link.indexOf('maps')===-1)h+='<a href="'+it.link+'" target="_blank">🔗 官網</a>';
+  h+='</div>';
+  if(rk){h+='<button class="card-expand-btn" onclick="toggleRec(this)">📌 推薦地點</button><div class="card-details">';
+    RECS[rk].recs.forEach(function(r){h+='<div class="rec-item">'+r+'</div>';});h+='</div>';}
+  h+='</div></div></div>';
+  return h;
+}
+function hotelHTML(ho,i){
+  if(!ho)return'';
+  return '<div class="card card-hotel" data-hotel="'+i+'"><div class="c-top"><div class="c-icon">'+(ho.icon||'🏨')+'</div><div class="c-body">'+
+    '<div class="c-time">住宿</div>'+
+    '<div class="c-name editable" data-f="hname" data-day="'+i+'">'+ho.name+'</div>'+
+    (ho.desc?'<div class="c-desc editable" data-f="hdesc" data-day="'+i+'">'+ho.desc+'</div>':'')+
+    (ho.price?'<div class="c-tags"><span class="c-tag" style="background:var(--hotel)22;color:var(--hotel)">'+ho.price+'</span></div>':'')+
+    '</div></div></div>';
+}
+function toggleRec(b){b.nextElementSibling.classList.toggle('open');}
+function toggleView(i,m){
+  var cards=document.getElementById('cards-'+i),mp=document.getElementById('map-'+i);
+  var btns=document.querySelectorAll('#'+TRIP_DATA[i].id+' .dp-btn');
+  btns[0].classList.toggle('active',m===0);btns[1].classList.toggle('active',m===1);
+  cards.classList.toggle('hide',m===1);mp.classList.toggle('show',m===1);
+  if(m===1)initMap(i);
+}
+
+/* progress */
+function updateProgress(){
+  var d=TRIP_DATA[cur];var done=d.items.filter(function(x){return x._done;}).length;
+  var pct=Math.round(done/d.items.length*100);
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progLabel').textContent=d.date+' · 共 '+d.items.length+' 個行程';
+}
+
+/* maps */
+function initMap(i){
+  if(!mapsReady){return;}
+  var box=document.getElementById('map-'+i);if(box._init)return;box._init=true;
+  var dateKey=TRIP_DATA[i].date.split(' ')[0];
+  var pts=PLACES.filter(function(p){return p.d.indexOf(dateKey)>-1;});
+  if(!pts.length){box.innerHTML='<div style="padding:30px;text-align:center;color:var(--txt3)">本日無地圖座標</div>';return;}
+  var style=[{elementType:"geometry",stylers:[{color:"#1e2235"}]},{elementType:"labels.text.stroke",stylers:[{color:"#0a0e1a"}]},{elementType:"labels.text.fill",stylers:[{color:"#9ca3af"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#0e1626"}]},{featureType:"road",elementType:"geometry",stylers:[{color:"#2a2f45"}]},{featureType:"poi",elementType:"labels",stylers:[{visibility:"off"}]}];
+  var m=new google.maps.Map(box,{zoom:10,center:{lat:pts[0].lat,lng:pts[0].lng},styles:style,disableDefaultUI:true,gestureHandling:'greedy'});
+  var bounds=new google.maps.LatLngBounds();
+  pts.forEach(function(p,k){
+    var mk=new google.maps.Marker({position:{lat:p.lat,lng:p.lng},map:m,
+      label:{text:String(k+1),color:'#04121a',fontWeight:'700'},
+      icon:{path:google.maps.SymbolPath.CIRCLE,scale:13,fillColor:p.type==='hotel'?'#f472b6':'#2dd4bf',fillOpacity:1,strokeWeight:0}});
+    var iw=new google.maps.InfoWindow({content:'<div style="color:#111;font-size:13px"><b>'+p.n+'</b><br>'+p.x+'<br><a href="https://www.google.com/maps/search/?api=1&query='+p.lat+','+p.lng+'" target="_blank">🗺 導航</a></div>'});
+    mk.addListener('click',function(){iw.open(m,mk);});
+    bounds.extend(mk.position);
+  });
+  if(pts.length>1)m.fitBounds(bounds);
+}
+function gmapsReady(){mapsReady=true;}
+
+/* edit */
+var editing=false;
+function toggleEdit(){editing=!editing;document.body.classList.toggle('edit-mode',editing);bindEditable();bindDrag();}
+function bindEditable(){
+  document.querySelectorAll('.editable').forEach(function(el){
+    el.onclick=function(){
+      if(!editing||el.querySelector('input'))return;
+      var old=el.textContent;var inp=document.createElement('input');inp.className='edit-input';inp.value=old;
+      el.textContent='';el.appendChild(inp);inp.focus();
+      function save(){var v=inp.value;var f=el.dataset.f,dy=+el.dataset.day,ix=+el.dataset.idx;
+        if(f==='hname')TRIP_DATA[dy].hotel.name=v;else if(f==='hdesc')TRIP_DATA[dy].hotel.desc=v;
+        else TRIP_DATA[dy].items[ix][f]=v;
+        el.textContent=v;}
+      inp.onblur=save;inp.onkeydown=function(e){if(e.key==='Enter'){inp.blur();}if(e.key==='Escape'){el.textContent=old;}};
+    };
+  });
+}
+function delItem(i,j){if(!confirm('刪除這個行程？'))return;TRIP_DATA[i].items.splice(j,1);render();}
+function addItem(i,j){var name=prompt('行程名稱？');if(!name)return;var time=prompt('時間？（可留空）')||'';
+  TRIP_DATA[i].items.splice(j,0,{time:time,icon:'📍',name:name,desc:'',link:''});render();}
+var dragEl=null;
+function bindDrag(){
+  document.querySelectorAll('.card[data-idx]').forEach(function(c){
+    var h=c.querySelector('.card-drag');if(!h)return;
+    h.onmousedown=h.ontouchstart=function(){c.setAttribute('draggable','true');};
+    c.ondragstart=function(e){dragEl=c;c.classList.add('dragging');};
+    c.ondragend=function(){c.classList.remove('dragging');c.setAttribute('draggable','false');};
+    c.ondragover=function(e){e.preventDefault();};
+    c.ondrop=function(e){e.preventDefault();if(!dragEl||dragEl===c)return;
+      var di=+dragEl.dataset.day,dj=+dragEl.dataset.idx,ti=+c.dataset.day,tj=+c.dataset.idx;
+      if(di!==ti)return;var arr=TRIP_DATA[di].items;var m=arr.splice(dj,1)[0];arr.splice(tj,0,m);render();};
+  });
+}
+
+/* bottom nav + sheets */
+function openSheet(id){document.getElementById(id+'Overlay').classList.add('open');document.getElementById(id+'Sheet').classList.add('open');}
+function closeSheet(id){document.getElementById(id+'Overlay').classList.remove('open');document.getElementById(id+'Sheet').classList.remove('open');}
+document.querySelectorAll('.nav-item').forEach(function(n){
+  n.onclick=function(){
+    var nav=n.dataset.nav;
+    if(nav==='book'){openSheet('book');return;}
+    if(nav==='cost'){openSheet('cost');return;}
+    if(nav==='edit'){document.querySelectorAll('.nav-item').forEach(function(x){x.classList.remove('active');});n.classList.add('active');toggleEdit();return;}
+    document.querySelectorAll('.nav-item').forEach(function(x){x.classList.remove('active');});n.classList.add('active');
+    if(editing)toggleEdit();
+  };
+});
+document.getElementById('bookOverlay').onclick=function(){closeSheet('book');};
+document.getElementById('costOverlay').onclick=function(){closeSheet('cost');};
+
+/* booking todos + firebase */
+var checks={};
+function loadChecks(){
+  fetch(FB_URL+'/'+FB_NODE+'/checks.json').then(function(r){return r.json();}).then(function(d){
+    checks=d||{};applyChecks();
+  }).catch(function(){});
+}
+function applyChecks(){
+  document.querySelectorAll('.bs-todo').forEach(function(t){
+    var id=t.dataset.id;t.classList.toggle('done',!!checks[id]);
+    t.querySelector('.bs-todo-cb').textContent=checks[id]?'✓':'';
+  });
+  var all=document.querySelectorAll('.bs-todo').length;
+  var done=Object.keys(checks).filter(function(k){return checks[k];}).length;
+  document.getElementById('bookProg').style.width=Math.round(done/all*100)+'%';
+  document.getElementById('bookProgLabel').textContent=done+' / '+all+' 已完成';
+}
+document.querySelectorAll('.bs-todo').forEach(function(t){
+  t.onclick=function(){var id=t.dataset.id;checks[id]=!checks[id];applyChecks();
+    fetch(FB_URL+'/'+FB_NODE+'/checks.json',{method:'PATCH',body:JSON.stringify((function(){var o={};o[id]=checks[id];return o;})())}).catch(function(){});
+  };
+});
+
+/* swipe + keys */
+var sx=0;
+document.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;
+  if(Math.abs(dx)<60)return;if(dx<0&&cur<TRIP_DATA.length-1){cur++;render();}if(dx>0&&cur>0){cur--;render();}});
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'&&cur<TRIP_DATA.length-1){cur++;render();}if(e.key==='ArrowLeft'&&cur>0){cur--;render();}});
+
+function render(){buildTabs();buildPanels();updateProgress();if(editing){bindEditable();}window.scrollTo({top:0,behavior:'smooth'});}
+render();loadChecks();
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&callback=gmapsReady"></script>
+</body>
+</html>
