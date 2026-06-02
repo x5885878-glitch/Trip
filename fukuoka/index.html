@@ -177,7 +177,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
   <div class="tb-title">Xi++ 2026/08 福岡</div>
   <div class="tb-sub">8/2–8/7 · 6天5夜 · 4人 · 享受型</div>
   <div class="tb-badges">
-    <span class="tb-badge">🎤 8/4 演唱會</span>
+    <span class="tb-badge">🎤 ヨルシカ 8/4</span>
     <span class="tb-badge">🚗 糸島自駕</span>
     <span class="tb-badge">🚌 高千穗+阿蘇</span>
     <span class="tb-badge">⛩ 太宰府</span>
@@ -296,13 +296,16 @@ var TRIP_DATA = [
    {time:"20:15",icon:"🍜",name:"宵夜拉麵",desc:"博多站周邊 / 中洲屋台",link:"https://www.google.com/maps/search/?api=1&query=33.5899407,130.4089399"}
  ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/2 住宿 · 第 2 晚 / 共 5 晚",price:""}},
 
- {id:"day-3",date:"8/4 二",title:"🛍 天神逛街 · 演唱會",items:[
+ {id:"day-3",date:"8/4 二",title:"🎤 ヨルシカ 演唱會 · 天神",items:[
    {time:"10:00",icon:"🛍",name:"天神逛街",desc:"天神地下街・PARCO・大名・西通り",link:"https://www.google.com/maps/search/?api=1&query=33.5887201,130.3999565"},
    {time:"12:30",icon:"🍜",name:"牛腸鍋 / 拉麵 午餐",desc:"天神一帶名店",link:""},
-   {time:"15:00",icon:"☕",name:"咖啡・繼續逛",desc:"逛累了找間復古咖啡廳歇腳",link:""},
-   {time:"17:30",icon:"🛎",name:"回飯店換裝・休息",desc:"養足精神看演唱會",link:""},
-   {time:"18:30",icon:"🍽",name:"演唱會場附近晚餐",desc:"視會場位置安排",link:""},
-   {time:"19:00",icon:"🎤",name:"演唱會",desc:"會場・開演時間待你確認後填入",link:""}
+   {time:"15:00",icon:"☕",name:"咖啡・繼續逛 / 採購",desc:"逛累了找間咖啡廳歇腳",link:""},
+   {time:"16:30",icon:"🛎",name:"回飯店換裝・休息",desc:"養足精神看演唱會",link:""},
+   {time:"17:15",icon:"🍽",name:"早一點吃晚餐",desc:"19:00開演，會場周邊餐廳有限，建議博多/天神先吃飽",link:""},
+   {time:"18:00",icon:"🚕",name:"前往マリンメッセ福岡A館",desc:"博多/天神搭巴士或計程車約15–20分；濱海會場",link:"https://www.google.com/maps/search/?api=1&query=33.6071732,130.4021741"},
+   {time:"19:00",icon:"🎤",name:"ヨルシカ 演唱會（開演）",desc:"マリンメッセ福岡A館・S席/A席 2枚 ⚠️票僅2張，4人中2人入場",link:"https://www.google.com/maps/search/?api=1&query=33.6071732,130.4021741"},
+   {time:"19:00",icon:"🍢",name:"另2人：中洲屋台 / Canal City",desc:"沒票的2人可逛中洲、屋台、運河城，散場後會合",link:"https://www.google.com/maps/search/?api=1&query=33.5899407,130.4089399"},
+   {time:"21:30",icon:"🍜",name:"散場後會合・宵夜",desc:"演唱會約21:00–21:30結束，四人會合吃宵夜",link:""}
  ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/2 住宿 · 第 3 晚 / 共 5 晚",price:""}},
 
  {id:"day-4",date:"8/5 三",title:"⛩ 太宰府 + 柳川（演唱會隔天悠閒）",items:[
@@ -337,12 +340,13 @@ var TRIP_DATA = [
 var PLACES = [
  {n:"都ホテル博多",lat:33.5897507,lng:130.4228429,type:"hotel",d:"8/2,8/3,8/4,8/5,8/6",x:"住宿基地・博多站筑紫口直結"},
  {n:"Canal City Hakata",lat:33.5896305,lng:130.4109478,type:"act",d:"8/2",x:"運河商城・噴水秀"},
- {n:"中洲屋台",lat:33.5899407,lng:130.4089399,type:"act",d:"8/2,8/3",x:"屋台拉麵・宵夜"},
+ {n:"中洲屋台",lat:33.5899407,lng:130.4089399,type:"act",d:"8/2,8/3,8/4",x:"屋台拉麵・宵夜"},
  {n:"天岩戸神社",lat:32.7344861,lng:131.3507125,type:"act",d:"8/3",x:"神話舞台"},
  {n:"高千穗峽 真名井瀑布",lat:32.7024539,lng:131.300921,type:"act",d:"8/3",x:"日本百大瀑布・划船"},
  {n:"白川水源",lat:32.8253719,lng:131.0953099,type:"act",d:"8/3",x:"南阿蘇名水（部分團含）"},
  {n:"阿蘇 草千里ヶ浜",lat:32.8818249,lng:131.0533279,type:"act",d:"8/3",x:"火山大草原"},
  {n:"天神地下街（逛街）",lat:33.5887201,lng:130.3999565,type:"act",d:"8/4",x:"天神購物核心"},
+ {n:"マリンメッセ福岡A館（ヨルシカ）",lat:33.6071732,lng:130.4021741,type:"act",d:"8/4",x:"演唱會會場・濱海"},
  {n:"太宰府天満宮",lat:33.5213697,lng:130.5348239,type:"act",d:"8/5",x:"學問之神・本殿剛修復"},
  {n:"柳川川下り 松月乗船場",lat:33.1671516,lng:130.4154015,type:"act",d:"8/5",x:"運河遊船・鰻魚せいろ蒸し"},
  {n:"二見ヶ浦 夫婦岩",lat:33.640495,lng:130.1964802,type:"act",d:"8/6",x:"糸島地標・海上鳥居"},
