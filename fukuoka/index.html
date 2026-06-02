@@ -175,12 +175,13 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
 
 <div class="topbar">
   <div class="tb-title">Xi++ 2026/08 福岡</div>
-  <div class="tb-sub">8/3–8/7 · 5天4夜 · 2–4人 · 享受型</div>
+  <div class="tb-sub">8/2–8/7 · 6天5夜 · 2–4人 · 享受型</div>
   <div class="tb-badges">
     <span class="tb-badge">🎤 8/4 演唱會</span>
     <span class="tb-badge">🚗 糸島自駕</span>
     <span class="tb-badge">🚌 高千穗+阿蘇</span>
     <span class="tb-badge">⛩ 太宰府</span>
+    <span class="tb-badge">🚤 柳川</span>
     <span class="tb-badge">🏯 小倉城</span>
   </div>
 </div>
@@ -229,10 +230,10 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
   <div class="bs-todo" data-id="t7"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>高千穗峽划船</b><span>跟團可由旅行社代訂；自行訂則乘船日 2 週前 9:00 線上搶（夏天 30 分秒殺）</span></div></div>
 
   <div class="bs-section-title">🏨 住宿</div>
-  <div class="bs-todo" data-id="t1"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>都ホテル博多 4 晚（8/3・4・5・6）</b><span>首選；備選 Grand Hyatt／THE BLOSSOM HAKATA Premier／JR Kyushu Blossom</span></div></div>
+  <div class="bs-todo" data-id="t1"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>都ホテル博多 5 晚（8/2・3・4・5・6）</b><span>首選；備選 Grand Hyatt／THE BLOSSOM HAKATA Premier／JR Kyushu Blossom</span></div></div>
 
   <div class="bs-section-title">🚗 交通</div>
-  <div class="bs-todo" data-id="t2"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>機票 CI110／CI117 ✅</b><span>去程需改 8/3 早班 CI110 06:50→09:55；回 8/7 21:00→22:30</span></div></div>
+  <div class="bs-todo" data-id="t2"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>機票 CI110／CI117 ✅</b><span>去程需改 8/2 早班 CI110 06:50→09:55；回 8/7 21:00→22:30（改票成本見下）</span></div></div>
   <div class="bs-todo" data-id="t3"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>糸島租車 8/5</b><span>博多取還；備好駕照日文譯本（JAF）</span></div></div>
   <div class="bs-todo" data-id="t4"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>小倉新幹線（8/7）</b><span>博多→小倉約 16–20 分，免預約當日購票即可</span></div></div>
 </div>
@@ -246,11 +247,12 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
 
   <div class="cs-group">
     <div class="cs-group-title">🏨 住宿</div>
-    <div class="cs-row"><span class="cs-label">都ホテル博多 4 晚（2人）</span><span class="cs-amount">$24,000</span></div>
+    <div class="cs-row"><span class="cs-label">都ホテル博多 5 晚（2人）</span><span class="cs-amount">$30,000</span></div>
   </div>
   <div class="cs-group">
     <div class="cs-group-title">🚌 活動・團費</div>
     <div class="cs-row"><span class="cs-label">高千穗+阿蘇一日團 2人（含划船）</span><span class="cs-amount">$7,500</span></div>
+    <div class="cs-row"><span class="cs-label">柳川川下り＋太宰府柳川套票 2人</span><span class="cs-amount">$1,600</span></div>
     <div class="cs-row"><span class="cs-label">小倉城／太宰府門票・雜支</span><span class="cs-amount">$1,500</span></div>
   </div>
   <div class="cs-group">
@@ -266,7 +268,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
     <div class="cs-group-title">🛍 購物・雜費</div>
     <div class="cs-row"><span class="cs-label">天神逛街・伴手禮等</span><span class="cs-amount">$8,000</span></div>
   </div>
-  <div class="cs-grand"><span class="cs-grand-label">2 人總計（不含機票）</span><span class="cs-grand-amount">≈ TWD $59,500</span></div>
+  <div class="cs-grand"><span class="cs-grand-label">2 人總計（不含機票）</span><span class="cs-grand-amount">≈ TWD $67,000</span></div>
   <div class="cs-note">數字為估算，實際依訂房與消費而定。雙擊金額即可在編輯模式自行修改。</div>
 </div>
 
@@ -274,26 +276,36 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
 /* ============ DATA ============ */
 
 var TRIP_DATA = [
- {id:"day-1",date:"8/3 一",title:"✈️ 抵達 · 太宰府",items:[
-   {time:"06:50",icon:"✈️",name:"CI110 台北桃園 → 福岡",desc:"09:55 抵達 · 去程需改 8/3 早班",link:""},
+ {id:"day-1",date:"8/2 日",title:"✈️ 抵達 · 博多暖身",items:[
+   {time:"06:50",icon:"✈️",name:"CI110 台北桃園 → 福岡",desc:"09:55 抵達 · 去程需改 8/2 早班（週日有飛）",link:""},
    {time:"10:30",icon:"🛬",name:"福岡機場入境 → 地鐵到博多",desc:"機場到博多站僅 2 站約 6 分鐘",link:""},
    {time:"11:00",icon:"🏨",name:"飯店寄放行李（輕裝出門）",desc:"正常 check in 15:00，先寄行李",link:""},
    {time:"12:00",icon:"🍜",name:"博多拉麵 / 牛腸鍋 午餐",desc:"博多站周邊",link:""},
-   {time:"13:30",icon:"⛩",name:"太宰府天満宮",desc:"旅人巴士/西鐵；本殿2026剛修復＋參道梅枝餅、隈研吾星巴克",link:"https://www.google.com/maps/search/?api=1&query=33.5213697,130.5348239"},
-   {time:"16:30",icon:"🛎",name:"回博多 check in・休息",desc:"正式入住、養精神",link:""},
+   {time:"13:30",icon:"🛍",name:"Canal City Hakata 逛街",desc:"運河商城＋每日噴水秀；鋼彈/吉卜力專賣",link:"https://www.google.com/maps/search/?api=1&query=33.5896305,130.4109478"},
+   {time:"16:00",icon:"🛎",name:"回博多 check in・休息",desc:"正式入住、養精神",link:""},
    {time:"18:30",icon:"🍢",name:"中洲屋台 / 博多晚餐",desc:"屋台拉麵、關東煮體驗",link:"https://www.google.com/maps/search/?api=1&query=33.5899407,130.4089399"}
- ],hotel:{icon:"🏨",name:"都ホテル博多（8/3–8/7 · 4晚）",desc:"博多站筑紫口直結 · 首選",price:"待訂"}},
+ ],hotel:{icon:"🏨",name:"都ホテル博多（8/2–8/7 · 5晚）",desc:"博多站筑紫口直結 · 首選",price:"待訂"}},
 
- {id:"day-2",date:"8/4 二",title:"🛍 天神逛街 · 演唱會",items:[
+ {id:"day-2",date:"8/3 一",title:"⛩ 太宰府 + 柳川",items:[
+   {time:"09:00",icon:"🚃",name:"西鐵出發（太宰府柳川套票）",desc:"西鐵推出太宰府＋柳川優惠套票，划算",link:""},
+   {time:"09:40",icon:"⛩",name:"太宰府天満宮",desc:"本殿2026剛修復＋參道梅枝餅、隈研吾星巴克",link:"https://www.google.com/maps/search/?api=1&query=33.5213697,130.5348239"},
+   {time:"12:00",icon:"🍱",name:"柳川 鰻魚せいろ蒸し 午餐",desc:"柳川名物蒸籠鰻魚飯（本吉屋/若松屋）",link:""},
+   {time:"14:00",icon:"🚤",name:"柳川川下り（遊船）",desc:"運河遊船約40–50分，船夫唱歌；末班約15:00",link:"https://www.google.com/maps/search/?api=1&query=33.1671516,130.4154015"},
+   {time:"16:00",icon:"🌿",name:"柳川散策（御花・北原白秋故居）",desc:"舊藩主立花邸庭園",link:""},
+   {time:"17:30",icon:"🚃",name:"回博多",desc:"西鐵返程",link:""},
+   {time:"19:00",icon:"🍜",name:"博多晚餐",desc:"博多站周邊覓食",link:""}
+ ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/2 住宿 · 第 2 晚 / 共 5 晚",price:""}},
+
+ {id:"day-3",date:"8/4 二",title:"🛍 天神逛街 · 演唱會",items:[
    {time:"10:00",icon:"🛍",name:"天神逛街",desc:"天神地下街・PARCO・大名・西通り",link:"https://www.google.com/maps/search/?api=1&query=33.5887201,130.3999565"},
    {time:"12:30",icon:"🍜",name:"牛腸鍋 / 拉麵 午餐",desc:"天神一帶名店",link:""},
    {time:"15:00",icon:"☕",name:"咖啡・繼續逛",desc:"逛累了找間復古咖啡廳歇腳",link:""},
    {time:"17:30",icon:"🛎",name:"回飯店換裝・休息",desc:"養足精神看演唱會",link:""},
    {time:"18:30",icon:"🍽",name:"演唱會場附近晚餐",desc:"視會場位置安排",link:""},
    {time:"19:00",icon:"🎤",name:"演唱會",desc:"會場・開演時間待你確認後填入",link:""}
- ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/3 住宿 · 第 2 晚 / 共 4 晚",price:""}},
+ ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/2 住宿 · 第 3 晚 / 共 5 晚",price:""}},
 
- {id:"day-3",date:"8/5 三",title:"🚗 糸島自駕一日",items:[
+ {id:"day-4",date:"8/5 三",title:"🚗 糸島自駕一日",items:[
    {time:"09:00",icon:"🚗",name:"博多取租車出發",desc:"備好駕照日文譯本（JAF）",link:""},
    {time:"10:00",icon:"⛩",name:"二見ヶ浦 夫婦岩 + 白色鳥居",desc:"糸島地標，海上鳥居與夫婦岩",link:"https://www.google.com/maps/search/?api=1&query=33.640495,130.1964802"},
    {time:"11:30",icon:"☕",name:"海邊咖啡 / 椰子樹鞦韆",desc:"ヤシの木ブランコ，海景打卡",link:""},
@@ -301,9 +313,9 @@ var TRIP_DATA = [
    {time:"14:30",icon:"💧",name:"白糸の滝",desc:"瀑布消暑＋夏季限定流水麵",link:"https://www.google.com/maps/search/?api=1&query=33.4801994,130.1754495"},
    {time:"17:00",icon:"🌅",name:"二見ヶ浦看夕陽",desc:"糸島精華，傍晚回頭看夕陽最美",link:""},
    {time:"19:00",icon:"🚗",name:"還車回博多・市區晚餐",desc:"還車後輕鬆覓食",link:""}
- ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/3 住宿 · 第 3 晚 / 共 4 晚",price:""}},
+ ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/2 住宿 · 第 4 晚 / 共 5 晚",price:""}},
 
- {id:"day-4",date:"8/6 四",title:"🚌 高千穗峽 + 阿蘇一日團",items:[
+ {id:"day-5",date:"8/6 四",title:"🚌 高千穗峽 + 阿蘇一日團",items:[
    {time:"08:00",icon:"🚌",name:"博多筑紫口集合出發",desc:"KKday/Klook 中文一日團（Lawson 福岡東方飯店前）",link:""},
    {time:"11:00",icon:"⛩",name:"天岩戸神社 + 天安河原",desc:"日本神話天照大神傳說地",link:"https://www.google.com/maps/search/?api=1&query=32.7344861,131.3507125"},
    {time:"12:30",icon:"🥩",name:"高千穗牛 午餐",desc:"團費多已含",link:""},
@@ -311,9 +323,9 @@ var TRIP_DATA = [
    {time:"16:00",icon:"🌋",name:"阿蘇 草千里ヶ浜",desc:"火山大草原；火口視解封狀況",link:"https://www.google.com/maps/search/?api=1&query=32.8818249,131.0533279"},
    {time:"19:30",icon:"🚌",name:"回到博多",desc:"約 19:30–20:00 抵達博多站",link:""},
    {time:"20:15",icon:"🍜",name:"宵夜拉麵",desc:"博多站周邊 / 中洲屋台",link:"https://www.google.com/maps/search/?api=1&query=33.5899407,130.4089399"}
- ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/3 住宿 · 第 4 晚 / 共 4 晚",price:""}},
+ ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/2 住宿 · 第 5 晚 / 共 5 晚",price:""}},
 
- {id:"day-5",date:"8/7 五",title:"🏯 小倉城 · 回程",items:[
+ {id:"day-6",date:"8/7 五",title:"🏯 小倉城 · 回程",items:[
    {time:"09:00",icon:"🧳",name:"退房・寄放行李",desc:"行李寄飯店或博多站置物櫃",link:""},
    {time:"10:00",icon:"🏯",name:"小倉城 + 旦過市場",desc:"新幹線約20分到小倉；福岡唯一天守閣",link:"https://www.google.com/maps/search/?api=1&query=33.8844357,130.8742541"},
    {time:"13:00",icon:"🍜",name:"小倉 / 博多 午餐",desc:"旦過市場小吃或回博多",link:""},
@@ -324,9 +336,11 @@ var TRIP_DATA = [
 ];
 
 var PLACES = [
- {n:"都ホテル博多",lat:33.5897507,lng:130.4228429,type:"hotel",d:"8/3,8/4,8/5,8/6",x:"住宿基地・博多站筑紫口直結"},
+ {n:"都ホテル博多",lat:33.5897507,lng:130.4228429,type:"hotel",d:"8/2,8/3,8/4,8/5,8/6",x:"住宿基地・博多站筑紫口直結"},
+ {n:"Canal City Hakata",lat:33.5896305,lng:130.4109478,type:"act",d:"8/2",x:"運河商城・噴水秀"},
+ {n:"中洲屋台",lat:33.5899407,lng:130.4089399,type:"act",d:"8/2,8/6",x:"屋台拉麵・宵夜"},
  {n:"太宰府天満宮",lat:33.5213697,lng:130.5348239,type:"act",d:"8/3",x:"學問之神・本殿剛修復"},
- {n:"中洲屋台",lat:33.5899407,lng:130.4089399,type:"act",d:"8/3,8/6",x:"屋台拉麵・宵夜"},
+ {n:"柳川川下り 松月乗船場",lat:33.1671516,lng:130.4154015,type:"act",d:"8/3",x:"運河遊船・鰻魚せいろ蒸し"},
  {n:"天神地下街（逛街）",lat:33.5887201,lng:130.3999565,type:"act",d:"8/4",x:"天神購物核心"},
  {n:"二見ヶ浦 夫婦岩",lat:33.640495,lng:130.1964802,type:"act",d:"8/5",x:"糸島地標・海上鳥居"},
  {n:"白糸の滝",lat:33.4801994,lng:130.1754495,type:"act",d:"8/5",x:"瀑布・流水麵"},
@@ -344,6 +358,7 @@ var RECS = {
  "高千穗峽":{recs:["划船看真名井瀑布（精華）","千穂之家 元祖流水麵（15:30 前）","槍飛橋看三橋同框"],urgency:"book",urgencyText:"⚡ 划船需預約"},
  "草千里":{recs:["火山大草原＋放牧馬","火口目前封閉，草千里照常開","火山博物館可避暑"],urgency:"free",urgencyText:"✓ 免費"},
  "太宰府":{recs:["參道梅枝餅必吃","本殿2026剛修復完工","星巴克太宰府表參道店（隈研吾設計）"],urgency:"free",urgencyText:"✓ 免預約"},
+ "柳川":{recs:["川下り遊船船夫會唱歌","鰻魚せいろ蒸し（蒸籠鰻魚飯）必吃","太宰府柳川套票最划算","夏天記得帶帽子防曬"],urgency:"free",urgencyText:"✓ 套票划算"},
  "小倉城":{recs:["天守閣最上層咖啡看市景","旦過市場逛吃","入城費一般約500日元"],urgency:"free",urgencyText:"✓ 免預約"}
 };
 
