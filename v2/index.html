@@ -274,6 +274,10 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
 .sync-badge.syncing{color:var(--warn)}
 .sync-badge.ok{color:var(--ok)}
 .sync-badge.err{color:var(--danger)}
+.auth-badge{display:inline-flex;align-items:center;font-size:10px;padding:3px 8px;border-radius:10px;background:transparent;border:1px solid transparent;cursor:pointer;font-family:inherit;margin-left:6px;transition:all 0.15s}
+.auth-badge.authed{color:var(--ok);border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.08)}
+.auth-badge.unauthed{color:var(--warn);border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.08)}
+.auth-badge:hover{filter:brightness(1.2)}
 .topright{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
 .nz-clock{font-size:17px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums;letter-spacing:0.5px;line-height:1;background:var(--glass);padding:5px 10px;border-radius:999px;border:1px solid var(--glass2);display:inline-flex;align-items:center;gap:5px}
 .nz-clock .flag{font-size:14px}
@@ -302,6 +306,7 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
     </div>
     <div class="topright">
       <span class="sync-badge" id="sync-badge"><span id="sync-dot">○</span> <span id="sync-text">待同步</span></span>
+      <button class="auth-badge unauthed" id="auth-badge" title="點擊登入以啟用編輯" onclick="state.idToken?signOut():showLoginModal()">🔒 未登入</button>
       <div class="nz-clock" id="nz-clock" title="紐西蘭當地時間（自動處理夏令時間）"><span class="flag">🇳🇿</span> <span id="nz-clock-time">--:--</span></div>
     </div>
   </div>
@@ -743,6 +748,11 @@ var COST_GROUPS = [
 // ─── CONFIG ────────────────────────────────────────────────────────────────
 var FB_URL = 'https://nz-trip-2026-dd942-default-rtdb.asia-southeast1.firebasedatabase.app';
 var FB_NODE = 'nz26';  // shared with v1
+
+// Firebase Auth — required because rules now check auth.uid (privacy)
+var FB_API_KEY = 'AIzaSyAsgaRCbPY--Z14Ai5u102VqU06SozU19w';
+var FB_APP_EMAIL = 'claude-bot@nz-trip-2026.local';
+var AUTH_STORAGE_KEY = 'nzv2_auth';
 var FB_TODOS = FB_NODE + '/todos';
 var FB_COSTS = FB_NODE + '/costs';
 var FB_ITIN  = FB_NODE + '/itinerary_v2';
@@ -781,6 +791,10 @@ var state = {
   dragSrc: null,
   dragSrcDay: null,
   costDragSrc: null,        // {gIdx, rIdx}
+  // Auth (loaded from localStorage on init)
+  idToken: null,
+  refreshToken: null,
+  idTokenExpiry: 0,
 };
 
 // ─── PROGRESS BAR ──────────────────────────────────────────────────────────
@@ -2251,13 +2265,193 @@ function setSync(state){
   else {dot.textContent='○';text.textContent='待同步';}
 }
 
+// ─── FIREBASE AUTH ────────────────────────────────────────────────────────
+function loadAuthFromStorage(){
+  try{
+    var s=localStorage.getItem(AUTH_STORAGE_KEY);
+    if(!s)return null;
+    return JSON.parse(s);
+  }catch(e){return null;}
+}
+function saveAuth(idToken,refreshToken,expiresIn){
+  state.idToken=idToken;
+  state.refreshToken=refreshToken;
+  state.idTokenExpiry=Date.now()+(parseInt(expiresIn,10)*1000);
+  try{
+    localStorage.setItem(AUTH_STORAGE_KEY,JSON.stringify({
+      idToken:idToken,refreshToken:refreshToken,expiry:state.idTokenExpiry
+    }));
+  }catch(e){}
+  updateAuthBadge();
+}
+function clearAuth(){
+  state.idToken=null;state.refreshToken=null;state.idTokenExpiry=0;
+  try{localStorage.removeItem(AUTH_STORAGE_KEY);}catch(e){}
+  updateAuthBadge();
+}
+function signInWithPassword(password){
+  return fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB_API_KEY,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:FB_APP_EMAIL,password:password,returnSecureToken:true})
+  }).then(function(r){
+    return r.json().then(function(d){
+      if(!r.ok)return {ok:false,error:(d.error&&d.error.message)||'sign-in failed'};
+      saveAuth(d.idToken,d.refreshToken,d.expiresIn);
+      return {ok:true};
+    });
+  }).catch(function(e){return {ok:false,error:e.message};});
+}
+function refreshAuthToken(){
+  if(!state.refreshToken)return Promise.resolve(false);
+  return fetch('https://securetoken.googleapis.com/v1/token?key='+FB_API_KEY,{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(state.refreshToken)
+  }).then(function(r){
+    if(!r.ok){clearAuth();return false;}
+    return r.json().then(function(d){
+      saveAuth(d.id_token,d.refresh_token,d.expires_in);
+      return true;
+    });
+  }).catch(function(){return false;});
+}
+function getAuthTokenAsync(){
+  // No token at all — return null fast
+  if(!state.idToken)return Promise.resolve(null);
+  // Still valid (with 5min buffer)
+  if(Date.now()<state.idTokenExpiry-5*60*1000)return Promise.resolve(state.idToken);
+  // Need refresh
+  return refreshAuthToken().then(function(ok){return ok?state.idToken:null;});
+}
+function updateAuthBadge(){
+  var b=$id('auth-badge');if(!b)return;
+  if(state.idToken){
+    b.textContent='🔓 已登入';
+    b.classList.add('authed');b.classList.remove('unauthed');
+    b.title='點擊登出';
+  } else {
+    b.textContent='🔒 未登入';
+    b.classList.add('unauthed');b.classList.remove('authed');
+    b.title='點擊登入以啟用編輯';
+  }
+}
+function showLoginModal(opts){
+  opts=opts||{};
+  if($id('login-modal'))return;
+  var modal=document.createElement('div');
+  modal.id='login-modal';modal.className='modal-overlay';
+  modal.innerHTML=
+    '<div class="modal-box" style="max-width:360px">'+
+      '<div class="modal-header">🔐 登入以啟用編輯'+
+        (opts.dismissible!==false?'<button class="modal-close" id="li-close">✕</button>':'')+
+      '</div>'+
+      '<div class="modal-body">'+
+        (opts.reason?'<div class="mp-hint" style="color:var(--danger)">'+opts.reason+'</div>':
+          '<div class="mp-hint">未登入時可瀏覽全部行程，但無法存編輯、勾選訂票或記費用</div>')+
+        '<label style="display:block;font-size:11px;color:var(--txt3);margin-bottom:4px">Email</label>'+
+        '<input type="email" id="li-email" value="'+FB_APP_EMAIL+'" disabled style="width:100%;padding:8px;background:var(--glass);border:1px solid var(--glass2);border-radius:6px;color:var(--txt3);font-family:inherit;margin-bottom:10px;box-sizing:border-box">'+
+        '<label style="display:block;font-size:11px;color:var(--txt3);margin-bottom:4px">密碼</label>'+
+        '<input type="password" id="li-password" autocomplete="current-password" style="width:100%;padding:8px;background:var(--bg);border:1px solid var(--accent);border-radius:6px;color:var(--txt);font-family:inherit;font-size:14px;margin-bottom:8px;box-sizing:border-box">'+
+        '<div id="li-error" style="color:var(--danger);font-size:12px;min-height:16px"></div>'+
+      '</div>'+
+      '<div class="modal-footer">'+
+        (opts.dismissible!==false?'<button class="modal-btn" id="li-cancel">稍後</button>':'')+
+        '<button class="modal-btn primary" id="li-submit">登入</button>'+
+      '</div>'+
+    '</div>';
+  document.body.appendChild(modal);
+  setTimeout(function(){var p=$id('li-password');if(p)p.focus();},100);
+
+  function closeModal(){
+    var m=$id('login-modal');if(m&&m.parentNode)m.parentNode.removeChild(m);
+  }
+  function attempt(){
+    var pw=$id('li-password').value;if(!pw)return;
+    var btn=$id('li-submit');btn.disabled=true;btn.textContent='登入中...';
+    var err=$id('li-error');err.textContent='';
+    signInWithPassword(pw).then(function(r){
+      if(r.ok){
+        toast('已登入 ✓');closeModal();setSync('ok');
+        // Retry any pending sync now that we have auth
+        if(opts.retryAfterLogin)opts.retryAfterLogin();
+      } else {
+        err.textContent='登入失敗：'+r.error;
+        btn.disabled=false;btn.textContent='登入';
+      }
+    });
+  }
+  var sb=$id('li-submit');if(sb)sb.addEventListener('click',attempt);
+  var pw=$id('li-password');if(pw)pw.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();attempt();}
+  });
+  var cb=$id('li-cancel');if(cb)cb.addEventListener('click',closeModal);
+  var xb=$id('li-close');if(xb)xb.addEventListener('click',closeModal);
+}
+function signOut(){
+  if(!confirm('登出？編輯功能會停用，但仍可瀏覽行程。'))return;
+  clearAuth();
+  toast('已登出');
+}
+function initAuth(){
+  var saved=loadAuthFromStorage();
+  if(saved){
+    state.idToken=saved.idToken;
+    state.refreshToken=saved.refreshToken;
+    state.idTokenExpiry=saved.expiry||0;
+    updateAuthBadge();
+    // Pre-emptive refresh if expiring soon (fire & forget)
+    if(Date.now()>state.idTokenExpiry-10*60*1000){
+      refreshAuthToken();
+    }
+  } else {
+    updateAuthBadge();
+    // Defer login modal — let UI render first
+    setTimeout(function(){showLoginModal();},1500);
+  }
+}
+
+// ─── FIREBASE REST WITH AUTH ──────────────────────────────────────────────
 function fbPut(path,data){
   setSync('syncing');
-  return fetch(FB_URL+'/'+path+'.json',{method:'PUT',body:JSON.stringify(data)})
-    .then(function(r){if(!r.ok)throw new Error('http '+r.status); setSync('ok');})
-    .catch(function(e){setSync('err');console.warn('sync err',e);});
+  return getAuthTokenAsync().then(function(token){
+    var url=FB_URL+'/'+path+'.json';
+    if(token)url+='?auth='+encodeURIComponent(token);
+    return fetch(url,{method:'PUT',body:JSON.stringify(data)}).then(function(r){
+      if(r.status===401||r.status===403){
+        // Token rejected — try one refresh + retry
+        return refreshAuthToken().then(function(ok){
+          if(!ok){
+            setSync('err');
+            showLoginModal({reason:'登入過期或寫入被拒，請重新登入',
+              retryAfterLogin:function(){fbPut(path,data);}});
+            throw new Error('auth required');
+          }
+          var url2=FB_URL+'/'+path+'.json?auth='+encodeURIComponent(state.idToken);
+          return fetch(url2,{method:'PUT',body:JSON.stringify(data)}).then(function(r2){
+            if(!r2.ok){
+              if(r2.status===401||r2.status===403){
+                setSync('err');
+                showLoginModal({reason:'登入過期或寫入被拒，請重新登入',
+                  retryAfterLogin:function(){fbPut(path,data);}});
+              } else {
+                setSync('err');
+              }
+              throw new Error('http '+r2.status);
+            }
+            setSync('ok');
+          });
+        });
+      }
+      if(!r.ok)throw new Error('http '+r.status);
+      setSync('ok');
+    });
+  }).catch(function(e){
+    setSync('err');console.warn('sync err',e);
+  });
 }
 function fbGet(path){
+  // Reads are public per current rules, no auth needed
   return fetch(FB_URL+'/'+path+'.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
 }
 
@@ -2380,6 +2574,7 @@ function startNZClock(){
   setInterval(updateNZClock, 1000);
 }
 function init(){
+  initAuth();  // must run before pullInitial since it may trigger writes
   startNZClock();
   renderTabs();
   renderPanel(state.curDay);
