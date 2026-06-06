@@ -33,7 +33,7 @@ a{color:var(--accent);text-decoration:none}
 .badge.warn{color:var(--warn);border-color:rgba(251,191,36,0.3)}
 
 /* DAY TABS */
-.day-tabs-wrap{position:sticky;top:60px;z-index:90;background:rgba(10,14,26,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--glass);padding:8px 12px}
+.day-tabs-wrap{position:sticky;top:var(--topbar-h,100px);z-index:90;background:rgba(10,14,26,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--glass);padding:8px 12px}
 .day-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .day-tabs::-webkit-scrollbar{display:none}
 .day-tab{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 12px;background:var(--glass);border:1px solid var(--glass2);border-radius:var(--rad2);cursor:pointer;transition:all 0.2s;min-width:62px;position:relative;font-family:inherit}
@@ -1873,6 +1873,8 @@ function toggleEditMode(){
     if(b.getAttribute('data-nav')==='edit') b.classList.toggle('active',state.editMode);
   });
   toast(state.editMode?'編輯模式已開啟':'已退出編輯模式');
+  // edit-banner appeared/disappeared — recompute sticky offset for day-tabs
+  setTimeout(updateStickyOffsets,50);
 }
 
 // ─── DRAG & DROP (cards + day tabs) ────────────────────────────────────────
@@ -2617,6 +2619,18 @@ function updateNZClock(){
     el.textContent = hh+':'+mm;
   }
 }
+function updateStickyOffsets(){
+  // Measure topbar + visible edit-banner to set sticky offset for day-tabs-wrap.
+  // Fixes day-tabs disappearing under taller-than-60px topbar.
+  var total=0;
+  var banner=document.querySelector('.edit-banner');
+  if(banner && getComputedStyle(banner).display!=='none'){
+    total+=banner.offsetHeight;
+  }
+  var topbar=document.querySelector('.topbar');
+  if(topbar)total+=topbar.offsetHeight;
+  document.documentElement.style.setProperty('--topbar-h',total+'px');
+}
 function startNZClock(){
   updateNZClock();
   setInterval(updateNZClock, 1000);
@@ -2624,6 +2638,11 @@ function startNZClock(){
 function init(){
   initAuth();  // must run before pullInitial since it may trigger writes
   startNZClock();
+  updateStickyOffsets();
+  window.addEventListener('resize',updateStickyOffsets);
+  // Re-measure after web fonts settle (badges row may grow when fonts load)
+  setTimeout(updateStickyOffsets,500);
+  setTimeout(updateStickyOffsets,1500);
   renderTabs();
   renderPanel(state.curDay);
   bindTabEvents();
