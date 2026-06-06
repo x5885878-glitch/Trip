@@ -565,7 +565,7 @@ var TRIP_DATA = [
     id:"day-13",date:"10/7 三",title:"🚗 取車 → Rotorua 溫泉 + Mitai 毛利晚宴",
     items:[
       {time:"08:00",icon:"☕",name:"買外帶早餐 · 打包行李",desc:""},
-      {time:"08:30",icon:"🚗",name:"取北島租車 · 出發 Rotorua · 3hr",desc:"行李放車上直到飯店寄放"},
+      {time:"08:30",icon:"🚗",name:"取北島租車 · Mitsubishi ASX · Auckland City",desc:"NZ$484 含 CDW 0 自付額 + relocation。行李放車上直到飯店寄放。出發 Rotorua · 約 3hr 車程",tags:["✓ 已訂 NZ$484"]},
       {time:"11:30",icon:"🏨",name:"Millennium Hotel 寄放行李（未到 check-in 時間）",desc:"離 Polynesian Spa 開車 5 分鐘"},
       {time:"12:00",icon:"♨️",name:"Polynesian Spa 溫泉",desc:"NZD $40+/人 · 3小時泡湯+午餐 · 湖景溫泉世界級",links:[{url:"https://www.polynesianspa.co.nz/",text:"官網"}]},
       {time:"15:00",icon:"🏨",name:"回飯店 check in · 休息",desc:""},
@@ -580,7 +580,7 @@ var TRIP_DATA = [
       {time:"09:30",icon:"🌋",name:"Wai-O-Tapu Thermal Wonderland",desc:"NZD $40/人 · 每天08:30–17:00 · Lady Knox 間歇泉10:15",tags:["✓ 無需預約"],links:[{url:"https://www.waiotapu.co.nz/",text:"官網"}]},
       {time:"12:30",icon:"🍽️",name:"Rotorua 午餐",desc:"· Atticus Finch · Eat Streat · Volcanic Hills Winery"},
       {time:"14:00",icon:"🚗",name:"Rotorua → 奧克蘭機場 · 3hr",desc:"途中可停 Huka Falls 胡卡瀑布（加30min）"},
-      {time:"17:30",icon:"🔑",name:"機場還北島租車",desc:""},
+      {time:"17:30",icon:"🔑",name:"Auckland Airport 還車",desc:"訂單最遲 18:00 還，留 30min buffer。還完直接進機場附近 Pullman"},
       {time:"18:00",icon:"✈️",name:"Pullman Auckland Airport check in",desc:"步行3分到國際航廈"},
       {time:"19:30",icon:"🍽️",name:"晚餐 · Pullman 飯店 Grain Store",desc:"飯店內 fine dining · 輕鬆收尾"},
     ],
@@ -653,7 +653,7 @@ var BOOKING_DATA = [
     {id:"t9",text:"NZ0620 皇后鎮→奧克蘭（10/4 13:05）✅ 已訂",done:true},
     {id:"t10",text:"NZ0077 奧克蘭→台北（10/9 10:40）豪華經濟艙✅ 已訂",done:true},
     {id:"t11",text:"南島租車（9/26取・10/4還・8天）→ Omega Rental",done:false},
-    {id:"t12",text:"北島租車（10/7取・10/8還・2天）奧克蘭 CBD 取車，機場還車→ Omega Rental",done:false},
+    {id:"t12",text:"北島租車 Mitsubishi ASX（10/7 08:30 取 · 10/8 18:00 還 · 2天）Auckland City → Auckland Airport · NZ$484（CDW 0 自付額 + relocation）✅ 已訂",done:true},
     {id:"t13",text:"機場→奧克蘭 CBD 交通（10/4）SkyBus NZD $17/人 或 Uber NZD $60",done:false},
   ]},
   {section:"🎡 活動",cat:"activity",items:[
@@ -706,7 +706,7 @@ var COST_GROUPS = [
   {id:"g3",title:"🚗 交通（2人）",rows:[
     {id:"c8",label:"南島租車 (Europcar Honda ZR-V SPORT)",sub:"8 天 9/26-10/4 · 含 RSA + Premium Protection ✅ 已訂",budget:1416,currency:"NZD",display:""},
     {id:"c9",label:"南島油費",sub:"約1,800km",budget:9324,currency:"TWD",display:"≈ TWD $9,324"},
-    {id:"c10",label:"北島租車",sub:"2天（奧克蘭→Rotorua→機場）",budget:3700,currency:"TWD",display:"≈ TWD $3,700"},
+    {id:"c10",label:"北島租車 (Mitsubishi ASX)",sub:"2天 10/7-10/8 · 含 CDW 0 自付額 + relocation $150 ✅ 已訂",budget:484,currency:"NZD",display:""},
     {id:"c11",label:"北島油費",sub:"約600km",budget:3108,currency:"TWD",display:"≈ TWD $3,108"},
     {id:"c12",label:"機場→CBD SkyBus/Uber",sub:"",budget:1200,currency:"TWD",display:"≈ TWD $1,200"},
     {id:"c13",label:"Waiheke 渡輪+Hop-on套票",sub:"",budget:3145,currency:"TWD",display:"≈ TWD $3,145"},
@@ -764,7 +764,7 @@ var FB_FX    = FB_NODE + '/fx_v2';            // {nzd: 19.5}
 var FB_META  = FB_NODE + '/v2_meta';
 
 // Bump DATA_VERSION whenever HTML's TRIP_DATA/BOOKING_DATA/COST_GROUPS structure changes.
-var DATA_VERSION = 6;
+var DATA_VERSION = 7;
 
 // Default FX rate (TWD per 1 NZD) — editable by user.
 var DEFAULT_NZD_RATE = 19.5;
