@@ -1846,6 +1846,22 @@ function deleteDay(dayIdx){
 
 // ─── EDIT MODE ─────────────────────────────────────────────────────────────
 function toggleEditMode(){
+  // Entering edit mode requires login (so writes work).
+  // Exiting edit mode is always allowed.
+  if(!state.editMode && !state.idToken){
+    showLoginModal({reason:'進入編輯模式需要登入', retryAfterLogin:function(){
+      // Auto-enter edit mode after successful login
+      state.editMode=true;
+      document.body.classList.add('edit-mode');
+      $qa('.day-tab').forEach(function(t){t.draggable=true;});
+      renderPanel(state.curDay);
+      $qa('.bnav-btn').forEach(function(b){
+        if(b.getAttribute('data-nav')==='edit') b.classList.add('active');
+      });
+      toast('編輯模式已開啟');
+    }});
+    return;
+  }
   state.editMode=!state.editMode;
   document.body.classList.toggle('edit-mode',state.editMode);
   // Toggle draggable on cards and day-tabs
@@ -2406,8 +2422,8 @@ function initAuth(){
     }
   } else {
     updateAuthBadge();
-    // Defer login modal — let UI render first
-    setTimeout(function(){showLoginModal();},1500);
+    // Don't auto-popup login modal on page load — user can browse read-only.
+    // Modal triggers when they click 編輯 mode or auth-badge.
   }
 }
 
@@ -2521,19 +2537,26 @@ function pullInitial(){
         for(var i=0;i<cg.length;i++)COST_GROUPS.push(cg[i]);
       }
     } else {
-      // Push HTML baseline
-      if(!meta || !meta.version){
-        fbPut(FB_ITIN, TRIP_DATA);
-        fbPut(FB_BOOK, BOOKING_DATA);
-        fbPut(FB_CG, COST_GROUPS);
-        fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'baseline'});
+      // Schema/data version mismatch. Push HTML baseline to Firebase.
+      // BUT only if we have auth — otherwise writes 401 and triggers login modal
+      // immediately on page load (annoying UX). HTML data is already loaded
+      // locally; first edit (after login) will trigger writes that catch up.
+      if(state.idToken){
+        if(!meta || !meta.version){
+          fbPut(FB_ITIN, TRIP_DATA);
+          fbPut(FB_BOOK, BOOKING_DATA);
+          fbPut(FB_CG, COST_GROUPS);
+          fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'baseline'});
+        } else {
+          console.log('[v2] data version bump '+meta.version+' → '+DATA_VERSION+'; HTML data wins');
+          fbPut(FB_ITIN, TRIP_DATA);
+          fbPut(FB_BOOK, BOOKING_DATA);
+          fbPut(FB_CG, COST_GROUPS);
+          fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'upgrade'});
+          toast('資料已更新到新版本');
+        }
       } else {
-        console.log('[v2] data version bump '+meta.version+' → '+DATA_VERSION+'; HTML data wins');
-        fbPut(FB_ITIN, TRIP_DATA);
-        fbPut(FB_BOOK, BOOKING_DATA);
-        fbPut(FB_CG, COST_GROUPS);
-        fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'upgrade'});
-        toast('資料已更新到新版本');
+        console.log('[v2] version mismatch ('+(meta&&meta.version)+' → '+DATA_VERSION+') but not logged in; HTML data used locally only');
       }
     }
     setSync('ok');
