@@ -2290,6 +2290,7 @@ function loadAuthFromStorage(){
   }catch(e){return null;}
 }
 function saveAuth(idToken,refreshToken,expiresIn){
+  var wasLoggedOut = !state.idToken;
   state.idToken=idToken;
   state.refreshToken=refreshToken;
   state.idTokenExpiry=Date.now()+(parseInt(expiresIn,10)*1000);
@@ -2299,6 +2300,27 @@ function saveAuth(idToken,refreshToken,expiresIn){
     }));
   }catch(e){}
   updateAuthBadge();
+  // Just transitioned from logged-out → logged-in. If Firebase data is
+  // older than our HTML schema, push HTML baseline now so version + data
+  // catch up. This avoids users wondering "why did I log in but Firebase
+  // didn't update".
+  if(wasLoggedOut){
+    setTimeout(syncBaselineIfStale, 200);
+  }
+}
+function syncBaselineIfStale(){
+  if(!state.idToken)return;
+  fbGet(FB_META).then(function(meta){
+    var fbVer = (meta && meta.version) || 0;
+    if(fbVer < DATA_VERSION){
+      console.log('[v2] post-login baseline sync: Firebase v'+fbVer+' → HTML v'+DATA_VERSION);
+      fbPut(FB_ITIN, TRIP_DATA);
+      fbPut(FB_BOOK, BOOKING_DATA);
+      fbPut(FB_CG, COST_GROUPS);
+      fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'post-login-sync'});
+      toast('資料已同步到雲端 ('+fbVer+'→'+DATA_VERSION+')');
+    }
+  });
 }
 function clearAuth(){
   state.idToken=null;state.refreshToken=null;state.idTokenExpiry=0;
@@ -2418,7 +2440,10 @@ function initAuth(){
     updateAuthBadge();
     // Pre-emptive refresh if expiring soon (fire & forget)
     if(Date.now()>state.idTokenExpiry-10*60*1000){
-      refreshAuthToken();
+      refreshAuthToken().then(function(ok){if(ok)syncBaselineIfStale();});
+    } else {
+      // Token still valid — check baseline after pullInitial has fetched meta
+      setTimeout(syncBaselineIfStale, 2000);
     }
   } else {
     updateAuthBadge();
