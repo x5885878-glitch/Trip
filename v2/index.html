@@ -24,7 +24,8 @@ button,input,select,textarea{font-family:inherit;color:inherit;background:none;b
 a{color:var(--accent);text-decoration:none}
 
 /* TOPBAR */
-.topbar{position:sticky;top:0;z-index:100;background:rgba(10,14,26,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--glass);padding:14px 16px 10px}
+.sticky-header{position:sticky;top:0;z-index:100}
+.topbar{background:rgba(10,14,26,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--glass);padding:14px 16px 10px}
 .topbar h1{font-size:18px;font-weight:600;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:inline-block;letter-spacing:0.5px}
 .topbar .sub{font-size:11px;color:var(--txt2);margin-top:2px}
 .topbar .badges{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
@@ -33,7 +34,7 @@ a{color:var(--accent);text-decoration:none}
 .badge.warn{color:var(--warn);border-color:rgba(251,191,36,0.3)}
 
 /* DAY TABS */
-.day-tabs-wrap{position:sticky;top:var(--topbar-h,100px);z-index:90;background:rgba(10,14,26,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--glass);padding:8px 12px}
+.day-tabs-wrap{background:rgba(10,14,26,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--glass);padding:8px 12px}
 .day-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .day-tabs::-webkit-scrollbar{display:none}
 .day-tab{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 12px;background:var(--glass);border:1px solid var(--glass2);border-radius:var(--rad2);cursor:pointer;transition:all 0.2s;min-width:62px;position:relative;font-family:inherit}
@@ -285,7 +286,7 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
 @keyframes clockPulse{0%{opacity:0.7}100%{opacity:1}}
 
 /* EDIT MODE banner */
-.edit-banner{display:none;position:sticky;top:0;z-index:120;background:var(--warn);color:#0a0e1a;padding:6px 14px;font-size:11px;font-weight:500;text-align:center}
+.edit-banner{display:none;background:var(--warn);color:#0a0e1a;padding:6px 14px;font-size:11px;font-weight:500;text-align:center}
 .edit-mode .edit-banner{display:block}
 
 /* TOAST */
@@ -296,6 +297,7 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
 </head>
 <body>
 
+<div class="sticky-header">
 <div class="edit-banner">✏️ 編輯模式 — 拖曳卡片重排 · 點擊文字修改 · 長按 day tab 刪整天</div>
 
 <header class="topbar">
@@ -319,6 +321,7 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
 
 <div class="day-tabs-wrap">
   <div class="day-tabs" id="day-tabs"></div>
+</div>
 </div>
 <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
 
@@ -442,14 +445,13 @@ var TRIP_DATA = [
       {time:"12:30",icon:"🍔",name:"午餐 · Fergburger ⭐ (你想再吃一次)",desc:"中午排隊比晚上短很多。Ferg Deluxe 或 Big Al 經典款。隔壁 Mrs Ferg Gelateria 飯後甜點"},
       {time:"13:30",icon:"🍫",name:"Patagonia Chocolates · 湖邊咖啡",desc:"Beach St 湖邊位置，巧克力 + 咖啡 + ice cream。坐外面看湖（如果不想吃 Fergburger 可改吃這個輕食）"},
       {time:"14:30",icon:"☕",name:"繼續逛 Steamer Wharf shops + O'Connell's",desc:"紀念品、明信片，Cookie Time Queenstown 旗艦店"},
-      {time:"16:00",icon:"🏠",name:"回飯店休息 · 換衣服",desc:"晚上 Walter Peak 不用太正式但帶外套（湖上很冷）"},
-      {time:"17:30",icon:"⛵",name:"抵達 Steamer Wharf check-in",desc:"TSS Earnslaw, Steamer Wharf Dock 前集合。提早 30 分鐘"},
-      {time:"18:00",icon:"🚢",name:"TSS Earnslaw 出發 · 君王號 (Vintage Steamship)",desc:"45min 跨 Lake Wakatipu，看 Cecil Peak + Remarkables 山脈。船上有古老蒸汽機展示 + piano sing-along",tags:["🟡 2–3週前訂","✓ 選 Vintage Steamship"]},
-      {time:"18:45",icon:"🛬",name:"抵達 Walter Peak High Country Farm",desc:"Colonel's Homestead 用餐"},
-      {time:"19:00",icon:"🍖",name:"Gourmet BBQ Dinner · NZD $199/人",desc:"Buffet：NZ 羊肉、牛肉、烤雞 + antipasto + 自種蔬菜 + dessert + cheese board + 茶/咖啡"},
-      {time:"20:30",icon:"🐕",name:"牧羊犬秀 + 剪羊毛 demo",desc:"晚餐後的招牌節目，整個 farm 的精華"},
-      {time:"21:30",icon:"🚢",name:"回程 TSS Earnslaw",desc:"晚上的星空 + 湖面非常美 (天氣好的話)"},
-      {time:"22:15",icon:"🏠",name:"回 Queenstown 飯店",desc:""},
+      {time:"16:30",icon:"⛵",name:"抵達 Steamer Wharf check-in",desc:"TSS Earnslaw, Steamer Wharf Dock 前集合。17:00 出發前 30 分鐘到達"},
+      {time:"17:00",icon:"🚢",name:"TSS Earnslaw 出發 · 君王號 (Vintage Steamship)",desc:"45min 跨 Lake Wakatipu，看 Cecil Peak + Remarkables 山脈。船上有古老蒸汽機展示 + piano sing-along",tags:["🟡 2–3週前訂","✓ 選 Vintage Steamship"]},
+      {time:"17:45",icon:"🛬",name:"抵達 Walter Peak High Country Farm",desc:"Colonel's Homestead 用餐"},
+      {time:"18:00",icon:"🍖",name:"Gourmet BBQ Dinner · NZD $199/人",desc:"Buffet：NZ 羊肉、牛肉、烤雞 + antipasto + 自種蔬菜 + dessert + cheese board + 茶/咖啡。日落 19:03 — golden hour 正好"},
+      {time:"19:30",icon:"🐕",name:"牧羊犬秀 + 剪羊毛 demo",desc:"晚餐後的招牌節目，整個 farm 的精華"},
+      {time:"20:30",icon:"🚢",name:"回程 TSS Earnslaw",desc:"湖面晚霞 + 夜景 (天氣好的話)"},
+      {time:"21:15",icon:"🏠",name:"回 Queenstown 飯店",desc:""},
     ],
     hotel:{desc:"同 9/26 住宿 · 第 4 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
   },
@@ -659,7 +661,7 @@ var BOOKING_DATA = [
     {id:"t16",text:"Waiheke Fullers360 渡輪+Hop-on套票（10/6）NZD $85/人→ Fullers360",done:false},
     {id:"t17",text:"婚紗公司聯絡確認（9/28 全日 NTD $139,000）→ Jacks Point/Kelvin Heights/Wanaka/Coromandel Peak",done:false},
     {id:"t19",text:"米佛峽灣 RealNZ Coach-Cruise-Fly（9/27 06:55）NZD $830/人（含 BUS+君王號 cruise+回程 scenic flight）→ RealNZ 官網",done:false},
-    {id:"t22",text:"TSS Earnslaw + Walter Peak BBQ（9/29 18:00）NZD $199/人 · 選 Vintage Steamship→ RealNZ 官網",done:false},
+    {id:"t22",text:"TSS Earnslaw + Walter Peak BBQ（9/29 17:00）NZD $199/人 · 選 Vintage Steamship→ RealNZ 官網",done:false},
     {id:"t23",text:"庫克山滑雪飛機+直升機（10/2 12:30）NTD $22,284（Klook ZST783683 · 11:30 報到，遲到不退）✅ 已訂",done:true},
     {id:"t24",text:"Mitai Māori Village 毛利晚宴（10/7 17:30）NZD $169/人→ 官網直訂",done:false},
     {id:"t25",text:"Skyline Gondola + Luge（9/26）NZD $80/人→ 官網",done:false},
@@ -762,7 +764,7 @@ var FB_FX    = FB_NODE + '/fx_v2';            // {nzd: 19.5}
 var FB_META  = FB_NODE + '/v2_meta';
 
 // Bump DATA_VERSION whenever HTML's TRIP_DATA/BOOKING_DATA/COST_GROUPS structure changes.
-var DATA_VERSION = 4;
+var DATA_VERSION = 5;
 
 // Default FX rate (TWD per 1 NZD) — editable by user.
 var DEFAULT_NZD_RATE = 19.5;
