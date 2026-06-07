@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Xi++ Travels</title>
+<!-- iPhone 主畫面 App -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Xi++ Travels">
+<meta name="theme-color" content="#000000">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,600&family=Noto+Serif+TC:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,51 +26,39 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
   html,body{background:var(--bg);color:var(--label);font-family:var(--sys);font-size:15px;line-height:1.5;min-height:100dvh;-webkit-font-smoothing:antialiased;}
-
   .nav{max-width:640px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 12px) 20px 6px;}
   .navtop{display:flex;justify-content:flex-end;align-items:center;gap:14px;height:34px;}
   .act{background:none;border:none;font-family:inherit;color:var(--gold);font-size:16px;cursor:pointer;padding:4px;}
-  .act:active{opacity:.5;}
-  .act.add{font-size:26px;font-weight:300;line-height:1;}
+  .act:active{opacity:.5;}.act.add{font-size:26px;font-weight:300;line-height:1;}
   .h1{font-size:34px;font-weight:700;letter-spacing:.37px;line-height:1.05;margin-top:4px;}
   .h1 .pl{color:var(--gold);}
   .status{display:flex;align-items:center;gap:7px;margin-top:7px;font-size:15px;color:var(--label2);}
   .live{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 7px rgba(52,199,89,.7);}
-
   .wrap{max-width:640px;margin:0 auto;padding:16px 16px calc(env(safe-area-inset-bottom) + 40px);}
-
-  /* 空狀態 */
-  .empty{text-align:center;padding:70px 24px 40px;}
+  .empty{text-align:center;padding:64px 24px 40px;}
   .empty .ic{width:74px;height:74px;margin:0 auto 22px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;}
   .empty .ic svg{width:34px;height:34px;stroke:var(--gold);}
   .empty h2{font-family:var(--serif);font-size:27px;font-weight:600;margin-bottom:9px;}
   .empty p{font-size:15px;color:var(--label2);line-height:1.5;max-width:300px;margin:0 auto 26px;}
   .empty .cta{background:var(--gold);color:#1a1407;border:none;font-family:inherit;font-size:16px;font-weight:600;padding:13px 26px;border-radius:30px;cursor:pointer;}
   .empty .cta:active{opacity:.8;}
-
-  /* 卡片 */
   .trip{display:block;width:100%;background:var(--card);border-radius:22px;overflow:hidden;margin-bottom:16px;position:relative;cursor:pointer;
-    box-shadow:0 1px 1px rgba(0,0,0,.5);transition:transform .22s ease,background .22s ease;
-    opacity:0;transform:translateY(12px);animation:rise .55s cubic-bezier(.25,.1,.25,1) forwards;}
+    box-shadow:0 1px 1px rgba(0,0,0,.5);transition:transform .22s ease,background .22s ease;opacity:0;transform:translateY(12px);animation:rise .55s cubic-bezier(.25,.1,.25,1) forwards;}
   @keyframes rise{to{opacity:1;transform:none;}}
   .trip.press{transform:scale(.975);background:var(--card2);}
   .scene{position:relative;height:170px;overflow:hidden;}
   .scene-svg{position:absolute;inset:0;width:100%;height:100%;}
   .scene-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.06) 0%,transparent 30%,transparent 50%,rgba(10,9,10,.72) 100%);}
-  .pill{position:absolute;top:13px;right:13px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fff;
-    padding:5px 11px 5px 9px;border-radius:30px;background:rgba(28,28,30,.55);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);border:.5px solid rgba(255,255,255,.18);}
+  .pill{position:absolute;top:13px;right:13px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fff;padding:5px 11px 5px 9px;border-radius:30px;background:rgba(28,28,30,.55);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);border:.5px solid rgba(255,255,255,.18);}
   .pill .pd{width:6px;height:6px;border-radius:50%;}
   .iconbtn{position:absolute;top:11px;left:11px;width:32px;height:32px;border:none;border-radius:50%;background:rgba(28,28,30,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:.5px solid rgba(255,255,255,.18);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-  .iconbtn:active{opacity:.6;}
-  .iconbtn svg{width:16px;height:16px;}
-  .iconbtn.rm{background:rgba(255,59,48,.85);}
+  .iconbtn:active{opacity:.6;}.iconbtn svg{width:16px;height:16px;}.iconbtn.rm{background:rgba(255,59,48,.85);font-size:15px;}
   .scene-cap{position:absolute;left:18px;right:18px;bottom:13px;}
   .tagcode{font-size:11px;letter-spacing:.16em;font-weight:600;color:rgba(255,255,255,.82);text-shadow:0 1px 4px rgba(0,0,0,.5);}
   .dest{font-family:var(--serif);font-weight:600;font-size:34px;line-height:1;color:#fff;margin-top:2px;text-shadow:0 2px 14px rgba(0,0,0,.5);}
   .dest small{font-family:var(--sys);font-size:14px;font-weight:400;margin-left:9px;opacity:.92;}
   .info{padding:14px 16px 15px;}
-  .row{display:flex;align-items:center;gap:12px;}
-  .row .txt{flex:1;min-width:0;}
+  .row{display:flex;align-items:center;gap:12px;}.row .txt{flex:1;min-width:0;}
   .sub{font-size:15px;color:var(--label);font-weight:500;}
   .meta{font-size:13px;color:var(--label2);margin-top:3px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
   .meta .dot{width:2.5px;height:2.5px;border-radius:50%;background:var(--label3);}
@@ -70,43 +67,31 @@
   .prog-bar{height:4px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;}
   .prog-fill{height:100%;width:0;border-radius:99px;background:var(--gold);transition:width .9s cubic-bezier(.25,.1,.25,1);}
   .prog-lab{margin-top:8px;font-size:12px;color:var(--label2);}
-
   footer{max-width:640px;margin:0 auto;text-align:center;font-size:12px;color:var(--label3);padding:8px 0 0;}
   .skeleton{height:280px;border-radius:22px;margin-bottom:16px;background:linear-gradient(100deg,var(--card) 40%,#2a2a2c 50%,var(--card) 60%);background-size:200% 100%;animation:sk 1.5s infinite;}
   @keyframes sk{to{background-position:-200% 0;}}
-
-  /* 加入 dialog（iOS alert 風）*/
   .dlg-ov{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;}
   .dlg-ov.on{opacity:1;visibility:visible;}
-  .dlg{position:fixed;z-index:1101;left:50%;top:50%;transform:translate(-50%,-46%) scale(.96);opacity:0;visibility:hidden;transition:all .28s cubic-bezier(.2,.8,.2,1);
-    width:min(360px,calc(100vw - 48px));background:#222224;border-radius:22px;padding:22px 20px 16px;text-align:center;}
+  .dlg{position:fixed;z-index:1101;left:50%;top:50%;transform:translate(-50%,-46%) scale(.96);opacity:0;visibility:hidden;transition:all .28s cubic-bezier(.2,.8,.2,1);width:min(360px,calc(100vw - 48px));background:#222224;border-radius:22px;padding:22px 20px 16px;text-align:center;}
   .dlg.on{transform:translate(-50%,-50%) scale(1);opacity:1;visibility:visible;}
   .dlg h3{font-size:18px;font-weight:700;margin-bottom:5px;}
   .dlg p{font-size:13px;color:var(--label2);margin-bottom:16px;line-height:1.4;}
-  .dlg input{width:100%;background:#1a1a1c;border:1px solid var(--sep);border-radius:12px;color:var(--label);font-family:inherit;font-size:16px;padding:12px 14px;outline:none;text-align:center;}
+  .dlg input{width:100%;background:#1a1a1c;border:1px solid var(--sep);border-radius:12px;color:var(--label);font-family:'SF Mono',ui-monospace,monospace;font-size:18px;letter-spacing:2px;padding:13px 14px;outline:none;text-align:center;text-transform:uppercase;}
   .dlg input:focus{border-color:var(--gold);}
   .dlg .err{color:var(--red);font-size:12.5px;min-height:17px;margin-top:8px;}
   .dlg .btns{display:flex;gap:9px;margin-top:6px;}
   .dlg button{flex:1;border:none;font-family:inherit;font-size:16px;font-weight:600;padding:12px;border-radius:13px;cursor:pointer;}
-  .dlg .go{background:var(--gold);color:#1a1407;}
-  .dlg .cancel{background:#3a3a3c;color:var(--label);}
+  .dlg .go{background:var(--gold);color:#1a1407;}.dlg .cancel{background:#3a3a3c;color:var(--label);}
   .dlg button:active{opacity:.7;}
-
-  .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 34px);transform:translateX(-50%) translateY(20px);z-index:1200;
-    background:rgba(40,40,42,.95);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff;font-size:14px;font-weight:500;
-    padding:11px 20px;border-radius:30px;opacity:0;transition:all .3s;pointer-events:none;border:.5px solid rgba(255,255,255,.12);}
+  .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 34px);transform:translateX(-50%) translateY(20px);z-index:1200;background:rgba(40,40,42,.95);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff;font-size:14px;font-weight:500;padding:11px 20px;border-radius:30px;opacity:0;transition:all .3s;pointer-events:none;border:.5px solid rgba(255,255,255,.12);max-width:84vw;text-align:center;}
   .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
-
-  /* iframe viewer */
   .viewer{position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .34s cubic-bezier(.32,.72,0,1);visibility:hidden;}
   .viewer.on{transform:translateX(0);visibility:visible;}
   .vbar{display:flex;align-items:center;gap:4px;padding:calc(env(safe-area-inset-top) + 9px) 8px 9px;flex-shrink:0;background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-bottom:.5px solid var(--sep);}
   .vback{background:none;border:none;color:var(--gold);font-family:inherit;font-size:17px;padding:6px 10px;cursor:pointer;display:flex;align-items:center;}
-  .vback .c{font-size:22px;line-height:1;margin-right:1px;}
-  .vback:active{opacity:.5;}
+  .vback .c{font-size:22px;line-height:1;margin-right:1px;}.vback:active{opacity:.5;}
   .vtitle{flex:1;font-size:16px;font-weight:600;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:42px;}
-  .vframe-wrap{flex:1;position:relative;}
-  .vframe{width:100%;height:100%;border:none;display:block;}
+  .vframe-wrap{flex:1;position:relative;}.vframe{width:100%;height:100%;border:none;display:block;}
   .vload{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .3s;}
   .vload .ring{width:30px;height:30px;border:2.5px solid rgba(255,255,255,.12);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;}
   @keyframes spin{to{transform:rotate(360deg);}}
@@ -114,29 +99,22 @@
 </head>
 <body>
   <div class="nav">
-    <div class="navtop">
-      <button class="act" id="editBtn" hidden>編輯</button>
-      <button class="act add" id="addBtn" title="加入行程">+</button>
-    </div>
+    <div class="navtop"><button class="act" id="editBtn" hidden>編輯</button><button class="act add" id="addBtn" title="加入行程">+</button></div>
     <div class="h1">Xi<span class="pl">++</span> Travels</div>
     <div class="status"><span class="live"></span><span id="statusText">我的行程</span></div>
   </div>
-
   <div class="wrap"><main id="board"></main><footer id="foot"></footer></div>
 
-  <!-- 加入 dialog -->
   <div class="dlg-ov" id="dlgOv"></div>
   <div class="dlg" id="dlg">
-    <h3>加入行程</h3>
-    <p>輸入行程代碼,或貼上收到的邀請連結</p>
-    <input id="codeIn" placeholder="例如 fuk26 或邀請連結" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <h3 id="dlgTitle">加入行程</h3>
+    <p id="dlgDesc">貼上收到的邀請碼</p>
+    <input id="codeIn" placeholder="XXXX-XXXX" autocapitalize="characters" autocorrect="off" spellcheck="false">
     <div class="err" id="codeErr"></div>
-    <div class="btns"><button class="cancel" id="codeCancel">取消</button><button class="go" id="codeGo">加入</button></div>
+    <div class="btns"><button class="cancel" id="codeCancel">取消</button><button class="go" id="codeGo">查詢</button></div>
   </div>
-
   <div class="toast" id="toast"></div>
 
-  <!-- iframe viewer -->
   <div class="viewer" id="viewer">
     <div class="vbar"><button class="vback" id="vback"><span class="c">‹</span>行程</button><div class="vtitle" id="vtitle"></div></div>
     <div class="vframe-wrap"><div class="vload" id="vload"><div class="ring"></div></div><iframe class="vframe" id="vframe" referrerpolicy="no-referrer"></iframe></div>
@@ -148,26 +126,13 @@ var LS_KEY='xi_hub_codes';
 var STATUS={planning:{t:'規劃中',c:'var(--blue)'},booked:{t:'已訂',c:'var(--gold)'},ongoing:{t:'旅行中',c:'var(--green)'},done:{t:'已完成',c:'var(--label3)'},draft:{t:'草稿',c:'var(--red)'}};
 var editing=false, memCodes=null;
 
-/* ── 個人清單（localStorage，部署環境用；預覽沙箱擋掉時退回記憶體）── */
 function getCodes(){try{var s=localStorage.getItem(LS_KEY);return s?JSON.parse(s):[];}catch(e){return memCodes||[];}}
 function setCodes(a){memCodes=a;try{localStorage.setItem(LS_KEY,JSON.stringify(a));}catch(e){}}
+function removeCode(code){setCodes(getCodes().filter(function(c){return c!==code;}));}
 
-function parseCode(raw){raw=(raw||'').trim();var m=raw.match(/[?&]add=([^&\s]+)/);if(m)raw=decodeURIComponent(m[1]);return raw.trim();}
+function normToken(raw){raw=(raw||'').toUpperCase();var m=raw.match(/[A-Z0-9]{4}-?[A-Z0-9]{4}/);if(m){var t=m[0].replace('-','');return t.slice(0,4)+'-'+t.slice(4,8);}return (raw||'').trim();}
+function resolveToken(tok){return fetch(FB_URL+'/_hub/invites/'+encodeURIComponent(tok)+'.json').then(function(r){return r.json();}).catch(function(){return undefined;});}
 function fetchTrip(code){return fetch(FB_URL+'/_hub/trips/'+encodeURIComponent(code)+'.json').then(function(r){return r.json();}).catch(function(){return undefined;});}
-
-function addCode(raw){
-  var code=parseCode(raw);
-  if(!code)return Promise.resolve({ok:false,msg:'請輸入代碼或連結'});
-  return fetchTrip(code).then(function(t){
-    if(t===undefined)return {ok:false,msg:'網路錯誤,請再試一次'};
-    if(!t)return {ok:false,msg:'找不到這個行程代碼'};
-    var codes=getCodes();
-    if(codes.indexOf(code)>=0)return {ok:true,dup:true,name:t.name};
-    codes.push(code);setCodes(codes);
-    return {ok:true,name:t.name};
-  });
-}
-function removeCode(code){var codes=getCodes().filter(function(c){return c!==code;});setCodes(codes);}
 
 function sceneSVG(type,uid){
   var g=function(s){return s.replace(/@/g,uid);};
@@ -216,7 +181,7 @@ function cardHTML(t,i){
   var st=STATUS[t.status]||STATUS.planning,uid='g'+i+'_',dayStr=t.days?(t.days+' 天'):'天數待定';
   var topBtn = editing
     ? '<button class="iconbtn rm" data-rm="'+t._code+'">✕</button>'
-    : '<button class="iconbtn" data-share="'+t._code+'">'+SHARE_SVG+'</button>';
+    : '<button class="iconbtn" data-share="'+(t.inviteToken||'')+'" data-sharename="'+t.name+'">'+SHARE_SVG+'</button>';
   return ''
   +'<div class="trip" data-url="'+(t.url||'')+'" data-name="'+t.name+'" style="animation-delay:'+(i*0.06)+'s">'
   +'<div class="scene">'+sceneSVG(sceneType(t),uid)+'<div class="scene-scrim"></div>'+topBtn
@@ -232,10 +197,8 @@ function cardHTML(t,i){
 var board=document.getElementById('board');
 function emptyHTML(){
   return '<div class="empty"><div class="ic"><svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg></div>'
-  +'<h2>還沒有行程</h2><p>拿到邀請連結直接點開就會加入,或用行程代碼手動加入。</p>'
-  +'<button class="cta" id="emptyAdd">＋ 加入行程</button></div>';
+  +'<h2>還沒有行程</h2><p>拿到朋友給的邀請碼後,按下方加入。</p><button class="cta" id="emptyAdd">＋ 輸入邀請碼</button></div>';
 }
-
 function render(){
   var codes=getCodes();
   document.getElementById('editBtn').hidden = codes.length===0;
@@ -253,7 +216,7 @@ function render(){
       el.addEventListener('touchstart',function(){if(!editing)el.classList.add('press');},{passive:true});
       ['touchend','touchcancel'].forEach(function(ev){el.addEventListener(ev,function(){el.classList.remove('press');});});
     });
-    board.querySelectorAll('[data-share]').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();shareCode(b.dataset.share);});});
+    board.querySelectorAll('[data-share]').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();shareInvite(b.dataset.share,b.dataset.sharename);});});
     board.querySelectorAll('[data-rm]').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();removeCode(b.dataset.rm);render();toast('已移除');});});
     list.forEach(function(t){fetchProgress(t.node,t.schema).then(function(p){
       var fill=board.querySelector('.prog-fill[data-node="'+t.node+'"]'),txt=board.querySelector('.prog-lab[data-node="'+t.node+'"]');
@@ -262,59 +225,56 @@ function render(){
   });
 }
 
-/* 分享邀請連結 */
-function inviteLink(code){return location.origin+location.pathname+'?add='+encodeURIComponent(code);}
-function shareCode(code){
-  var url=inviteLink(code);
-  if(navigator.share){navigator.share({title:'Xi++ Travels 行程邀請',url:url}).catch(function(){});return;}
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){toast('已複製邀請連結');}).catch(function(){toast(url);});}
-  else toast('邀請連結:'+url);
+/* 分享邀請碼（複製碼＋說明，強制對方走入口貼上）*/
+function shareInvite(token,name){
+  if(!token){toast('此行程尚無邀請碼');return;}
+  var portal=location.origin+location.pathname;
+  var msg='Xi++ Travels 行程邀請 ✈️\n「'+name+'」\n\n邀請碼:'+token+'\n\n1. 開啟 App（或把 '+portal+' 加到主畫面）\n2. 按右上「＋」貼上邀請碼即可加入';
+  if(navigator.share){navigator.share({text:msg}).catch(function(){});return;}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(msg).then(function(){toast('已複製邀請碼與說明');}).catch(function(){toast('邀請碼 '+token);});}
+  else toast('邀請碼 '+token);
 }
 
-/* 加入 dialog */
+/* 加入 dialog：貼碼 → 轉譯 → 確認 */
 var dlg=document.getElementById('dlg'),dlgOv=document.getElementById('dlgOv'),codeIn=document.getElementById('codeIn'),codeErr=document.getElementById('codeErr');
-function openDlg(){codeIn.value='';codeErr.textContent='';dlgOv.classList.add('on');dlg.classList.add('on');setTimeout(function(){codeIn.focus();},250);}
+var dlgTitle=document.getElementById('dlgTitle'),dlgDesc=document.getElementById('dlgDesc'),codeGo=document.getElementById('codeGo'),codeCancel=document.getElementById('codeCancel');
+var pendingCode=null,pendingName='';
+function setMode(mode,name){
+  if(mode==='confirm'){dlgTitle.textContent='加入這趟行程?';dlgDesc.innerHTML='將把「<b style="color:var(--gold)">'+name+'</b>」加入你的清單';codeIn.style.display='none';codeErr.textContent='';codeGo.textContent='加入';}
+  else{dlgTitle.textContent='加入行程';dlgDesc.textContent='貼上朋友給你的邀請碼';codeIn.style.display='';codeGo.textContent='查詢';pendingCode=null;}
+}
+function openDlg(){codeIn.value='';codeErr.textContent='';setMode('input');dlgOv.classList.add('on');dlg.classList.add('on');setTimeout(function(){codeIn.focus();},250);}
 function closeDlg(){dlgOv.classList.remove('on');dlg.classList.remove('on');}
-function submitCode(){
-  var btn=document.getElementById('codeGo');btn.textContent='加入中…';codeErr.textContent='';
-  addCode(codeIn.value).then(function(r){
-    btn.textContent='加入';
-    if(r.ok){closeDlg();render();toast(r.dup?('已在清單中:'+(r.name||'')):('已加入 '+(r.name||'')));}
-    else codeErr.textContent=r.msg;
+function dlgGo(){
+  if(pendingCode){var c=pendingCode,n=pendingName;var codes=getCodes();if(codes.indexOf(c)<0){codes.push(c);setCodes(codes);}closeDlg();render();toast('已加入 '+n);return;}
+  var tok=normToken(codeIn.value);
+  if(!tok){codeErr.textContent='請貼上邀請碼';return;}
+  codeGo.textContent='查詢中…';codeErr.textContent='';
+  resolveToken(tok).then(function(code){
+    if(code===undefined){codeGo.textContent='查詢';codeErr.textContent='網路錯誤,請再試';return;}
+    if(!code){codeGo.textContent='查詢';codeErr.textContent='邀請碼無效或已撤銷';return;}
+    if(getCodes().indexOf(code)>=0){codeGo.textContent='查詢';codeErr.textContent='這趟已在你的清單裡';return;}
+    fetchTrip(code).then(function(t){
+      if(!t){codeGo.textContent='查詢';codeErr.textContent='行程不存在';return;}
+      pendingCode=code;pendingName=t.name;setMode('confirm',t.name);
+    });
   });
 }
 document.getElementById('addBtn').onclick=openDlg;
-document.getElementById('codeCancel').onclick=closeDlg;
-document.getElementById('codeGo').onclick=submitCode;
-dlgOv.onclick=closeDlg;
-codeIn.addEventListener('keydown',function(e){if(e.key==='Enter')submitCode();});
-
-/* 編輯模式 */
+codeCancel.onclick=closeDlg;codeGo.onclick=dlgGo;dlgOv.onclick=closeDlg;
+codeIn.addEventListener('keydown',function(e){if(e.key==='Enter')dlgGo();});
 document.getElementById('editBtn').onclick=function(){editing=!editing;this.textContent=editing?'完成':'編輯';render();};
 
-/* toast */
 var toastEl=document.getElementById('toast'),toastT;
-function toast(msg){toastEl.textContent=msg;toastEl.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove('on');},2200);}
+function toast(msg){toastEl.textContent=msg;toastEl.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove('on');},2400);}
 
-/* iframe viewer（返回鍵一次到位）*/
 var viewer=document.getElementById('viewer'),vframe=document.getElementById('vframe'),vtitle=document.getElementById('vtitle'),vload=document.getElementById('vload');
 function openTrip(url,name){if(!url)return;vtitle.textContent=name;vload.style.opacity='1';vframe.src=url;viewer.classList.add('on');document.body.style.overflow='hidden';}
 function closeTrip(){if(!viewer.classList.contains('on'))return;viewer.classList.remove('on');document.body.style.overflow='';setTimeout(function(){vframe.src='about:blank';},360);}
 vframe.addEventListener('load',function(){if(vframe.src!=='about:blank')vload.style.opacity='0';});
 document.getElementById('vback').addEventListener('click',closeTrip);
 
-/* 啟動：先處理 ?add= 邀請連結，再 render */
-(function(){
-  var params=new URLSearchParams(location.search), addParam=params.get('add');
-  if(addParam){
-    addCode(addParam).then(function(r){
-      try{history.replaceState({},'',location.pathname);}catch(e){}
-      render();
-      if(r.ok)toast(r.dup?'已在清單中':('已加入 '+(r.name||'')));
-      else toast(r.msg||'加入失敗');
-    });
-  }else render();
-})();
+render();
 </script>
 </body>
 </html>
