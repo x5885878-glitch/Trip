@@ -134,8 +134,8 @@ var FB_URL='https://nz-trip-2026-dd942-default-rtdb.asia-southeast1.firebasedata
 
 var FALLBACK_TRIPS=[
   {node:'fuk26',code:'JPN',flag:'🇯🇵',name:'福岡',subtitle:'Xi++ 2026/08 · ヨルシカ演唱會',dateText:'8/2–8/7',days:6,people:4,status:'planning',schema:'checks',scene:'jp',url:'https://x5885878-glitch.github.io/Trip/fukuoka/'},
-  {node:'nz26',code:'NZL',flag:'🇳🇿',name:'紐西蘭',subtitle:'Xi++ 2026/09 · 南島自駕',dateText:'9/25–10/9',days:15,people:2,status:'planning',schema:'todos',scene:'nz',url:'https://x5885878-glitch.github.io/Trip/nz/'},
-  {node:'bali-2026',code:'IDN',flag:'🇮🇩',name:'峇里島',subtitle:'Xi++ 2026/12 · 聖誕海島 6人',dateText:'12/24–12/29',days:6,people:6,status:'planning',schema:'todos',scene:'bali',url:'https://x5885878-glitch.github.io/2026-Bali/'}
+  {node:'nz26',code:'NZL',flag:'🇳🇿',name:'紐西蘭',subtitle:'Xi++ 2026/09 · 南島自駕',dateText:'9/25–10/9',days:15,people:2,status:'planning',schema:'bookings_v2',scene:'nz',url:'https://x5885878-glitch.github.io/Trip/v2/'},
+  {node:'bali-2026-v2-midnight',code:'IDN',flag:'🇮🇩',name:'峇里島',subtitle:'Xi++ 2026/12 · 聖誕海島 6人',dateText:'12/24–12/29',days:6,people:6,status:'planning',schema:'bookings_v2',scene:'bali',url:'https://x5885878-glitch.github.io/2026-Bali/v2/'}
 ];
 var STATUS={planning:{t:'規劃中'},booked:{t:'已訂'},ongoing:{t:'旅行中'},done:{t:'已完成'},draft:{t:'草稿'}};
 
@@ -180,10 +180,14 @@ function loadTrips(){
     return {trips:FALLBACK_TRIPS,live:false};
   }).catch(function(){return {trips:FALLBACK_TRIPS,live:false};});
 }
-function fetchProgress(node,schema){var key=(schema==='checks')?'checks':'todos';
+function fetchProgress(node,schema){
+  var key=schema==='checks'?'checks':schema==='bookings_v2'?'bookings_v2':'todos';
   return fetch(FB_URL+'/'+node+'/'+key+'.json').then(function(r){return r.json();}).then(function(d){
-    if(!d)return null;var ks=Object.keys(d),total=ks.length,done=0;
-    ks.forEach(function(k){var v=d[k];if(v===true||(v&&v.done))done++;});
+    if(!d)return null;var total=0,done=0;
+    if(schema==='bookings_v2'){
+      var secs=Array.isArray(d)?d:Object.keys(d).map(function(k){return d[k];});
+      secs.forEach(function(s){var items=(s&&s.items)?s.items:[];items.forEach(function(it){total++;if(it&&it.done)done++;});});
+    }else{var ks=Object.keys(d);total=ks.length;ks.forEach(function(k){var v=d[k];if(v===true||(v&&v.done))done++;});}
     return total?{done:done,total:total,pct:Math.round(done/total*100)}:null;
   }).catch(function(){return null;});
 }
