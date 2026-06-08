@@ -1,575 +1,2335 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Xi++ 2026/08 福岡</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Xi++ 2026/08 福岡 v2</title>
 <style>
+/* travel-app-v2 — styles.css
+ * Midnight Explorer theme by default. Replace top CSS variables to
+ * switch themes (see references/themes.md for swap-in values).
+ * Generated from NZ 2026/09 trip live deployment (DATA_VERSION 5).
+ */
+
 :root{
   --bg:#0a0e1a; --bg2:#141827; --bg3:#1e2235;
-  --glass:rgba(255,255,255,0.06); --glass2:rgba(255,255,255,0.10);
+  --glass:rgba(255,255,255,0.06); --glass2:rgba(255,255,255,0.10); --glass3:rgba(255,255,255,0.15);
   --txt:#e8e8ec; --txt2:#9ca3af; --txt3:#6b7280;
-  --accent:#2dd4bf; --accent2:#8b5cf6;
-  --food:#34d399; --shop:#60a5fa; --sight:#fbbf24; --transport:#f87171; --exp:#c084fc; --hotel:#f472b6;
+  --accent:#2dd4bf; --accent2:#8b5cf6; --warn:#fbbf24; --danger:#f87171; --ok:#34d399;
+  --rad:14px; --rad2:10px; --rad3:6px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Outfit','Noto Sans TC',sans-serif;background:var(--bg);color:var(--txt);
-  padding-bottom:78px;overflow-x:hidden;line-height:1.5}
-body::before{content:'';position:fixed;inset:0;z-index:-1;
-  background:radial-gradient(800px circle at 20% 0%,rgba(139,92,246,.14),transparent 55%),
-             radial-gradient(700px circle at 90% 30%,rgba(45,212,191,.10),transparent 50%)}
+html,body{background:var(--bg);color:var(--txt);font-family:'Outfit','Noto Sans TC',sans-serif;font-size:14px;line-height:1.5;min-height:100vh;overscroll-behavior-y:none}
+body{padding-bottom:env(safe-area-inset-bottom)}
+button,input,select,textarea{font-family:inherit;color:inherit;background:none;border:none;outline:none}
+a{color:var(--accent);text-decoration:none}
 
-/* Topbar */
-.topbar{position:sticky;top:0;z-index:50;background:rgba(10,14,26,.82);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--glass);padding:14px 16px 10px}
-.tb-title{font-size:22px;font-weight:800;letter-spacing:.3px;
-  background:linear-gradient(100deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.tb-sub{font-size:12.5px;color:var(--txt2);margin-top:2px}
-.tb-badges{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
-.tb-badge{font-size:11px;color:var(--txt2);background:var(--glass);border:1px solid var(--glass2);
-  padding:4px 9px;border-radius:20px}
+/* TOPBAR */
+.sticky-header{position:sticky;top:0;z-index:100}
+.topbar{background:rgba(10,14,26,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--glass);padding:14px 16px 10px}
+.topbar h1{font-size:18px;font-weight:600;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:inline-block;letter-spacing:0.5px}
+.topbar .sub{font-size:11px;color:var(--txt2);margin-top:2px}
+.topbar .badges{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 10px;background:var(--glass);border:1px solid var(--glass2);border-radius:999px;color:var(--txt2)}
+.badge.ok{color:var(--ok);border-color:rgba(52,211,153,0.3)}
+.badge.warn{color:var(--warn);border-color:rgba(251,191,36,0.3)}
 
-/* Day tabs */
-.day-tabs{position:sticky;top:84px;z-index:40;display:flex;gap:8px;overflow-x:auto;
-  padding:11px 16px;background:rgba(10,14,26,.82);backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);scrollbar-width:none}
+/* DAY TABS */
+.day-tabs-wrap{background:rgba(10,14,26,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--glass);padding:8px 12px}
+.day-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .day-tabs::-webkit-scrollbar{display:none}
-.day-tab{flex:0 0 auto;padding:8px 14px;border-radius:13px;background:var(--glass);
-  border:1px solid var(--glass2);cursor:pointer;transition:.25s;min-width:64px;text-align:center}
-.day-tab .dt-d{font-size:14px;font-weight:700;color:var(--txt)}
-.day-tab .dt-t{font-size:10px;color:var(--txt3);margin-top:1px;white-space:nowrap}
-.day-tab.active{background:linear-gradient(120deg,var(--accent),var(--accent2));border-color:transparent}
-.day-tab.active .dt-d,.day-tab.active .dt-t{color:#04121a}
+.day-tab{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 12px;background:var(--glass);border:1px solid var(--glass2);border-radius:var(--rad2);cursor:pointer;transition:all 0.2s;min-width:62px;position:relative;font-family:inherit}
+.day-tab:hover{background:var(--glass2);transform:translateY(-1px)}
+.day-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;box-shadow:0 4px 14px rgba(45,212,191,0.3)}
+.day-tab.active .dt-d{color:#0a0e1a;font-weight:600}
+.day-tab.active .dt-wd{color:rgba(10,14,26,0.7)}
+.dt-d{font-size:13px;font-weight:500;color:var(--txt);letter-spacing:0.3px}
+.dt-wd{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.5px}
+.dt-icon{font-size:14px;margin-bottom:1px;line-height:1}
 
-/* progress */
-.progress-wrap{padding:10px 16px 2px}
-.progress-bar-container{height:5px;background:var(--glass);border-radius:10px;overflow:hidden}
-.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));
-  border-radius:10px;transition:width .4s}
-.progress-label{font-size:11px;color:var(--txt3);margin-top:5px}
+/* Drag handle on day-tab (edit mode only) */
+.edit-mode .day-tab{cursor:grab}
+.edit-mode .day-tab::after{content:'⠿';position:absolute;top:2px;right:4px;font-size:9px;color:var(--txt3);opacity:0.6}
+.edit-mode .day-tab.dragging{opacity:0.4}
+.edit-mode .day-tab.drag-over{box-shadow:0 0 0 2px var(--accent)}
 
-/* legend */
-.legend{display:flex;gap:5px;flex-wrap:wrap;padding:8px 16px 4px}
-.lg{font-size:10.5px;color:var(--txt2);display:flex;align-items:center;gap:4px}
-.lg i{width:9px;height:9px;border-radius:3px;display:inline-block}
+/* PROGRESS BAR */
+.progress-bar{height:2px;background:var(--glass);position:relative}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width 0.4s ease}
 
-/* panels */
-.day-panel{display:none;padding:8px 16px 20px;animation:fade .35s}
+/* DAY PANEL */
+.day-panel{display:none;padding:14px 14px 110px;animation:slideIn 0.3s ease}
 .day-panel.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.dp-header{display:flex;justify-content:space-between;align-items:center;margin:6px 0 12px}
-.dp-title{font-size:16px;font-weight:700}
-.dp-toggle{display:flex;gap:4px;background:var(--glass);border-radius:10px;padding:3px}
-.dp-btn{font-size:12px;padding:5px 11px;border-radius:8px;color:var(--txt2);cursor:pointer;border:none;background:transparent}
+@keyframes slideIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+
+.dp-header{margin-bottom:12px}
+.dp-title{font-size:18px;font-weight:600;color:var(--txt);margin-bottom:2px}
+.dp-sub{font-size:12px;color:var(--txt2)}
+
+.dp-toggle{display:flex;gap:0;background:var(--glass);border-radius:var(--rad2);padding:3px;margin:12px 0}
+.dp-btn{flex:1;padding:8px 12px;border-radius:7px;font-size:13px;font-weight:500;color:var(--txt2);cursor:pointer;transition:all 0.2s;background:transparent}
 .dp-btn.active{background:var(--glass2);color:var(--txt)}
 
-/* card */
-.card{position:relative;background:var(--glass);border:1px solid var(--glass2);border-radius:16px;
-  padding:13px 14px;margin-bottom:10px;backdrop-filter:blur(6px);transition:.25s;animation:rise .4s both}
-@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35);border-color:rgba(255,255,255,.18)}
-.c-top{display:flex;gap:11px;align-items:flex-start}
-.c-icon{font-size:21px;flex:0 0 auto;width:30px;text-align:center}
-.c-body{flex:1;min-width:0}
-.c-time{font-size:16px;font-weight:700;color:var(--accent)}
-.c-name{font-size:15px;font-weight:600;margin-top:1px}
-.c-desc{font-size:12.5px;color:var(--txt2);margin-top:3px}
-.c-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
-.c-tag{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:500}
-.c-act{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
-.c-act a,.c-act button{font-size:11px;color:var(--txt2);background:var(--bg3);border:1px solid var(--glass2);
-  border-radius:8px;padding:5px 9px;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:3px}
-.c-act a:active{background:var(--glass2)}
-.card-expand-btn{font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;margin-top:8px;padding:0}
-.card-details{margin-top:8px;padding-top:8px;border-top:1px dashed var(--glass2);display:none}
-.card-details.open{display:block}
-.rec-item{font-size:12px;color:var(--txt2);padding:5px 0 5px 16px;position:relative}
-.rec-item::before{content:'📌';position:absolute;left:0;font-size:10px}
+/* CARDS */
+.card{position:relative;background:var(--glass);border:1px solid var(--glass2);border-radius:var(--rad);padding:14px;margin-bottom:10px;transition:all 0.2s;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.card:hover{background:var(--glass2);border-color:var(--glass3);transform:translateY(-1px)}
+.card .ct{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.c-time{font-size:16px;font-weight:600;color:var(--accent);min-width:50px;letter-spacing:0.3px}
+.c-icon{font-size:18px;line-height:1}
+.c-name{font-size:14px;font-weight:500;color:var(--txt);flex:1;line-height:1.45}
+.c-desc{font-size:12px;color:var(--txt2);margin-top:4px;line-height:1.5}
+.c-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.c-tag{font-size:10px;padding:2px 8px;background:var(--glass);border:1px solid var(--glass2);border-radius:999px;color:var(--txt2)}
+.c-tag.book{color:var(--warn);border-color:rgba(251,191,36,0.3)}
+.c-tag.done{color:var(--ok);border-color:rgba(52,211,153,0.3)}
 
-/* hotel card */
-.card-hotel{background:linear-gradient(120deg,rgba(244,114,182,.13),rgba(139,92,246,.10));
-  border:1px solid rgba(244,114,182,.30)}
-.card-hotel .c-time{color:var(--hotel)}
+/* Quick actions */
+.c-actions{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;padding-top:8px;border-top:1px solid var(--glass)}
+.c-act{font-size:11px;padding:4px 10px;background:var(--glass);border:1px solid var(--glass2);border-radius:999px;color:var(--txt2);cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:3px}
+.c-act:hover{background:var(--glass2);color:var(--txt)}
 
-/* add between */
-.card-add-between{display:none;text-align:center;margin:-3px 0 9px}
-.edit-mode .card-add-between{display:block}
-.card-add-between button{font-size:11px;color:var(--accent);background:var(--glass);
-  border:1px dashed var(--glass2);border-radius:10px;padding:6px 14px;cursor:pointer}
+/* Card details (推薦地點) */
+.card-expand-btn{margin-top:6px;font-size:11px;color:var(--accent);cursor:pointer;display:inline-flex;align-items:center;gap:3px}
+.card-details{display:none;margin-top:8px;padding:10px;background:var(--glass);border-radius:var(--rad3);font-size:12px;color:var(--txt2);line-height:1.7}
+.card-details.show{display:block;animation:slideDown 0.2s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
 
-/* edit mode */
-.edit-banner{display:none;background:linear-gradient(120deg,var(--accent),var(--accent2));
-  color:#04121a;font-size:12px;font-weight:600;padding:8px 16px;text-align:center}
-.edit-mode .edit-banner{display:block}
-.card-del,.card-drag{display:none;position:absolute;top:10px;width:26px;height:26px;border-radius:8px;
-  border:none;cursor:pointer;font-size:13px;align-items:center;justify-content:center}
-.card-del{right:10px;background:rgba(248,113,113,.2);color:#fca5a5}
-.card-drag{right:42px;background:var(--glass2);color:var(--txt2);cursor:grab}
-.edit-mode .card-del,.edit-mode .card-drag{display:inline-flex}
-.edit-mode .card{border-style:dashed}
-.card.dragging{opacity:.4}
-.edit-input{font-family:inherit;background:var(--bg);border:1px solid var(--accent);color:var(--txt);
-  border-radius:6px;padding:3px 6px;font-size:14px;width:100%}
-.editable{cursor:text;border-radius:4px}
-.edit-mode .editable:hover{background:var(--glass2);outline:1px dashed var(--glass2)}
+/* Add-between (edit mode only) */
+.card-add-between{display:none;text-align:center;padding:6px;margin:-2px 0;font-size:11px;color:var(--accent);cursor:pointer;border:1px dashed transparent;border-radius:var(--rad3);transition:all 0.15s}
+.edit-mode .card-add-between{display:block;border-color:var(--glass2)}
+.card-add-between:hover{background:var(--glass);border-color:var(--accent)}
 
-/* map */
-.map-box{display:none;height:420px;border-radius:16px;overflow:hidden;border:1px solid var(--glass2)}
-.map-box.show{display:block}
-.cards-box.hide{display:none}
+/* Hotel card */
+.card-hotel{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(45,212,191,0.05));border-color:rgba(139,92,246,0.2)}
+.card-hotel .ct{align-items:center}
+.hotel-grid{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.h-icon{font-size:22px}
+.h-name{font-size:14px;font-weight:500;color:var(--txt)}
+.h-desc{font-size:11px;color:var(--txt2);margin-top:2px}
+.h-price{font-size:13px;color:var(--accent);font-weight:500;text-align:right;white-space:nowrap}
 
-/* bottom nav */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:60;display:flex;
-  background:rgba(13,17,30,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  border-top:1px solid var(--glass)}
-.nav-item{flex:1;text-align:center;padding:10px 0 11px;cursor:pointer;color:var(--txt3);font-size:10.5px}
-.nav-item .ni-ic{font-size:19px;display:block;margin-bottom:2px}
-.nav-item.active{color:var(--accent)}
+/* EDIT MODE indicators */
+.edit-mode .card{padding-right:36px}
+.edit-mode .card .c-time,.edit-mode .card .c-name,.edit-mode .card .c-desc,.edit-mode .card .h-name,.edit-mode .card .h-desc,.edit-mode .card .h-price{cursor:text;border-radius:4px}
+.edit-mode .card .c-time:hover,.edit-mode .card .c-name:hover,.edit-mode .card .c-desc:hover,.edit-mode .card .h-name:hover,.edit-mode .card .h-desc:hover,.edit-mode .card .h-price:hover{background:var(--glass2);outline:1px solid var(--accent)}
+.edit-input{width:100%;padding:4px 6px;background:var(--bg2);border:1px solid var(--accent);border-radius:4px;color:var(--txt);font-size:inherit;font-family:inherit}
 
-/* bottom sheet */
-.bs-overlay{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:.3s}
-.bs-overlay.open{opacity:1;pointer-events:auto}
-.bottom-sheet{position:fixed;left:0;right:0;bottom:0;z-index:71;background:var(--bg2);
-  border-radius:22px 22px 0 0;border-top:1px solid var(--glass2);transform:translateY(100%);
-  transition:transform .34s cubic-bezier(.3,.9,.3,1);max-height:82vh;overflow-y:auto;padding:8px 18px 30px}
-.bottom-sheet.open{transform:translateY(0)}
-.bs-handle{width:38px;height:4px;background:var(--glass2);border-radius:4px;margin:8px auto 14px}
-.bs-h{font-size:18px;font-weight:700;margin-bottom:4px}
-.bs-section-title{font-size:13px;font-weight:700;color:var(--accent);margin:16px 0 7px}
-.bs-todo{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;background:var(--glass);
-  border:1px solid var(--glass2);border-radius:12px;margin-bottom:7px;cursor:pointer}
-.bs-todo-cb{flex:0 0 auto;width:20px;height:20px;border-radius:6px;border:2px solid var(--txt3);
-  margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:12px;transition:.2s}
-.bs-todo.done .bs-todo-cb{background:var(--accent);border-color:var(--accent);color:#04121a}
-.bs-todo.done .bs-todo-text{opacity:.5;text-decoration:line-through}
-.bs-todo-text{font-size:13px}
-.bs-todo-text b{display:block;font-size:13.5px;font-weight:600;margin-bottom:1px}
-.bs-todo-text span{font-size:11.5px;color:var(--txt2)}
-.bs-prog{height:6px;background:var(--glass);border-radius:6px;overflow:hidden;margin:6px 0 4px}
-.bs-prog-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.4s}
+.card-drag-handle{display:none;position:absolute;left:6px;top:50%;transform:translateY(-50%);color:var(--txt3);font-size:12px;cursor:grab;user-select:none}
+.edit-mode .card .card-drag-handle{display:block}
+.edit-mode .card{padding-left:28px}
+.card.dragging{opacity:0.4}
+.card.drag-over{box-shadow:0 0 0 2px var(--accent)}
 
-/* cost */
+.card-del{display:none;position:absolute;right:8px;top:8px;width:24px;height:24px;background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);border-radius:50%;color:var(--danger);font-size:14px;line-height:22px;text-align:center;cursor:pointer;transition:all 0.15s}
+.edit-mode .card-del{display:block}
+.card-del:hover{background:var(--danger);color:#fff}
+
+/* Map container */
+.dp-map{display:none;border-radius:var(--rad);overflow:hidden;border:1px solid var(--glass2);height:60vh;min-height:400px;margin-top:8px;position:relative;background:var(--bg2)}
+.dp-map.active{display:block}
+.dp-map-inner{width:100%;height:100%}
+.dp-itin.hidden{display:none}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:100;background:rgba(10,14,26,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--glass);display:flex;padding:6px 8px calc(8px + env(safe-area-inset-bottom))}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;cursor:pointer;border-radius:var(--rad3);color:var(--txt3);transition:all 0.15s;background:none;border:none;font-family:inherit}
+.bnav-btn.active{color:var(--accent)}
+.bnav-btn:hover{color:var(--txt2)}
+.bnav-btn.active:hover{color:var(--accent)}
+.bnav-icon{font-size:18px;line-height:1}
+.bnav-label{font-size:10px;font-weight:500;letter-spacing:0.3px}
+
+/* BOTTOM SHEETS */
+.sheet-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.sheet-overlay.show{display:block;animation:fadeIn 0.2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:201;background:var(--bg2);border-top-left-radius:20px;border-top-right-radius:20px;max-height:85vh;display:none;flex-direction:column;animation:slideUp 0.3s cubic-bezier(0.2,0.8,0.2,1)}
+.sheet.show{display:flex}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet-handle{width:36px;height:4px;background:var(--glass3);border-radius:2px;margin:8px auto 4px;flex-shrink:0}
+.sheet-header{padding:6px 18px 12px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-bottom:1px solid var(--glass)}
+.sheet-title{font-size:16px;font-weight:600;color:var(--txt)}
+.sheet-close{font-size:20px;color:var(--txt2);cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px}
+.sheet-close:hover{background:var(--glass)}
+.sheet-body{flex:1;overflow-y:auto;padding:14px 18px calc(18px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+
+/* BOOKING SHEET */
+.bs-section{margin-bottom:14px}
+.bs-section-title{font-size:13px;font-weight:600;color:var(--txt2);margin-bottom:6px;padding-left:2px}
+.bs-todo{display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--glass);border:1px solid var(--glass);border-radius:var(--rad2);margin-bottom:6px;cursor:pointer;transition:all 0.15s}
+.bs-todo:hover{background:var(--glass2)}
+.bs-todo-cb{width:18px;height:18px;border-radius:4px;border:2px solid var(--txt3);flex-shrink:0;margin-top:1px;transition:all 0.15s;display:flex;align-items:center;justify-content:center;font-size:12px;color:#0a0e1a}
+.bs-todo.done .bs-todo-cb{background:var(--accent);border-color:var(--accent)}
+.bs-todo.done .bs-todo-cb::after{content:'✓'}
+.bs-todo-text{flex:1;font-size:13px;color:var(--txt);line-height:1.45}
+.bs-todo.done .bs-todo-text{color:var(--txt3);text-decoration:line-through}
+.bs-todo-text b{font-weight:500;color:var(--txt)}
+.bs-todo.done .bs-todo-text b{color:var(--txt3)}
+.bs-todo-del{display:none;color:var(--danger);font-size:14px;cursor:pointer;padding:0 4px}
+.edit-mode .bs-todo .bs-todo-del{display:block}
+
+/* Add new todo (smart categorization) */
+.bs-add-row{margin-top:10px;padding:10px;background:var(--glass);border-radius:var(--rad2);border:1px dashed var(--glass3)}
+.bs-add-row input,.bs-add-row select{background:var(--bg);border:1px solid var(--glass2);border-radius:6px;padding:8px 10px;color:var(--txt);font-size:13px;width:100%}
+.bs-add-row .row{display:flex;gap:6px;margin-bottom:6px}
+.bs-add-row select{flex:0 0 100px}
+.bs-add-row input{flex:1}
+.bs-add-btn{margin-top:4px;width:100%;padding:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0e1a;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
+
+/* COST SHEET */
 .cs-group{margin-bottom:14px}
-.cs-group-title{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px}
-.cs-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 2px;border-bottom:1px solid var(--glass)}
-.cs-label{color:var(--txt2)}
-.cs-amount{font-weight:600}
-.cs-grand{display:flex;justify-content:space-between;align-items:center;margin-top:16px;
-  background:linear-gradient(120deg,rgba(45,212,191,.14),rgba(139,92,246,.12));
-  border:1px solid var(--glass2);border-radius:14px;padding:14px 16px}
-.cs-grand-label{font-size:13px;color:var(--txt2)}
-.cs-grand-amount{font-size:20px;font-weight:800;
-  background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;
-  background-clip:text;-webkit-text-fill-color:transparent}
-.cs-note{font-size:11px;color:var(--txt3);margin-top:10px;line-height:1.6}
-.warn{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.35);border-radius:12px;
-  padding:10px 12px;font-size:12px;color:#fcd34d;margin:4px 0 12px}
+.cs-group-title{font-size:13px;font-weight:600;color:var(--txt2);margin-bottom:6px;padding-left:2px}
+.cs-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--glass);border-radius:var(--rad3);margin-bottom:4px;font-size:13px}
+.cs-row .cl{flex:1;color:var(--txt);padding-right:8px}
+.cs-row .csub{display:block;font-size:11px;color:var(--txt3);margin-top:2px}
+.cs-row .am{color:var(--accent);font-weight:500;font-variant-numeric:tabular-nums;cursor:pointer;padding:2px 4px;border-radius:4px;white-space:nowrap}
+.cs-row .am.has-actual{color:var(--ok);font-weight:600}
+.cs-row .am:hover{background:var(--glass2)}
+.cs-row .am.editing{outline:1px solid var(--accent);background:var(--bg)}
+.cs-sub{display:flex;justify-content:space-between;padding:8px 10px;background:var(--glass2);border-radius:var(--rad3);margin-bottom:4px;font-size:13px;font-weight:600;color:var(--txt)}
+.cs-sub .am{color:var(--accent)}
+.cs-grand{display:flex;justify-content:space-between;align-items:center;padding:14px;background:linear-gradient(135deg,rgba(45,212,191,0.1),rgba(139,92,246,0.1));border:1px solid var(--accent);border-radius:var(--rad);margin-top:12px;font-size:15px;font-weight:600}
+.cs-grand .am{color:var(--accent);font-size:18px;font-variant-numeric:tabular-nums}
+.cs-summary{display:flex;gap:10px;margin-bottom:14px}
+.cs-summary-card{flex:1;padding:10px;background:var(--glass);border-radius:var(--rad2);text-align:center}
+.cs-summary-card .label{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.cs-summary-card .value{font-size:15px;font-weight:600;color:var(--txt);font-variant-numeric:tabular-nums}
+
+.cost-hint{font-size:11px;color:var(--txt3);text-align:center;padding:6px;background:var(--glass);border-radius:6px;margin-bottom:10px}
+
+/* Cost FX setting */
+.cost-fx{display:flex;align-items:center;gap:6px;padding:10px;background:var(--glass);border-radius:var(--rad2);margin-bottom:10px;font-size:12px}
+.cost-fx .fx-label{font-weight:600;color:var(--txt)}
+.cost-fx .fx-pair{color:var(--txt2)}
+.cost-fx input{background:var(--bg);border:1px solid var(--glass2);border-radius:6px;padding:4px 8px;color:var(--accent);font-weight:600;font-size:13px;font-family:inherit;text-align:right}
+.cost-fx input:focus{outline:none;border-color:var(--accent)}
+.cost-fx .fx-hint{margin-left:auto;font-size:10px;color:var(--txt3)}
+
+/* Pull from itinerary button */
+.cost-pull-btn{width:100%;padding:10px;background:linear-gradient(135deg,rgba(45,212,191,0.15),rgba(139,92,246,0.15));border:1px dashed var(--accent);border-radius:var(--rad2);color:var(--accent);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:10px;font-family:inherit}
+.cost-pull-btn:hover{background:linear-gradient(135deg,rgba(45,212,191,0.25),rgba(139,92,246,0.25))}
+
+/* Group title row */
+.cs-group-title-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;padding-left:2px}
+.cs-group-title{font-size:13px;font-weight:600;color:var(--txt2);flex:1;cursor:pointer;padding:2px 4px;border-radius:4px}
+body.edit-mode .cs-group-title:hover{background:var(--glass);outline:1px solid var(--accent)}
+.cs-del-group{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:var(--danger);border-radius:6px;padding:2px 6px;font-size:11px;cursor:pointer}
+.cs-del-group:hover{background:var(--danger);color:#fff}
+
+/* Cost row: drag handle + del */
+.cs-row{position:relative;gap:8px}
+.cs-drag-handle{color:var(--txt3);cursor:grab;user-select:none;line-height:1;font-size:12px;flex-shrink:0}
+.cs-row.dragging{opacity:0.4}
+.cs-row.drag-over{outline:2px solid var(--accent)}
+.cs-group.drag-over{outline:2px dashed var(--accent);outline-offset:2px;border-radius:var(--rad2)}
+
+.cs-del-row{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:var(--danger);border-radius:50%;width:22px;height:22px;font-size:11px;cursor:pointer;flex-shrink:0;line-height:1;padding:0}
+.cs-del-row:hover{background:var(--danger);color:#fff}
+
+.cs-curr-picker{background:var(--bg);border:1px solid var(--glass2);border-radius:6px;color:var(--txt2);font-size:10px;padding:2px 4px;font-family:inherit;cursor:pointer}
+
+/* Editable cost text */
+.cl{flex:1;cursor:default}
+.cl-label{cursor:pointer;padding:2px 4px;border-radius:4px;display:inline-block}
+body.edit-mode .cl-label:hover{background:var(--glass);outline:1px solid var(--accent)}
+.csub{cursor:default;display:block;font-size:11px;color:var(--txt3);margin-top:2px;padding:1px 4px;border-radius:3px}
+body.edit-mode .csub{cursor:pointer}
+body.edit-mode .csub:hover{background:var(--glass);outline:1px solid var(--accent)}
+.csub-empty{font-style:italic;opacity:0.6}
+.csub-inline{font-size:10px;color:var(--txt3);font-weight:400;margin-left:2px}
+.cost-edit-input{width:100%;background:var(--bg);border:1px solid var(--accent);border-radius:4px;color:var(--txt);font-size:inherit;font-family:inherit;padding:2px 6px}
+
+/* Cost row layout for edit mode */
+body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
+
+/* Add buttons */
+.cs-add-row-btn{width:100%;background:var(--glass);border:1px dashed var(--glass3);border-radius:var(--rad3);color:var(--txt2);padding:8px;font-size:11px;cursor:pointer;font-family:inherit;margin-top:4px}
+.cs-add-row-btn:hover{background:var(--glass2);color:var(--accent);border-color:var(--accent)}
+.cs-add-group-btn{width:100%;background:linear-gradient(135deg,rgba(45,212,191,0.08),rgba(139,92,246,0.08));border:1px dashed var(--accent);border-radius:var(--rad2);color:var(--accent);padding:12px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:6px}
+.cs-add-group-btn:hover{background:linear-gradient(135deg,rgba(45,212,191,0.18),rgba(139,92,246,0.18))}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:400;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:fadeIn 0.2s ease}
+.modal-box{background:var(--bg2);border-radius:16px;width:100%;max-width:480px;max-height:90vh;display:flex;flex-direction:column;animation:slideUp 0.3s cubic-bezier(0.2,0.8,0.2,1)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--glass);font-size:15px;font-weight:600}
+.modal-close{background:none;border:none;color:var(--txt2);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px}
+.modal-close:hover{background:var(--glass)}
+.modal-body{padding:14px 16px;overflow-y:auto;flex:1}
+.modal-footer{padding:12px 16px;border-top:1px solid var(--glass);display:flex;gap:8px;justify-content:flex-end}
+.modal-btn{padding:8px 16px;border-radius:8px;background:var(--glass);color:var(--txt);border:1px solid var(--glass2);cursor:pointer;font-size:13px;font-family:inherit}
+.modal-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0e1a;border:none;font-weight:600}
+.modal-btn:hover{filter:brightness(1.1)}
+
+.mp-hint{font-size:11px;color:var(--txt3);margin-bottom:10px;padding:8px;background:var(--glass);border-radius:6px}
+.mp-row{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;margin-bottom:4px;background:var(--glass);cursor:pointer}
+.mp-row:hover{background:var(--glass2)}
+.mp-row input[type="checkbox"]{flex-shrink:0}
+.mp-name{flex:1;min-width:0;font-size:12px}
+.mp-name>div:first-child{color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mp-amt{color:var(--accent);font-size:11px;margin-top:2px;font-weight:500}
+.mp-row select{background:var(--bg);border:1px solid var(--glass2);border-radius:6px;color:var(--txt);font-size:11px;padding:4px 6px;font-family:inherit;cursor:pointer;flex-shrink:0;max-width:120px}
+.mp-empty{text-align:center;color:var(--txt3);font-size:12px;padding:24px}
+
+/* SYNC BADGE */
+.sync-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--txt3);margin-left:6px}
+.sync-badge.syncing{color:var(--warn)}
+.sync-badge.ok{color:var(--ok)}
+.sync-badge.err{color:var(--danger)}
+.auth-badge{display:inline-flex;align-items:center;font-size:10px;padding:3px 8px;border-radius:10px;background:transparent;border:1px solid transparent;cursor:pointer;font-family:inherit;margin-left:6px;transition:all 0.15s}
+.auth-badge.authed{color:var(--ok);border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.08)}
+.auth-badge.unauthed{color:var(--warn);border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.08)}
+.auth-badge:hover{filter:brightness(1.2)}
+.topright{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.nz-clock{font-size:17px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums;letter-spacing:0.5px;line-height:1;background:var(--glass);padding:5px 10px;border-radius:999px;border:1px solid var(--glass2);display:inline-flex;align-items:center;gap:5px}
+.nz-clock .flag{font-size:14px}
+.nz-clock.tick{animation:clockPulse 0.15s ease}
+@keyframes clockPulse{0%{opacity:0.7}100%{opacity:1}}
+
+/* EDIT MODE banner */
+.edit-banner{display:none;background:var(--warn);color:#0a0e1a;padding:6px 14px;font-size:11px;font-weight:500;text-align:center}
+.edit-mode .edit-banner{display:block}
+
+/* TOAST */
+.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--bg3);color:var(--txt);padding:10px 18px;border-radius:999px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,0.4);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
+<div class="sticky-header">
+<div class="edit-banner">✏️ 編輯模式 — 拖曳卡片重排 · 點擊文字修改 · 長按 day tab 刪整天</div>
 
-<div class="topbar">
-  <div class="tb-title">Xi++ 2026/08 福岡</div>
-  <div class="tb-sub">8/2–8/7 · 6天5夜 · 4人 · 享受型</div>
-  <div class="tb-badges">
-    <span class="tb-badge">🎤 ヨルシカ 8/4</span>
-    <span class="tb-badge">🚗 糸島自駕</span>
-    <span class="tb-badge">🚌 高千穗+阿蘇</span>
-    <span class="tb-badge">⛩ 太宰府</span>
-    <span class="tb-badge">🚤 柳川</span>
-    <span class="tb-badge">🏯 小倉城</span>
+<header class="topbar">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+    <div>
+      <h1>🇯🇵 Xi++ 2026/08 福岡</h1>
+      <div class="sub">8/2–8/7 · 博多4晚＋由布院1晚 · 4人 · ヨルシカ「一人称」</div>
+    </div>
+    <div class="topright">
+      <span class="sync-badge" id="sync-badge"><span id="sync-dot">○</span> <span id="sync-text">待同步</span></span>
+      <button class="auth-badge unauthed" id="auth-badge" title="點擊登入以啟用編輯" onclick="state.idToken?signOut():showLoginModal()">🔒 未登入</button>
+      <div class="nz-clock" id="nz-clock" title="日本當地時間（福岡/由布院）"><span class="flag">🇯🇵</span> <span id="nz-clock-time">--:--</span></div>
+    </div>
+  </div>
+  <div class="badges"><span class="badge">🎤 8/4 ヨルシカ</span><span class="badge">🚗 8/3 自駕</span><span class="badge">♨️ 8/6 由布院</span></div>
+</header>
+
+<div class="day-tabs-wrap">
+  <div class="day-tabs" id="day-tabs"></div>
+</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+<main id="panels-container">
+  <!-- day panels render here -->
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bnav-btn active" data-nav="itin">
+    <span class="bnav-icon">🗓</span>
+    <span class="bnav-label">行程</span>
+  </button>
+  <button class="bnav-btn" data-nav="book">
+    <span class="bnav-icon">🎫</span>
+    <span class="bnav-label">訂票</span>
+  </button>
+  <button class="bnav-btn" data-nav="cost">
+    <span class="bnav-icon">💰</span>
+    <span class="bnav-label">費用</span>
+  </button>
+  <button class="bnav-btn" data-nav="edit">
+    <span class="bnav-icon">✏️</span>
+    <span class="bnav-label">編輯</span>
+  </button>
+</nav>
+
+<!-- BOOKING SHEET -->
+<div class="sheet-overlay" id="ov-book" data-close></div>
+<div class="sheet" id="sh-book">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-title">🎫 訂票清單 <span style="font-size:11px;color:var(--txt3);font-weight:400" id="book-progress">0/29</span></div>
+    <div class="sheet-close" data-close>✕</div>
+  </div>
+  <div class="sheet-body" id="book-list">
+    <!-- booking sections render here -->
   </div>
 </div>
 
-<div class="edit-banner">✏️ 編輯模式：點文字可改、拖曳 ⠿ 排序、× 刪除、＋ 新增</div>
-
-<div class="day-tabs" id="dayTabs"></div>
-
-<div class="progress-wrap">
-  <div class="progress-bar-container"><div class="progress-fill" id="progFill"></div></div>
-  <div class="progress-label" id="progLabel"></div>
+<!-- COST SHEET -->
+<div class="sheet-overlay" id="ov-cost" data-close></div>
+<div class="sheet" id="sh-cost">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-title">💰 費用估算</div>
+    <div class="sheet-close" data-close>✕</div>
+  </div>
+  <div class="sheet-body" id="cost-list">
+    <!-- cost groups render here -->
+  </div>
 </div>
 
-<div class="legend">
-  <span class="lg"><i style="background:var(--food)"></i>餐飲</span>
-  <span class="lg"><i style="background:var(--shop)"></i>購物</span>
-  <span class="lg"><i style="background:var(--sight)"></i>觀光</span>
-  <span class="lg"><i style="background:var(--transport)"></i>交通</span>
-  <span class="lg"><i style="background:var(--exp)"></i>體驗</span>
-  <span class="lg"><i style="background:var(--hotel)"></i>住宿</span>
-</div>
-
-<div id="panels"></div>
-
-<!-- Bottom Nav -->
-<div class="bottom-nav">
-  <div class="nav-item active" data-nav="itin"><span class="ni-ic">🗓</span>行程</div>
-  <div class="nav-item" data-nav="book"><span class="ni-ic">✅</span>訂票</div>
-  <div class="nav-item" data-nav="cost"><span class="ni-ic">💰</span>費用</div>
-  <div class="nav-item" data-nav="edit"><span class="ni-ic">✏️</span>編輯</div>
-</div>
-
-<!-- Booking sheet -->
-<div class="bs-overlay" id="bookOverlay"></div>
-<div class="bottom-sheet" id="bookSheet">
-  <div class="bs-handle"></div>
-  <div class="bs-h">✅ 訂票清單</div>
-  <div class="bs-prog"><div class="bs-prog-fill" id="bookProg"></div></div>
-  <div class="progress-label" id="bookProgLabel" style="margin-bottom:4px"></div>
-
-  <div class="warn">⚠️ 阿蘇火口因直升機事故仍封閉中，8月能否看火口請出發前查官網；草千里正常開放。</div>
-
-  <div class="bs-section-title">🎤 立即處理</div>
-  <div class="bs-todo" data-id="t6"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>高千穗+阿蘇一日團（KKday/Klook）</b><span>福岡博多出發，含划船加購。KKday 287625 / 181723，Klook TKNKL-155508。早鳥易滿，先訂</span></div></div>
-  <div class="bs-todo" data-id="t7"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>高千穗峽划船</b><span>跟團可由旅行社代訂；自行訂則乘船日 2 週前 9:00 線上搶（夏天 30 分秒殺）</span></div></div>
-
-  <div class="bs-section-title">🎤 演唱會取票（ヨルシカ・全電子票）</div>
-  <div class="bs-todo" data-id="t5a"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>確認中籤＋座位種類＋付款</b><span>登入 ローチケ マイページ（l-tike）確認中的是 S席 or A席、是否已完成付款。座位號開演2天前(8/2 18:00)才公布</span></div></div>
-  <div class="bs-todo" data-id="t5b"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>下載官方 App ＋ 臉部照片登錄</b><span>全電子票、首次導入「臉照本人確認」，入場時刷臉。要去的2人都要先在 App 登錄臉部照片</span></div></div>
-  <div class="bs-todo" data-id="t5c"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>電子票「分配」給第2人</b><span>2張票需在入場前由購票者把其中1張分配到第2人手機；兩人各需一支手機＋裝好 App</span></div></div>
-  <div class="bs-todo" data-id="t5d"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>先定下哪2人去看</b><span>因臉部本人確認，去的2人=App帳號本人＋被分配者，不能臨時換人；去不了可用官方リセール轉售</span></div></div>
-  <div class="bs-todo" data-id="t5e"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>入場注意</b><span>禁帶螢光棒等發光物；著席型朗讀/影像演出；19:00開演、建議提早入場排隊</span></div></div>
-
-  <div class="bs-section-title">🏨 住宿</div>
-  <div class="bs-todo" data-id="t1"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>都ホテル博多 5 晚 · 2間房（8/2・3・4・5・6）</b><span>首選；備選 Grand Hyatt／THE BLOSSOM HAKATA Premier／JR Kyushu Blossom</span></div></div>
-
-  <div class="bs-section-title">🚗 交通</div>
-  <div class="bs-todo" data-id="t2"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>機票 CI110／CI117 ✅</b><span>去程需改 8/2 早班 CI110 06:50→09:55；回 8/7 21:00→22:30（改票成本見下）</span></div></div>
-  <div class="bs-todo" data-id="t3"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>糸島租車 8/5</b><span>博多取還；備好駕照日文譯本（JAF）</span></div></div>
-  <div class="bs-todo" data-id="t4"><div class="bs-todo-cb"></div><div class="bs-todo-text"><b>小倉新幹線（8/7）</b><span>博多→小倉約 16–20 分，免預約當日購票即可</span></div></div>
-</div>
-
-<!-- Cost sheet -->
-<div class="bs-overlay" id="costOverlay"></div>
-<div class="bottom-sheet" id="costSheet">
-  <div class="bs-handle"></div>
-  <div class="bs-h">💰 費用總覽</div>
-  <div class="cs-note" style="margin-top:0;margin-bottom:8px">4 人估算 · 台幣 · 不含機票（已訂）· 匯率約 1 JPY≈0.21 TWD</div>
-
-  <div class="cs-group">
-    <div class="cs-group-title">🏨 住宿</div>
-    <div class="cs-row"><span class="cs-label">都ホテル博多 5 晚 · 2間房（4人）</span><span class="cs-amount">$60,000</span></div>
-  </div>
-  <div class="cs-group">
-    <div class="cs-group-title">🚌 活動・團費</div>
-    <div class="cs-row"><span class="cs-label">高千穗+阿蘇一日團 4人（含划船）</span><span class="cs-amount">$15,000</span></div>
-    <div class="cs-row"><span class="cs-label">柳川川下り＋太宰府柳川套票 4人</span><span class="cs-amount">$3,200</span></div>
-    <div class="cs-row"><span class="cs-label">小倉城／太宰府門票・雜支</span><span class="cs-amount">$3,000</span></div>
-  </div>
-  <div class="cs-group">
-    <div class="cs-group-title">🚗 交通</div>
-    <div class="cs-row"><span class="cs-label">糸島租車＋油＋停車（1台/1天）</span><span class="cs-amount">$3,500</span></div>
-    <div class="cs-row"><span class="cs-label">市內交通・新幹線小倉來回 4人</span><span class="cs-amount">$5,000</span></div>
-  </div>
-  <div class="cs-group">
-    <div class="cs-group-title">🍽 餐飲</div>
-    <div class="cs-row"><span class="cs-label">6 天 4 人（拉麵・牛腸鍋・海鮮・鰻魚）</span><span class="cs-amount">$28,000</span></div>
-  </div>
-  <div class="cs-group">
-    <div class="cs-group-title">🛍 購物・雜費</div>
-    <div class="cs-row"><span class="cs-label">天神逛街・伴手禮等 4人</span><span class="cs-amount">$16,000</span></div>
-  </div>
-  <div class="cs-grand"><span class="cs-grand-label">4 人總計（不含機票，每人約 $33,500）</span><span class="cs-grand-amount">≈ TWD $134,000</span></div>
-  <div class="cs-note">數字為估算，實際依訂房與消費而定。雙擊金額即可在編輯模式自行修改。</div>
-</div>
-
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 <script>
-/* ============ DATA ============ */
+/* travel-app-v2 — features.js
+ * Production code extracted from NZ 2026/09 live deployment.
+ * Includes: Firebase REST sync + auth, edit mode, drag/drop, cost A-E
+ * features, smart booking categorization, timezone clock, sticky offsets.
+ *
+ * Replace all {{...}} template placeholders before injecting into scaffold.html.
+ */
 
-var TRIP_DATA = [
- {id:"day-1",date:"8/2 日",title:"✈️ 抵達 · 博多暖身",items:[
-   {time:"06:50",icon:"✈️",name:"CI110 台北桃園 → 福岡",desc:"09:55 抵達 · 去程需改 8/2 早班（週日有飛）",link:""},
-   {time:"10:30",icon:"🛬",name:"福岡機場入境 → 地鐵到博多",desc:"機場到博多站僅 2 站約 6 分鐘",link:""},
-   {time:"11:00",icon:"🏨",name:"飯店寄放行李（輕裝出門）",desc:"正常 check in 15:00，先寄行李",link:""},
-   {time:"12:00",icon:"🍜",name:"博多拉麵 / 牛腸鍋 午餐",desc:"博多站周邊",link:""},
-   {time:"13:30",icon:"🛍",name:"Canal City Hakata 逛街",desc:"運河商城＋每日噴水秀；鋼彈/吉卜力專賣",link:"https://www.google.com/maps/search/?api=1&query=33.5896305,130.4109478"},
-   {time:"16:00",icon:"🛎",name:"回博多 check in・休息",desc:"正式入住、養精神",link:""},
-   {time:"18:30",icon:"🍢",name:"中洲屋台 / 博多晚餐",desc:"屋台拉麵、關東煮體驗",link:"https://www.google.com/maps/search/?api=1&query=33.5899407,130.4089399"}
- ],hotel:{icon:"🏨",name:"都ホテル博多（8/2–8/7 · 5晚 · 2房）",desc:"博多站筑紫口直結 · 首選",price:"待訂"}},
+var TRIP_DATA = [{"date": "8/2 日", "hotel": {"desc": "博多站前 · 距JR博多站約100m", "icon": "🏨", "name": "JR九州ホテル ブラッサム博多中央（8/2–8/6 · 4晚）", "price": "TWD 39,027"}, "id": "day-1", "items": [{"desc": "China Airlines · A330-300 · 經濟艙(N) · 20:00 抵福岡", "icon": "✈️", "name": "CI116 台北T2 → 福岡T1", "tags": ["✓ 已訂"], "time": "16:40"}, {"desc": "地鐵空港線約5分到博多站，飯店距JR博多站約100m", "icon": "🛬", "name": "福岡機場入境 → 博多站", "time": "20:00"}, {"desc": "2房4人 · 已確認 TWD 39,027(4晚總價)", "icon": "🛎️", "name": "Check-in JR九州ホテル ブラッサム博多中央", "tags": ["✓ 已確認"], "time": "21:00"}, {"desc": "博多站地下街、飯店步行約3分 · 名物雞皮串 · 11:00–22:30(餐LO 22:00)", "icon": "🍢", "name": "宵夜小食：とりかわ長政 博多店", "tags": ["近", "⏰ 22:00 LO"], "time": "21:30"}], "title": "抵達福岡 · Check-in"}, {"date": "8/3 一", "hotel": {"desc": "博多站前 · 距JR博多站約100m", "icon": "🏨", "name": "JR九州ホテル ブラッサム博多中央（8/2–8/6 · 4晚）", "price": "TWD 39,027"}, "id": "day-2", "items": [{"desc": "博多 → 太宰府約40分", "icon": "🚗", "name": "取車自駕出發", "tags": ["自駕"], "time": "09:00"}, {"desc": "6:30–18:30 · ⚠️本殿2026整修中(臨時殿) · 表參道隈研吾星巴克、梅枝餅、九州國立博物館；可順遊竈門神社(鬼滅聖地)", "icon": "⛩️", "name": "太宰府天滿宮 + 表參道", "tags": ["停2–2.5h"], "time": "09:45"}, {"desc": "", "icon": "🚗", "name": "太宰府 → 八女(約40分)", "time": "12:30"}, {"desc": "週一開放 9:00–16:30(對調後可現場買！) · 愛猫守り/透明貓御守、看板犬シロちゃん、八女抹茶cafe", "icon": "🐈", "name": "福島八幡宮(八女)貓御守 ★", "tags": ["★ 貓御守", "週一OK"], "time": "13:00"}, {"desc": "", "icon": "🚗", "name": "八女 → 柳川(約30分)", "time": "14:30"}, {"desc": "柳川名物發源地！御花/若松屋/本吉屋 · 蒸籠鰻魚飯 · 建議預約", "icon": "🍱", "name": "柳川鰻魚せいろ蒸し ★鰻魚飯", "tags": ["★ 鰻魚飯", "建議預約"], "time": "15:00"}, {"desc": "松月乗船場(末班約15:00，旺季略有調整，現場確認) · 遊船約60–70分", "icon": "🛶", "name": "柳川川下り(どんこ舟)", "tags": ["⏰ 末班約15:00"], "time": "16:00"}, {"desc": "時間寬鬆，不趕", "icon": "🚗", "name": "返回博多還車", "time": "18:00"}], "title": "自駕 · 太宰府 → 柳川（貓御守日）"}, {"date": "8/4 二", "hotel": {"desc": "博多站前 · 距JR博多站約100m", "icon": "🏨", "name": "JR九州ホテル ブラッサム博多中央（8/2–8/6 · 4晚）", "price": "TWD 39,027"}, "id": "day-3", "items": [{"desc": "JR博多城/KITTE博多/阪急逛街、採買", "icon": "😴", "name": "睡飽 · 飯店周邊輕鬆", "tags": ["輕鬆日"], "time": "上午"}, {"desc": "在地媒體與threads常推：天神水炊き名店、大名/今泉文青咖啡(よかとこ福岡選);麻辣燙行列店也熱門", "icon": "🍜", "name": "【threads推薦】午餐：天神水炊き / 今泉・大名咖啡", "tags": ["threads"], "time": "12:00"}, {"desc": "天神地下街、ソラリア、大名選物;想避暑可大濠公園划船或福岡塔", "icon": "🛍️", "name": "全員：天神・大名・今泉散步 / 大濠公園避暑", "time": "14:00"}, {"desc": "ヨルシカ「一人称」· 18:00開場/19:00開演 · 博多區沖浜町 · ⚠️無停車場，搭計程車/巴士", "icon": "🎤", "name": "【演唱會組2人】マリンメッセ福岡A館", "tags": ["★ 2人", "🎫 需購票"], "time": "17:00"}, {"desc": "博多牛腸鍋名店 16:00–23:00 建議預約;或炉端百式(今泉,需預約,海膽肉捲)", "icon": "🍲", "name": "【輕鬆組2人】晚餐：もつ鍋おおやま(博多)", "tags": ["建議預約"], "time": "18:30"}, {"desc": "threads熱門：中洲川沿屋台夜遊、拉麵收尾", "icon": "🏮", "name": "集合宵夜：中洲屋台 / 川沿いカフェ", "tags": ["threads"], "time": "21:30"}], "title": "福岡市區 · ヨルシカ演唱會"}, {"date": "8/5 三", "hotel": {"desc": "博多站前 · 距JR博多站約100m", "icon": "🏨", "name": "JR九州ホテル ブラッサム博多中央（8/2–8/6 · 4晚）", "price": "TWD 39,027"}, "id": "day-4", "items": [{"desc": "推薦 KKday/Klook「阿蘇山&草千里&高千穗峽/高千穗遊船一日遊（福岡出發）」中文導遊", "icon": "🚌", "name": "博多站集合 · 一日遊出發", "tags": ["★ 需預約", "KKday/Klook"], "time": "07:30"}, {"desc": "火山與大草原(火山口視警報開放狀況)", "icon": "🌋", "name": "阿蘇山 · 草千里", "time": "10:30"}, {"desc": "多含赤牛或懷石套餐", "icon": "🥩", "name": "午餐：阿蘇赤牛燒肉(隨團)", "time": "12:30"}, {"desc": "真名井瀑布、V字峽谷；可自費划船(停約1.5h)", "icon": "⛰️", "name": "高千穗峽", "tags": ["自費划船"], "time": "14:30"}, {"desc": "車程較長，今天偏滿；回程輕食即可", "icon": "🚌", "name": "返抵博多站", "tags": ["車程長"], "time": "20:00"}], "title": "阿蘇火山・高千穗峽 一日遊"}, {"date": "8/6 四", "hotel": {"desc": "由布市湯布院町川上2652-2 · check-in 15:00–18:00 · 已確認", "icon": "♨️", "name": "由布院別邸樹(1晚 · 一泊二食)", "price": "TWD 37,710"}, "id": "day-5", "items": [{"desc": "博多 → 由布院約2h10m · ⚠️超熱門，務必提早劃指定席", "icon": "🚆", "name": "由布院之森(ゆふいんの森)觀光列車", "tags": ["★ 需預約指定席"], "time": "上午"}, {"desc": "B-speak生乳捲、Snoopy茶屋、金賞可樂餅、雜貨；逛約2–3h", "icon": "🍡", "name": "湯の坪街道", "time": "12:30"}, {"desc": "湖畔散步、玻璃咖啡館湖景 · 順遊 Floral Village童話村 / Comico美術館(隈研吾)", "icon": "🏞️", "name": "金鱗湖 + Cafe La Ruche", "time": "14:30"}, {"desc": "2房4人·一泊二食·已確認 TWD 37,710(原¥191,740) · 離Floral Village步行可達、房內溫泉", "icon": "🛎️", "name": "Check-in 由布院別邸樹", "tags": ["✓ 已確認"], "time": "15:30"}, {"desc": "豐後牛/季節會席 · 含早餐", "icon": "🍶", "name": "晚餐：別邸樹會席(一泊二食)", "tags": ["一泊二食"], "time": "18:30"}], "title": "由布院之森 → 由布院溫泉"}, {"date": "8/7 五", "hotel": {"desc": "福岡 → 台北", "icon": "✈️", "name": "返台(機上)", "price": ""}, "id": "day-6", "items": [{"desc": "別邸樹步行約15分 · ⚠️夏季晨霧機率較低(多見秋冬)，但清晨湖畔仍清幽好拍", "icon": "🌫️", "name": "金鱗湖晨霧散步", "tags": ["早起"], "time": "06:30"}, {"desc": "榎屋茶房(豐後牛漢堡morning 7:30–10:00)／檪の丘(義式早午餐8:30需訂位,由布岳景)／千家(朝霧棉花糖飲品·大分とり天)", "icon": "🍳", "name": "【threads推薦】早午餐", "tags": ["threads"], "time": "08:00"}, {"desc": "特急/由布院之森回博多，或自駕回福岡機場約2h；threads也推回程順逛博多運河城最後採買", "icon": "🚆", "name": "由布院 → 福岡(約2h)", "tags": ["threads"], "time": "10:30"}, {"desc": "預留充裕時間", "icon": "🛄", "name": "抵福岡機場 · 辦理登機", "time": "18:00"}, {"desc": "China Airlines · A330-300 · 經濟艙(Q) · 22:30 抵台北", "icon": "✈️", "name": "CI117 福岡T1 → 台北T2", "tags": ["✓ 已訂"], "time": "21:00"}], "title": "金鱗湖晨霧 · 返程"}];
+var PLACES = [{"n": "JR九州ブラッサム博多中央", "lat": 33.5900103, "lng": 130.4180146, "type": "hotel", "r": "fuk", "d": "8/2-8/6", "x": "博多站前·基地4晚"}, {"n": "とりかわ長政 博多店", "lat": 33.5910988, "lng": 130.4193047, "type": "food", "r": "fuk", "d": "8/2", "x": "宵夜雞皮串·博多站地下街"}, {"n": "太宰府天滿宮", "lat": 33.5213697, "lng": 130.5348239, "type": "view", "r": "south", "d": "8/3", "x": "本殿整修中·表參道好逛"}, {"n": "福島八幡宮(八女)", "lat": 33.2090645, "lng": 130.5593469, "type": "activity", "r": "south", "d": "8/3", "x": "貓御守·週一開放"}, {"n": "柳川 松月乗船場", "lat": 33.1671516, "lng": 130.4154015, "type": "activity", "r": "south", "d": "8/3", "x": "鰻魚せいろ+どんこ舟"}, {"n": "マリンメッセ福岡A館", "lat": 33.6071732, "lng": 130.4021741, "type": "activity", "r": "fuk", "d": "8/4", "x": "ヨルシカ 19:00開演·無停車場"}, {"n": "もつ鍋おおやま 博多", "lat": 33.5966724, "lng": 130.4097118, "type": "food", "r": "fuk", "d": "8/4", "x": "牛腸鍋·建議預約"}, {"n": "炉端百式 今泉", "lat": 33.584222, "lng": 130.3996877, "type": "food", "r": "fuk", "d": "8/4", "x": "爐端燒·預約必須"}, {"n": "由布院別邸樹", "lat": 33.2640411, "lng": 131.365589, "type": "hotel", "r": "yufuin", "d": "8/6", "x": "一泊二食·房內溫泉"}, {"n": "金鱗湖", "lat": 33.2666644, "lng": 131.3690272, "type": "view", "r": "yufuin", "d": "8/6-8/7", "x": "晨霧散步·步行15分"}, {"n": "能古島(備案)", "lat": 33.6222216, "lng": 130.30631, "type": "view", "r": "fuk", "d": "8/4", "x": "向日葵尾段·酷暑·彈性"}];
+var BOOKING_DATA = [{"cat": "flight", "items": [{"done": true, "id": "f1", "text": "去程 CI116 8/2(日) 台北16:40→福岡20:00 ✅ 已改訂"}, {"done": true, "id": "f2", "text": "回程 CI117 8/7(五) 福岡21:00→台北22:30 ✅ 已改訂"}], "section": "✈️ 機票"}, {"cat": "hotel", "items": [{"done": true, "id": "h1", "text": "JR九州ホテル ブラッサム博多中央 8/2–8/6(4晚·2房4人) ✅ 已確認 TWD 39,027"}, {"done": true, "id": "h2", "text": "由布院別邸樹 8/6–8/7(1晚·2房4人·一泊二食) ✅ 已確認 TWD 37,710(原¥191,740)"}], "section": "🏨 住宿"}, {"cat": "ticket", "items": [{"done": false, "id": "k1", "text": "ヨルシカ「一人称」福岡 8/4 マリンメッセA館 ×2(S¥12,000/A¥10,500)"}, {"done": false, "id": "k2", "text": "阿蘇+高千穗一日遊(8/5·已對調) KKday/Klook ×4 — 提早預約"}, {"done": false, "id": "k3", "text": "由布院之森 指定席(8/6 去程) ×4 — 超熱門務必早劃位"}, {"done": false, "id": "k4", "text": "租車(8/3·已對調 自駕1日) — 預約附中文導航/ETC"}], "section": "🎫 票券・預約"}, {"cat": "food", "items": [{"done": false, "id": "r1", "text": "柳川鰻魚せいろ蒸し(8/3午) 御花/若松屋/本吉屋 — 旺季建議預約"}, {"done": false, "id": "r2", "text": "もつ鍋おおやま 博多(8/4晚·輕鬆組) — 建議預約"}, {"done": false, "id": "r3", "text": "炉端百式 今泉/薬院(任一晚) — ★預約必須，海膽肉捲招牌，人均約¥8,000"}, {"done": false, "id": "r4", "text": "檪の丘 由布院早午餐(8/7) — 8:30開、可網路訂位"}], "section": "🍽️ 餐廳訂位"}, {"cat": "todo", "items": [{"done": false, "id": "o1", "text": "✅對調效益：8/3(週一)自駕→福島八幡宮開放，貓御守可現場買(免線上請購)"}, {"done": false, "id": "o2", "text": "能古島(彈性備案)：8月初向日葵尾段+酷暑，要去建議8/4上午半日、查官方X開花狀況"}, {"done": false, "id": "o3", "text": "夏季防曬/補水(8月福岡33–35°C濕熱)、別邸樹泡湯稅現金"}], "section": "📝 其他待辦"}];
+var COST_GROUPS = [{"id": "g1", "rows": [{"budget": 30744, "currency": "TWD", "display": "TWD $30,744", "id": "c1", "label": "改票後總票價(2成人)", "sub": "2成人×(14,176+1,196)"}, {"budget": 7360, "currency": "TWD", "display": "TWD $7,360", "id": "c2", "label": "本次改票實付差額", "sub": "前付28,036＋變更費4,600−退52"}, {"display": "TWD $30,744", "id": "sub-flight", "label": "機票合計(改票後)", "subtotal": true}], "title": "✈️ 機票 (TWD)"}, {"id": "g2", "rows": [{"budget": 39027, "currency": "TWD", "display": "TWD $39,027", "id": "c3", "label": "JR九州ブラッサム博多中央 4晚(8/2–8/6)", "sub": "✓已確認"}, {"budget": 37710, "currency": "TWD", "display": "TWD $37,710", "id": "c4", "label": "由布院別邸樹 1晚·一泊二食(8/6–8/7)", "sub": "✓已確認(原¥191,740)"}, {"display": "TWD $76,737", "id": "sub-hotel", "label": "住宿合計", "subtotal": true}], "title": "🏨 住宿 (TWD · 均2房4人總價)"}, {"id": "g3", "rows": [{"budget": 24000, "currency": "JPY", "display": "¥24,000（≈ TWD $5,050）", "id": "c5", "label": "ヨルシカ「一人称」福岡 8/4 ×2", "sub": "S席¥12,000×2；A席¥10,500×2=¥21,000"}, {"display": "¥24,000 ≈ TWD $5,050", "id": "sub-live", "label": "演唱會合計", "subtotal": true}], "title": "🎫 演唱會 (JPY)"}, {"id": "g4", "rows": [{"currency": "TWD", "display": "每人約 TWD $2,400–3,200", "id": "c6", "label": "阿蘇+高千穗一日遊 ×4(8/5)", "sub": "KKday/Klook，含划船略高"}, {"currency": "JPY", "display": "¥— 待查(約¥6,000/人來回)", "id": "c7", "label": "由布院之森 指定席來回 ×4(8/6–8/7)", "sub": "指定席旺季需早劃"}, {"currency": "JPY", "display": "¥— 待查(約¥8,000–12,000/日)", "id": "c8", "label": "租車1日(8/3)", "sub": "含保險/ETC"}, {"currency": "JPY", "display": "¥— 約¥1,500–2,000", "id": "c9", "label": "演唱會交通(計程車往返)", "sub": "場館無停車場"}], "title": "🚐 行程・交通"}];
 
- {id:"day-2",date:"8/3 一",title:"🚌 高千穗峽 + 阿蘇一日團",items:[
-   {time:"08:00",icon:"🚌",name:"博多筑紫口集合出發",desc:"KKday/Klook 中文一日團（Lawson 福岡東方飯店前）",link:""},
-   {time:"11:00",icon:"⛩",name:"天岩戸神社 + 天安河原",desc:"日本神話天照大神傳說地",link:"https://www.google.com/maps/search/?api=1&query=32.7344861,131.3507125"},
-   {time:"12:30",icon:"🥩",name:"高千穗牛 午餐",desc:"團費多已含",link:""},
-   {time:"14:00",icon:"🚣",name:"高千穗峽（真名井瀑布・可選划船）",desc:"日本百大瀑布；划船可加購由團代訂",link:"https://www.google.com/maps/search/?api=1&query=32.7024539,131.300921"},
-   {time:"16:00",icon:"🌋",name:"阿蘇 草千里ヶ浜",desc:"火山大草原；火口視解封狀況",link:"https://www.google.com/maps/search/?api=1&query=32.8818249,131.0533279"},
-   {time:"19:30",icon:"🚌",name:"回到博多",desc:"約 19:30–20:00 抵達博多站",link:""},
-   {time:"20:15",icon:"🍜",name:"宵夜拉麵",desc:"博多站周邊 / 中洲屋台",link:"https://www.google.com/maps/search/?api=1&query=33.5899407,130.4089399"}
- ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/2 住宿 · 第 2 晚 / 共 5 晚",price:""}},
 
- {id:"day-3",date:"8/4 二",title:"🎤 ヨルシカ 演唱會 · 天神",items:[
-   {time:"10:00",icon:"🛍",name:"天神逛街",desc:"天神地下街・PARCO・大名・西通り",link:"https://www.google.com/maps/search/?api=1&query=33.5887201,130.3999565"},
-   {time:"12:30",icon:"🍜",name:"牛腸鍋 / 拉麵 午餐",desc:"天神一帶名店",link:""},
-   {time:"15:00",icon:"☕",name:"咖啡・繼續逛 / 採購",desc:"逛累了找間咖啡廳歇腳",link:""},
-   {time:"16:30",icon:"🛎",name:"回飯店換裝・休息",desc:"養足精神看演唱會",link:""},
-   {time:"17:15",icon:"🍽",name:"早一點吃晚餐",desc:"19:00開演，會場周邊餐廳有限，建議博多/天神先吃飽",link:""},
-   {time:"18:00",icon:"🚕",name:"前往マリンメッセ福岡A館",desc:"博多/天神搭巴士或計程車約15–20分；濱海會場",link:"https://www.google.com/maps/search/?api=1&query=33.6071732,130.4021741"},
-   {time:"19:00",icon:"🎤",name:"ヨルシカ 演唱會（開演）",desc:"マリンメッセ福岡A館・S席/A席 2枚 ⚠️票僅2張，4人中2人入場",link:"https://www.google.com/maps/search/?api=1&query=33.6071732,130.4021741"},
-   {time:"19:00",icon:"🍢",name:"另2人：中洲屋台 / Canal City",desc:"沒票的2人可逛中洲、屋台、運河城，散場後會合",link:"https://www.google.com/maps/search/?api=1&query=33.5899407,130.4089399"},
-   {time:"21:30",icon:"🍜",name:"散場後會合・宵夜",desc:"演唱會約21:00–21:30結束，四人會合吃宵夜",link:""}
- ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/2 住宿 · 第 3 晚 / 共 5 晚",price:""}},
+// ── separator ──
 
- {id:"day-4",date:"8/5 三",title:"⛩ 太宰府 + 柳川（演唱會隔天悠閒）",items:[
-   {time:"09:30",icon:"🚃",name:"西鐵出發（太宰府柳川套票）",desc:"演唱會隔天，可晚點出發；西鐵套票划算",link:""},
-   {time:"10:10",icon:"⛩",name:"太宰府天満宮",desc:"本殿2026剛修復＋參道梅枝餅、隈研吾星巴克",link:"https://www.google.com/maps/search/?api=1&query=33.5213697,130.5348239"},
-   {time:"12:30",icon:"🍱",name:"柳川 鰻魚せいろ蒸し 午餐",desc:"柳川名物蒸籠鰻魚飯（本吉屋/若松屋）",link:""},
-   {time:"14:00",icon:"🚤",name:"柳川川下り（遊船）",desc:"運河遊船約40–50分，船夫唱歌；末班約15:00",link:"https://www.google.com/maps/search/?api=1&query=33.1671516,130.4154015"},
-   {time:"16:00",icon:"🌿",name:"柳川散策（御花・北原白秋故居）",desc:"舊藩主立花邸庭園",link:""},
-   {time:"17:30",icon:"🚃",name:"回博多・市區晚餐",desc:"西鐵返程",link:""}
- ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/2 住宿 · 第 4 晚 / 共 5 晚",price:""}},
+/* ==========================================================================
+   NZ V2 — Main App Logic
+   ========================================================================== */
+'use strict';
 
- {id:"day-5",date:"8/6 四",title:"🚗 糸島自駕一日",items:[
-   {time:"09:00",icon:"🚗",name:"博多取租車出發",desc:"備好駕照日文譯本（JAF）",link:""},
-   {time:"10:00",icon:"⛩",name:"二見ヶ浦 夫婦岩 + 白色鳥居",desc:"糸島地標，海上鳥居與夫婦岩",link:"https://www.google.com/maps/search/?api=1&query=33.640495,130.1964802"},
-   {time:"11:30",icon:"☕",name:"海邊咖啡 / 椰子樹鞦韆",desc:"ヤシの木ブランコ，海景打卡",link:""},
-   {time:"13:00",icon:"🦞",name:"糸島海鮮 BBQ / ざうお 午餐",desc:"現釣現烤海鮮",link:""},
-   {time:"14:30",icon:"💧",name:"白糸の滝",desc:"瀑布消暑＋夏季限定流水麵",link:"https://www.google.com/maps/search/?api=1&query=33.4801994,130.1754495"},
-   {time:"17:00",icon:"🌅",name:"二見ヶ浦看夕陽",desc:"糸島精華，傍晚回頭看夕陽最美",link:""},
-   {time:"19:00",icon:"🚗",name:"還車回博多・市區晚餐",desc:"還車後輕鬆覓食",link:""}
- ],hotel:{icon:"🏨",name:"都ホテル博多（連住）",desc:"同 8/2 住宿 · 第 5 晚 / 共 5 晚",price:""}},
+// ─── CONFIG ────────────────────────────────────────────────────────────────
+var FB_URL = 'https://nz-trip-2026-dd942-default-rtdb.asia-southeast1.firebasedatabase.app';
+var FB_NODE = 'fuk26';  // shared with v1
 
- {id:"day-6",date:"8/7 五",title:"🏯 小倉城 · 回程",items:[
-   {time:"09:00",icon:"🧳",name:"退房・寄放行李",desc:"行李寄飯店或博多站置物櫃",link:""},
-   {time:"10:00",icon:"🏯",name:"小倉城 + 旦過市場",desc:"新幹線約20分到小倉；福岡唯一天守閣",link:"https://www.google.com/maps/search/?api=1&query=33.8844357,130.8742541"},
-   {time:"13:00",icon:"🍜",name:"小倉 / 博多 午餐",desc:"旦過市場小吃或回博多",link:""},
-   {time:"15:00",icon:"🛍",name:"回博多取行李・最後採買",desc:"博多站伴手禮",link:""},
-   {time:"18:30",icon:"🚇",name:"地鐵前往福岡機場",desc:"博多→機場約 6 分鐘",link:""},
-   {time:"21:00",icon:"✈️",name:"CI117 福岡 → 台北桃園",desc:"22:30 抵達 · 飛行 2h30m",link:""}
- ],hotel:{icon:"✈️",name:"航班上（機上返程）",desc:"CI117 21:00 起飛",price:""}}
-];
+// Firebase Auth — required because rules now check auth.uid (privacy)
+var FB_API_KEY = 'AIzaSyAsgaRCbPY--Z14Ai5u102VqU06SozU19w';
+var FB_APP_EMAIL = 'claude-bot@nz-trip-2026.local';
+var AUTH_STORAGE_KEY = 'fukv2_auth';  // localStorage key, prefix per project
+var FB_TODOS = FB_NODE + '/todos';
+var FB_COSTS = FB_NODE + '/costs';
+var FB_ITIN  = FB_NODE + '/itinerary_v2';
+var FB_BOOK  = FB_NODE + '/bookings_v2';
+var FB_CG    = FB_NODE + '/cost_groups_v2';   // editable COST_GROUPS persistence
+var FB_FX    = FB_NODE + '/fx_v2';            // {nzd: 19.5}
+var FB_META  = FB_NODE + '/v2_meta';
 
-var PLACES = [
- {n:"都ホテル博多",lat:33.5897507,lng:130.4228429,type:"hotel",d:"8/2,8/3,8/4,8/5,8/6",x:"住宿基地・博多站筑紫口直結"},
- {n:"Canal City Hakata",lat:33.5896305,lng:130.4109478,type:"act",d:"8/2",x:"運河商城・噴水秀"},
- {n:"中洲屋台",lat:33.5899407,lng:130.4089399,type:"act",d:"8/2,8/3,8/4",x:"屋台拉麵・宵夜"},
- {n:"天岩戸神社",lat:32.7344861,lng:131.3507125,type:"act",d:"8/3",x:"神話舞台"},
- {n:"高千穗峽 真名井瀑布",lat:32.7024539,lng:131.300921,type:"act",d:"8/3",x:"日本百大瀑布・划船"},
- {n:"白川水源",lat:32.8253719,lng:131.0953099,type:"act",d:"8/3",x:"南阿蘇名水（部分團含）"},
- {n:"阿蘇 草千里ヶ浜",lat:32.8818249,lng:131.0533279,type:"act",d:"8/3",x:"火山大草原"},
- {n:"天神地下街（逛街）",lat:33.5887201,lng:130.3999565,type:"act",d:"8/4",x:"天神購物核心"},
- {n:"マリンメッセ福岡A館（ヨルシカ）",lat:33.6071732,lng:130.4021741,type:"act",d:"8/4",x:"演唱會會場・濱海"},
- {n:"太宰府天満宮",lat:33.5213697,lng:130.5348239,type:"act",d:"8/5",x:"學問之神・本殿剛修復"},
- {n:"柳川川下り 松月乗船場",lat:33.1671516,lng:130.4154015,type:"act",d:"8/5",x:"運河遊船・鰻魚せいろ蒸し"},
- {n:"二見ヶ浦 夫婦岩",lat:33.640495,lng:130.1964802,type:"act",d:"8/6",x:"糸島地標・海上鳥居"},
- {n:"白糸の滝",lat:33.4801994,lng:130.1754495,type:"act",d:"8/6",x:"瀑布・流水麵"},
- {n:"小倉城",lat:33.8844357,lng:130.8742541,type:"act",d:"8/7",x:"福岡唯一天守閣"}
-];
+// Bump DATA_VERSION whenever HTML's TRIP_DATA/BOOKING_DATA/COST_GROUPS structure changes.
+var DATA_VERSION = 2;
 
-var RECS = {
- "天神":{recs:["PARCO — 年輕潮流，CHIIKAWA LAND 等動漫專賣","大名・西通り — 個性小店與咖啡","唐吉訶德天神 — 24h 藥妝零食一站買齊"],urgency:"free",urgencyText:"✓ 免預約"},
- "二見ヶ浦":{recs:["白色鳥居與夫婦岩 — 必拍","附近 PALM BEACH 海景咖啡","傍晚回來看夕陽最美"],urgency:"free",urgencyText:"✓ 免費"},
- "白糸の滝":{recs:["夏季限定流水麵","瀑布步道約 25 分鐘，穿好走的鞋","ヤマメ釣り體驗"],urgency:"free",urgencyText:"✓ 免費"},
- "高千穗峽":{recs:["划船看真名井瀑布（精華）","千穂之家 元祖流水麵（15:30 前）","槍飛橋看三橋同框"],urgency:"book",urgencyText:"⚡ 划船需預約"},
- "草千里":{recs:["火山大草原＋放牧馬","火口目前封閉，草千里照常開","火山博物館可避暑"],urgency:"free",urgencyText:"✓ 免費"},
- "太宰府":{recs:["參道梅枝餅必吃","本殿2026剛修復完工","星巴克太宰府表參道店（隈研吾設計）"],urgency:"free",urgencyText:"✓ 免預約"},
- "柳川":{recs:["川下り遊船船夫會唱歌","鰻魚せいろ蒸し（蒸籠鰻魚飯）必吃","太宰府柳川套票最划算","夏天記得帶帽子防曬"],urgency:"free",urgencyText:"✓ 套票划算"},
- "小倉城":{recs:["天守閣最上層咖啡看市景","旦過市場逛吃","入城費一般約500日元"],urgency:"free",urgencyText:"✓ 免預約"}
+// Default FX rate (TWD per 1 NZD) — editable by user.
+var DEFAULT_NZD_RATE = 0.21;  // TWD per 1 unit foreign currency
+
+// ─── UTILS ─────────────────────────────────────────────────────────────────
+function $id(id){return document.getElementById(id);}
+function $q(sel,p){return (p||document).querySelector(sel);}
+function $qa(sel,p){return Array.prototype.slice.call((p||document).querySelectorAll(sel));}
+function escHtml(s){if(s==null)return '';return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function toast(msg){var t=$id('toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove('show');},1600);}
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+var state = {
+  curDay: 0,
+  curView: 'itin',    // itin or map (per-day)
+  curNav: 'itin',     // itin / book / cost
+  editMode: false,
+  todoStates: {},     // todo id → done bool
+  costActuals: {},    // cost key → actual amount (in row's currency)
+  costDirty: false,
+  fxRate: DEFAULT_NZD_RATE,  // TWD per NZD; editable
+  itinDirty: false,
+  bookDirty: false,
+  longPressTimer: null,
+  longPressTab: null,
+  dragSrc: null,
+  dragSrcDay: null,
+  costDragSrc: null,        // {gIdx, rIdx}
+  // Auth (loaded from localStorage on init)
+  idToken: null,
+  refreshToken: null,
+  idTokenExpiry: 0,
 };
 
-/* ============ Firebase ============ */
-var FB_URL='https://nz-trip-2026-dd942-default-rtdb.asia-southeast1.firebasedatabase.app';
-var FB_NODE='fuk26';
-
-/* ============ Logic ============ */
-function categorize(it){
-  var s=(it.icon||'')+(it.name||'')+(it.desc||'');
-  if(/🍔|🍜|🍽|🥩|☕|🦞|早餐|午餐|晚餐|拉麵|宵夜|café|咖啡/.test(s))return['food','餐飲','var(--food)'];
-  if(/✈️|🚗|🛬|🚕|🚌|⛴|🚇|🧳|check|退房|轉機|地鐵|新幹線|租車/.test(s))return['transport','交通','var(--transport)'];
-  if(/♨️|🚁|⭐|🚢|✨|🚣|🌅/.test(s))return['exp','體驗','var(--exp)'];
-  if(/🛍|逛街|採買|購物/.test(s))return['shop','購物','var(--shop)'];
-  return['sight','觀光','var(--sight)'];
-}
-function recKey(name){for(var k in RECS){if(name.indexOf(k)>-1)return k;}return null;}
-
-var cur=0,map=null,markers=[],mapsReady=false;
-
-function buildTabs(){
-  var t=document.getElementById('dayTabs');t.innerHTML='';
-  TRIP_DATA.forEach(function(d,i){
-    var el=document.createElement('div');el.className='day-tab'+(i===cur?' active':'');
-    el.innerHTML='<div class="dt-d">'+d.date+'</div><div class="dt-t">'+d.title.replace(/^[^\s]+\s/,'')+'</div>';
-    el.onclick=function(){cur=i;render();};
-    t.appendChild(el);
-  });
-}
-function buildPanels(){
-  var p=document.getElementById('panels');p.innerHTML='';
-  TRIP_DATA.forEach(function(d,i){
-    var panel=document.createElement('div');panel.className='day-panel'+(i===cur?' active':'');panel.id=d.id;
-    var h='<div class="dp-header"><div class="dp-title">'+d.title+'</div>'+
-      '<div class="dp-toggle"><button class="dp-btn active" onclick="toggleView('+i+',0)">行程</button>'+
-      '<button class="dp-btn" onclick="toggleView('+i+',1)">地圖</button></div></div>';
-    h+='<div class="cards-box" id="cards-'+i+'">';
-    d.items.forEach(function(it,j){
-      h+='<div class="card-add-between"><button onclick="addItem('+i+','+j+')">＋ 在此加入</button></div>';
-      h+=cardHTML(it,i,j);
-    });
-    h+='<div class="card-add-between"><button onclick="addItem('+i+','+d.items.length+')">＋ 加到最後</button></div>';
-    h+=hotelHTML(d.hotel,i);
-    h+='</div>';
-    h+='<div class="map-box" id="map-'+i+'"></div>';
-    panel.innerHTML=h;
-    p.appendChild(panel);
-  });
-  bindDrag();
-}
-function cardHTML(it,i,j){
-  var c=categorize(it);var rk=recKey(it.name);
-  var h='<div class="card" data-day="'+i+'" data-idx="'+j+'" draggable="false">';
-  h+='<button class="card-drag" title="拖曳">⠿</button><button class="card-del" onclick="delItem('+i+','+j+')">×</button>';
-  h+='<div class="c-top"><div class="c-icon">'+(it.icon||'📍')+'</div><div class="c-body">';
-  h+='<div class="c-time editable" data-f="time" data-day="'+i+'" data-idx="'+j+'">'+(it.time||'')+'</div>';
-  h+='<div class="c-name editable" data-f="name" data-day="'+i+'" data-idx="'+j+'">'+it.name+'</div>';
-  if(it.desc)h+='<div class="c-desc editable" data-f="desc" data-day="'+i+'" data-idx="'+j+'">'+it.desc+'</div>';
-  h+='<div class="c-tags"><span class="c-tag" style="background:'+c[2]+'22;color:'+c[2]+'">'+c[1]+'</span>';
-  if(rk)h+='<span class="c-tag" style="background:var(--glass2);color:var(--txt2)">'+RECS[rk].urgencyText+'</span>';
-  h+='</div>';
-  var q=it.link&&it.link.indexOf('query=')>-1?it.link:('https://www.google.com/maps/search/'+encodeURIComponent(it.name+' 福岡'));
-  h+='<div class="c-act"><a href="'+q+'" target="_blank">🗺 導航</a>';
-  h+='<a href="https://www.google.com/maps/search/'+encodeURIComponent('restaurant near '+it.name)+'" target="_blank">🍽 附近</a>';
-  if(it.link&&it.link.indexOf('http')===0&&it.link.indexOf('maps')===-1)h+='<a href="'+it.link+'" target="_blank">🔗 官網</a>';
-  h+='</div>';
-  if(rk){h+='<button class="card-expand-btn" onclick="toggleRec(this)">📌 推薦地點</button><div class="card-details">';
-    RECS[rk].recs.forEach(function(r){h+='<div class="rec-item">'+r+'</div>';});h+='</div>';}
-  h+='</div></div></div>';
-  return h;
-}
-function hotelHTML(ho,i){
-  if(!ho)return'';
-  return '<div class="card card-hotel" data-hotel="'+i+'"><div class="c-top"><div class="c-icon">'+(ho.icon||'🏨')+'</div><div class="c-body">'+
-    '<div class="c-time">住宿</div>'+
-    '<div class="c-name editable" data-f="hname" data-day="'+i+'">'+ho.name+'</div>'+
-    (ho.desc?'<div class="c-desc editable" data-f="hdesc" data-day="'+i+'">'+ho.desc+'</div>':'')+
-    (ho.price?'<div class="c-tags"><span class="c-tag" style="background:var(--hotel)22;color:var(--hotel)">'+ho.price+'</span></div>':'')+
-    '</div></div></div>';
-}
-function toggleRec(b){b.nextElementSibling.classList.toggle('open');}
-function toggleView(i,m){
-  var cards=document.getElementById('cards-'+i),mp=document.getElementById('map-'+i);
-  var btns=document.querySelectorAll('#'+TRIP_DATA[i].id+' .dp-btn');
-  btns[0].classList.toggle('active',m===0);btns[1].classList.toggle('active',m===1);
-  cards.classList.toggle('hide',m===1);mp.classList.toggle('show',m===1);
-  if(m===1)initMap(i);
-}
-
-/* progress */
+// ─── PROGRESS BAR ──────────────────────────────────────────────────────────
 function updateProgress(){
-  var d=TRIP_DATA[cur];var done=d.items.filter(function(x){return x._done;}).length;
-  var pct=Math.round(done/d.items.length*100);
-  document.getElementById('progFill').style.width=pct+'%';
-  document.getElementById('progLabel').textContent=d.date+' · 共 '+d.items.length+' 個行程';
+  var done=0,total=0;
+  for(var i=0;i<BOOKING_DATA.length;i++){
+    var sec=BOOKING_DATA[i];
+    for(var j=0;j<sec.items.length;j++){
+      total++;
+      var id=sec.items[j].id;
+      if(state.todoStates[id]||sec.items[j].done) done++;
+    }
+  }
+  var pct = total>0?(done/total*100):0;
+  var fill=$id('progress-fill'); if(fill)fill.style.width=pct+'%';
+  var bp=$id('book-progress'); if(bp)bp.textContent=done+'/'+total;
 }
 
-/* maps */
-function initMap(i){
-  if(!mapsReady){return;}
-  var box=document.getElementById('map-'+i);if(box._init)return;box._init=true;
-  var dateKey=TRIP_DATA[i].date.split(' ')[0];
-  var pts=PLACES.filter(function(p){return p.d.indexOf(dateKey)>-1;});
-  if(!pts.length){box.innerHTML='<div style="padding:30px;text-align:center;color:var(--txt3)">本日無地圖座標</div>';return;}
-  var style=[{elementType:"geometry",stylers:[{color:"#1e2235"}]},{elementType:"labels.text.stroke",stylers:[{color:"#0a0e1a"}]},{elementType:"labels.text.fill",stylers:[{color:"#9ca3af"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#0e1626"}]},{featureType:"road",elementType:"geometry",stylers:[{color:"#2a2f45"}]},{featureType:"poi",elementType:"labels",stylers:[{visibility:"off"}]}];
-  var m=new google.maps.Map(box,{zoom:10,center:{lat:pts[0].lat,lng:pts[0].lng},styles:style,disableDefaultUI:true,gestureHandling:'greedy'});
-  var bounds=new google.maps.LatLngBounds();
-  pts.forEach(function(p,k){
-    var mk=new google.maps.Marker({position:{lat:p.lat,lng:p.lng},map:m,
-      label:{text:String(k+1),color:'#04121a',fontWeight:'700'},
-      icon:{path:google.maps.SymbolPath.CIRCLE,scale:13,fillColor:p.type==='hotel'?'#f472b6':'#2dd4bf',fillOpacity:1,strokeWeight:0}});
-    var iw=new google.maps.InfoWindow({content:'<div style="color:#111;font-size:13px"><b>'+p.n+'</b><br>'+p.x+'<br><a href="https://www.google.com/maps/search/?api=1&query='+p.lat+','+p.lng+'" target="_blank">🗺 導航</a></div>'});
-    mk.addListener('click',function(){iw.open(m,mk);});
-    bounds.extend(mk.position);
+// ─── RENDER DAY TABS ───────────────────────────────────────────────────────
+function renderTabs(){
+  var c=$id('day-tabs'); if(!c)return;
+  c.innerHTML='';
+  var wd={'一':'MON','二':'TUE','三':'WED','四':'THU','五':'FRI','六':'SAT','日':'SUN'};
+  for(var i=0;i<TRIP_DATA.length;i++){
+    var d=TRIP_DATA[i];
+    var parts=(d.date||'').split(' ');
+    var dt=parts[0]||'';
+    var w=parts[1]||'';
+    var icon=(d.title||'').match(/^(\p{Emoji}+)/u);
+    var iconChar=icon?icon[1]:'';
+    var btn=document.createElement('button');
+    btn.className='day-tab'+(i===state.curDay?' active':'');
+    btn.setAttribute('data-day',i);
+    btn.draggable=false;  // enabled in edit mode
+    btn.innerHTML=
+      (iconChar?'<span class="dt-icon">'+escHtml(iconChar)+'</span>':'')+
+      '<span class="dt-d">'+escHtml(dt)+'</span>'+
+      '<span class="dt-wd">'+escHtml(wd[w]||w)+'</span>';
+    c.appendChild(btn);
+  }
+}
+
+// ─── RENDER DAY PANEL ──────────────────────────────────────────────────────
+function renderPanel(idx){
+  var d=TRIP_DATA[idx]; if(!d)return;
+  var c=$id('panels-container'); if(!c)return;
+  c.innerHTML='';
+
+  var panel=document.createElement('section');
+  panel.className='day-panel active';
+  panel.id='day-panel';
+  panel.setAttribute('data-day',idx);
+
+  // Header
+  var hdr=document.createElement('div');
+  hdr.className='dp-header';
+  hdr.innerHTML='<div class="dp-title">'+escHtml(d.title||'')+'</div>'+
+                '<div class="dp-sub">'+escHtml(d.date||'')+' · 第 '+(idx+1)+' 天 / 共 '+TRIP_DATA.length+' 天</div>';
+  panel.appendChild(hdr);
+
+  // Toggle: 行程 / 地圖
+  var tg=document.createElement('div');
+  tg.className='dp-toggle';
+  tg.innerHTML='<button class="dp-btn '+(state.curView==='itin'?'active':'')+'" data-view="itin">📋 行程</button>'+
+               '<button class="dp-btn '+(state.curView==='map'?'active':'')+'" data-view="map">🗺 地圖</button>';
+  panel.appendChild(tg);
+
+  // ITINERARY
+  var itin=document.createElement('div');
+  itin.className='dp-itin'+(state.curView==='map'?' hidden':'');
+  itin.id='dp-itin';
+
+  // Render items with add-between
+  if(state.editMode){
+    itin.appendChild(makeAddBetween(idx,0));
+  }
+  for(var i=0;i<d.items.length;i++){
+    itin.appendChild(makeCard(d.items[i],idx,i));
+    if(state.editMode){
+      itin.appendChild(makeAddBetween(idx,i+1));
+    }
+  }
+  // Hotel card
+  if(d.hotel && (d.hotel.name||d.hotel.icon)){
+    itin.appendChild(makeHotelCard(d.hotel,idx));
+  }
+  panel.appendChild(itin);
+
+  // MAP container
+  var map=document.createElement('div');
+  map.className='dp-map'+(state.curView==='map'?' active':'');
+  map.id='dp-map';
+  map.innerHTML='<div class="dp-map-inner" id="map-inner"></div>';
+  panel.appendChild(map);
+
+  c.appendChild(panel);
+
+  if(state.curView==='map'){
+    setTimeout(function(){renderMap(idx);},50);
+  }
+}
+
+function makeCard(item,dayIdx,itemIdx){
+  var card=document.createElement('div');
+  card.className='card';
+  card.draggable=false;
+  card.setAttribute('data-day',dayIdx);
+  card.setAttribute('data-item',itemIdx);
+
+  // Drag handle
+  var dh=document.createElement('span');
+  dh.className='card-drag-handle';
+  dh.textContent='⋮⋮';
+  card.appendChild(dh);
+
+  // Delete button
+  var del=document.createElement('button');
+  del.className='card-del';
+  del.innerHTML='✕';
+  del.setAttribute('data-act','del-item');
+  card.appendChild(del);
+
+  // Content
+  var ct=document.createElement('div');
+  ct.className='ct';
+  ct.innerHTML=
+    '<span class="c-time" data-field="time" data-day="'+dayIdx+'" data-item="'+itemIdx+'">'+escHtml(item.time||'')+'</span>'+
+    '<span class="c-icon" data-field="icon" data-day="'+dayIdx+'" data-item="'+itemIdx+'">'+escHtml(item.icon||'')+'</span>'+
+    '<span class="c-name" data-field="name" data-day="'+dayIdx+'" data-item="'+itemIdx+'">'+escHtml(item.name||'')+'</span>';
+  card.appendChild(ct);
+
+  if(item.desc){
+    var desc=document.createElement('div');
+    desc.className='c-desc';
+    desc.setAttribute('data-field','desc');
+    desc.setAttribute('data-day',dayIdx);
+    desc.setAttribute('data-item',itemIdx);
+    desc.textContent=item.desc;
+    card.appendChild(desc);
+  } else if(state.editMode){
+    var desc=document.createElement('div');
+    desc.className='c-desc';
+    desc.setAttribute('data-field','desc');
+    desc.setAttribute('data-day',dayIdx);
+    desc.setAttribute('data-item',itemIdx);
+    desc.style.color='var(--txt3)';
+    desc.style.fontStyle='italic';
+    desc.textContent='(點擊新增說明)';
+    card.appendChild(desc);
+  }
+
+  // Tags (urgency / status badges from v1)
+  if(item.tags && item.tags.length){
+    var tags=document.createElement('div');
+    tags.className='c-tags';
+    for(var ti=0;ti<item.tags.length;ti++){
+      var t=item.tags[ti];
+      var span=document.createElement('span');
+      span.className='c-tag';
+      // Color hints based on tag content
+      if(/🔴|立即|urgent/i.test(t)){span.classList.add('book');span.style.color='var(--danger)';span.style.borderColor='rgba(248,113,113,0.35)';}
+      else if(/⚡|前訂|需預約|book/i.test(t)){span.classList.add('book');}
+      else if(/✓|✅|已訂|done/i.test(t)){span.classList.add('done');}
+      span.textContent=t;
+      tags.appendChild(span);
+    }
+    card.appendChild(tags);
+  }
+
+  // Links (官網 / 訂位 / etc.)
+  if(item.links && item.links.length){
+    var linksWrap=document.createElement('div');
+    linksWrap.className='c-tags';
+    linksWrap.style.marginTop='4px';
+    for(var li=0;li<item.links.length;li++){
+      var l=item.links[li];
+      var a=document.createElement('a');
+      a.className='c-tag';
+      a.style.color='var(--accent)';
+      a.style.borderColor='rgba(45,212,191,0.3)';
+      a.style.cursor='pointer';
+      a.href=l.url;
+      a.target='_blank';
+      a.rel='noopener';
+      a.textContent='🔗 '+l.text;
+      linksWrap.appendChild(a);
+    }
+    card.appendChild(linksWrap);
+  }
+
+  return card;
+}
+
+function makeHotelCard(h,dayIdx){
+  var card=document.createElement('div');
+  card.className='card card-hotel';
+  card.setAttribute('data-day',dayIdx);
+  card.setAttribute('data-hotel','1');
+
+  var grid=document.createElement('div');
+  grid.className='hotel-grid';
+  grid.innerHTML=
+    '<span class="h-icon" data-field="hicon" data-day="'+dayIdx+'">'+escHtml(h.icon||'🏨')+'</span>'+
+    '<div>'+
+      '<div class="h-name" data-field="hname" data-day="'+dayIdx+'">'+escHtml(h.name||'')+'</div>'+
+      (h.desc?'<div class="h-desc" data-field="hdesc" data-day="'+dayIdx+'">'+escHtml(h.desc)+'</div>':
+       (state.editMode?'<div class="h-desc" data-field="hdesc" data-day="'+dayIdx+'" style="color:var(--txt3);font-style:italic">(點擊新增說明)</div>':''))+
+    '</div>'+
+    '<div class="h-price" data-field="hprice" data-day="'+dayIdx+'">'+escHtml(h.price||'')+'</div>';
+  card.appendChild(grid);
+  return card;
+}
+
+function makeAddBetween(dayIdx,insertAt){
+  var div=document.createElement('div');
+  div.className='card-add-between';
+  div.setAttribute('data-act','add-between');
+  div.setAttribute('data-day',dayIdx);
+  div.setAttribute('data-at',insertAt);
+  div.textContent='＋ 在此插入新項目';
+  return div;
+}
+
+// ─── SWITCH DAY ────────────────────────────────────────────────────────────
+function switchDay(idx){
+  if(idx<0||idx>=TRIP_DATA.length)return;
+  state.curDay=idx;
+  $qa('.day-tab').forEach(function(t,i){t.classList.toggle('active',i===idx);});
+  renderPanel(idx);
+  // scroll active tab into view
+  var active=$q('.day-tab.active');
+  if(active && active.scrollIntoView){active.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+}
+
+// ─── VIEW TOGGLE (itin/map per day) ────────────────────────────────────────
+function switchView(v){
+  state.curView=v;
+  renderPanel(state.curDay);
+}
+
+// ─── BOTTOM NAV ────────────────────────────────────────────────────────────
+function openSheet(which){
+  $id('ov-'+which).classList.add('show');
+  $id('sh-'+which).classList.add('show');
+}
+function closeSheets(){
+  $qa('.sheet-overlay').forEach(function(o){o.classList.remove('show');});
+  $qa('.sheet').forEach(function(s){s.classList.remove('show');});
+  $qa('.bnav-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-nav')==='itin');});
+  state.curNav='itin';
+}
+
+function handleNav(nav){
+  if(nav==='edit'){
+    toggleEditMode();
+    return;
+  }
+  state.curNav=nav;
+  $qa('.bnav-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-nav')===nav);});
+  if(nav==='itin'){
+    closeSheets();
+    return;
+  }
+  // book or cost
+  $qa('.sheet-overlay').forEach(function(o){o.classList.remove('show');});
+  $qa('.sheet').forEach(function(s){s.classList.remove('show');});
+  if(nav==='book'){
+    renderBooking();
+    openSheet('book');
+  } else if(nav==='cost'){
+    renderCost();
+    openSheet('cost');
+  }
+}
+
+// ─── BOOKING ───────────────────────────────────────────────────────────────
+function renderBooking(){
+  var c=$id('book-list');if(!c)return;
+  c.innerHTML='';
+  for(var i=0;i<BOOKING_DATA.length;i++){
+    var sec=BOOKING_DATA[i];
+    var div=document.createElement('div');
+    div.className='bs-section';
+    div.setAttribute('data-cat',sec.cat);
+    var title=document.createElement('div');
+    title.className='bs-section-title';
+    title.textContent=sec.section;
+    div.appendChild(title);
+    for(var j=0;j<sec.items.length;j++){
+      var it=sec.items[j];
+      var done=state.todoStates[it.id]!==undefined ? state.todoStates[it.id] : it.done;
+      var row=document.createElement('div');
+      row.className='bs-todo'+(done?' done':'');
+      row.setAttribute('data-id',it.id);
+      row.setAttribute('data-cat',sec.cat);
+      row.innerHTML=
+        '<div class="bs-todo-cb"></div>'+
+        '<div class="bs-todo-text">'+escHtml(it.text)+'</div>'+
+        '<div class="bs-todo-del" data-act="del-todo">✕</div>';
+      div.appendChild(row);
+    }
+    c.appendChild(div);
+  }
+  // Add-row at bottom (smart categorization)
+  var addRow=document.createElement('div');
+  addRow.className='bs-add-row';
+  addRow.innerHTML=
+    '<div class="row">'+
+      '<select id="new-todo-cat">'+
+        '<option value="auto">🪄 自動分類</option>'+
+        '<option value="hotel">🏨 住宿</option>'+
+        '<option value="transport">✈️ 交通</option>'+
+        '<option value="activity">🎡 活動</option>'+
+        '<option value="food">🍜 美食</option>'+
+        '<option value="restaurant">🍽️ 餐廳</option>'+
+      '</select>'+
+      '<input type="text" id="new-todo-text" placeholder="新增待辦事項...">'+
+    '</div>'+
+    '<button class="bs-add-btn" id="bs-add-btn">＋ 新增</button>';
+  c.appendChild(addRow);
+
+  // Attach handler — null-safe (rule 9)
+  var addBtn=$id('bs-add-btn');
+  if(addBtn){addBtn.addEventListener('click',handleAddTodo);}
+  var inp=$id('new-todo-text');
+  if(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter')handleAddTodo();});}
+
+  updateProgress();
+}
+
+function handleAddTodo(){
+  var inp=$id('new-todo-text'); if(!inp)return;
+  var text=inp.value.trim(); if(!text)return;
+  var sel=$id('new-todo-cat');
+  var cat=sel?sel.value:'auto';
+
+  if(cat==='auto') cat=guessCategory(text);
+
+  // Find target section
+  var target=null;
+  for(var i=0;i<BOOKING_DATA.length;i++){
+    if(BOOKING_DATA[i].cat===cat){target=BOOKING_DATA[i];break;}
+  }
+  if(!target) target=BOOKING_DATA[BOOKING_DATA.length-1];
+  var newId='t'+Date.now();
+  target.items.push({id:newId,text:text,done:false});
+  state.bookDirty=true;
+  inp.value='';
+  renderBooking();
+  toast('已新增到「'+target.section+'」');
+  syncBooking();
+}
+
+function guessCategory(text){
+  var t=text.toLowerCase();
+  var rules=[
+    ['hotel',/住宿|酒店|hotel|airbnb|民宿|villa|resort|hostel|入住|check\s*in/i],
+    ['transport',/機票|航班|轉機|租車|租機車|包車|計程車|uber|taxi|火車|高鐵|地鐵|公車|巴士|渡輪|船|ferry|flight|train|bus/i],
+    ['restaurant',/訂位|預約|reservation|餐廳|restaurant/i],
+    ['food',/吃|喝|早餐|午餐|晚餐|宵夜|甜點|小吃|brunch|breakfast|lunch|dinner|café|coffee|tea/i],
+    ['activity',/票|門票|預訂|booking|ticket|tour|體驗|spa|按摩|massage|gondola|cable|cruise|表演|show|博物館|museum/i],
+  ];
+  for(var i=0;i<rules.length;i++){
+    if(rules[i][1].test(t))return rules[i][0];
+  }
+  return 'activity';
+}
+
+// ─── COST ──────────────────────────────────────────────────────────────────
+// FX conversion: returns TWD amount given (amount, currency)
+function toTWD(amount, currency){
+  if(!currency || currency==='TWD') return amount;
+  if(currency==='NZD') return Math.round(amount * state.fxRate);
+  return amount;
+}
+function fmtMoney(twdAmount){
+  return 'TWD $' + Math.round(twdAmount).toLocaleString();
+}
+function fmtMoneyWithCurr(amount, currency){
+  // Display "NZD $123 (≈ TWD $2,400)" if currency is not TWD; else just "TWD $X"
+  if(!currency || currency==='TWD'){
+    return 'TWD $' + amount.toLocaleString();
+  }
+  var twd = toTWD(amount, currency);
+  return currency + ' $' + amount.toLocaleString() + ' <span class="csub-inline">≈ ' + fmtMoney(twd) + '</span>';
+}
+// rowActualTWD: returns the TWD value of a row using actual if set, else budget
+function rowActualTWD(row){
+  if(row.subtotal) return 0;
+  var amt = (state.costActuals[row.id]!=null) ? state.costActuals[row.id] : (row.budget||0);
+  return toTWD(amt, row.currency||'TWD');
+}
+
+function renderCost(){
+  var c=$id('cost-list');if(!c)return;
+  c.innerHTML='';
+
+  // ── FX setting row ──
+  var fxRow=document.createElement('div');
+  fxRow.className='cost-fx';
+  fxRow.innerHTML=
+    '<span class="fx-label">💱 匯率</span>'+
+    '<span class="fx-pair">1 NZD =</span>'+
+    '<input type="number" id="fx-input" step="0.1" min="0" value="'+state.fxRate+'" style="width:60px">'+
+    '<span class="fx-pair">TWD</span>'+
+    '<span class="fx-hint" id="fx-hint"></span>';
+  c.appendChild(fxRow);
+
+  // ── Hint ──
+  var hint=document.createElement('div');
+  hint.className='cost-hint';
+  hint.innerHTML=state.editMode ?
+    '✏️ 編輯模式：拖曳項目重排/搬家 · ✕ 刪除 · ＋ 新增 · 雙擊任意文字編輯' :
+    '💡 雙擊金額可輸入實際花費 · 點右下「✏️ 編輯」進入完整編輯模式';
+  c.appendChild(hint);
+
+  // ── Live summary (will be recalculated after FX changes) ──
+  var budget=0, actual=0;
+  for(var i=0;i<COST_GROUPS.length;i++){
+    var g=COST_GROUPS[i];
+    for(var j=0;j<g.rows.length;j++){
+      var r=g.rows[j];
+      if(r.subtotal)continue;
+      var bTWD = toTWD(r.budget||0, r.currency||'TWD');
+      budget += bTWD;
+      if(state.costActuals[r.id]!=null){
+        actual += toTWD(state.costActuals[r.id], r.currency||'TWD');
+      }
+    }
+  }
+  var summ=document.createElement('div');
+  summ.className='cs-summary';
+  summ.innerHTML=
+    '<div class="cs-summary-card"><div class="label">預算合計</div><div class="value">'+fmtMoney(budget)+'</div></div>'+
+    '<div class="cs-summary-card"><div class="label">已知實際</div><div class="value" style="color:var(--ok)">'+fmtMoney(actual)+'</div></div>';
+  c.appendChild(summ);
+
+  // ── D feature: "Pull amounts from itinerary" button (edit mode only) ──
+  if(state.editMode){
+    var pullBtn=document.createElement('button');
+    pullBtn.className='cost-pull-btn';
+    pullBtn.id='cost-pull-btn';
+    pullBtn.innerHTML='🪄 從行程吸取金額';
+    pullBtn.title='掃描行程，找出含金額但尚未列在費用裡的項目';
+    c.appendChild(pullBtn);
+  }
+
+  // ── Groups ──
+  for(var gi=0;gi<COST_GROUPS.length;gi++){
+    var g=COST_GROUPS[gi];
+    var div=document.createElement('div');
+    div.className='cs-group';
+    div.setAttribute('data-gid',g.id);
+    div.setAttribute('data-gidx',gi);
+
+    var titleRow=document.createElement('div');
+    titleRow.className='cs-group-title-row';
+    var title=document.createElement('span');
+    title.className='cs-group-title';
+    title.setAttribute('data-field','group-title');
+    title.setAttribute('data-gidx',gi);
+    title.textContent=g.title;
+    titleRow.appendChild(title);
+    if(state.editMode){
+      var delGroup=document.createElement('button');
+      delGroup.className='cs-del-group';
+      delGroup.setAttribute('data-act','del-group');
+      delGroup.setAttribute('data-gidx',gi);
+      delGroup.title='刪除整組';
+      delGroup.innerHTML='🗑';
+      titleRow.appendChild(delGroup);
+    }
+    div.appendChild(titleRow);
+
+    for(var ri=0;ri<g.rows.length;ri++){
+      var r=g.rows[ri];
+      if(r.subtotal){
+        // recalculate live subtotal in TWD
+        var subSum=0;
+        for(var k=0;k<g.rows.length;k++){
+          if(g.rows[k].subtotal)continue;
+          subSum += rowActualTWD(g.rows[k]);
+        }
+        var sr=document.createElement('div');
+        sr.className='cs-sub';
+        sr.innerHTML='<span>'+escHtml(r.label)+'</span><span class="am">'+fmtMoney(subSum)+'</span>';
+        div.appendChild(sr);
+      } else {
+        var rr=document.createElement('div');
+        rr.className='cs-row';
+        rr.setAttribute('data-gidx',gi);
+        rr.setAttribute('data-ridx',ri);
+        rr.setAttribute('data-rid',r.id);
+        rr.draggable=false;
+
+        var hasActual=state.costActuals[r.id]!=null;
+        var displayAmt=hasActual ? state.costActuals[r.id] : (r.budget||0);
+        var curr=r.currency||'TWD';
+
+        var dh='';
+        if(state.editMode){
+          dh='<span class="cs-drag-handle">⋮⋮</span>';
+        }
+        var delBtn='';
+        if(state.editMode){
+          delBtn='<button class="cs-del-row" data-act="del-row" data-gidx="'+gi+'" data-ridx="'+ri+'">✕</button>';
+        }
+        // Currency picker (edit-mode only)
+        var currPicker='';
+        if(state.editMode){
+          currPicker='<select class="cs-curr-picker" data-act="curr" data-gidx="'+gi+'" data-ridx="'+ri+'">'+
+            '<option value="TWD"'+(curr==='TWD'?' selected':'')+'>TWD</option>'+
+            '<option value="NZD"'+(curr==='NZD'?' selected':'')+'>NZD</option>'+
+          '</select>';
+        }
+
+        rr.innerHTML=
+          dh+
+          '<div class="cl">'+
+            '<span class="cl-label" data-field="label" data-gidx="'+gi+'" data-ridx="'+ri+'">'+escHtml(r.label)+'</span>'+
+            (r.sub?'<span class="csub" data-field="sub" data-gidx="'+gi+'" data-ridx="'+ri+'">'+escHtml(r.sub)+'</span>'
+                  : (state.editMode?'<span class="csub csub-empty" data-field="sub" data-gidx="'+gi+'" data-ridx="'+ri+'">(點擊新增說明)</span>':''))+
+          '</div>'+
+          currPicker+
+          '<span class="am editable'+(hasActual?' has-actual':'')+'" data-key="'+escHtml(r.id)+'" data-gidx="'+gi+'" data-ridx="'+ri+'">'+
+            fmtMoneyWithCurr(displayAmt, curr)+
+          '</span>'+
+          delBtn;
+        div.appendChild(rr);
+      }
+    }
+
+    // ＋ add row (edit mode)
+    if(state.editMode){
+      var addBtn=document.createElement('button');
+      addBtn.className='cs-add-row-btn';
+      addBtn.setAttribute('data-act','add-row');
+      addBtn.setAttribute('data-gidx',gi);
+      addBtn.textContent='＋ 新增項目';
+      div.appendChild(addBtn);
+    }
+
+    c.appendChild(div);
+  }
+
+  // ＋ add group (edit mode)
+  if(state.editMode){
+    var addGroupBtn=document.createElement('button');
+    addGroupBtn.className='cs-add-group-btn';
+    addGroupBtn.setAttribute('data-act','add-group');
+    addGroupBtn.textContent='＋ 新增分組';
+    c.appendChild(addGroupBtn);
+  }
+
+  // ── Grand total ──
+  var grand=document.createElement('div');
+  grand.className='cs-grand';
+  grand.innerHTML='<span>2人合計（預算）</span><span class="am">'+fmtMoney(budget)+'</span>';
+  c.appendChild(grand);
+
+  // ── Bind FX input ──
+  var fxInp=$id('fx-input');
+  if(fxInp){
+    fxInp.addEventListener('change',function(){
+      var v=parseFloat(fxInp.value);
+      if(isNaN(v)||v<=0){fxInp.value=state.fxRate;return;}
+      state.fxRate=v;
+      syncFX();
+      renderCost();
+      toast('匯率已更新');
+    });
+  }
+  // Bind D button
+  var pullEl=$id('cost-pull-btn');
+  if(pullEl){
+    pullEl.addEventListener('click',openCostPullModal);
+  }
+}
+
+function startCostEdit(span){
+  if(span.classList.contains('editing'))return;
+  var key=span.getAttribute('data-key');
+  var gidx=parseInt(span.getAttribute('data-gidx'),10);
+  var ridx=parseInt(span.getAttribute('data-ridx'),10);
+  var row=COST_GROUPS[gidx] && COST_GROUPS[gidx].rows[ridx];
+  if(!row)return;
+  var curr=row.currency||'TWD';
+  var current=state.costActuals[key]!=null ? state.costActuals[key] : (row.budget||0);
+  span.classList.add('editing');
+  var orig=span.innerHTML;
+  span.innerHTML='';
+  var inp=document.createElement('input');
+  inp.type='number';
+  inp.value=current;
+  inp.style.cssText='width:90px;background:transparent;border:none;color:inherit;font-size:inherit;font-weight:inherit;text-align:right;font-variant-numeric:tabular-nums';
+  var prefix=document.createElement('span');
+  prefix.textContent=curr+' $';
+  prefix.style.cssText='color:inherit;margin-right:2px';
+  span.appendChild(prefix);
+  span.appendChild(inp);
+  inp.focus();
+  inp.select();
+  var done=false;
+  function commit(){
+    if(done)return; done=true;
+    var v=parseInt(inp.value,10);
+    span.classList.remove('editing');
+    if(isNaN(v)){span.innerHTML=orig;return;}
+    state.costActuals[key]=v;
+    syncCosts();
+    renderCost();
+    toast('已記錄實際花費');
+  }
+  function cancel(){
+    if(done)return; done=true;
+    span.classList.remove('editing');
+    span.innerHTML=orig;
+  }
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();commit();}
+    else if(e.key==='Escape'){e.preventDefault();cancel();inp.blur();}
   });
-  if(pts.length>1)m.fitBounds(bounds);
 }
-function gmapsReady(){mapsReady=true;}
 
-/* edit */
-var editing=false;
-function toggleEdit(){editing=!editing;document.body.classList.toggle('edit-mode',editing);bindEditable();bindDrag();}
-function bindEditable(){
-  document.querySelectorAll('.editable').forEach(function(el){
-    el.onclick=function(){
-      if(!editing||el.querySelector('input'))return;
-      var old=el.textContent;var inp=document.createElement('input');inp.className='edit-input';inp.value=old;
-      el.textContent='';el.appendChild(inp);inp.focus();
-      function save(){var v=inp.value;var f=el.dataset.f,dy=+el.dataset.day,ix=+el.dataset.idx;
-        if(f==='hname')TRIP_DATA[dy].hotel.name=v;else if(f==='hdesc')TRIP_DATA[dy].hotel.desc=v;
-        else TRIP_DATA[dy].items[ix][f]=v;
-        el.textContent=v;}
-      inp.onblur=save;inp.onkeydown=function(e){if(e.key==='Enter'){inp.blur();}if(e.key==='Escape'){el.textContent=old;}};
+// ─── E: edit cost label/sub (inline text editing) ──────────────────────────
+function startCostTextEdit(el){
+  if(el.classList.contains('editing'))return;
+  var field=el.getAttribute('data-field');  // 'label' | 'sub' | 'group-title'
+  var gidx=parseInt(el.getAttribute('data-gidx'),10);
+  var ridx=el.hasAttribute('data-ridx')?parseInt(el.getAttribute('data-ridx'),10):null;
+  var orig=el.textContent;
+  if(el.classList.contains('csub-empty'))orig='';
+  el.classList.add('editing');
+  var w=document.createElement('input');
+  w.className='cost-edit-input';
+  w.value=orig;
+  el.innerHTML='';
+  el.appendChild(w);
+  w.focus();
+  w.select();
+  var done=false;
+  function commit(){
+    if(done)return; done=true;
+    var v=w.value.trim();
+    el.classList.remove('editing','csub-empty');
+    if(field==='group-title'){
+      if(COST_GROUPS[gidx]){COST_GROUPS[gidx].title = v || COST_GROUPS[gidx].title;}
+    } else if(COST_GROUPS[gidx] && COST_GROUPS[gidx].rows[ridx]){
+      COST_GROUPS[gidx].rows[ridx][field] = v;
+    }
+    state.costDirty=true;
+    syncCostGroups();
+    renderCost();
+  }
+  function cancel(){
+    if(done)return; done=true;
+    el.classList.remove('editing');
+    el.textContent=orig;
+  }
+  w.addEventListener('blur',commit);
+  w.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();commit();}
+    else if(e.key==='Escape'){e.preventDefault();cancel();w.blur();}
+  });
+}
+
+// ─── A: add/del row/group, currency change ─────────────────────────────────
+function nextCostId(){
+  var max=0;
+  for(var i=0;i<COST_GROUPS.length;i++){
+    for(var j=0;j<COST_GROUPS[i].rows.length;j++){
+      var id=COST_GROUPS[i].rows[j].id||'';
+      var m=id.match(/^c(\d+)$/);
+      if(m){var n=parseInt(m[1],10);if(n>max)max=n;}
+    }
+  }
+  return 'c'+(max+1);
+}
+
+function addCostRow(gidx){
+  if(!COST_GROUPS[gidx])return;
+  var name=prompt('項目名稱（例：纜車票）');
+  if(!name)return;
+  var sub=prompt('子說明（可空，例：NZD $80/人）','')||'';
+  var bs=prompt('預算金額（純數字）','0');
+  var b=parseInt(bs,10); if(isNaN(b))b=0;
+  var curr=(prompt('幣別 TWD 或 NZD','TWD')||'TWD').toUpperCase();
+  if(curr!=='TWD'&&curr!=='NZD')curr='TWD';
+  // Insert before first subtotal row, else at end
+  var insertAt=COST_GROUPS[gidx].rows.length;
+  for(var i=0;i<COST_GROUPS[gidx].rows.length;i++){
+    if(COST_GROUPS[gidx].rows[i].subtotal){insertAt=i;break;}
+  }
+  var newRow={id:nextCostId(),label:name,sub:sub,budget:b,currency:curr,display:''};
+  COST_GROUPS[gidx].rows.splice(insertAt,0,newRow);
+  state.costDirty=true;
+  syncCostGroups();
+  renderCost();
+  toast('已新增項目');
+}
+
+function delCostRow(gidx,ridx){
+  if(!COST_GROUPS[gidx]||!COST_GROUPS[gidx].rows[ridx])return;
+  var row=COST_GROUPS[gidx].rows[ridx];
+  if(!confirm('確定刪除「'+row.label+'」？'))return;
+  if(state.costActuals[row.id]!=null)delete state.costActuals[row.id];
+  COST_GROUPS[gidx].rows.splice(ridx,1);
+  state.costDirty=true;
+  syncCostGroups();
+  syncCosts();
+  renderCost();
+}
+
+function addCostGroup(){
+  var name=prompt('分組名稱（含 emoji，例：🎁 紀念品）');
+  if(!name)return;
+  COST_GROUPS.push({id:'g'+Date.now(), title:name, rows:[]});
+  state.costDirty=true;
+  syncCostGroups();
+  renderCost();
+}
+
+function delCostGroup(gidx){
+  if(!COST_GROUPS[gidx])return;
+  if(!confirm('刪除整組「'+COST_GROUPS[gidx].title+'」？所有項目都會一併刪除'))return;
+  // Clean actuals for rows in this group
+  COST_GROUPS[gidx].rows.forEach(function(r){
+    if(r.id && state.costActuals[r.id]!=null)delete state.costActuals[r.id];
+  });
+  COST_GROUPS.splice(gidx,1);
+  state.costDirty=true;
+  syncCostGroups();
+  syncCosts();
+  renderCost();
+}
+
+function setRowCurrency(gidx,ridx,curr){
+  if(!COST_GROUPS[gidx]||!COST_GROUPS[gidx].rows[ridx])return;
+  COST_GROUPS[gidx].rows[ridx].currency=curr;
+  state.costDirty=true;
+  syncCostGroups();
+  renderCost();
+}
+
+// ─── B: cost row drag-and-drop (within/across groups) ──────────────────────
+function bindCostDragHandlers(){
+  var list=$id('cost-list');
+  if(!list)return;
+  list.addEventListener('dragstart',function(e){
+    if(!state.editMode)return;
+    var row=e.target.closest('.cs-row');
+    if(!row)return;
+    state.costDragSrc={
+      gidx: parseInt(row.getAttribute('data-gidx'),10),
+      ridx: parseInt(row.getAttribute('data-ridx'),10)
     };
+    row.classList.add('dragging');
+    e.dataTransfer.effectAllowed='move';
+    try{e.dataTransfer.setData('text/plain',row.getAttribute('data-rid'));}catch(_e){}
+  });
+  list.addEventListener('dragover',function(e){
+    if(!state.editMode||!state.costDragSrc)return;
+    e.preventDefault();
+    // Highlight target group
+    var grp=e.target.closest('.cs-group');
+    $qa('.cs-group.drag-over').forEach(function(g){g.classList.remove('drag-over');});
+    $qa('.cs-row.drag-over').forEach(function(r){r.classList.remove('drag-over');});
+    if(grp)grp.classList.add('drag-over');
+    var tRow=e.target.closest('.cs-row');
+    if(tRow)tRow.classList.add('drag-over');
+  });
+  list.addEventListener('drop',function(e){
+    if(!state.editMode||!state.costDragSrc)return;
+    e.preventDefault();
+    var src=state.costDragSrc;
+    var tRow=e.target.closest('.cs-row');
+    var tGrp=e.target.closest('.cs-group');
+    if(!tGrp){cleanupCostDrag();return;}
+    var tGidx=parseInt(tGrp.getAttribute('data-gidx'),10);
+    if(isNaN(tGidx)){cleanupCostDrag();return;}
+
+    // Move row
+    var srcRow=COST_GROUPS[src.gidx].rows.splice(src.ridx,1)[0];
+    if(!srcRow){cleanupCostDrag();return;}
+
+    if(tRow){
+      var tRidx=parseInt(tRow.getAttribute('data-ridx'),10);
+      // If dropping into same group, adjust target idx for the removal
+      if(src.gidx===tGidx && tRidx>src.ridx)tRidx--;
+      COST_GROUPS[tGidx].rows.splice(tRidx,0,srcRow);
+    } else {
+      // Dropped on group area, not specific row: insert before first subtotal
+      var insertAt=COST_GROUPS[tGidx].rows.length;
+      for(var i=0;i<COST_GROUPS[tGidx].rows.length;i++){
+        if(COST_GROUPS[tGidx].rows[i].subtotal){insertAt=i;break;}
+      }
+      COST_GROUPS[tGidx].rows.splice(insertAt,0,srcRow);
+    }
+    state.costDirty=true;
+    syncCostGroups();
+    renderCost();
+    if(src.gidx!==tGidx)toast('已搬到「'+COST_GROUPS[tGidx].title+'」');
+    cleanupCostDrag();
+  });
+  list.addEventListener('dragend',cleanupCostDrag);
+}
+function cleanupCostDrag(){
+  $qa('.cs-row.dragging,.cs-row.drag-over,.cs-group.drag-over').forEach(function(el){
+    el.classList.remove('dragging','drag-over');
+  });
+  $qa('.cs-row[draggable="true"]').forEach(function(r){r.draggable=false;});
+  state.costDragSrc=null;
+}
+
+// ─── D: pull amounts from itinerary ───────────────────────────────────────
+function scanItineraryAmounts(){
+  // Find all items in TRIP_DATA with money mentions in name/desc
+  var found=[];
+  var moneyRe=/(?:NZD|TWD|nt\$|\$)\s*([\d,]+(?:\.\d+)?)/gi;
+  for(var di=0;di<TRIP_DATA.length;di++){
+    var d=TRIP_DATA[di];
+    for(var ii=0;ii<d.items.length;ii++){
+      var it=d.items[ii];
+      var text=(it.name||'')+' '+(it.desc||'');
+      moneyRe.lastIndex=0;
+      var matches=[];
+      var m;
+      while((m=moneyRe.exec(text))!==null){
+        // Detect currency from preceding token
+        var pre=text.substring(Math.max(0,m.index-5),m.index).toUpperCase();
+        var currency = pre.indexOf('NZD')>=0 ? 'NZD' : (pre.indexOf('TWD')>=0||pre.indexOf('NT')>=0?'TWD':'TWD');
+        var amt=parseInt(m[1].replace(/,/g,''),10);
+        if(isNaN(amt)||amt<=0)continue;
+        matches.push({amount:amt,currency:currency,raw:m[0]});
+      }
+      if(matches.length>0){
+        found.push({
+          dayIdx:di, itemIdx:ii,
+          date:d.date, name:it.name,
+          matches:matches
+        });
+      }
+    }
+  }
+  return found;
+}
+
+function existsInCost(name){
+  for(var i=0;i<COST_GROUPS.length;i++){
+    for(var j=0;j<COST_GROUPS[i].rows.length;j++){
+      var r=COST_GROUPS[i].rows[j];
+      if(r.subtotal)continue;
+      // Match if label contains a substring of name (first 6 chars), case-insensitive
+      var n=(name||'').slice(0,10).toLowerCase();
+      var l=(r.label||'').toLowerCase();
+      if(n && l && (l.indexOf(n)>=0 || n.indexOf(l.slice(0,6))>=0))return true;
+    }
+  }
+  return false;
+}
+
+function openCostPullModal(){
+  var found=scanItineraryAmounts();
+  var candidates=found.filter(function(f){return !existsInCost(f.name);});
+  if(candidates.length===0){
+    toast('沒找到尚未列入費用的金額項目');
+    return;
+  }
+  // Build modal
+  var overlay=document.createElement('div');
+  overlay.className='modal-overlay';
+  overlay.id='cost-pull-modal';
+  var box=document.createElement('div');
+  box.className='modal-box';
+  var groupOpts='';
+  for(var gi=0;gi<COST_GROUPS.length;gi++){
+    groupOpts+='<option value="'+gi+'">'+escHtml(COST_GROUPS[gi].title)+'</option>';
+  }
+  var rowsHtml='';
+  for(var ci=0;ci<candidates.length;ci++){
+    var c=candidates[ci];
+    // Pick the most informative match (largest amount)
+    var best=c.matches[0];
+    for(var k=1;k<c.matches.length;k++){if(c.matches[k].amount>best.amount)best=c.matches[k];}
+    rowsHtml +=
+      '<label class="mp-row">'+
+        '<input type="checkbox" data-i="'+ci+'" checked>'+
+        '<div class="mp-name">'+
+          '<div>'+escHtml(c.date)+' · '+escHtml(c.name)+'</div>'+
+          '<div class="mp-amt">'+best.currency+' $'+best.amount.toLocaleString()+'</div>'+
+        '</div>'+
+        '<select data-g="'+ci+'">'+groupOpts+'</select>'+
+      '</label>';
+  }
+  box.innerHTML=
+    '<div class="modal-header">🪄 從行程吸取金額'+
+      '<button class="modal-close" id="mp-cancel">✕</button>'+
+    '</div>'+
+    '<div class="modal-body">'+
+      '<div class="mp-hint">勾選想加入費用的項目，並選擇分組</div>'+
+      rowsHtml+
+      (candidates.length===0?'<div class="mp-empty">沒有需要加入的項目</div>':'')+
+    '</div>'+
+    '<div class="modal-footer">'+
+      '<button class="modal-btn" id="mp-cancel-btn">取消</button>'+
+      '<button class="modal-btn primary" id="mp-confirm">加入選取的項目</button>'+
+    '</div>';
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  function closeModal(){
+    var ov=$id('cost-pull-modal');
+    if(ov && ov.parentNode)ov.parentNode.removeChild(ov);
+  }
+  $id('mp-cancel').addEventListener('click',closeModal);
+  $id('mp-cancel-btn').addEventListener('click',closeModal);
+  overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
+
+  $id('mp-confirm').addEventListener('click',function(){
+    var added=0;
+    $qa('input[data-i]', box).forEach(function(cb){
+      if(!cb.checked)return;
+      var i=parseInt(cb.getAttribute('data-i'),10);
+      var c=candidates[i];
+      var grpSel=box.querySelector('select[data-g="'+i+'"]');
+      var gidx=parseInt(grpSel.value,10);
+      // Use the largest match's amount as budget
+      var best=c.matches[0];
+      for(var k=1;k<c.matches.length;k++){if(c.matches[k].amount>best.amount)best=c.matches[k];}
+      // Insert before first subtotal
+      var insertAt=COST_GROUPS[gidx].rows.length;
+      for(var k2=0;k2<COST_GROUPS[gidx].rows.length;k2++){
+        if(COST_GROUPS[gidx].rows[k2].subtotal){insertAt=k2;break;}
+      }
+      COST_GROUPS[gidx].rows.splice(insertAt,0,{
+        id: nextCostId(),
+        label: c.name,
+        sub: c.date,
+        budget: best.amount,
+        currency: best.currency,
+        display: ''
+      });
+      added++;
+    });
+    if(added>0){
+      state.costDirty=true;
+      syncCostGroups();
+      renderCost();
+      toast('已加入 '+added+' 個項目');
+    }
+    closeModal();
   });
 }
-function delItem(i,j){if(!confirm('刪除這個行程？'))return;TRIP_DATA[i].items.splice(j,1);render();}
-function addItem(i,j){var name=prompt('行程名稱？');if(!name)return;var time=prompt('時間？（可留空）')||'';
-  TRIP_DATA[i].items.splice(j,0,{time:time,icon:'📍',name:name,desc:'',link:''});render();}
-var dragEl=null;
-function bindDrag(){
-  document.querySelectorAll('.card[data-idx]').forEach(function(c){
-    var h=c.querySelector('.card-drag');if(!h)return;
-    h.onmousedown=h.ontouchstart=function(){c.setAttribute('draggable','true');};
-    c.ondragstart=function(e){dragEl=c;c.classList.add('dragging');};
-    c.ondragend=function(){c.classList.remove('dragging');c.setAttribute('draggable','false');};
-    c.ondragover=function(e){e.preventDefault();};
-    c.ondrop=function(e){e.preventDefault();if(!dragEl||dragEl===c)return;
-      var di=+dragEl.dataset.day,dj=+dragEl.dataset.idx,ti=+c.dataset.day,tj=+c.dataset.idx;
-      if(di!==ti)return;var arr=TRIP_DATA[di].items;var m=arr.splice(dj,1)[0];arr.splice(tj,0,m);render();};
+
+// ─── INLINE EDIT (item fields) ─────────────────────────────────────────────
+function startInlineEdit(el){
+  if(!state.editMode)return;
+  if(el.classList.contains('editing'))return;
+  var field=el.getAttribute('data-field');
+  var dayIdx=parseInt(el.getAttribute('data-day'),10);
+  var itemIdx=el.hasAttribute('data-item')?parseInt(el.getAttribute('data-item'),10):null;
+  var current=el.textContent;
+  // For placeholder texts (italic), start empty
+  if(el.style.fontStyle==='italic')current='';
+  var orig=current;
+  el.classList.add('editing');
+  el.innerHTML='';
+  var inp=document.createElement('input');
+  inp.className='edit-input';
+  inp.value=current;
+  el.appendChild(inp);
+  inp.focus();
+  inp.select();
+  var done=false;
+  function commit(){
+    if(done)return; done=true;
+    var v=inp.value;
+    el.classList.remove('editing');
+    el.style.fontStyle='';
+    el.style.color='';
+    el.textContent=v;
+    // Save into TRIP_DATA
+    var d=TRIP_DATA[dayIdx];
+    if(!d){return;}
+    if(itemIdx!=null && field.indexOf('h')!==0){
+      // item field: time/icon/name/desc
+      d.items[itemIdx][field]=v;
+    } else {
+      // hotel field: hicon/hname/hdesc/hprice
+      var map={hicon:'icon',hname:'name',hdesc:'desc',hprice:'price'};
+      var realField=map[field]||field;
+      if(!d.hotel)d.hotel={};
+      d.hotel[realField]=v;
+    }
+    state.itinDirty=true;
+    syncItin();
+    // Re-render to show empty placeholder if cleared
+    renderPanel(state.curDay);
+  }
+  function cancel(){
+    if(done)return; done=true;
+    el.classList.remove('editing');
+    el.innerHTML=escHtml(orig);
+  }
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();commit();}
+    else if(e.key==='Escape'){e.preventDefault();cancel();inp.blur();}
   });
 }
 
-/* bottom nav + sheets */
-function openSheet(id){document.getElementById(id+'Overlay').classList.add('open');document.getElementById(id+'Sheet').classList.add('open');}
-function closeSheet(id){document.getElementById(id+'Overlay').classList.remove('open');document.getElementById(id+'Sheet').classList.remove('open');}
-document.querySelectorAll('.nav-item').forEach(function(n){
-  n.onclick=function(){
-    var nav=n.dataset.nav;
-    if(nav==='book'){openSheet('book');return;}
-    if(nav==='cost'){openSheet('cost');return;}
-    if(nav==='edit'){document.querySelectorAll('.nav-item').forEach(function(x){x.classList.remove('active');});n.classList.add('active');toggleEdit();return;}
-    document.querySelectorAll('.nav-item').forEach(function(x){x.classList.remove('active');});n.classList.add('active');
-    if(editing)toggleEdit();
-  };
-});
-document.getElementById('bookOverlay').onclick=function(){closeSheet('book');};
-document.getElementById('costOverlay').onclick=function(){closeSheet('cost');};
-
-/* booking todos + firebase */
-var checks={};
-function loadChecks(){
-  fetch(FB_URL+'/'+FB_NODE+'/checks.json').then(function(r){return r.json();}).then(function(d){
-    checks=d||{};applyChecks();
-  }).catch(function(){});
+// ─── ADD-BETWEEN handler ───────────────────────────────────────────────────
+function handleAddBetween(dayIdx,insertAt){
+  if(!state.editMode)return;
+  var newItem={time:'',icon:'📌',name:'新行程',desc:'',link:''};
+  TRIP_DATA[dayIdx].items.splice(insertAt,0,newItem);
+  state.itinDirty=true;
+  syncItin();
+  renderPanel(state.curDay);
+  // Focus the new item's name
+  setTimeout(function(){
+    var newEl=$q('.c-name[data-day="'+dayIdx+'"][data-item="'+insertAt+'"]');
+    if(newEl)startInlineEdit(newEl);
+  },80);
 }
-function applyChecks(){
-  document.querySelectorAll('.bs-todo').forEach(function(t){
-    var id=t.dataset.id;t.classList.toggle('done',!!checks[id]);
-    t.querySelector('.bs-todo-cb').textContent=checks[id]?'✓':'';
+
+// ─── DELETE item ───────────────────────────────────────────────────────────
+function deleteItem(dayIdx,itemIdx){
+  if(!confirm('確定刪除這個項目？'))return;
+  TRIP_DATA[dayIdx].items.splice(itemIdx,1);
+  state.itinDirty=true;
+  syncItin();
+  renderPanel(state.curDay);
+}
+
+// ─── DELETE entire day (long press) ────────────────────────────────────────
+function deleteDay(dayIdx){
+  if(!confirm('確定刪除整天「'+TRIP_DATA[dayIdx].date+'  '+TRIP_DATA[dayIdx].title+'」？'))return;
+  TRIP_DATA.splice(dayIdx,1);
+  state.itinDirty=true;
+  state.curDay=Math.min(state.curDay,TRIP_DATA.length-1);
+  if(state.curDay<0)state.curDay=0;
+  syncItin();
+  renderTabs();
+  renderPanel(state.curDay);
+  bindTabEvents();
+}
+
+// ─── EDIT MODE ─────────────────────────────────────────────────────────────
+function toggleEditMode(){
+  // Entering edit mode requires login (so writes work).
+  // Exiting edit mode is always allowed.
+  if(!state.editMode && !state.idToken){
+    showLoginModal({reason:'進入編輯模式需要登入', retryAfterLogin:function(){
+      // Auto-enter edit mode after successful login
+      state.editMode=true;
+      document.body.classList.add('edit-mode');
+      $qa('.day-tab').forEach(function(t){t.draggable=true;});
+      renderPanel(state.curDay);
+      $qa('.bnav-btn').forEach(function(b){
+        if(b.getAttribute('data-nav')==='edit') b.classList.add('active');
+      });
+      toast('編輯模式已開啟');
+    }});
+    return;
+  }
+  state.editMode=!state.editMode;
+  document.body.classList.toggle('edit-mode',state.editMode);
+  // Toggle draggable on cards and day-tabs
+  $qa('.day-tab').forEach(function(t){t.draggable=state.editMode;});
+  // Re-render so add-between buttons appear
+  renderPanel(state.curDay);
+  // Update bnav button highlight
+  $qa('.bnav-btn').forEach(function(b){
+    if(b.getAttribute('data-nav')==='edit') b.classList.toggle('active',state.editMode);
   });
-  var all=document.querySelectorAll('.bs-todo').length;
-  var done=Object.keys(checks).filter(function(k){return checks[k];}).length;
-  document.getElementById('bookProg').style.width=Math.round(done/all*100)+'%';
-  document.getElementById('bookProgLabel').textContent=done+' / '+all+' 已完成';
+  toast(state.editMode?'編輯模式已開啟':'已退出編輯模式');
+  // edit-banner appeared/disappeared — recompute sticky offset for day-tabs
+  setTimeout(updateStickyOffsets,50);
 }
-document.querySelectorAll('.bs-todo').forEach(function(t){
-  t.onclick=function(){var id=t.dataset.id;checks[id]=!checks[id];applyChecks();
-    fetch(FB_URL+'/'+FB_NODE+'/checks.json',{method:'PATCH',body:JSON.stringify((function(){var o={};o[id]=checks[id];return o;})())}).catch(function(){});
-  };
-});
 
-/* swipe + keys */
-var sx=0;
-document.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
-document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;
-  if(Math.abs(dx)<60)return;if(dx<0&&cur<TRIP_DATA.length-1){cur++;render();}if(dx>0&&cur>0){cur--;render();}});
-document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'&&cur<TRIP_DATA.length-1){cur++;render();}if(e.key==='ArrowLeft'&&cur>0){cur--;render();}});
+// ─── DRAG & DROP (cards + day tabs) ────────────────────────────────────────
+function bindDragHandlers(){
+  var container=$id('panels-container');
+  if(!container)return;
+  container.addEventListener('dragstart',function(e){
+    if(!state.editMode)return;
+    var card=e.target.closest('.card');
+    if(!card)return;
+    if(card.hasAttribute('data-hotel'))return;  // hotel not draggable
+    card.draggable=true;
+    state.dragSrc=card;
+    state.dragSrcDay=parseInt(card.getAttribute('data-day'),10);
+    card.classList.add('dragging');
+    e.dataTransfer.effectAllowed='move';
+    try{e.dataTransfer.setData('text/plain',card.getAttribute('data-item'));}catch(_e){}
+  });
+  container.addEventListener('dragover',function(e){
+    if(!state.editMode||!state.dragSrc)return;
+    e.preventDefault();
+    var card=e.target.closest('.card');
+    if(card && card!==state.dragSrc && !card.hasAttribute('data-hotel')){
+      $qa('.card.drag-over').forEach(function(c){c.classList.remove('drag-over');});
+      card.classList.add('drag-over');
+    }
+  });
+  container.addEventListener('drop',function(e){
+    if(!state.editMode||!state.dragSrc)return;
+    e.preventDefault();
+    var target=e.target.closest('.card');
+    if(!target || target===state.dragSrc || target.hasAttribute('data-hotel')){cleanupDrag();return;}
+    var srcIdx=parseInt(state.dragSrc.getAttribute('data-item'),10);
+    var tgtIdx=parseInt(target.getAttribute('data-item'),10);
+    if(state.dragSrcDay===state.curDay){
+      // same day reorder
+      var item=TRIP_DATA[state.curDay].items.splice(srcIdx,1)[0];
+      TRIP_DATA[state.curDay].items.splice(tgtIdx,0,item);
+      state.itinDirty=true;
+      syncItin();
+      renderPanel(state.curDay);
+    }
+    cleanupDrag();
+  });
+  container.addEventListener('dragend',function(e){
+    cleanupDrag();
+  });
 
-function render(){buildTabs();buildPanels();updateProgress();if(editing){bindEditable();}window.scrollTo({top:0,behavior:'smooth'});}
-render();loadChecks();
+  // Day tabs: drag tab to reorder day, OR drop card on tab to move item
+  var tabsC=$id('day-tabs');
+  if(tabsC){
+    tabsC.addEventListener('dragstart',function(e){
+      if(!state.editMode)return;
+      var t=e.target.closest('.day-tab');
+      if(!t)return;
+      // If dragging a tab itself
+      if(!state.dragSrc){
+        state.dragSrc=t;
+        state.dragSrcDay='__tab__';
+        t.classList.add('dragging');
+        e.dataTransfer.effectAllowed='move';
+      }
+    });
+    tabsC.addEventListener('dragover',function(e){
+      if(!state.editMode||!state.dragSrc)return;
+      e.preventDefault();
+      var t=e.target.closest('.day-tab');
+      if(t && t!==state.dragSrc){
+        $qa('.day-tab.drag-over').forEach(function(x){x.classList.remove('drag-over');});
+        t.classList.add('drag-over');
+      }
+    });
+    tabsC.addEventListener('drop',function(e){
+      if(!state.editMode||!state.dragSrc)return;
+      e.preventDefault();
+      var t=e.target.closest('.day-tab');
+      if(!t){cleanupDrag();return;}
+      var tgtDay=parseInt(t.getAttribute('data-day'),10);
+
+      if(state.dragSrcDay==='__tab__'){
+        // reorder days
+        var srcDay=parseInt(state.dragSrc.getAttribute('data-day'),10);
+        if(srcDay!==tgtDay){
+          var d=TRIP_DATA.splice(srcDay,1)[0];
+          TRIP_DATA.splice(tgtDay,0,d);
+          state.itinDirty=true;
+          state.curDay=tgtDay;
+          syncItin();
+          renderTabs();
+          renderPanel(state.curDay);
+          bindTabEvents();
+        }
+      } else if(typeof state.dragSrcDay==='number' && state.dragSrcDay!==tgtDay){
+        // cross-day item move
+        var srcIdx=parseInt(state.dragSrc.getAttribute('data-item'),10);
+        var item=TRIP_DATA[state.dragSrcDay].items.splice(srcIdx,1)[0];
+        TRIP_DATA[tgtDay].items.push(item);
+        state.itinDirty=true;
+        syncItin();
+        renderPanel(state.curDay);
+        toast('已移至 '+TRIP_DATA[tgtDay].date);
+      }
+      cleanupDrag();
+    });
+  }
+}
+
+function cleanupDrag(){
+  $qa('.dragging').forEach(function(x){x.classList.remove('dragging');});
+  $qa('.drag-over').forEach(function(x){x.classList.remove('drag-over');});
+  $qa('.card[draggable="true"]').forEach(function(c){c.draggable=false;});
+  state.dragSrc=null;
+  state.dragSrcDay=null;
+}
+
+// ─── DAY TAB EVENTS (click + long press) ───────────────────────────────────
+function bindTabEvents(){
+  $qa('.day-tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      if(state.longPressTab===t){return;}  // suppress click after long-press
+      switchDay(parseInt(t.getAttribute('data-day'),10));
+    });
+    // long press to delete day
+    var startLP=function(){
+      if(!state.editMode)return;
+      state.longPressTimer=setTimeout(function(){
+        state.longPressTab=t;
+        deleteDay(parseInt(t.getAttribute('data-day'),10));
+        setTimeout(function(){state.longPressTab=null;},300);
+      },650);
+    };
+    var cancelLP=function(){clearTimeout(state.longPressTimer);};
+    t.addEventListener('mousedown',startLP);
+    t.addEventListener('touchstart',startLP,{passive:true});
+    t.addEventListener('mouseup',cancelLP);
+    t.addEventListener('mouseleave',cancelLP);
+    t.addEventListener('touchend',cancelLP);
+    t.addEventListener('touchcancel',cancelLP);
+  });
+}
+
+// ─── SWIPE / KEYBOARD navigation ───────────────────────────────────────────
+function bindSwipe(){
+  var sx=0,sy=0,active=false;
+  document.addEventListener('touchstart',function(e){
+    if(e.touches.length!==1)return;
+    var t=e.target;
+    // Don't intercept inside sheets, inputs, or day-tabs
+    if(t.closest('.sheet')||t.closest('input,textarea,select')||t.closest('.day-tabs-wrap'))return;
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY; active=true;
+  },{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(!active)return; active=false;
+    var tch=e.changedTouches[0]; if(!tch)return;
+    var dx=tch.clientX-sx, dy=tch.clientY-sy;
+    if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)*1.5){
+      if(dx<0) switchDay(state.curDay+1);
+      else switchDay(state.curDay-1);
+    }
+  },{passive:true});
+  document.addEventListener('keydown',function(e){
+    if(e.target.closest('input,textarea,select'))return;
+    if(e.key==='ArrowRight') switchDay(state.curDay+1);
+    else if(e.key==='ArrowLeft') switchDay(state.curDay-1);
+  });
+}
+
+// ─── GLOBAL CLICK DELEGATE ─────────────────────────────────────────────────
+function bindGlobalClicks(){
+  document.addEventListener('click',function(e){
+    var t=e.target;
+
+    // close sheet
+    if(t.hasAttribute('data-close')||t.closest('[data-close]')){closeSheets();return;}
+
+    // dp-btn (itin/map toggle)
+    var dpBtn=t.closest('.dp-btn');
+    if(dpBtn){switchView(dpBtn.getAttribute('data-view'));return;}
+
+    // bnav
+    var nav=t.closest('.bnav-btn');
+    if(nav){handleNav(nav.getAttribute('data-nav'));return;}
+
+    // edit mode actions
+    if(state.editMode){
+      // delete item card
+      if(t.closest('[data-act="del-item"]')){
+        var card=t.closest('.card');
+        if(card){
+          var di=parseInt(card.getAttribute('data-day'),10);
+          var ii=parseInt(card.getAttribute('data-item'),10);
+          deleteItem(di,ii);
+        }
+        return;
+      }
+      // add-between
+      if(t.closest('[data-act="add-between"]')){
+        var ab=t.closest('[data-act="add-between"]');
+        handleAddBetween(parseInt(ab.getAttribute('data-day'),10),parseInt(ab.getAttribute('data-at'),10));
+        return;
+      }
+      // inline edit
+      if(t.hasAttribute('data-field')){startInlineEdit(t);return;}
+    }
+
+    // bs-todo toggle (works always, not just edit mode)
+    var todo=t.closest('.bs-todo');
+    if(todo){
+      // del button
+      if(t.closest('[data-act="del-todo"]')){
+        if(state.editMode){
+          var id=todo.getAttribute('data-id');
+          // remove from BOOKING_DATA
+          for(var i=0;i<BOOKING_DATA.length;i++){
+            var sec=BOOKING_DATA[i];
+            for(var j=0;j<sec.items.length;j++){
+              if(sec.items[j].id===id){sec.items.splice(j,1);break;}
+            }
+          }
+          state.bookDirty=true;
+          syncBooking();
+          renderBooking();
+        }
+        return;
+      }
+      // toggle done
+      var tid=todo.getAttribute('data-id');
+      var current=todo.classList.contains('done');
+      state.todoStates[tid]=!current;
+      todo.classList.toggle('done');
+      syncTodos();
+      updateProgress();
+      return;
+    }
+  });
+
+  // Double-click for cost edit
+  document.addEventListener('dblclick',function(e){
+    var am=e.target.closest('.am.editable');
+    if(am){startCostEdit(am); return;}
+    // E: double-click cost label/sub/group-title to edit text
+    var tf=e.target.closest('[data-field="label"],[data-field="sub"],[data-field="group-title"]');
+    if(tf){startCostTextEdit(tf); return;}
+  });
+
+  // Cost editing actions (delegated)
+  var costList=$id('cost-list');
+  if(costList){
+    costList.addEventListener('click',function(e){
+      var t=e.target;
+      // A: delete row
+      var delR=t.closest('[data-act="del-row"]');
+      if(delR){
+        delCostRow(parseInt(delR.getAttribute('data-gidx'),10), parseInt(delR.getAttribute('data-ridx'),10));
+        return;
+      }
+      // A: delete group
+      var delG=t.closest('[data-act="del-group"]');
+      if(delG){
+        delCostGroup(parseInt(delG.getAttribute('data-gidx'),10));
+        return;
+      }
+      // A: add row
+      var addR=t.closest('[data-act="add-row"]');
+      if(addR){
+        addCostRow(parseInt(addR.getAttribute('data-gidx'),10));
+        return;
+      }
+      // A: add group
+      if(t.closest('[data-act="add-group"]')){
+        addCostGroup();
+        return;
+      }
+    });
+    // Currency change
+    costList.addEventListener('change',function(e){
+      var sel=e.target.closest('[data-act="curr"]');
+      if(sel){
+        setRowCurrency(parseInt(sel.getAttribute('data-gidx'),10), parseInt(sel.getAttribute('data-ridx'),10), sel.value);
+      }
+    });
+    // Enable drag on rows in edit mode
+    costList.addEventListener('mousedown',function(e){
+      if(!state.editMode)return;
+      var dh=e.target.closest('.cs-drag-handle');
+      if(dh){
+        var row=dh.closest('.cs-row');
+        if(row)row.draggable=true;
+      }
+    });
+    costList.addEventListener('touchstart',function(e){
+      if(!state.editMode)return;
+      var dh=e.target.closest('.cs-drag-handle');
+      if(dh){
+        var row=dh.closest('.cs-row');
+        if(row)row.draggable=true;
+      }
+    },{passive:true});
+  }
+}
+
+// ─── MAP (per-day) ─────────────────────────────────────────────────────────
+var GMAPS_READY=false;
+var GMAPS_LOADING=false;
+var mapInst=null;
+window.gmapsReady=function(){GMAPS_READY=true;if(state.curView==='map')renderMap(state.curDay);};
+
+function loadGMaps(){
+  if(GMAPS_READY||GMAPS_LOADING)return;
+  GMAPS_LOADING=true;
+  var s=document.createElement('script');
+  s.src='https://maps.googleapis.com/maps/api/js?key=&callback=gmapsReady&loading=async&libraries=marker';
+  s.async=true; s.defer=true;
+  document.head.appendChild(s);
+}
+
+function getDayPlaces(dayIdx){
+  var d=TRIP_DATA[dayIdx];
+  if(!d)return [];
+  var dateKey=(d.date||'').split(' ')[0];  // e.g. "9/26"
+  // Helper: parse "M/D" into ordinal day-of-year-ish for range comparison
+  function dateOrd(s){
+    var m=s.match(/(\d+)\/(\d+)/);
+    if(!m)return 0;
+    return parseInt(m[1],10)*100 + parseInt(m[2],10);
+  }
+  var keyOrd = dateOrd(dateKey);
+  return PLACES.filter(function(p){
+    if(!p.d)return false;
+    // Strip time-of-day suffix: 上午/下午/中午/晚上/早晨/傍晚/午餐/早餐/晚餐
+    var pDate = p.d.replace(/\s+(上午|下午|中午|晚上|早晨|傍晚|午餐|早餐|晚餐).*$/, '');
+    // Comma-separated multiple dates
+    if(pDate.indexOf(',')>=0){
+      return pDate.split(',').map(function(s){return s.trim();}).indexOf(dateKey)>=0;
+    }
+    // Date range with – or -
+    var sep = pDate.indexOf('–')>=0 ? '–' : (pDate.indexOf('-')>=0 ? '-' : null);
+    if(sep){
+      var parts=pDate.split(sep);
+      var startOrd=dateOrd(parts[0].trim()), endOrd=dateOrd(parts[1].trim());
+      // Inclusive range check
+      return keyOrd>=startOrd && keyOrd<=endOrd;
+    }
+    return pDate===dateKey;
+  });
+}
+
+function renderMap(dayIdx){
+  if(!GMAPS_READY){loadGMaps();
+    var inner=$id('map-inner');
+    if(inner)inner.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--txt2);font-size:12px">載入地圖中...</div>';
+    return;
+  }
+  var inner=$id('map-inner'); if(!inner)return;
+  var places=getDayPlaces(dayIdx);
+  if(places.length===0){
+    inner.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--txt2);font-size:12px">這天沒有地圖資料</div>';
+    return;
+  }
+  inner.innerHTML='';
+  var center={lat:places[0].lat,lng:places[0].lng};
+  var darkStyle=[
+    {elementType:'geometry',stylers:[{color:'#0a0e1a'}]},
+    {elementType:'labels.text.stroke',stylers:[{color:'#0a0e1a'}]},
+    {elementType:'labels.text.fill',stylers:[{color:'#9ca3af'}]},
+    {featureType:'road',elementType:'geometry',stylers:[{color:'#1e2235'}]},
+    {featureType:'road',elementType:'labels.text.fill',stylers:[{color:'#6b7280'}]},
+    {featureType:'water',elementType:'geometry',stylers:[{color:'#141827'}]},
+    {featureType:'poi',stylers:[{visibility:'off'}]},
+    {featureType:'administrative',elementType:'geometry',stylers:[{color:'#1e2235'}]},
+    {featureType:'landscape',elementType:'geometry',stylers:[{color:'#0f1320'}]},
+    {featureType:'transit',stylers:[{visibility:'off'}]}
+  ];
+  mapInst=new google.maps.Map(inner,{
+    center:center, zoom:11,
+    styles:darkStyle,
+    disableDefaultUI:true, zoomControl:true, gestureHandling:'greedy'
+  });
+  var bounds=new google.maps.LatLngBounds();
+  places.forEach(function(p,i){
+    var m=new google.maps.Marker({
+      position:{lat:p.lat,lng:p.lng}, map:mapInst,
+      label:{text:String(i+1),color:'#0a0e1a',fontWeight:'600'},
+      title:p.n
+    });
+    var iw=new google.maps.InfoWindow({
+      content:'<div style="color:#0a0e1a;font-size:13px;font-family:system-ui;max-width:240px"><b>'+escHtml(p.n)+'</b><div style="font-size:11px;color:#374151;margin-top:4px">'+escHtml(p.x||'')+'</div><a href="https://www.google.com/maps/dir/?api=1&destination='+p.lat+','+p.lng+'" target="_blank" style="display:inline-block;margin-top:8px;font-size:12px;color:#2563eb;text-decoration:none">🧭 導航</a></div>'
+    });
+    m.addListener('click',function(){iw.open(mapInst,m);});
+    bounds.extend(new google.maps.LatLng(p.lat,p.lng));
+  });
+  if(places.length>1){
+    mapInst.fitBounds(bounds);
+    setTimeout(function(){if(mapInst.getZoom()>14)mapInst.setZoom(14);},200);
+  }
+}
+
+// ─── FIREBASE SYNC ─────────────────────────────────────────────────────────
+function setSync(state){
+  var dot=$id('sync-dot'), text=$id('sync-text'), badge=$id('sync-badge');
+  if(!dot||!text||!badge)return;
+  badge.classList.remove('syncing','ok','err');
+  if(state==='syncing'){dot.textContent='◌';text.textContent='同步中';badge.classList.add('syncing');}
+  else if(state==='ok'){dot.textContent='●';text.textContent='已同步';badge.classList.add('ok');}
+  else if(state==='err'){dot.textContent='⚠';text.textContent='同步失敗';badge.classList.add('err');}
+  else {dot.textContent='○';text.textContent='待同步';}
+}
+
+// ─── FIREBASE AUTH ────────────────────────────────────────────────────────
+function loadAuthFromStorage(){
+  try{
+    var s=localStorage.getItem(AUTH_STORAGE_KEY);
+    if(!s)return null;
+    return JSON.parse(s);
+  }catch(e){return null;}
+}
+function saveAuth(idToken,refreshToken,expiresIn){
+  var wasLoggedOut = !state.idToken;
+  state.idToken=idToken;
+  state.refreshToken=refreshToken;
+  state.idTokenExpiry=Date.now()+(parseInt(expiresIn,10)*1000);
+  try{
+    localStorage.setItem(AUTH_STORAGE_KEY,JSON.stringify({
+      idToken:idToken,refreshToken:refreshToken,expiry:state.idTokenExpiry
+    }));
+  }catch(e){}
+  updateAuthBadge();
+  // Just transitioned from logged-out → logged-in. If Firebase data is
+  // older than our HTML schema, push HTML baseline now so version + data
+  // catch up. This avoids users wondering "why did I log in but Firebase
+  // didn't update".
+  if(wasLoggedOut){
+    setTimeout(syncBaselineIfStale, 200);
+  }
+}
+function syncBaselineIfStale(){
+  if(!state.idToken)return;
+  fbGet(FB_META).then(function(meta){
+    var fbVer = (meta && meta.version) || 0;
+    if(fbVer < DATA_VERSION){
+      console.log('[v2] post-login baseline sync: Firebase v'+fbVer+' → HTML v'+DATA_VERSION);
+      fbPut(FB_ITIN, TRIP_DATA);
+      fbPut(FB_BOOK, BOOKING_DATA);
+      fbPut(FB_CG, COST_GROUPS);
+      fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'post-login-sync'});
+      toast('資料已同步到雲端 ('+fbVer+'→'+DATA_VERSION+')');
+    }
+  });
+}
+function clearAuth(){
+  state.idToken=null;state.refreshToken=null;state.idTokenExpiry=0;
+  try{localStorage.removeItem(AUTH_STORAGE_KEY);}catch(e){}
+  updateAuthBadge();
+}
+function signInWithPassword(password){
+  return fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB_API_KEY,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:FB_APP_EMAIL,password:password,returnSecureToken:true})
+  }).then(function(r){
+    return r.json().then(function(d){
+      if(!r.ok)return {ok:false,error:(d.error&&d.error.message)||'sign-in failed'};
+      saveAuth(d.idToken,d.refreshToken,d.expiresIn);
+      return {ok:true};
+    });
+  }).catch(function(e){return {ok:false,error:e.message};});
+}
+function refreshAuthToken(){
+  if(!state.refreshToken)return Promise.resolve(false);
+  return fetch('https://securetoken.googleapis.com/v1/token?key='+FB_API_KEY,{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(state.refreshToken)
+  }).then(function(r){
+    if(!r.ok){clearAuth();return false;}
+    return r.json().then(function(d){
+      saveAuth(d.id_token,d.refresh_token,d.expires_in);
+      return true;
+    });
+  }).catch(function(){return false;});
+}
+function getAuthTokenAsync(){
+  // No token at all — return null fast
+  if(!state.idToken)return Promise.resolve(null);
+  // Still valid (with 5min buffer)
+  if(Date.now()<state.idTokenExpiry-5*60*1000)return Promise.resolve(state.idToken);
+  // Need refresh
+  return refreshAuthToken().then(function(ok){return ok?state.idToken:null;});
+}
+function updateAuthBadge(){
+  var b=$id('auth-badge');if(!b)return;
+  if(state.idToken){
+    b.textContent='🔓 已登入';
+    b.classList.add('authed');b.classList.remove('unauthed');
+    b.title='點擊登出';
+  } else {
+    b.textContent='🔒 未登入';
+    b.classList.add('unauthed');b.classList.remove('authed');
+    b.title='點擊登入以啟用編輯';
+  }
+}
+function showLoginModal(opts){
+  opts=opts||{};
+  if($id('login-modal'))return;
+  var modal=document.createElement('div');
+  modal.id='login-modal';modal.className='modal-overlay';
+  modal.innerHTML=
+    '<div class="modal-box" style="max-width:360px">'+
+      '<div class="modal-header">🔐 登入以啟用編輯'+
+        (opts.dismissible!==false?'<button class="modal-close" id="li-close">✕</button>':'')+
+      '</div>'+
+      '<div class="modal-body">'+
+        (opts.reason?'<div class="mp-hint" style="color:var(--danger)">'+opts.reason+'</div>':
+          '<div class="mp-hint">未登入時可瀏覽全部行程，但無法存編輯、勾選訂票或記費用</div>')+
+        '<label style="display:block;font-size:11px;color:var(--txt3);margin-bottom:4px">Email</label>'+
+        '<input type="email" id="li-email" value="'+FB_APP_EMAIL+'" disabled style="width:100%;padding:8px;background:var(--glass);border:1px solid var(--glass2);border-radius:6px;color:var(--txt3);font-family:inherit;margin-bottom:10px;box-sizing:border-box">'+
+        '<label style="display:block;font-size:11px;color:var(--txt3);margin-bottom:4px">密碼</label>'+
+        '<input type="password" id="li-password" autocomplete="current-password" style="width:100%;padding:8px;background:var(--bg);border:1px solid var(--accent);border-radius:6px;color:var(--txt);font-family:inherit;font-size:14px;margin-bottom:8px;box-sizing:border-box">'+
+        '<div id="li-error" style="color:var(--danger);font-size:12px;min-height:16px"></div>'+
+      '</div>'+
+      '<div class="modal-footer">'+
+        (opts.dismissible!==false?'<button class="modal-btn" id="li-cancel">稍後</button>':'')+
+        '<button class="modal-btn primary" id="li-submit">登入</button>'+
+      '</div>'+
+    '</div>';
+  document.body.appendChild(modal);
+  setTimeout(function(){var p=$id('li-password');if(p)p.focus();},100);
+
+  function closeModal(){
+    var m=$id('login-modal');if(m&&m.parentNode)m.parentNode.removeChild(m);
+  }
+  function attempt(){
+    var pw=$id('li-password').value;if(!pw)return;
+    var btn=$id('li-submit');btn.disabled=true;btn.textContent='登入中...';
+    var err=$id('li-error');err.textContent='';
+    signInWithPassword(pw).then(function(r){
+      if(r.ok){
+        toast('已登入 ✓');closeModal();setSync('ok');
+        // Retry any pending sync now that we have auth
+        if(opts.retryAfterLogin)opts.retryAfterLogin();
+      } else {
+        err.textContent='登入失敗：'+r.error;
+        btn.disabled=false;btn.textContent='登入';
+      }
+    });
+  }
+  var sb=$id('li-submit');if(sb)sb.addEventListener('click',attempt);
+  var pw=$id('li-password');if(pw)pw.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();attempt();}
+  });
+  var cb=$id('li-cancel');if(cb)cb.addEventListener('click',closeModal);
+  var xb=$id('li-close');if(xb)xb.addEventListener('click',closeModal);
+}
+function signOut(){
+  if(!confirm('登出？編輯功能會停用，但仍可瀏覽行程。'))return;
+  clearAuth();
+  toast('已登出');
+}
+function initAuth(){
+  var saved=loadAuthFromStorage();
+  if(saved){
+    state.idToken=saved.idToken;
+    state.refreshToken=saved.refreshToken;
+    state.idTokenExpiry=saved.expiry||0;
+    updateAuthBadge();
+    // Pre-emptive refresh if expiring soon (fire & forget)
+    if(Date.now()>state.idTokenExpiry-10*60*1000){
+      refreshAuthToken().then(function(ok){if(ok)syncBaselineIfStale();});
+    } else {
+      // Token still valid — check baseline after pullInitial has fetched meta
+      setTimeout(syncBaselineIfStale, 2000);
+    }
+  } else {
+    updateAuthBadge();
+    // Don't auto-popup login modal on page load — user can browse read-only.
+    // Modal triggers when they click 編輯 mode or auth-badge.
+  }
+}
+
+// ─── FIREBASE REST WITH AUTH ──────────────────────────────────────────────
+function fbPut(path,data){
+  setSync('syncing');
+  return getAuthTokenAsync().then(function(token){
+    var url=FB_URL+'/'+path+'.json';
+    if(token)url+='?auth='+encodeURIComponent(token);
+    return fetch(url,{method:'PUT',body:JSON.stringify(data)}).then(function(r){
+      if(r.status===401||r.status===403){
+        // Token rejected — try one refresh + retry
+        return refreshAuthToken().then(function(ok){
+          if(!ok){
+            setSync('err');
+            showLoginModal({reason:'登入過期或寫入被拒，請重新登入',
+              retryAfterLogin:function(){fbPut(path,data);}});
+            throw new Error('auth required');
+          }
+          var url2=FB_URL+'/'+path+'.json?auth='+encodeURIComponent(state.idToken);
+          return fetch(url2,{method:'PUT',body:JSON.stringify(data)}).then(function(r2){
+            if(!r2.ok){
+              if(r2.status===401||r2.status===403){
+                setSync('err');
+                showLoginModal({reason:'登入過期或寫入被拒，請重新登入',
+                  retryAfterLogin:function(){fbPut(path,data);}});
+              } else {
+                setSync('err');
+              }
+              throw new Error('http '+r2.status);
+            }
+            setSync('ok');
+          });
+        });
+      }
+      if(!r.ok)throw new Error('http '+r.status);
+      setSync('ok');
+    });
+  }).catch(function(e){
+    setSync('err');console.warn('sync err',e);
+  });
+}
+function fbGet(path){
+  // Reads are public per current rules, no auth needed
+  return fetch(FB_URL+'/'+path+'.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
+}
+
+var syncTodosDeb=null;
+function syncTodos(){
+  clearTimeout(syncTodosDeb);
+  syncTodosDeb=setTimeout(function(){fbPut(FB_TODOS,state.todoStates);},400);
+}
+var syncCostsDeb=null;
+function syncCosts(){
+  clearTimeout(syncCostsDeb);
+  syncCostsDeb=setTimeout(function(){fbPut(FB_COSTS,state.costActuals);},400);
+}
+var syncCGDeb=null;
+function syncCostGroups(){
+  clearTimeout(syncCGDeb);
+  syncCGDeb=setTimeout(function(){
+    fbPut(FB_CG, COST_GROUPS);
+    fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'cg'});
+  },600);
+}
+var syncFXDeb=null;
+function syncFX(){
+  clearTimeout(syncFXDeb);
+  syncFXDeb=setTimeout(function(){fbPut(FB_FX,{nzd:state.fxRate});},400);
+}
+var syncItinDeb=null;
+function syncItin(){
+  clearTimeout(syncItinDeb);
+  syncItinDeb=setTimeout(function(){
+    fbPut(FB_ITIN, TRIP_DATA);
+    fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'itin'});
+  },600);
+}
+var syncBookDeb=null;
+function syncBooking(){
+  clearTimeout(syncBookDeb);
+  syncBookDeb=setTimeout(function(){
+    fbPut(FB_BOOK, BOOKING_DATA);
+    fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'book'});
+  },600);
+}
+
+function pullInitial(){
+  setSync('syncing');
+  Promise.all([
+    fbGet(FB_TODOS), fbGet(FB_COSTS), fbGet(FB_ITIN),
+    fbGet(FB_BOOK), fbGet(FB_CG), fbGet(FB_FX), fbGet(FB_META)
+  ]).then(function(arr){
+    var todos=arr[0],costs=arr[1],itin=arr[2],book=arr[3],cg=arr[4],fx=arr[5],meta=arr[6];
+    if(todos)state.todoStates=todos;
+    if(costs)state.costActuals=costs;
+    if(fx && typeof fx==='object' && typeof fx.nzd==='number') state.fxRate=fx.nzd;
+
+    var versionOK = meta && typeof meta==='object' && meta.version===DATA_VERSION;
+    if(versionOK){
+      if(itin && Array.isArray(itin) && itin.length>0){
+        TRIP_DATA.length=0;
+        for(var i=0;i<itin.length;i++)TRIP_DATA.push(itin[i]);
+      }
+      if(book && Array.isArray(book) && book.length>0){
+        BOOKING_DATA.length=0;
+        for(var i=0;i<book.length;i++)BOOKING_DATA.push(book[i]);
+      }
+      if(cg && Array.isArray(cg) && cg.length>0){
+        COST_GROUPS.length=0;
+        for(var i=0;i<cg.length;i++)COST_GROUPS.push(cg[i]);
+      }
+    } else {
+      // Schema/data version mismatch. Push HTML baseline to Firebase.
+      // BUT only if we have auth — otherwise writes 401 and triggers login modal
+      // immediately on page load (annoying UX). HTML data is already loaded
+      // locally; first edit (after login) will trigger writes that catch up.
+      if(state.idToken){
+        if(!meta || !meta.version){
+          fbPut(FB_ITIN, TRIP_DATA);
+          fbPut(FB_BOOK, BOOKING_DATA);
+          fbPut(FB_CG, COST_GROUPS);
+          fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'baseline'});
+        } else {
+          console.log('[v2] data version bump '+meta.version+' → '+DATA_VERSION+'; HTML data wins');
+          fbPut(FB_ITIN, TRIP_DATA);
+          fbPut(FB_BOOK, BOOKING_DATA);
+          fbPut(FB_CG, COST_GROUPS);
+          fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'upgrade'});
+          toast('資料已更新到新版本');
+        }
+      } else {
+        console.log('[v2] version mismatch ('+(meta&&meta.version)+' → '+DATA_VERSION+') but not logged in; HTML data used locally only');
+      }
+    }
+    setSync('ok');
+    renderTabs();
+    renderPanel(state.curDay);
+    bindTabEvents();
+    updateProgress();
+  });
+}
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+function updateNZClock(){
+  var el = document.getElementById('nz-clock-time');
+  if(!el) return;
+  try {
+    var fmt = new Intl.DateTimeFormat('ja-JP', {
+      timeZone: 'Asia/Tokyo',
+      hour: '2-digit', minute: '2-digit', hour12: false
+    });
+    var t = fmt.format(new Date());
+    if(t !== el.textContent) el.textContent = t;
+  } catch(e) {
+    // Fallback for older browsers: compute UTC offset manually
+    var d = new Date();
+    var utc = d.getTime() + d.getTimezoneOffset()*60000;
+    // Rough: NZ is UTC+12 (winter) or UTC+13 (summer)
+    // From Sep last Sunday to Apr first Sunday = DST (+13)
+    var m = d.getUTCMonth(), day = d.getUTCDate();
+    var isDST = (m > 8 || (m===8 && day>=27)) || (m < 3) || (m===3 && day<=5);
+    var nz = new Date(utc + (isDST?13:12)*3600000);
+    var hh = String(nz.getHours()).padStart(2,'0');
+    var mm = String(nz.getMinutes()).padStart(2,'0');
+    el.textContent = hh+':'+mm;
+  }
+}
+function updateStickyOffsets(){
+  // Measure topbar + visible edit-banner to set sticky offset for day-tabs-wrap.
+  // Fixes day-tabs disappearing under taller-than-60px topbar.
+  var total=0;
+  var banner=document.querySelector('.edit-banner');
+  if(banner && getComputedStyle(banner).display!=='none'){
+    total+=banner.offsetHeight;
+  }
+  var topbar=document.querySelector('.topbar');
+  if(topbar)total+=topbar.offsetHeight;
+  document.documentElement.style.setProperty('--topbar-h',total+'px');
+}
+function startNZClock(){
+  updateNZClock();
+  setInterval(updateNZClock, 1000);
+}
+function init(){
+  initAuth();  // must run before pullInitial since it may trigger writes
+  startNZClock();
+  updateStickyOffsets();
+  window.addEventListener('resize',updateStickyOffsets);
+  // Re-measure after web fonts settle (badges row may grow when fonts load)
+  setTimeout(updateStickyOffsets,500);
+  setTimeout(updateStickyOffsets,1500);
+  renderTabs();
+  renderPanel(state.curDay);
+  bindTabEvents();
+  bindDragHandlers();
+  bindGlobalClicks();
+  bindSwipe();
+  updateProgress();
+  pullInitial();
+  // Cost drag handlers bind once; cost-list is created lazily but the handler is on parent
+  setTimeout(function(){
+    if($id('cost-list'))bindCostDragHandlers();
+    else {
+      // Bind after first cost sheet open
+      var origRender=renderCost;
+      // Wrap once
+      if(!window._costDragBound){
+        window._costDragBound=true;
+        var prevOpen=openSheet;
+        openSheet=function(which){
+          prevOpen(which);
+          if(which==='cost' && !window._costDragBoundDone){
+            window._costDragBoundDone=true;
+            bindCostDragHandlers();
+          }
+        };
+      }
+    }
+  },100);
+  setTimeout(loadGMaps,800);
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',init);
+} else {
+  init();
+}
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&callback=gmapsReady"></script>
 </body>
 </html>
