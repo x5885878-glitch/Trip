@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0a0e1a">
+<title>🌙 Bali 2026 — Midnight Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { font-size: 14px; line-height: 1.55; min-height: 100vh; overflow-x: hidden; padding-bottom: 70px; }
+
+/* TOPBAR */
+.topbar { position: sticky; top: 0; z-index: 100; padding: 14px 16px 10px; }
+.tb-sub { font-size: 11px; margin-top: 2px; letter-spacing: 0.5px; }
+.tb-badges { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.tb-badge { font-size: 10px; padding: 3px 9px; border-radius: 10px; font-weight: 500; }
+.tb-sync { position: absolute; top: 14px; right: 16px; font-size: 10px; opacity: 0; transition: opacity 0.4s; }
+.tb-sync.show { opacity: 1; }
+
+/* DAY TABS */
+.day-tabs { display: flex; gap: 6px; padding: 10px 14px 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; position: sticky; top: 80px; z-index: 99; }
+.day-tabs::-webkit-scrollbar { display: none; }
+.day-tab { flex: 0 0 auto; padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; user-select: none; }
+.day-tab .dt-num { font-size: 10px; opacity: 0.7; display: block; }
+.progress-bar { height: 2px; position: relative; margin: 0 14px; }
+.progress-bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1); }
+.legend { display: flex; gap: 10px; padding: 8px 14px 4px; flex-wrap: wrap; font-size: 10px; }
+.legend-item { display: inline-flex; align-items: center; gap: 4px; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* PANEL */
+.panels-container { padding: 10px 14px 20px; }
+.day-panel { display: none; }
+.day-panel.active { display: block; }
+.dp-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 12px; }
+.dp-title { font-size: 17px; font-weight: 700; letter-spacing: 0.3px; }
+.dp-date { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px; }
+.dp-toggle { display: flex; padding: 3px; gap: 2px; border-radius: 10px; }
+.dp-btn { font-size: 11px; padding: 6px 12px; background: transparent; border: none; cursor: pointer; font-weight: 600; border-radius: 7px; transition: all 0.18s; font-family: inherit; }
+.dp-body { display: block; }
+.dp-body.map-mode .cards-list { display: none; }
+.dp-body.map-mode .map-view { display: block; }
+.map-view { display: none; }
+#gmap { width: 100%; max-width: 820px; height: 520px; margin: 0 auto; border-radius: 16px; overflow: hidden; }
+@media (min-width: 1100px) { #gmap { height: 600px; } }
+
+/* CARDS */
+.cards-list { display: flex; flex-direction: column; gap: 8px; }
+.card { display: grid; grid-template-columns: 60px 28px 1fr; gap: 10px; padding: 14px; position: relative; transition: all 0.2s; align-items: start; }
+.c-time { font-size: 13px; font-weight: 700; padding-top: 2px; letter-spacing: 0.3px; }
+.c-icon { font-size: 18px; text-align: center; padding-top: 1px; }
+.c-body { min-width: 0; }
+.c-name { font-size: 14px; font-weight: 600; line-height: 1.4; word-break: break-word; }
+.c-desc { font-size: 12px; margin-top: 4px; line-height: 1.55; word-break: break-word; }
+.c-link { display: inline-block; font-size: 11px; margin-top: 8px; padding: 5px 12px; border-radius: 12px; text-decoration: none; font-weight: 500; }
+.card-hotel .c-time { display: none; }
+.card-hotel { grid-template-columns: 28px 1fr; }
+.card-hotel .c-name { font-size: 14px; font-weight: 700; }
+.card-hotel .c-price { font-size: 13px; font-weight: 700; margin-top: 5px; }
+
+/* ADD-BETWEEN */
+.card-add-between { display: none; height: 28px; border-radius: 10px; background: transparent; font-size: 11px; cursor: pointer; align-items: center; justify-content: center; margin: -2px 0; transition: all 0.18s; }
+.edit-mode .card-add-between { display: flex; }
+
+/* BOTTOM NAV */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; z-index: 200; padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
+.nav-item { flex: 1; background: transparent; border: none; font-size: 11px; font-weight: 600; font-family: inherit; padding: 8px 4px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; transition: color 0.15s; border-radius: 10px; }
+.nav-item .ni-icon { font-size: 18px; line-height: 1; }
+@keyframes pulse-edit { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+.nav-item.edit-on .ni-icon { animation: pulse-edit 1.5s ease-in-out infinite; }
+
+/* SHEET */
+.sheet-overlay { position: fixed; inset: 0; backdrop-filter: blur(4px); z-index: 250; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.sheet-overlay.show { opacity: 1; pointer-events: auto; }
+.sheet { position: fixed; bottom: 0; left: 0; right: 0; max-height: 88vh; border-top-left-radius: 24px; border-top-right-radius: 24px; z-index: 260; transform: translateY(100%); transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1); overflow: hidden; display: flex; flex-direction: column; }
+.sheet.show { transform: translateY(0); }
+.sheet-handle { width: 36px; height: 4px; border-radius: 2px; margin: 8px auto 4px; flex-shrink: 0; }
+.sheet-header { padding: 10px 18px 14px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.sheet-title { font-size: 16px; font-weight: 700; }
+.sheet-close { border: none; width: 28px; height: 28px; border-radius: 14px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; font-family: inherit; }
+.sheet-body { overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 14px 18px 30px; flex: 1; }
+
+/* BOOKING */
+.bs-section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 0 6px; margin-bottom: 6px; }
+.bs-section-title:first-child { padding-top: 0; }
+.bs-todo { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; }
+.bs-todo-cb { flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; margin-top: 2px; }
+.bs-todo-cb.done::after { content: '✓'; font-size: 12px; font-weight: 800; }
+.bs-todo-text { flex: 1; font-size: 12px; line-height: 1.55; cursor: pointer; word-break: break-word; }
+.bs-todo-text.done { text-decoration: line-through; }
+.bs-todo-del { font-size: 16px; cursor: pointer; flex-shrink: 0; padding: 0 4px; line-height: 1; }
+.bs-progress { height: 4px; border-radius: 2px; margin: 4px 0 8px; overflow: hidden; }
+.bs-progress-fill { height: 100%; transition: width 0.4s; }
+.bs-stats { font-size: 11px; margin-bottom: 10px; }
+.bs-add-row { display: flex; gap: 8px; margin-top: 16px; padding-top: 14px; flex-wrap: wrap; }
+.bs-add-input { flex: 1; min-width: 140px; padding: 9px 12px; border-radius: 10px; font-size: 13px; font-family: inherit; outline: none; }
+.bs-add-cat { padding: 9px 10px; border-radius: 10px; font-size: 12px; font-family: inherit; flex: 0 0 auto; }
+.bs-add-btn { padding: 9px 16px; border-radius: 10px; border: none; font-weight: 700; font-size: 12px; cursor: pointer; font-family: inherit; }
+
+/* COST */
+.cs-summary { border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
+.cs-srow { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; }
+.cs-hint { font-size: 10px; font-style: italic; margin-bottom: 12px; }
+.cs-group { border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+.cs-group-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.cs-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; padding: 4px 0; }
+.cs-amount { font-weight: 600; font-size: 13px; }
+.cs-edit { cursor: pointer; border-bottom: 1px dashed transparent; }
+.cs-edit-input { background: transparent; border: none; font-weight: 600; font-size: 13px; width: 110px; text-align: right; font-family: inherit; outline: none; padding: 1px 2px; }
+.cs-totals { border-radius: 12px; padding: 14px; margin-top: 10px; }
+.cs-trow { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; }
+.cs-grand { display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; padding: 10px 0 4px; margin-top: 6px; }
+.cs-avg { margin-top: 4px; padding-top: 6px; }
+.cs-note { font-size: 10px; margin-top: 12px; line-height: 1.6; }
+
+/* EDIT MODE */
+body.edit-mode .topbar { box-shadow: 0 0 0 2px var(--amber, #fbbf24) inset; }
+.edit-banner { font-size: 11px; padding: 6px 16px; display: none; align-items: center; gap: 8px; font-weight: 600; }
+.edit-mode .edit-banner { display: flex; }
+.edit-mode .day-tab { cursor: grab; position: relative; }
+.edit-mode .day-tab::after { content: '⠿'; position: absolute; top: 2px; right: 4px; font-size: 10px; opacity: 0.5; }
+.edit-mode .day-tab.dragging { opacity: 0.4; cursor: grabbing; }
+.edit-mode .card { cursor: text; }
+.edit-mode .card.dragging { opacity: 0.4; }
+.card-drag { display: none; position: absolute; top: 12px; right: 36px; font-size: 16px; cursor: grab; padding: 0 4px; user-select: none; opacity: 0.5; }
+.edit-mode .card-drag { display: block; }
+.card-del { display: none; position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 11px; font-size: 14px; cursor: pointer; align-items: center; justify-content: center; font-family: inherit; padding: 0; line-height: 1; }
+.edit-mode .card-del { display: flex; }
+
+.edit-input { width: 100%; border-radius: 6px; padding: 4px 6px; font-family: inherit; font-size: inherit; outline: none; }
+.edit-input.time-input { width: 70px; text-align: center; font-size: 12px; }
+.edit-input.icon-input { width: 40px; text-align: center; font-size: 16px; }
+.edit-input.name-input { font-size: 14px; font-weight: 600; }
+.edit-input.desc-input { font-size: 12px; }
+
+.add-form { border-radius: 12px; padding: 12px; margin: 8px 0; display: none; }
+.add-form.show { display: block; }
+.add-form-row { display: flex; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
+.add-form-row input { flex: 1; min-width: 90px; padding: 7px 10px; border-radius: 8px; font-size: 12px; font-family: inherit; outline: none; }
+.add-form-row input.f-time { flex: 0 0 70px; }
+.add-form-row input.f-icon { flex: 0 0 50px; text-align: center; font-size: 16px; }
+.add-form-actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 4px; }
+.add-form-btn { padding: 6px 14px; border-radius: 8px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; }
+
+.toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); padding: 10px 18px; border-radius: 24px; font-size: 12px; font-weight: 500; z-index: 400; opacity: 0; transition: all 0.3s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 380px) {
+  .day-tab { padding: 7px 10px; font-size: 11px; }
+  .card { grid-template-columns: 50px 24px 1fr; padding: 12px; gap: 8px; }
+  .c-time { font-size: 12px; }
+}
+
+
+
+:root {
+  color-scheme: dark;
+  --bg:      #0a0e1a;
+  --bg2:     #141827;
+  --bg3:     #1e2235;
+  --glass:   rgba(255,255,255,0.06);
+  --glass2:  rgba(255,255,255,0.10);
+  --glass3:  rgba(255,255,255,0.14);
+  --border:  rgba(255,255,255,0.08);
+  --txt:     #e8e8ec;
+  --txt2:    #9ca3af;
+  --txt3:    #6b7280;
+  --accent:  #2dd4bf;
+  --accent2: #8b5cf6;
+  --accent3: #ec4899;
+  --grn:     #34d399;
+  --red:     #f87171;
+  --amber:   #fbbf24;
+  --cat-hotel: #ec4899;
+}
+html { background: #0a0e1a; }
+
+html, body {
+  font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+  color: var(--txt);
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 800px 600px at 15% 10%, rgba(45,212,191,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 700px 500px at 85% 70%, rgba(139,92,246,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 500px 500px at 50% 100%, rgba(236,72,153,0.10) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+.topbar { background: rgba(10,14,26,0.85); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid var(--border); }
+.tb-title { font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 700; background: linear-gradient(90deg, #2dd4bf 0%, #8b5cf6 50%, #ec4899 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.3px; }
+.tb-sub { color: var(--txt2); }
+.tb-badge { background: var(--glass); border: 1px solid var(--border); color: var(--txt2); }
+.tb-sync { color: var(--txt3); }
+
+.day-tabs { background: rgba(10,14,26,0.7); backdrop-filter: blur(16px); }
+.day-tab { background: var(--glass); border: 1px solid var(--border); color: var(--txt2); border-radius: 12px; }
+.day-tab:hover { background: var(--glass2); transform: translateY(-1px); }
+.day-tab.active { background: linear-gradient(135deg, #2dd4bf 0%, #8b5cf6 100%); color: #0a0e1a; border-color: transparent; box-shadow: 0 6px 20px rgba(45,212,191,0.35); }
+
+.progress-bar { background: var(--glass); }
+.progress-bar-fill { background: linear-gradient(90deg, #2dd4bf, #8b5cf6, #ec4899); }
+.legend { color: var(--txt3); }
+
+.dp-title { color: var(--txt); }
+.dp-date { color: var(--txt3); }
+.dp-toggle { background: var(--glass); border: 1px solid var(--border); }
+.dp-btn { color: var(--txt2); }
+.dp-btn.active { background: var(--glass3); color: var(--txt); }
+#gmap { background: var(--bg2); border: 1px solid var(--border); }
+
+/* CARDS — stagger fade-in + hover lift */
+@keyframes mn-fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.day-panel.active .card { animation: mn-fade-in 0.45s cubic-bezier(0.4,0,0.2,1) backwards; }
+.day-panel.active .card:nth-child(1)  { animation-delay: 0.02s; }
+.day-panel.active .card:nth-child(2)  { animation-delay: 0.06s; }
+.day-panel.active .card:nth-child(3)  { animation-delay: 0.10s; }
+.day-panel.active .card:nth-child(4)  { animation-delay: 0.14s; }
+.day-panel.active .card:nth-child(5)  { animation-delay: 0.18s; }
+.day-panel.active .card:nth-child(6)  { animation-delay: 0.22s; }
+.day-panel.active .card:nth-child(7)  { animation-delay: 0.26s; }
+.day-panel.active .card:nth-child(8)  { animation-delay: 0.30s; }
+.day-panel.active .card:nth-child(9)  { animation-delay: 0.34s; }
+.day-panel.active .card:nth-child(10) { animation-delay: 0.38s; }
+.day-panel.active .card:nth-child(11) { animation-delay: 0.42s; }
+
+.card {
+  background: var(--glass);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s, background 0.2s;
+}
+.card:hover {
+  background: var(--glass2);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(45,212,191,0.10), 0 6px 16px rgba(139,92,246,0.08);
+  border-color: rgba(45,212,191,0.20);
+}
+.c-time { background: linear-gradient(135deg, #2dd4bf, #8b5cf6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.c-name { color: var(--txt); }
+.c-desc { color: var(--txt2); }
+.dinner-opts { margin-top: 8px; }
+.dinner-opts summary {
+  cursor: pointer; list-style: none;
+  padding: 7px 11px;
+  background: rgba(45,212,191,0.08);
+  border: 1px solid rgba(45,212,191,0.22);
+  border-radius: 7px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  user-select: none;
+  transition: background 0.18s, border-color 0.18s;
+}
+.dinner-opts summary::-webkit-details-marker { display: none; }
+.dinner-opts summary:hover { background: rgba(45,212,191,0.12); }
+.dinner-opts[open] summary {
+  background: rgba(45,212,191,0.14);
+  border-color: rgba(45,212,191,0.38);
+}
+.dinner-opts .opt {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 8px;
+  padding: 10px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.dinner-opts .opt:last-child { border-bottom: none; }
+.dinner-opts .opt-n { color: var(--accent); font-weight: 700; font-size: 14px; }
+.dinner-opts .opt b { color: var(--txt); font-size: 13px; }
+.dinner-opts .opt-tag { color: var(--txt3); font-size: 11px; margin-left: 4px; }
+.dinner-opts .opt-meta { font-size: 11px; color: var(--txt2); margin-top: 3px; line-height: 1.5; }
+.dinner-opts .opt-link {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.dinner-opts .opt-link:hover { opacity: 0.75; }
+
+.c-tag { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--glass2); color: var(--txt2); border: 1px solid var(--border); font-weight: 500; margin: 4px 4px 0 0; }
+.c-tag.tg { background: rgba(52,211,153,0.12); color: var(--grn); border-color: rgba(52,211,153,0.25); }
+.c-tag.tw { background: rgba(251,191,36,0.12); color: var(--amber); border-color: rgba(251,191,36,0.25); }
+.c-tag.tr { background: rgba(248,113,113,0.12); color: var(--red); border-color: rgba(248,113,113,0.25); }
+
+.c-link { background: rgba(45,212,191,0.14); color: var(--accent); border: 1px solid rgba(45,212,191,0.3); }
+.c-link:hover { background: rgba(45,212,191,0.22); }
+
+.card-hotel { background: linear-gradient(135deg, rgba(236,72,153,0.10), rgba(139,92,246,0.08)); border-color: rgba(236,72,153,0.22); }
+.card-hotel .c-name { color: #fbcfe8; }
+.card-hotel .c-price { color: var(--cat-hotel); }
+
+.card-add-between { border: 1px dashed var(--border); color: var(--txt3); }
+.card-add-between:hover { background: var(--glass); color: var(--accent); border-color: var(--accent); }
+
+/* BOTTOM NAV */
+.bottom-nav { background: rgba(10,14,26,0.92); backdrop-filter: blur(24px) saturate(180%); border-top: 1px solid var(--border); }
+.nav-item { color: var(--txt2); }
+.nav-item:hover { color: var(--txt); }
+.nav-item.active { color: var(--accent); }
+.nav-item.edit-on { color: var(--amber); }
+
+/* SHEETS */
+.sheet-overlay { background: rgba(0,0,0,0.6); }
+.sheet { background: linear-gradient(180deg, var(--bg2), var(--bg)); border-top: 1px solid var(--border); box-shadow: 0 -10px 40px rgba(0,0,0,0.5); }
+.sheet-handle { background: var(--txt3); }
+.sheet-header { border-bottom: 1px solid var(--border); }
+.sheet-title { color: var(--txt); }
+.sheet-close { background: var(--glass); color: var(--txt); }
+
+.bs-section-title { color: var(--txt3); border-bottom: 1px solid var(--border); }
+.bs-todo { border-bottom: 1px solid var(--border); }
+.bs-todo:last-child { border-bottom: none; }
+.bs-todo-cb { border: 2px solid var(--txt3); background: var(--glass); }
+.bs-todo-cb.done { background: linear-gradient(135deg, var(--accent), var(--accent2)); border-color: transparent; }
+.bs-todo-cb.done::after { color: #0a0e1a; }
+.bs-todo-text { color: var(--txt); }
+.bs-todo-text.done { color: var(--txt3); }
+.bs-todo-text b { color: var(--txt); font-weight: 700; }
+.bs-todo-text a { color: var(--accent); text-decoration: none; }
+.bs-todo-del { color: var(--txt3); }
+.bs-todo-del:hover { color: var(--red); }
+.bs-progress { background: var(--glass); }
+.bs-progress-fill { background: linear-gradient(90deg, var(--grn), var(--accent)); }
+.bs-stats { color: var(--txt2); }
+.bs-add-row { border-top: 1px solid var(--border); }
+.bs-add-input, .bs-add-cat { background: var(--glass); border: 1px solid var(--border); color: var(--txt); }
+.bs-add-input:focus { border-color: var(--accent); }
+.bs-add-btn { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #0a0e1a; }
+
+.cs-summary { background: linear-gradient(135deg, rgba(52,211,153,0.10), rgba(45,212,191,0.08)); border: 1px solid rgba(52,211,153,0.20); }
+.cs-srow { color: var(--txt2); }
+.cs-srow b { color: var(--txt); }
+.cs-hint { color: var(--txt3); }
+.cs-group { background: var(--glass); border: 1px solid var(--border); }
+.cs-group-title { color: var(--txt2); }
+.cs-row { color: var(--txt2); border-bottom: 1px solid var(--border); }
+.cs-row:last-child { border-bottom: none; }
+.cs-amount { color: var(--accent); }
+.cs-edit:hover { border-bottom-color: var(--accent); }
+.cs-actual { color: var(--grn); font-weight: 700; }
+.cs-actual::before { content: '實 '; }
+.cs-edit-input { border-bottom: 2px solid var(--accent); color: var(--grn); }
+.cs-totals { background: linear-gradient(135deg, var(--bg3), var(--bg2)); border: 1px solid var(--border); }
+.cs-trow { color: var(--txt2); }
+.cs-grand { color: var(--accent); border-top: 1px solid var(--border); }
+.cs-grand span:last-child { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.cs-avg { color: var(--txt3); border-top: 1px solid var(--border); }
+.cs-note { color: var(--txt3); }
+
+/* EDIT */
+.edit-banner { background: linear-gradient(90deg, rgba(251,191,36,0.18), rgba(251,191,36,0.12)); border-bottom: 1px solid rgba(251,191,36,0.4); color: var(--amber); }
+.edit-mode .card { border: 1.5px dashed var(--border); }
+.edit-mode .card:hover { border-color: var(--glass3); }
+.edit-mode .card.drag-over { border-color: var(--accent); background: rgba(45,212,191,0.08); }
+.edit-mode .day-tab.drag-over { box-shadow: 0 0 0 2px var(--accent); }
+.card-drag { color: var(--txt3); }
+.card-del { background: var(--glass2); border: 1px solid var(--border); color: var(--txt2); }
+.card-del:hover { background: rgba(248,113,113,0.18); border-color: var(--red); color: var(--red); }
+.edit-mode .c-time:hover, .edit-mode .c-name:hover, .edit-mode .c-desc:hover, .edit-mode .c-icon:hover { background: rgba(45,212,191,0.10); border-radius: 4px; }
+.edit-input { background: var(--glass2); border: 1px solid var(--accent); color: var(--txt); }
+
+.add-form { background: var(--glass2); border: 1px solid var(--accent); }
+.add-form-row input { background: var(--glass); border: 1px solid var(--border); color: var(--txt); }
+.add-form-row input:focus { border-color: var(--accent); }
+.btn-save { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #0a0e1a; }
+.btn-cancel { background: var(--glass); color: var(--txt2); border: 1px solid var(--border); }
+
+.toast { background: rgba(10,14,26,0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); color: var(--txt); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+
+.gm-style .gm-style-iw-c {
+  padding: 14px 18px !important;
+  background: #141827 !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.55) !important;
+  max-width: 280px !important;
+}
+.gm-style .gm-style-iw-d {
+  overflow: visible !important;
+  padding: 0 !important;
+  max-height: none !important;
+}
+/* Hide close button row + tail to remove the empty black bar artifact */
+.gm-style .gm-style-iw-chr,
+.gm-style button.gm-ui-hover-effect {
+  display: none !important;
+}
+.gm-iw-name { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: var(--txt); margin-bottom: 4px; letter-spacing: -0.01em; }
+.gm-iw-date { font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+.gm-iw-desc { font-size: 12px; color: var(--txt2); margin-top: 6px; line-height: 1.6; }
+.gm-iw-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #0a0e1a !important;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+}
+.gm-iw-nav:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(45,212,191,0.35);
+  opacity: 0.95;
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-title">🌴 Xi++ 2026/12 峇里島</div>
+  <div class="tb-sub">12/24 – 12/29 · 6人 · 6天5夜 · 🌙 Midnight Explorer</div>
+  <div class="tb-badges">
+    <span class="tb-badge">3 hotels</span>
+    <span class="tb-badge">17 todos</span>
+    <span class="tb-badge">🌙 Midnight Explorer</span>
+  </div>
+  <div class="tb-sync" id="sync-status"></div>
+</div>
+
+<div class="edit-banner">
+  <span>✏️ <b>編輯模式</b> — 點擊文字編輯 / 拖曳 ⠿ 重排 / × 刪除 / ＋ 插入新項目</span>
+</div>
+
+<div class="day-tabs" id="day-tabs"></div>
+
+<div class="progress-bar"><div class="progress-bar-fill" id="progress-fill"></div></div>
+
+<div class="legend">
+  <span class="legend-item"><i class="legend-dot" style="background:#f87171"></i>交通</span>
+  <span class="legend-item"><i class="legend-dot" style="background:#34d399"></i>餐飲</span>
+  <span class="legend-item"><i class="legend-dot" style="background:#fb923c"></i>觀光</span>
+  <span class="legend-item"><i class="legend-dot" style="background:#c084fc"></i>體驗</span>
+  <span class="legend-item"><i class="legend-dot" style="background:var(--cat-hotel)"></i>住宿</span>
+</div>
+
+<div class="panels-container" id="panels"></div>
+
+<div class="bottom-nav">
+  <button class="nav-item active" data-panel="itin"><span class="ni-icon">🗓</span>行程</button>
+  <button class="nav-item" data-panel="book"><span class="ni-icon">🎫</span>訂票</button>
+  <button class="nav-item" data-panel="cost"><span class="ni-icon">💰</span>費用</button>
+  <button class="nav-item" id="nav-edit" data-panel="edit"><span class="ni-icon">✏️</span>編輯</button>
+</div>
+
+<div class="sheet-overlay" id="sheet-overlay"></div>
+
+<div class="sheet" id="booking-sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-title">🎫 訂票進度</div>
+    <button class="sheet-close" aria-label="關閉">✕</button>
+  </div>
+  <div class="sheet-body">
+    <div class="bs-progress"><div class="bs-progress-fill" id="bs-progress-fill"></div></div>
+    <div class="bs-stats" id="bs-stats">已完成 0 / 0 項</div>
+    <div id="booking-list">
+<div class="bs-section-title">🏨 住宿</div>
+
+<div class="bs-todo" data-id="t1">
+  <div class="bs-todo-cb"></div>
+  <div class="bs-todo-text"><b>Villa Jerami & Spa</b>（12/24–25 · 1晚）<br>水明漾 · TWD $8,399 ✅ 已訂確認</div>
+  <span class="bs-todo-del">×</span>
+</div>
+
+<div class="bs-todo" data-id="t2">
+  <div class="bs-todo-cb"></div>
+  <div class="bs-todo-text"><b>Villa Langon Ubud</b>（12/25–27 · 2晚）<br>烏布 Lodtunduh · TWD $14,770 ✅ 已訂確認</div>
+  <span class="bs-todo-del">×</span>
+</div>
+
+<div class="bs-todo" data-id="t3">
+  <div class="bs-todo-cb"></div>
+  <div class="bs-todo-text"><b>AYANA Segara Bali · 海景房</b>（12/27–29 · 3房×2晚）<br>金巴蘭 · TWD $88,198 ✅ 已訂確認</div>
+  <span class="bs-todo-del">×</span>
+</div>
+
+<div class="bs-section-title">✈️ 交通</div>
+
+<div class="bs-todo" data-id="t4">
+  <div class="bs-todo-cb"></div>
+  <div class="bs-todo-text"><b>桃園 ↔ DPS 來回機票（6人）</b><br>12/24 09:10 桃園起飛 / 12/29 15:45 DPS 起飛</div>
+  <span class="bs-todo-del">×</span>
+</div>
+
+<div class="bs-todo" data-id="t5">
+  <div class="bs-todo-cb"></div>
+  <div class="bs-todo-text"><b>安排全程包車司機</b><br>固定司機 6 天，提前溝通 Day 3 凌晨 02:30 出發</div>
+  <span class="bs-todo-del">×</span>
+</div>
+
+<div class="bs-todo" data-id="t6">
+  <div class="bs-todo-cb"></div>
+  <div class="bs-todo-text"><b>機場接送 / 沙努爾港接駁</b><br>Day 2 沙努爾→烏布段含在浮潛行程內</div>
+  <span class="bs-todo-del">×</span>
+</div>
+
+<div class="bs-section-title">🎡 活動</div>
+
+<div class="bs-todo" data-id="t7">
+  <div class="bs-todo-cb"></div>
+  <div class="bs-todo-text"><b>訂藍夢島浮潛（Klook）</b>（12/25）<br>9:00 沙努爾港出發 · Manta Bay + Crystal Bay<br><a href="https://www.klook.com/zh-TW/activity/21684-nusa-lembongan-manta-bay-snorkeling-experience/" target="_blank">→ Klook 藍夢島</a></div>
+  <span class="bs-todo-del">×</span>
+</div>
+
+<div class="bs-todo" data-id="t8">
+  <div class="bs-todo-cb"></div>
+  <div class="bs-todo-text"><b>訂巴杜爾火山吉普（Klook）IDR 9,216/人</b>（12/26）<br>04:30 集合 · 日出+熔岩+金塔瑪尼+德哥拉朗<br><a href="https://www.klook.com/zh-TW/activity/22005-mount-batur-sunrise-experience-4wd-jeep-bali/" target="_blank">→ Klook 火山吉普</a></div>
+  <span class="bs-todo-del">×</span>
+</div>
+
+<div class="bs-todo" data-id="t9">
+  <div class="bs-todo-cb"></div>
+  <div class="bs-todo-text"><b>訂烏布 ATV + 瀑布</b>（12/27 11:00–15:30）<br>IDR 6,522/人 · 後續直接前往 AYANA<br><a href="https://www.klook.com/zh-TW/activity/6595-atv-quad-bike-adventure-bali/" target="_blank">→ Klook ATV</a></div>
+  <span class="bs-todo-del">×</span>
+</div>
+
+<div class="bs-todo" data-id="t10">
+  <div class="bs-todo-cb"></div>
+  <div class="bs-todo-text"><b>🔥 Tanah Lot 海神廟 Kecak 火舞門票（6人）</b>（12/24 18:00 開演）<br>Surya Mandala Cultural Park · IDR 100K/人 + 入廟費 IDR 75K/人 · 17:30 入場搶位<br><a href="https://www.kkday.com/zh-tw/product/546495" target="_blank">→ KKday Tanah Lot Kecak</a></div>
+  <span class="bs-todo-del">×</span>
+</div>
+
+    </div>
+    <div class="bs-add-row">
+      <input class="bs-add-input" id="bs-add-input" placeholder="新增待辦事項...">
+      <select class="bs-add-cat" id="bs-add-cat">
+        <option value="auto">🪄 自動分類</option>
+        <option value="hotel">🏨 住宿</option>
+        <option value="transport">✈️ 交通</option>
+        <option value="activity">🎡 活動</option>
+        <option value="restaurant">🍽️ 餐廳訂位</option>
+      </select>
+      <button class="bs-add-btn" id="bs-add-btn">新增</button>
+    </div>
+  </div>
+</div>
+
+<div class="sheet" id="cost-sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-title">💰 費用</div>
+    <button class="sheet-close" aria-label="關閉">✕</button>
+  </div>
+  <div class="sheet-body" id="cost-list">
+<div class="cs-summary">
+  <div class="cs-srow"><span>💰 預算合計</span><b id="cs-budget">計算中…</b></div>
+  <div class="cs-srow"><span>✅ 實際已知</span><b id="cs-actual">計算中…</b></div>
+  <div class="cs-srow"><span>📊 剩餘預估</span><b id="cs-remain">計算中…</b></div>
+</div>
+
+<div class="cs-hint">💡 雙擊金額可編輯實際花費</div>
+
+<div class="cs-group">
+  <div class="cs-group-title">✈️ 機票</div>
+  <div class="cs-row"><span>來回機票（6人）</span><span class="cs-amount cs-edit" data-key="c1" data-budget="84000">≈ TWD $84,000</span></div>
+</div>
+
+<div class="cs-group">
+  <div class="cs-group-title">🏨 住宿</div>
+  <div class="cs-row"><span>Villa Jerami & Spa · 1晚</span><span class="cs-amount cs-edit" data-key="c2" data-budget="8399">TWD $8,399</span></div>
+  <div class="cs-row"><span>Villa Langon Ubud · 2晚</span><span class="cs-amount cs-edit" data-key="c3" data-budget="14770">TWD $14,770</span></div>
+  <div class="cs-row"><span>AYANA Segara · 3房×2晚</span><span class="cs-amount cs-edit" data-key="c4" data-budget="88198">TWD $88,198</span></div>
+</div>
+
+<div class="cs-group">
+  <div class="cs-group-title">🚗 交通</div>
+  <div class="cs-row"><span>包車司機 6 天</span><span class="cs-amount cs-edit" data-key="c5" data-budget="18000">≈ TWD $18,000</span></div>
+  <div class="cs-row"><span>機場接送/額外用車</span><span class="cs-amount cs-edit" data-key="c6" data-budget="2000">≈ TWD $2,000</span></div>
+  <div class="cs-row"><span>過路費/油資/小費</span><span class="cs-amount cs-edit" data-key="c7" data-budget="1000">≈ TWD $1,000</span></div>
+</div>
+
+<div class="cs-group">
+  <div class="cs-group-title">🎡 活動門票</div>
+  <div class="cs-row"><span>藍夢島浮潛（6人）</span><span class="cs-amount cs-edit" data-key="c8" data-budget="12000">≈ TWD $12,000</span></div>
+  <div class="cs-row"><span>巴杜爾火山吉普</span><span class="cs-amount cs-edit" data-key="c9" data-budget="13800">≈ TWD $13,800</span></div>
+  <div class="cs-row"><span>烏布 ATV + 瀑布</span><span class="cs-amount cs-edit" data-key="c10" data-budget="9800">≈ TWD $9,800</span></div>
+  <div class="cs-row"><span>🔥 Tanah Lot Kecak + 入廟費（IDR 175K×6 · 12/24）</span><span class="cs-amount cs-edit" data-key="c11" data-budget="2100">≈ TWD $2,100</span></div>
+  <div class="cs-row"><span>其他門票</span><span class="cs-amount cs-edit" data-key="c12" data-budget="3000">≈ TWD $3,000</span></div>
+</div>
+
+<div class="cs-group">
+  <div class="cs-group-title">🍽 餐飲（6人）</div>
+  <div class="cs-row"><span>Day 1–2</span><span class="cs-amount cs-edit" data-key="c13" data-budget="12000">≈ TWD $12,000</span></div>
+  <div class="cs-row"><span>Day 3–4</span><span class="cs-amount cs-edit" data-key="c14" data-budget="14000">≈ TWD $14,000</span></div>
+  <div class="cs-row"><span>Day 5–6</span><span class="cs-amount cs-edit" data-key="c15" data-budget="12000">≈ TWD $12,000</span></div>
+</div>
+
+<div class="cs-group">
+  <div class="cs-group-title">💆 雜費</div>
+  
+  <div class="cs-row"><span>💆 Jaens Spa（Day 3）</span><span class="cs-amount cs-edit" data-key="c17" data-budget="4560">≈ TWD $4,560</span></div>
+  <div class="cs-row"><span>💆 AYANA Spa / 預備</span><span class="cs-amount cs-edit" data-key="c18" data-budget="4000">≈ TWD $4,000</span></div>
+  <div class="cs-row"><span>🎁 購物 / 紀念品</span><span class="cs-amount cs-edit" data-key="c19" data-budget="6000">≈ TWD $6,000</span></div>
+</div>
+
+<div class="cs-totals">
+  <div class="cs-trow"><span>✈️ 機票</span><span id="ct-ticket">—</span></div>
+  <div class="cs-trow"><span>🏨 住宿</span><span id="ct-hotel">—</span></div>
+  <div class="cs-trow"><span>🚗 交通</span><span id="ct-trans">—</span></div>
+  <div class="cs-trow"><span>🎡 活動</span><span id="ct-act">—</span></div>
+  <div class="cs-trow"><span>🍽 餐飲</span><span id="ct-food">—</span></div>
+  <div class="cs-trow"><span>💆 雜費</span><span id="ct-misc">—</span></div>
+  <div class="cs-grand"><span>6人旅費總計</span><span id="ct-total">—</span></div>
+  <div class="cs-trow cs-avg"><span>平均每人</span><span id="ct-avg">—</span></div>
+</div>
+
+<div class="cs-note">※ IDR 匯率以 1 TWD ≈ 500 IDR 估算<br>※ 雙擊任何金額欄位可輸入實際花費</div>
+  </div>
+</div>
+
+<div class="sheet-overlay" id="add-form-overlay" style="z-index:300"></div>
+<div class="sheet" id="add-form-modal" style="z-index:310">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-title">➕ 新增行程項目</div>
+    <button class="sheet-close" id="af-cancel" aria-label="取消">✕</button>
+  </div>
+  <div class="sheet-body">
+    <div style="font-size:11px;color:var(--txt3);margin-bottom:12px;" id="af-context">—</div>
+    <div class="add-form-row">
+      <input class="f-time" id="af-time" placeholder="時間">
+      <input class="f-icon" id="af-icon" placeholder="📍" value="📍">
+      <input id="af-name" placeholder="名稱（必填）">
+    </div>
+    <div class="add-form-row">
+      <input id="af-desc" placeholder="說明（可留空）">
+    </div>
+    <div class="add-form-actions">
+      <button class="add-form-btn btn-cancel" id="af-cancel-btn">取消</button>
+      <button class="add-form-btn btn-save" id="af-save">💾 新增</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var TRIP_DATA = [
+  {
+    id: "day-1",
+    date: "12/24 四",
+    title: "🛬 抵達 → 海神廟火舞 → Canggu 晚餐",
+    items: [
+      {time:"09:10", icon:"✈️", name:"桃園 TPE 起飛", desc:"飛行約 5.5 小時，峇里島時間慢台灣 1 小時", link:""},
+      {time:"14:40", icon:"🛬", name:"DPS 峇里島機場降落", desc:"入境 → 領行李 → 換匯（少量應急）。⚠ 聖誕節塞車。出機場後直接前往 Tanah Lot，行李留車上司機顧。", link:""},
+      {time:"15:30", icon:"🚗", name:"直奔 Tanah Lot（不繞 Villa）", desc:"DPS → Tanah Lot 約 60–75 分鐘。司機在 Tanah Lot 停車場等候。", link:""},
+      {time:"16:30", icon:"📸", name:"抵達 Tanah Lot · 拍照", desc:"海上廟、市集區。45 分鐘拍夠標誌性景照。不深度逛廟區（時間不夠），重點拍照即可。入廟費 IDR 75K/人。", link:""},
+      {time:"17:30", icon:"🎫", name:"入場 Surya Mandala 火舞場", desc:"距海神廟約 100 公尺。位置先到先選，搶前排海景位。", link:""},
+      {time:"18:00", icon:"🔥", name:"🔥 海神廟 Kecak 火舞 + 夕陽剪影", desc:"⭐ 行程亮點！50–100 名男聲齊唱演繹羅摩衍那史詩，背景是夕陽下的海神廟剪影 + 海浪聲。表演約 60 分鐘。Surya Mandala Cultural Park · IDR 100K/人。", link:"https://www.kkday.com/zh-tw/product/546495"},
+      {time:"19:15", icon:"🚗", name:"出發回 Canggu/Seminyak", desc:"Tanah Lot → Canggu 約 40 分鐘 / Seminyak 約 55 分鐘（夜間路況稍順）", link:""},
+      {time:"20:00", icon:"📍", name:"抵達 Canggu/Seminyak 餐廳", desc:"今晚不趕了！按摩取消，可以慢慢吃。", link:""},
+      {time:"20:30", icon:"🍽", name:"🍽 晚餐 · Canggu/Seminyak（5 選 1）", desc:"20:00–22:00 在 Canggu/Seminyak 慢慢吃。下面五間任選，當天再決定（或先 line 群組投票）。<details class=\"dinner-opts\"><summary>▾ 展開 5 間候選餐廳</summary><div class=\"opt\"><span class=\"opt-n\">①</span><div><b>Santanera</b> <span class=\"opt-tag\">Canggu · Tanah Barak</span><div class=\"opt-meta\">拉美/西班牙 fine dining + 屋頂酒吧 · 12pm–12am · $$$</div><a class=\"opt-link\" href=\"https://www.santanerabali.com/\" target=\"_blank\" rel=\"noopener\">→ 官網</a></div></div><div class=\"opt\"><span class=\"opt-n\">②</span><div><b>La Brisa</b> <span class=\"opt-tag\">Canggu · Echo Beach</span><div class=\"opt-meta\">海邊 beach club · 永續海鮮 · 10am–11pm</div><a class=\"opt-link\" href=\"https://labrisa-bali.com/\" target=\"_blank\" rel=\"noopener\">→ 官網</a></div></div><div class=\"opt\"><span class=\"opt-n\">③</span><div><b>Alma Tapas Bar</b> <span class=\"opt-tag\">Canggu · Berawa</span><div class=\"opt-meta\">西班牙 tapas + 古典吉他現場 · 3pm–11pm（食物到 10:30）</div></div></div><div class=\"opt\"><span class=\"opt-n\">④</span><div><b>Mano Beach House</b> <span class=\"opt-tag\">Seminyak · Petitenget</span><div class=\"opt-meta\">海濱當代料理 · bohemian 風 · 11am–11pm</div><a class=\"opt-link\" href=\"https://www.manobali.com/\" target=\"_blank\" rel=\"noopener\">→ 官網</a></div></div><div class=\"opt\"><span class=\"opt-n\">⑤</span><div><b>Muda By/Suka</b> <span class=\"opt-tag\">Canggu · Munduk Catu</span><div class=\"opt-meta\">亞洲融合 + 創意調酒 · 暗色 moody · 6pm–11pm</div><a class=\"opt-link\" href=\"https://www.mudabysuka.com/\" target=\"_blank\" rel=\"noopener\">→ 官網</a></div></div></details>", link:""},
+      {time:"22:30", icon:"🏠", name:"Check-in Villa Jerami & Spa", desc:"離 Canggu/Seminyak 餐廳約 10–15 分鐘車程。洗澡睡覺，明天 07:15 出發沙努爾。", link:""},
+      {time:"23:00", icon:"😴", name:"入睡", desc:"充實但不像之前那麼操的一天 ✨", link:""}
+    ],
+    hotel: {
+      icon:"🌴",
+      name:"Villa Jerami & Spa",
+      desc:"水明漾 · 1晚 · 私人泳池 Villa",
+      price:"TWD $8,399 ✅ 已訂"
+    }
+  },
+  {
+    id: "day-2",
+    date: "12/25 五",
+    title: "🤿 藍夢島浮潛 → 烏布",
+    items: [
+      {time:"07:15", icon:"🚗", name:"包車出發前往沙努爾港", desc:"⚠ 聖誕節早上交通擁擠，水明漾→沙努爾預估 60–80 分。", link:""},
+      {time:"09:00", icon:"⛵", name:"沙努爾港出發 · 藍夢島一日遊", desc:"浮潛 + 藍夢島（Klook）。景點：Manta Bay、Crystal Bay、Mangrove Point。12月海況不穩定可能改備案地點。", link:"https://www.klook.com/zh-TW/activity/21684-nusa-lembongan-manta-bay-snorkeling-experience/"},
+      {time:"午餐", icon:"🍽", name:"午餐 · 藍夢島餐廳", desc:"行程含午餐或島上自理，推薦 Sandy Bay Beach Club", link:""},
+      {time:"17:00", icon:"🚢", name:"返回沙努爾港", desc:"船準時：17:00 上岸 → 可選按摩。船晚到（17:30 後）：直接前往烏布。", link:""},
+      {time:"17:30", icon:"💆", name:"[Optional] Sanur 60min 按摩", desc:"⏰ 只有船 17:00 準時到才做。Sanur 港旁有多家平價 spa（IDR 150–200K/人）。否則跳過直接走，省 1 小時。", link:""},
+      {time:"18:30", icon:"🚗", name:"出發前往烏布", desc:"Sanur → 烏布約 1–1.5 小時。", link:""},
+      {time:"20:00", icon:"🏠", name:"抵達 Villa Langon Ubud · 簡單整理", desc:"Lodtunduh 區，安靜稻田。放行李、換衣服，準備出門吃晚餐。", link:""},
+      {time:"20:30", icon:"🍽", name:"🍽 晚餐 · Kagemusha（日式家常）", desc:"日本人家庭經營的隱藏版日料，Nyuh Kuning（Monkey Forest 南側）。烏龍麵、炸豬排咖哩、烤鯖魚都很經典。需訂位。10am–10pm。", link:"https://www.instagram.com/kagemusha_bali/"},
+      {time:"22:00", icon:"😴", name:"早睡 · 為明天 Mt Batur 做準備", desc:"02:00 起床，02:30 出發。睡眠時間僅 4 小時，務必早睡。", link:""}
+    ],
+    hotel: {
+      icon:"🌾",
+      name:"Villa Langon Ubud（12/25–27 · 第 1 晚）",
+      desc:"烏布南部 Lodtunduh · 共 2 晚 · 大泳池稻田景觀",
+      price:"TWD $14,770 ✅ 已訂（2 晚總價）"
+    }
+  },
+  {
+    id: "day-3",
+    date: "12/26 六",
+    title: "🌋 火山日出 → Jaens Spa → 純休息",
+    items: [
+      {time:"02:30", icon:"🌙", name:"出發！烏布→巴杜爾山腳", desc:"車程約 1–1.5 小時。山頂 12–18°C，帶外套。", link:""},
+      {time:"04:30", icon:"🚙", name:"巴杜爾火山吉普車日出 → 黑色熔岩", desc:"4WD 吉普車穿越熔岩地，日出 05:50–06:10。12月雲霧較多但景色壯觀。", link:"https://www.klook.com/zh-TW/activity/22005-mount-batur-sunrise-experience-4wd-jeep-bali/"},
+      {time:"08:00", icon:"☕", name:"金塔瑪尼咖啡 → 德哥拉朗梯田", desc:"Kintamani 高地咖啡廳俯瞰巴杜爾火山湖，接著到德哥拉朗梯田", link:""},
+      {time:"12:30", icon:"🍽", name:"午餐 · Tis Cafe（梯田旁咖啡廳）", desc:"原本想去的 Kintamani Lakeview 已歇業，改去 Tis Cafe（Gianyar Regency，烏布旁）。正餐 + 著名鞦韆網美照可拍。", link:"https://maps.app.goo.gl/MgkVcgBD1cDa4mQ36"},
+      {time:"14:00", icon:"💆", name:"Jaens Spa Center Ubud · 90 分鐘按摩", desc:"火山日出後身體爆累，按摩就是最好的休息。從金塔瑪尼直接過來，午餐後不繞回 Villa。IDR 280K+/人 · 4.9★。☎ +62 811-3990-5109", link:"https://jaensspa.com/"},
+      {time:"15:30", icon:"🏠", name:"回 Villa Langon · 休息", desc:"火舞已在 Day 1 看完。可以游泳、放空、補眠到 17:00 再決定要不要出門逛逛（見下）。", link:""},
+      {time:"17:00", icon:"🏛", name:"[Optional] 烏布市集 + 皇宮散步", desc:"⏰ 如果大家體力夠。Villa→烏布鎮中心 ~15 分鐘車程。<b>Pasar Seni 烏布傳統市集</b>（18:00 關門，搶最後 1 小時挑紀念品 / 殺價）+ 對街 <b>Puri Saren 烏布皇宮</b>（免費，可拍照、看建築）。兩個地點走路就到。逛完 18:30 開往 Bebek Tebasari 吃晚餐。<br>累就跳過，直接在 Villa 休息到 18:30。", link:""},
+      {time:"19:00", icon:"🍽", name:"🍽 晚餐 · Bebek Tebasari Resto", desc:"招牌 Bebek Betutu 烤鴨 + 稻田水上涼亭，**就在 Lodtunduh，離 Villa Langon 走路可到的距離**。氣氛浪漫。10am–9:30pm。", link:"https://tebasari.com/bebek-tebasari/"},
+      {time:"21:00", icon:"😴", name:"早睡 · 補回昨晚的睡眠債", desc:"明天可以慢起，9-10 點再出發都來得及", link:""}
+    ],
+    hotel: {
+      icon:"🌾",
+      name:"Villa Langon Ubud（連住 · 第 2 晚）",
+      desc:"同 12/25 住宿 · 第 2 晚 / 共 2 晚",
+      price:"含於 2 晚總價 TWD $14,770"
+    }
+  },
+  {
+    id: "day-4",
+    date: "12/27 日",
+    title: "🌿 烏布 ATV → 瀑布 → AYANA（提早入住）",
+    items: [
+      {time:"早上", icon:"😴", name:"睡到飽 · 吃漂浮早餐", desc:"昨天凌晨出發太累了，好好休息！Villa Langon 可詢問是否提供漂浮早餐。", link:""},
+      {time:"10:00", icon:"🚗", name:"出發", desc:"", link:""},
+      {time:"11:00", icon:"🏍", name:"烏布 ATV 越野 → 特格嫩甘瀑布", desc:"ATV 穿越烏布田間（超刺激！），接著 Tegenungan Waterfall 戲水拍照，全程 11:00–15:30。", link:"https://www.klook.com/zh-TW/activity/6595-atv-quad-bike-adventure-bali/"},
+      {time:"13:30", icon:"🍽", name:"🍽 午餐 · L'Osteria Pizza e Cucina", desc:"Jl. Monkey Forest 8（烏布鎮中心）。48 小時發酵的拿坡里 pizza + 手工義大利麵。快又道地，回烏布吃午餐的首選。12pm–11pm。", link:"https://www.instagram.com/losteriapizzaecucina/"},
+      {time:"15:30", icon:"🚗", name:"直接出發前往 AYANA Jimbaran", desc:"瀑布 → AYANA 約 1.5 小時。今天不繞回烏布，省時間。", link:""},
+      {time:"17:00", icon:"🏨", name:"AYANA Resort · 提早 Check-in", desc:"3 房 6 大人，Sea View 海景房。Check-in 後立刻享受 Resort 設施。", link:""},
+      {time:"17:30", icon:"🏊", name:"享受 AYANA Resort 設施", desc:"游泳、看日落、Luna Rooftop。慢慢梳洗準備晚餐。", link:""},
+      {time:"20:00", icon:"🍽", name:"晚餐 · 金巴蘭海鮮沙灘燒烤 🦞", desc:"先去金巴蘭吃沙灘海鮮燒烤，現烤海鮮配星空+現場音樂。Rock Bar 留給明天慢慢享受。推薦 Menega Cafe / Lia Cafe。", link:""}
+    ],
+    hotel: {
+      icon:"🏝",
+      name:"AYANA Segara Bali · 海景房（12/27–29 · 第 1 晚）",
+      desc:"金巴蘭 · 3 房 · 6 成人 · Sea View",
+      price:"TWD $88,198 ✅ 已訂（3 房 2 晚總價）"
+    }
+  },
+  {
+    id: "day-5",
+    date: "12/28 一",
+    title: "🏖 AYANA 耍廢日 · Jimbaran 海鮮",
+    items: [
+      {time:"早上", icon:"🏊", name:"AYANA 無邊際泳池 · AYANA Spa（可選）", desc:"享受 Resort 設施。可選擇做 AYANA Spa（豪華體驗，需預約），或單純泳池放鬆。", link:""},
+      {time:"午餐", icon:"🍽", name:"午餐 · Padi / AYANA 內用餐", desc:"推薦 Padi Restaurant（海景）或泳池畔輕食", link:""},
+      {time:"17:00", icon:"🍹", name:"Rock Bar 慢慢待（日落 + 晚餐）", desc:"⭐ 整個下午+晚上都待在 Rock Bar。17:00 入場，18:00–19:00 看日落，再用 Rock Bar 晚餐（菜單以海鮮、tapas、雞尾酒為主）。提前 3 天訂位。", link:"https://www.ayana.com/bali/ayana-resort/rock-bar"},
+      {time:"21:00", icon:"🌌", name:"Rock Bar 繼續待 · 星空酒吧", desc:"日落後 Rock Bar 變成星空酒吧，有現場音樂。可以待到 24:00。如果不在 Rock Bar 吃晚餐，可以回 AYANA 內的 Kisik / Padi（海景）。", link:""}
+    ],
+    hotel: {
+      icon:"🏝",
+      name:"AYANA Segara Bali · 海景房（連住 · 第 2 晚）",
+      desc:"同 12/27 住宿 · 第 2 晚 / 共 2 晚",
+      price:"含於 3 房 2 晚總價 TWD $88,198"
+    }
+  },
+  {
+    id: "day-6",
+    date: "12/29 二",
+    title: "✈️ 耍廢回家",
+    items: [
+      {time:"早上", icon:"🏊", name:"AYANA · 最後享受", desc:"行李前晚打包好，早上再去游個泳或吃個好早餐", link:""},
+      {time:"11:30", icon:"🧳", name:"準備 Check-out", desc:"AYANA 12:00 退房。可詢問早退或行李寄放。", link:""},
+      {time:"12:00", icon:"🚗", name:"出發前往 DPS 機場", desc:"AYANA→機場約 20–30 分鐘，年底旺季預留 45 分鐘。", link:""},
+      {time:"12:45", icon:"🛫", name:"機場報到 · 國際線", desc:"年底旺季排隊長，2.5 小時前報到。13:15 前抵達最安全。", link:""},
+      {time:"15:45", icon:"✈️", name:"DPS 起飛 → 台灣", desc:"", link:""},
+      {time:"21:05", icon:"🏠", name:"台灣落地", desc:"記得安排接送或叫車", link:""}
+    ],
+    hotel: {
+      icon:"✈️",
+      name:"航班上（機上返程）",
+      desc:"DPS 15:45 → 桃園 21:05",
+      price:"—"
+    }
+  }
+];
+
+var PLACES = [
+  // Hotels
+  {n:"Villa Jerami & Spa",     lat:-8.6878, lng:115.1702, type:"hotel", d:"12/24",       x:"水明漾 · 1晚 · TWD $8,399"},
+  {n:"Villa Langon Ubud",      lat:-8.5550, lng:115.2575, type:"hotel", d:"12/25,12/26", x:"烏布 · 2晚 · TWD $14,770"},
+  {n:"AYANA Segara 海景房",     lat:-8.7875, lng:115.1404, type:"hotel", d:"12/27,12/28", x:"金巴蘭 · 3房 2晚 · TWD $88,198"},
+  // Day 1 (12/24)
+  {n:"DPS 機場",                lat:-8.7470, lng:115.1682, type:"act",   d:"12/24",       x:"14:40 抵達"},
+  {n:"Tanah Lot 海神廟 + Kecak", lat:-8.6212, lng:115.0868, type:"act", d:"12/24",        x:"⭐ Day 1 重點 · 16:30 抵達 · 18:00 火舞"},
+  {n:"Canggu/Seminyak 晚餐區",   lat:-8.6600, lng:115.1350, type:"act",   d:"12/24",       x:"5 選 1：Santanera / La Brisa / Alma Tapas / Mano Beach House / Muda By/Suka"},
+  // Day 2 (12/25)
+  {n:"Sanur 港口",              lat:-8.6718, lng:115.2593, type:"act",   d:"12/25",       x:"09:00 出發藍夢島 · 17:00 回港"},
+  {n:"Kagemusha（日式）",       lat:-8.5266, lng:115.2603, type:"act",   d:"12/25",       x:"20:30 晚餐 · Nyuh Kuning · 日本家庭料理"},
+  // Day 3 (12/26)
+  {n:"Mt Batur 巴杜爾火山",     lat:-8.2401, lng:115.3775, type:"act",   d:"12/26",       x:"04:30 集合 · 日出"},
+  {n:"Tegallalang 梯田",        lat:-8.4317, lng:115.2793, type:"act",   d:"12/26",       x:"層層稻田"},
+  {n:"Jaens Spa Center Ubud",  lat:-8.5216, lng:115.2630, type:"act",   d:"12/26",       x:"14:00 · 90min · IDR 280K+"},
+  {n:"烏布市集 + 皇宮（Optional）", lat:-8.5065, lng:115.2627, type:"act", d:"12/26",     x:"⏰ Optional · 17:00 散步 · 市集 8am-6pm · 皇宮免費"},
+  {n:"Bebek Tebasari Resto",   lat:-8.5530, lng:115.2580, type:"act",   d:"12/26",       x:"19:00 晚餐 · Lodtunduh · 烤鴨+稻田涼亭"},
+  // Day 4 (12/27)
+  {n:"L'Osteria（義式）",       lat:-8.5181, lng:115.2611, type:"act",   d:"12/27",       x:"13:30 午餐 · Monkey Forest 街 · 拿坡里 pizza"},
+  {n:"Tegenungan 瀑布",         lat:-8.5754, lng:115.2890, type:"act",   d:"12/27",       x:"ATV 後戲水拍照"},
+  // Day 5 (12/28)
+  {n:"Rock Bar @ AYANA",       lat:-8.7842, lng:115.1385, type:"act",   d:"12/27,12/28", x:"懸崖海景酒吧 · 日落"},
+  {n:"Jimbaran 海鮮燒烤",       lat:-8.7594, lng:115.1692, type:"act",   d:"12/28",       x:"沙灘海鮮燒烤"},
+];
+</script>
+
+<script>
+
+(function(){
+'use strict';
+
+// ============================================================
+// 1. CONSTANTS + STATE
+// ============================================================
+var FB_URL  = 'https://nz-trip-2026-dd942-default-rtdb.asia-southeast1.firebasedatabase.app';
+var FB_NODE = 'bali-2026-v2-midnight';
+
+var state = {
+  currentDay: 0,
+  editMode: false,
+  todos: {},     // { t1: true, t2: false, ... }
+  costs: {},     // { c1: 84000, ... }
+  // TRIP_DATA mutations are kept in TRIP_DATA itself; persisted via fbWrite()
+};
+
+var GMAP = null;
+var GM_MARKERS = [];
+var GM_INFO = null;
+var GM_API_READY = false;
+var GM_PENDING_DAY = null;
+
+// ============================================================
+// 2. HELPERS
+// ============================================================
+function $(sel, root) { return (root || document).querySelector(sel); }
+function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+function $id(id) { return document.getElementById(id); }
+
+function escHtml(s) {
+  return String(s).replace(/[&<>"']/g, function(c){
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+  });
+}
+
+function fmtTWD(n) { return 'TWD $' + (n||0).toLocaleString(); }
+
+function toast(msg) {
+  var el = $id('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(function(){ el.classList.remove('show'); }, 1800);
+}
+
+function showSyncStatus(text) {
+  var el = $id('sync-status');
+  if (!el) return;
+  el.textContent = text;
+  el.classList.add('show');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(function(){ el.classList.remove('show'); }, 1500);
+}
+
+// Render desc with simple <br> support and tag/link interpretation
+function renderDesc(desc, link) {
+  if (!desc && !link) return '';
+  var html = (desc || '').replace(/\n/g, '<br>');
+  if (link) {
+    html += '<br><a class="c-link" href="' + escHtml(link) + '" target="_blank" rel="noopener">→ 連結</a>';
+  }
+  return html;
+}
+
+// ============================================================
+// 3. RENDER
+// ============================================================
+function renderApp() {
+  renderDayTabs();
+  renderPanels();
+  renderProgress();
+}
+
+function renderDayTabs() {
+  var bar = $id('day-tabs');
+  bar.innerHTML = TRIP_DATA.map(function(day, idx){
+    var dateOnly = day.date.split(' ')[0];
+    var weekday = day.date.split(' ')[1] || '';
+    var cls = 'day-tab' + (idx === state.currentDay ? ' active' : '');
+    return '<div class="' + cls + '" data-day="' + idx + '" draggable="false">' +
+      '<span class="dt-num">DAY ' + (idx+1) + '</span>' +
+      dateOnly + ' ' + weekday +
+    '</div>';
+  }).join('');
+}
+
+function renderProgress() {
+  var pct = ((state.currentDay + 1) / TRIP_DATA.length) * 100;
+  $id('progress-fill').style.width = pct + '%';
+}
+
+function renderPanels() {
+  var container = $id('panels');
+  container.innerHTML = TRIP_DATA.map(function(day, idx){
+    return renderDayPanel(day, idx);
+  }).join('');
+  // Show only current
+  $$('.day-panel').forEach(function(p, i){
+    p.classList.toggle('active', i === state.currentDay);
+  });
+}
+
+function renderDayPanel(day, dayIdx) {
+  var items = day.items.map(function(item, itemIdx){
+    return renderAddBetween(dayIdx, itemIdx) + renderItem(item, dayIdx, itemIdx);
+  }).join('');
+  // Add final between-button (after last item, before hotel)
+  items += renderAddBetween(dayIdx, day.items.length);
+
+  return '' +
+    '<div class="day-panel" data-day="' + dayIdx + '">' +
+      '<div class="dp-header">' +
+        '<div>' +
+          '<div class="dp-date">' + escHtml(day.date) + ' · DAY ' + (dayIdx+1) + '</div>' +
+          '<div class="dp-title" data-edit="day-title" data-day="' + dayIdx + '">' + escHtml(day.title) + '</div>' +
+        '</div>' +
+        '<div class="dp-toggle">' +
+          '<button class="dp-btn active" data-mode="itin">行程</button>' +
+          '<button class="dp-btn" data-mode="map">地圖</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="dp-body">' +
+        '<div class="cards-list" data-day="' + dayIdx + '">' +
+          items +
+          renderHotel(day.hotel, dayIdx) +
+        '</div>' +
+        '<div class="map-view"><div id="gmap"></div></div>' +
+      '</div>' +
+    '</div>';
+}
+
+function renderItem(item, dayIdx, itemIdx) {
+  return '' +
+    '<div class="card" data-day="' + dayIdx + '" data-idx="' + itemIdx + '" draggable="false">' +
+      '<div class="c-time"      data-edit="time">' + escHtml(item.time || '') + '</div>' +
+      '<div class="c-icon"      data-edit="icon">' + escHtml(item.icon || '📍') + '</div>' +
+      '<div class="c-body">' +
+        '<div class="c-name"   data-edit="name">' + escHtml(item.name || '') + '</div>' +
+        '<div class="c-desc"   data-edit="desc">' + renderDesc(item.desc, item.link) + '</div>' +
+      '</div>' +
+      '<span class="card-drag" data-action="drag">⠿</span>' +
+      '<button class="card-del" data-action="del" title="刪除">×</button>' +
+    '</div>';
+}
+
+function renderHotel(hotel, dayIdx) {
+  if (!hotel) return '';
+  return '' +
+    '<div class="card card-hotel" data-day="' + dayIdx + '" data-hotel="1">' +
+      '<div class="c-icon"  data-edit="hotel-icon">' + escHtml(hotel.icon || '🏨') + '</div>' +
+      '<div class="c-body">' +
+        '<div class="c-name"  data-edit="hotel-name">' + escHtml(hotel.name || '') + '</div>' +
+        '<div class="c-desc"  data-edit="hotel-desc">' + escHtml(hotel.desc || '') + '</div>' +
+        '<div class="c-price" data-edit="hotel-price">' + escHtml(hotel.price || '') + '</div>' +
+      '</div>' +
+    '</div>';
+}
+
+function renderAddBetween(dayIdx, posIdx) {
+  return '<div class="card-add-between" data-day="' + dayIdx + '" data-pos="' + posIdx + '">＋ 在此插入新項目</div>';
+}
+
+// ============================================================
+// 4. NAVIGATION
+// ============================================================
+function switchDay(idx) {
+  if (idx < 0 || idx >= TRIP_DATA.length) return;
+  state.currentDay = idx;
+  $$('.day-tab').forEach(function(t, i){ t.classList.toggle('active', i === idx); });
+  $$('.day-panel').forEach(function(p, i){ p.classList.toggle('active', i === idx); });
+  renderProgress();
+  // Scroll active tab into view
+  var tab = $$('.day-tab')[idx];
+  if (tab) tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  // If currently in map mode, refresh map for new day
+  var panel = $$('.day-panel')[idx];
+  if (panel && panel.querySelector('.dp-body').classList.contains('map-mode')) {
+    renderMap(idx);
+  }
+}
+
+function setDayMode(dayIdx, mode) {
+  var panel = $$('.day-panel')[dayIdx];
+  if (!panel) return;
+  var body = panel.querySelector('.dp-body');
+  body.classList.toggle('map-mode', mode === 'map');
+  panel.querySelectorAll('.dp-btn').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-mode') === mode);
+  });
+  if (mode === 'map') renderMap(dayIdx);
+}
+
+function openSheet(name) {
+  $id(name + '-sheet').classList.add('show');
+  $id('sheet-overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeSheets() {
+  $$('.sheet').forEach(function(s){ s.classList.remove('show'); });
+  $id('sheet-overlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// ============================================================
+// 5. MAP
+// ============================================================
+window.gmapsReady = function() {
+  GM_API_READY = true;
+  if (GM_PENDING_DAY != null) {
+    var d = GM_PENDING_DAY;
+    GM_PENDING_DAY = null;
+    renderMap(d);
+  }
+};
+
+function renderMap(dayIdx) {
+  if (!GM_API_READY) {
+    GM_PENDING_DAY = dayIdx;
+    return;
+  }
+  var mapEl = $id('gmap');
+  if (!mapEl) return;
+  var dateKey = TRIP_DATA[dayIdx].date.split(' ')[0];  // "12/24"
+  var places = PLACES.filter(function(p){
+    var ds = p.d.split(',').map(function(s){return s.trim();});
+    return ds.indexOf(dateKey) !== -1;
+  });
+  if (places.length === 0) {
+    mapEl.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;font-size:13px;">當日無地圖標記</div>';
+    return;
+  }
+  // Compute bounds
+  var bounds = new google.maps.LatLngBounds();
+  places.forEach(function(p){ bounds.extend(new google.maps.LatLng(p.lat, p.lng)); });
+  // Init map (re-init each time)
+  GMAP = new google.maps.Map(mapEl, {
+    center: bounds.getCenter(),
+    zoom: 11,
+    disableDefaultUI: false,
+    streetViewControl: false,
+    mapTypeControl: false,
+    styles: darkMapStyles()
+  });
+  // Clear old markers
+  GM_MARKERS.forEach(function(m){ m.setMap(null); });
+  GM_MARKERS = [];
+  if (GM_INFO) GM_INFO.close();
+  GM_INFO = new google.maps.InfoWindow();
+
+  places.forEach(function(p, i) {
+    var color = p.type === 'hotel' ? '#f472b6' : '#38bdf8';
+    var marker = new google.maps.Marker({
+      position: { lat: p.lat, lng: p.lng },
+      map: GMAP,
+      title: p.n,
+      icon: {
+        url: 'data:image/svg+xml;utf8,' + encodeURIComponent(
+          '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28">' +
+          '<circle cx="14" cy="14" r="12" fill="' + color + '" stroke="#0c1222" stroke-width="2"/>' +
+          '<text x="14" y="18" text-anchor="middle" font-size="11" fill="#0c1222" font-weight="800" font-family="sans-serif">' + (p.type==='hotel'?'H':(i+1)) + '</text>' +
+          '</svg>'
+        ),
+        scaledSize: new google.maps.Size(28, 28),
+        anchor: new google.maps.Point(14, 14)
+      }
+    });
+    marker.addListener('click', function(){
+      var navUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + p.lat + ',' + p.lng;
+      var content = '<div class="gm-iw-name">' + escHtml(p.n) + '</div>' +
+        '<div class="gm-iw-date">' + escHtml(p.d) + '</div>' +
+        '<div class="gm-iw-desc">' + escHtml(p.x || '') + '</div>' +
+        '<a class="gm-iw-nav" href="' + navUrl + '" target="_blank" rel="noopener">🧭 用 Google Maps 導航</a>';
+      GM_INFO.setContent(content);
+      GM_INFO.open(GMAP, marker);
+    });
+    GM_MARKERS.push(marker);
+  });
+  // Wait for the map to be fully sized + idle before fitting bounds.
+  // This prevents framing bugs when the map container transitions from
+  // display:none (itinerary mode) to display:block (map mode).
+  google.maps.event.addListenerOnce(GMAP, 'idle', function() {
+    if (places.length > 1) {
+      GMAP.fitBounds(bounds, { top: 70, bottom: 70, left: 60, right: 60 });
+      // After fitBounds settles, cap zoom so single-region days don't
+      // zoom in to street level (e.g. all 4 Day 1 places in Seminyak).
+      google.maps.event.addListenerOnce(GMAP, 'idle', function() {
+        if (GMAP.getZoom() > 13) GMAP.setZoom(13);
+      });
+    } else {
+      GMAP.setCenter({ lat: places[0].lat, lng: places[0].lng });
+      GMAP.setZoom(14);
+    }
+  });
+}
+
+function darkMapStyles() {
+  return [
+    { elementType: 'geometry', stylers: [{ color: '#141827' }] },
+    { elementType: 'labels.text.stroke', stylers: [{ color: '#0a0e1a' }] },
+    { elementType: 'labels.text.fill', stylers: [{ color: '#9ca3af' }] },
+    { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#e8e8ec' }] },
+    { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#9ca3af' }] },
+    { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#1a2d28' }] },
+    { featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{ color: '#6b9070' }] },
+    { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1e2235' }] },
+    { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#141827' }] },
+    { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#9ca3af' }] },
+    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#2d3550' }] },
+    { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#1e2235' }] },
+    { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#2d3550' }] },
+    { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0a1525' }] },
+    { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#2dd4bf' }] }
+  ];
+}
+
+// ============================================================
+// 6. EDIT MODE
+// ============================================================
+function toggleEditMode() {
+  state.editMode = !state.editMode;
+  document.body.classList.toggle('edit-mode', state.editMode);
+  var navBtn = $id('nav-edit');
+  navBtn.classList.toggle('edit-on', state.editMode);
+  // Day tabs draggable
+  $$('.day-tab').forEach(function(t){ t.draggable = state.editMode; });
+  // Cards draggable
+  $$('.card[data-idx]').forEach(function(c){ c.draggable = state.editMode; });
+  toast(state.editMode ? '✏️ 進入編輯模式' : '👁 離開編輯模式');
+}
+
+// ── Inline editing ───────────────────────────────────────
+function startInlineEdit(el) {
+  if (!state.editMode) return;
+  if (el.querySelector('input')) return;
+  var card = el.closest('.card');
+  if (!card) {
+    // could be day-title
+    if (el.getAttribute('data-edit') === 'day-title') {
+      _startDayTitleEdit(el);
+    }
+    return;
+  }
+  var dayIdx = parseInt(card.getAttribute('data-day'));
+  var isHotel = card.hasAttribute('data-hotel');
+  var idx = card.getAttribute('data-idx');
+  var field = el.getAttribute('data-edit');
+  if (!field) return;
+
+  var orig = (isHotel)
+    ? TRIP_DATA[dayIdx].hotel[fieldKey(field)]
+    : TRIP_DATA[dayIdx].items[parseInt(idx)][fieldKey(field)];
+  orig = orig || '';
+
+  var input = document.createElement(field === 'desc' ? 'textarea' : 'input');
+  input.className = 'edit-input ' + (
+    field === 'time' ? 'time-input' :
+    field === 'icon' || field === 'hotel-icon' ? 'icon-input' :
+    field === 'name' || field === 'hotel-name' ? 'name-input' :
+    'desc-input'
+  );
+  input.value = orig;
+  if (input.tagName === 'TEXTAREA') input.rows = 3;
+
+  el.textContent = '';
+  el.appendChild(input);
+  input.focus();
+  input.select();
+
+  function commit() {
+    var newVal = input.value.trim();
+    if (isHotel) {
+      TRIP_DATA[dayIdx].hotel[fieldKey(field)] = newVal;
+    } else {
+      TRIP_DATA[dayIdx].items[parseInt(idx)][fieldKey(field)] = newVal;
+    }
+    fbWrite();
+    renderPanels();
+    if (state.editMode) {
+      // re-mark cards as draggable
+      $$('.card[data-idx]').forEach(function(c){ c.draggable = true; });
+    }
+  }
+  function cancel() { renderPanels(); if (state.editMode) $$('.card[data-idx]').forEach(function(c){ c.draggable = true; }); }
+
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); commit(); }
+    else if (e.key === 'Escape') { e.preventDefault(); cancel(); }
+  });
+  input.addEventListener('blur', commit);
+}
+
+function fieldKey(f) {
+  // map data-edit attribute → object key in TRIP_DATA
+  return ({
+    'time':'time','icon':'icon','name':'name','desc':'desc',
+    'hotel-icon':'icon','hotel-name':'name','hotel-desc':'desc','hotel-price':'price'
+  })[f] || f;
+}
+
+function _startDayTitleEdit(el) {
+  var dayIdx = parseInt(el.getAttribute('data-day'));
+  var orig = TRIP_DATA[dayIdx].title;
+  var input = document.createElement('input');
+  input.className = 'edit-input name-input';
+  input.value = orig;
+  el.textContent = '';
+  el.appendChild(input);
+  input.focus(); input.select();
+  function commit() {
+    TRIP_DATA[dayIdx].title = input.value.trim() || orig;
+    fbWrite(); renderApp();
+  }
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter') { e.preventDefault(); commit(); }
+    else if (e.key === 'Escape') { renderApp(); }
+  });
+  input.addEventListener('blur', commit);
+}
+
+// ── Delete ───────────────────────────────────────────────
+function deleteCard(card) {
+  var dayIdx = parseInt(card.getAttribute('data-day'));
+  if (card.hasAttribute('data-hotel')) {
+    if (!confirm('刪除這天的住宿資訊？（之後可以重新編輯）')) return;
+    TRIP_DATA[dayIdx].hotel = { icon: '🏨', name: '住宿待定', desc: '', price: '' };
+  } else {
+    var idx = parseInt(card.getAttribute('data-idx'));
+    var name = TRIP_DATA[dayIdx].items[idx].name;
+    if (!confirm('刪除「' + name + '」？')) return;
+    TRIP_DATA[dayIdx].items.splice(idx, 1);
+  }
+  fbWrite();
+  renderPanels();
+  toast('🗑 已刪除');
+}
+
+// ── Add item with position picker ───────────────────────
+var addContext = null;  // { dayIdx, posIdx }
+function showAddForm(dayIdx, posIdx) {
+  addContext = { dayIdx: dayIdx, posIdx: posIdx };
+  var form = $id('add-form-modal');
+  $id('af-time').value = '';
+  $id('af-icon').value = '📍';
+  $id('af-name').value = '';
+  $id('af-desc').value = '';
+  $id('af-context').textContent = '加到 Day ' + (dayIdx+1) + ' 第 ' + (posIdx+1) + ' 個位置';
+  form.classList.add('show');
+  setTimeout(function(){ $id('af-name').focus(); }, 50);
+}
+
+function commitAdd() {
+  if (!addContext) return;
+  var name = $id('af-name').value.trim();
+  if (!name) { toast('請輸入名稱'); return; }
+  var newItem = {
+    time: $id('af-time').value.trim(),
+    icon: $id('af-icon').value.trim() || '📍',
+    name: name,
+    desc: $id('af-desc').value.trim(),
+    link: ''
+  };
+  TRIP_DATA[addContext.dayIdx].items.splice(addContext.posIdx, 0, newItem);
+  hideAddForm();
+  fbWrite();
+  renderPanels();
+  toast('✓ 已新增');
+}
+
+function hideAddForm() {
+  $id('add-form-modal').classList.remove('show');
+  addContext = null;
+}
+
+// ── Drag & drop: cards within/across days ───────────────
+var dragSrc = null;
+
+function onCardDragStart(e) {
+  var card = e.target.closest('.card');
+  if (!card || !card.hasAttribute('data-idx')) { e.preventDefault(); return; }
+  if (!state.editMode) { e.preventDefault(); return; }
+  dragSrc = {
+    dayIdx: parseInt(card.getAttribute('data-day')),
+    idx: parseInt(card.getAttribute('data-idx'))
+  };
+  card.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  // Required for FF
+  try { e.dataTransfer.setData('text/plain', 'card'); } catch(err){}
+}
+
+function onCardDragOver(e) {
+  if (!dragSrc) return;
+  var target = e.target.closest('.card');
+  if (!target || target.hasAttribute('data-hotel')) return;
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  $$('.card.drag-over').forEach(function(c){ c.classList.remove('drag-over'); });
+  target.classList.add('drag-over');
+}
+
+function onCardDrop(e) {
+  if (!dragSrc) return;
+  var target = e.target.closest('.card');
+  if (!target || target.hasAttribute('data-hotel')) return;
+  e.preventDefault();
+  var dstDayIdx = parseInt(target.getAttribute('data-day'));
+  var dstIdx = parseInt(target.getAttribute('data-idx'));
+  // Remove from src
+  var item = TRIP_DATA[dragSrc.dayIdx].items.splice(dragSrc.idx, 1)[0];
+  // Adjust dstIdx if same-day and src was before dst
+  if (dragSrc.dayIdx === dstDayIdx && dragSrc.idx < dstIdx) dstIdx--;
+  TRIP_DATA[dstDayIdx].items.splice(dstIdx, 0, item);
+  fbWrite();
+  renderPanels();
+  if (dragSrc.dayIdx !== dstDayIdx) toast('已搬到 Day ' + (dstDayIdx+1));
+}
+
+function onCardDragEnd() {
+  $$('.card.dragging').forEach(function(c){ c.classList.remove('dragging'); });
+  $$('.card.drag-over').forEach(function(c){ c.classList.remove('drag-over'); });
+  dragSrc = null;
+}
+
+// Drag a card onto a day-tab → move to that day (end)
+function onTabDragOver(e) {
+  if (!dragSrc) return;
+  e.preventDefault();
+  var tab = e.target.closest('.day-tab');
+  if (!tab) return;
+  $$('.day-tab.drag-over').forEach(function(t){ t.classList.remove('drag-over'); });
+  tab.classList.add('drag-over');
+}
+
+function onTabDrop(e) {
+  if (!dragSrc) return;
+  var tab = e.target.closest('.day-tab');
+  if (!tab) return;
+  e.preventDefault();
+  var dstDayIdx = parseInt(tab.getAttribute('data-day'));
+  var item = TRIP_DATA[dragSrc.dayIdx].items.splice(dragSrc.idx, 1)[0];
+  TRIP_DATA[dstDayIdx].items.push(item);
+  fbWrite();
+  renderPanels();
+  switchDay(dstDayIdx);
+  toast('搬到 Day ' + (dstDayIdx+1));
+}
+
+// ── Day tab reordering (drag tab itself) ─────────────────
+var dayDragSrc = null;
+function onDayTabDragStart(e) {
+  if (!state.editMode) { e.preventDefault(); return; }
+  if (dragSrc) { return; } // a card is being dragged, not a tab
+  var tab = e.target.closest('.day-tab');
+  if (!tab) return;
+  dayDragSrc = parseInt(tab.getAttribute('data-day'));
+  tab.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  try { e.dataTransfer.setData('text/plain', 'tab'); } catch(err){}
+}
+function onDayTabDragEnd() {
+  $$('.day-tab.dragging').forEach(function(t){ t.classList.remove('dragging'); });
+  $$('.day-tab.drag-over').forEach(function(t){ t.classList.remove('drag-over'); });
+  dayDragSrc = null;
+}
+function onDayTabDropOnTab(e, srcIdx, dstIdx) {
+  if (srcIdx === dstIdx) return;
+  var moving = TRIP_DATA.splice(srcIdx, 1)[0];
+  TRIP_DATA.splice(dstIdx, 0, moving);
+  state.currentDay = dstIdx;
+  fbWrite();
+  renderApp();
+  toast('Day 順序已更新');
+}
+
+// ============================================================
+// 7. BOOKING (smart category placement)
+// ============================================================
+function toggleTodo(cb) {
+  var row = cb.closest('.bs-todo');
+  if (!row) return;
+  var id = row.getAttribute('data-id');
+  var done = !cb.classList.contains('done');
+  cb.classList.toggle('done', done);
+  row.querySelector('.bs-todo-text').classList.toggle('done', done);
+  state.todos[id] = done;
+  fbWrite();
+  updateBookingProgress();
+}
+
+function deleteTodoBtn(btn) {
+  var row = btn.closest('.bs-todo');
+  if (!row) return;
+  if (!confirm('刪除這個待辦？')) return;
+  var id = row.getAttribute('data-id');
+  delete state.todos[id];
+  row.remove();
+  fbWrite();
+  updateBookingProgress();
+}
+
+var CAT_PATTERNS = {
+  hotel:      /飯店|住宿|hotel|hostel|airbnb|booking|check.?in|退房|villa|resort/i,
+  transport:  /機票|租車|uber|taxi|bus|ferry|渡輪|高鐵|火車|航班|skybus|交通|包車|司機|機場|接送/i,
+  restaurant: /餐廳|訂位|reservation|dinner|lunch|breakfast|restaurant|cafe|brunch/i,
+  activity:   /klook|kkday|門票|體驗|spa|按摩|massage|tour|活動|表演|景點/i
+};
+var CAT_TITLES = {
+  hotel: '🏨 住宿', transport: '✈️ 交通', activity: '🎡 活動', restaurant: '🍽️ 餐廳訂位'
+};
+
+function inferCategory(text) {
+  for (var key in CAT_PATTERNS) {
+    if (CAT_PATTERNS[key].test(text)) return key;
+  }
+  return 'activity';
+}
+
+function addTodo() {
+  var input = $id('bs-add-input');
+  var sel = $id('bs-add-cat');
+  var text = input.value.trim();
+  if (!text) { toast('請輸入待辦內容'); return; }
+  var cat = sel.value === 'auto' ? inferCategory(text) : sel.value;
+  var sectionTitle = CAT_TITLES[cat];
+
+  // Build new todo row
+  var id = 'custom-' + Date.now();
+  var row = document.createElement('div');
+  row.className = 'bs-todo';
+  row.setAttribute('data-id', id);
+  row.innerHTML =
+    '<div class="bs-todo-cb"></div>' +
+    '<div class="bs-todo-text"><b>' + escHtml(text) + '</b></div>' +
+    '<span class="bs-todo-del">×</span>';
+
+  // Find target section
+  var container = $id('booking-list');
+  var sections = $$('.bs-section-title', container);
+  var targetSection = null, nextSection = null;
+  for (var i = 0; i < sections.length; i++) {
+    if (sections[i].textContent.trim() === sectionTitle) {
+      targetSection = sections[i];
+      nextSection = (i + 1 < sections.length) ? sections[i + 1] : null;
+      break;
+    }
+  }
+  if (!targetSection) {
+    // create new section if missing (shouldn't usually happen)
+    var st = document.createElement('div');
+    st.className = 'bs-section-title';
+    st.textContent = sectionTitle;
+    container.appendChild(st);
+    container.appendChild(row);
+  } else {
+    if (nextSection) container.insertBefore(row, nextSection);
+    else container.appendChild(row);
+  }
+  // Flash
+  row.style.background = 'rgba(56,189,248,0.18)';
+  setTimeout(function(){ row.style.transition='background 0.6s'; row.style.background = ''; }, 50);
+
+  input.value = '';
+  sel.value = 'auto';
+  state.todos[id] = false;
+  fbWrite();
+  updateBookingProgress();
+  toast('已加到 ' + sectionTitle);
+}
+
+function updateBookingProgress() {
+  var rows = $$('.bs-todo');
+  var done = 0;
+  rows.forEach(function(r){
+    if (r.querySelector('.bs-todo-cb').classList.contains('done')) done++;
+  });
+  var pct = rows.length > 0 ? Math.round(done / rows.length * 100) : 0;
+  var bar = $id('bs-progress-fill');
+  if (bar) bar.style.width = pct + '%';
+  var stats = $id('bs-stats');
+  if (stats) stats.textContent = '已完成 ' + done + ' / ' + rows.length + ' 項';
+}
+
+function applyTodoState() {
+  $$('.bs-todo').forEach(function(row){
+    var id = row.getAttribute('data-id');
+    var done = state.todos[id] === true;
+    row.querySelector('.bs-todo-cb').classList.toggle('done', done);
+    row.querySelector('.bs-todo-text').classList.toggle('done', done);
+  });
+  updateBookingProgress();
+}
+
+// ============================================================
+// 8. COST (dblclick edit + recalc)
+// ============================================================
+var COST_GROUPS = {
+  ticket: ['c1'],
+  hotel:  ['c2','c3','c4'],
+  trans:  ['c5','c6','c7'],
+  act:    ['c8','c9','c10','c11','c12'],
+  food:   ['c13','c14','c15'],
+  misc:   ['c17','c18','c19']
+};
+
+function startCostEdit(el) {
+  if (el.querySelector('input')) return;
+  var key = el.getAttribute('data-key');
+  var budget = parseInt(el.getAttribute('data-budget')) || 0;
+  var current = state.costs[key] !== undefined ? state.costs[key] : '';
+  var input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'cs-edit-input';
+  input.value = current;
+  input.placeholder = budget;
+  el.textContent = '';
+  el.appendChild(input);
+  input.focus(); input.select();
+  var committed = false;
+  function commit() {
+    if (committed) return; committed = true;
+    var v = input.value.trim();
+    if (v === '') {
+      delete state.costs[key];
+      el.textContent = '≈ ' + fmtTWD(budget);
+      el.classList.remove('cs-actual');
+    } else {
+      var n = parseInt(v.replace(/[^\d]/g, ''));
+      if (isNaN(n)) { el.textContent = '≈ ' + fmtTWD(budget); el.classList.remove('cs-actual'); }
+      else {
+        state.costs[key] = n;
+        el.textContent = fmtTWD(n);
+        el.classList.add('cs-actual');
+      }
+    }
+    fbWrite();
+    recalcCosts();
+  }
+  function cancel() {
+    if (committed) return; committed = true;
+    var v = state.costs[key];
+    if (v !== undefined) { el.textContent = fmtTWD(v); el.classList.add('cs-actual'); }
+    else { el.textContent = '≈ ' + fmtTWD(budget); el.classList.remove('cs-actual'); }
+  }
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter') { e.preventDefault(); commit(); }
+    else if (e.key === 'Escape') { cancel(); }
+  });
+  input.addEventListener('blur', commit);
+}
+
+function getVal(key) {
+  if (state.costs[key] !== undefined) return state.costs[key];
+  var el = document.querySelector('[data-key="' + key + '"]');
+  return el ? parseInt(el.getAttribute('data-budget')) || 0 : 0;
+}
+
+function groupSum(keys) { return keys.reduce(function(acc, k){ return acc + getVal(k); }, 0); }
+
+function recalcCosts() {
+  var ticket = groupSum(COST_GROUPS.ticket);
+  var hotel  = groupSum(COST_GROUPS.hotel);
+  var trans  = groupSum(COST_GROUPS.trans);
+  var act    = groupSum(COST_GROUPS.act);
+  var food   = groupSum(COST_GROUPS.food);
+  var misc   = groupSum(COST_GROUPS.misc);
+  var total  = ticket + hotel + trans + act + food + misc;
+  $id('ct-ticket').textContent = fmtTWD(ticket);
+  $id('ct-hotel').textContent  = fmtTWD(hotel);
+  $id('ct-trans').textContent  = fmtTWD(trans);
+  $id('ct-act').textContent    = fmtTWD(act);
+  $id('ct-food').textContent   = fmtTWD(food);
+  $id('ct-misc').textContent   = fmtTWD(misc);
+  $id('ct-total').textContent  = fmtTWD(total);
+  $id('ct-avg').textContent    = fmtTWD(Math.round(total / 6));
+
+  // summary block
+  var allKeys = [].concat.apply([], Object.values(COST_GROUPS));
+  var actualKnown = 0, budget = 0;
+  allKeys.forEach(function(k){
+    var node = document.querySelector('[data-key="'+k+'"]');
+    if (!node) return;  // skip rows that were removed from the DOM
+    var b = parseInt(node.getAttribute('data-budget')) || 0;
+    budget += b;
+    if (state.costs[k] !== undefined) actualKnown += state.costs[k];
+  });
+  $id('cs-budget').textContent = fmtTWD(budget);
+  $id('cs-actual').textContent = fmtTWD(actualKnown);
+  $id('cs-remain').textContent = fmtTWD(total - actualKnown);
+}
+
+function applyCostState() {
+  $$('.cs-edit').forEach(function(el){
+    var key = el.getAttribute('data-key');
+    if (state.costs[key] !== undefined) {
+      el.textContent = fmtTWD(state.costs[key]);
+      el.classList.add('cs-actual');
+    }
+  });
+  recalcCosts();
+}
+
+// ============================================================
+// 9. FIREBASE SYNC
+// ============================================================
+var saveTimer = null;
+function fbWrite() {
+  // Debounce
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(function(){
+    var payload = {
+      todos: state.todos,
+      costs: state.costs,
+      trip: TRIP_DATA,
+      ts: Date.now()
+    };
+    showSyncStatus('同步中…');
+    fetch(FB_URL + '/' + FB_NODE + '.json', {
+      method: 'PUT',
+      body: JSON.stringify(payload)
+    }).then(function(r){
+      if (r.ok) showSyncStatus('✓ 已同步');
+      else showSyncStatus('⚠ 同步失敗');
+    }).catch(function(){ showSyncStatus('⚠ 離線'); });
+  }, 500);
+}
+
+function fbRead(callback) {
+  fetch(FB_URL + '/' + FB_NODE + '.json')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data) { callback(); return; }
+      if (data.todos) state.todos = data.todos;
+      if (data.costs) state.costs = data.costs;
+      // Note: not auto-merging trip data on load (could clobber local edits during dev)
+      // Uncomment to enable trip-data sync:
+      // if (data.trip && Array.isArray(data.trip) && data.trip.length === 6) {
+      //   TRIP_DATA = data.trip;
+      // }
+      callback();
+    })
+    .catch(function(){ callback(); });
+}
+
+// ============================================================
+// 10. INIT
+// ============================================================
+function init() {
+  // Initial render
+  renderApp();
+
+  // Insert booking + cost HTML into sheets
+  // (already in DOM as static markup; just attach listeners)
+
+  // Day tabs click + drag
+  var dtBar = $id('day-tabs');
+  dtBar.addEventListener('click', function(e){
+    var tab = e.target.closest('.day-tab');
+    if (!tab) return;
+    switchDay(parseInt(tab.getAttribute('data-day')));
+  });
+  dtBar.addEventListener('dragstart', function(e){
+    var tab = e.target.closest('.day-tab');
+    if (!tab) return;
+    if (state.editMode) onDayTabDragStart(e);
+  });
+  dtBar.addEventListener('dragover', function(e){
+    if (dragSrc) onTabDragOver(e);
+    else if (dayDragSrc != null) {
+      e.preventDefault();
+      var tab = e.target.closest('.day-tab');
+      if (tab) {
+        $$('.day-tab.drag-over').forEach(function(t){ t.classList.remove('drag-over'); });
+        tab.classList.add('drag-over');
+      }
+    }
+  });
+  dtBar.addEventListener('drop', function(e){
+    if (dragSrc) { onTabDrop(e); return; }
+    if (dayDragSrc != null) {
+      e.preventDefault();
+      var tab = e.target.closest('.day-tab');
+      if (tab) {
+        var dst = parseInt(tab.getAttribute('data-day'));
+        onDayTabDropOnTab(e, dayDragSrc, dst);
+      }
+    }
+  });
+  dtBar.addEventListener('dragend', onDayTabDragEnd);
+
+  // Panels: clicks (edit toggle, item delete, inline edit, add-between, mode toggle)
+  var panels = $id('panels');
+  panels.addEventListener('click', function(e){
+    var modeBtn = e.target.closest('.dp-btn');
+    if (modeBtn) {
+      var dayIdx = parseInt(modeBtn.closest('.day-panel').getAttribute('data-day'));
+      setDayMode(dayIdx, modeBtn.getAttribute('data-mode'));
+      return;
+    }
+    var addBtn = e.target.closest('.card-add-between');
+    if (addBtn) {
+      showAddForm(parseInt(addBtn.getAttribute('data-day')), parseInt(addBtn.getAttribute('data-pos')));
+      return;
+    }
+    var delBtn = e.target.closest('[data-action="del"]');
+    if (delBtn) {
+      e.stopPropagation();
+      deleteCard(delBtn.closest('.card'));
+      return;
+    }
+    var edEl = e.target.closest('[data-edit]');
+    if (edEl && state.editMode) {
+      // Avoid triggering on link clicks
+      if (e.target.tagName === 'A') return;
+      startInlineEdit(edEl);
+      return;
+    }
+  });
+
+  // Drag events for cards
+  panels.addEventListener('dragstart', onCardDragStart);
+  panels.addEventListener('dragover', onCardDragOver);
+  panels.addEventListener('drop', onCardDrop);
+  panels.addEventListener('dragend', onCardDragEnd);
+
+  // Bottom nav
+  $$('.nav-item').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var p = btn.getAttribute('data-panel');
+      if (p === 'itin') {
+        closeSheets();
+        $$('.nav-item').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+      } else if (p === 'book') {
+        closeSheets();
+        openSheet('booking');
+      } else if (p === 'cost') {
+        closeSheets();
+        openSheet('cost');
+      } else if (p === 'edit') {
+        toggleEditMode();
+      }
+    });
+  });
+
+  // Sheet overlay click to close
+  $id('sheet-overlay').addEventListener('click', closeSheets);
+  $$('.sheet-close').forEach(function(b){
+    b.addEventListener('click', closeSheets);
+  });
+
+  // Booking sheet interactions
+  var bookList = $id('booking-list');
+  bookList.addEventListener('click', function(e){
+    var cb = e.target.closest('.bs-todo-cb');
+    if (cb) { toggleTodo(cb); return; }
+    var del = e.target.closest('.bs-todo-del');
+    if (del) { e.stopPropagation(); deleteTodoBtn(del); return; }
+    var txt = e.target.closest('.bs-todo-text');
+    if (txt && e.target.tagName !== 'A') {
+      var row = txt.closest('.bs-todo');
+      var cb2 = row.querySelector('.bs-todo-cb');
+      toggleTodo(cb2);
+    }
+  });
+  $id('bs-add-btn').addEventListener('click', addTodo);
+  $id('bs-add-input').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') { e.preventDefault(); addTodo(); }
+  });
+
+  // Cost dblclick edit
+  var costList = $id('cost-list');
+  costList.addEventListener('dblclick', function(e){
+    var el = e.target.closest('.cs-edit');
+    if (!el) return;
+    startCostEdit(el);
+  });
+
+  // Add-form modal
+  $id('af-save').addEventListener('click', commitAdd);
+  $id('af-cancel').addEventListener('click', hideAddForm);
+  $id('add-form-overlay').addEventListener('click', hideAddForm);
+  // Enter to save (when in name field)
+  $id('af-name').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') { e.preventDefault(); commitAdd(); }
+  });
+
+  // Keyboard: arrow keys for day switching
+  document.addEventListener('keydown', function(e){
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+    if (e.key === 'ArrowLeft' && state.currentDay > 0) switchDay(state.currentDay - 1);
+    else if (e.key === 'ArrowRight' && state.currentDay < TRIP_DATA.length - 1) switchDay(state.currentDay + 1);
+    else if (e.key === 'Escape') closeSheets();
+  });
+
+  // Touch swipe on panels for day switching
+  var touchStartX = null;
+  panels.addEventListener('touchstart', function(e){
+    if (state.editMode) return;  // disable swipe in edit mode (avoid conflict with drag)
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  panels.addEventListener('touchend', function(e){
+    if (touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 60) {
+      if (dx > 0 && state.currentDay > 0) switchDay(state.currentDay - 1);
+      else if (dx < 0 && state.currentDay < TRIP_DATA.length - 1) switchDay(state.currentDay + 1);
+    }
+    touchStartX = null;
+  }, { passive: true });
+
+  // Apply Firebase state once loaded
+  fbRead(function(){
+    applyTodoState();
+    applyCostState();
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+
+</script>
+
+<script>
+document.getElementById('af-cancel-btn').addEventListener('click', function(){
+  document.getElementById('add-form-modal').classList.remove('show');
+});
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-HJV3XRaP_68Pk-BdaMmyheiHJhl332U&callback=gmapsReady&loading=async" async defer></script>
+</body>
+</html>
