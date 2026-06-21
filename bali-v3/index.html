@@ -732,7 +732,7 @@ function makeCard(item,dayIdx,itemIdx){
     desc.setAttribute('data-field','desc');
     desc.setAttribute('data-day',dayIdx);
     desc.setAttribute('data-item',itemIdx);
-    desc.textContent=item.desc;
+    if(/<[a-z!/]/i.test(item.desc||'')){desc.innerHTML=item.desc;desc.removeAttribute('data-field');}else{desc.textContent=item.desc;}
     card.appendChild(desc);
   } else if(state.editMode){
     var desc=document.createElement('div');
