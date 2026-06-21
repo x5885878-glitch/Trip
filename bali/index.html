@@ -390,7 +390,8 @@ var TRIP_DATA = [
     title: "🛬 抵達 → 海神廟火舞 → Canggu 晚餐",
     items: [
       {time:"09:10", icon:"✈️", name:"桃園 TPE 起飛", desc:"飛行約 5.5 小時，峇里島時間慢台灣 1 小時"},
-      {time:"14:40", icon:"🛬", name:"DPS 峇里島機場降落", desc:"入境 → 領行李 → 換匯（少量應急）。⚠ 聖誕節塞車。出機場後直接前往 Tanah Lot，行李留車上司機顧。"},
+      {time:"14:40", icon:"🛬", name:"DPS 峇里島機場降落", desc:"入境 → 領行李 → 出關。⚠ 聖誕節塞車。行李之後留車上由司機顧。"},
+      {time:"15:00", icon:"💱", name:"機場換匯（先換少量應急）", desc:"出關後先在機場換一小筆 IDR（約台幣 2000–3000）：付司機小費、買水/SIM 卡、應急用。機場匯率較差，<b>大筆等進城後</b>到正規換匯所（認明 PT Central Kuta 等連鎖，別找路邊「無手續費」攤，常有偷抽鈔票手法）。換鈔帶新、無摺痕的鈔票。也可用機場 ATM 領現（有手續費但匯率公道）。"},
       {time:"15:30", icon:"🚗", name:"直奔 Tanah Lot（不繞 Villa）", desc:"DPS → Tanah Lot 約 60–75 分鐘。司機在 Tanah Lot 停車場等候。"},
       {time:"16:30", icon:"📸", name:"抵達 Tanah Lot · 拍照", desc:"海上廟、市集區。45 分鐘拍夠標誌性景照。不深度逛廟區（時間不夠），重點拍照即可。入廟費 IDR 75K/人。"},
       {time:"17:30", icon:"🎫", name:"入場 Surya Mandala 火舞場", desc:"距海神廟約 100 公尺。位置先到先選，搶前排海景位。"},
@@ -564,7 +565,7 @@ var FB_FX    = FB_NODE + '/fx_v2';            // {nzd: 19.5}
 var FB_META  = FB_NODE + '/v2_meta';
 
 // Bump DATA_VERSION whenever HTML's TRIP_DATA/BOOKING_DATA/COST_GROUPS structure changes.
-var DATA_VERSION = 5;
+var DATA_VERSION = 6;
 
 // Default FX rate (TWD per 1 NZD) — editable by user.
 var DEFAULT_NZD_RATE = 0.0021;  // TWD per 1 unit foreign currency
