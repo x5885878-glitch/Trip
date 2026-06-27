@@ -923,7 +923,7 @@ function makeCard(item,dayIdx,itemIdx){
   var ct=document.createElement('div');
   ct.className='ct';
   ct.innerHTML=
-    '<span class="c-time" data-field="time" data-day="'+dayIdx+'" data-item="'+itemIdx+'">'+escHtml(item.time||'')+'</span>'+
+    '<span class="c-time'+((!item.time&&state.editMode)?' c-time-empty':'')+'" data-field="time" data-day="'+dayIdx+'" data-item="'+itemIdx+'"'+((!item.time&&state.editMode)?' style="font-style:italic;color:var(--txt3)"':'')+'>'+escHtml(item.time||(state.editMode?'＋時間':''))+'</span>'+
     '<span class="c-icon" data-field="icon" data-day="'+dayIdx+'" data-item="'+itemIdx+'">'+escHtml(item.icon||'')+'</span>'+
     '<span class="c-name" data-field="name" data-day="'+dayIdx+'" data-item="'+itemIdx+'">'+escHtml(item.name||'')+'</span>';
   card.appendChild(ct);
