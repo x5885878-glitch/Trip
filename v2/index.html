@@ -208,6 +208,9 @@ a{color:var(--accent);text-decoration:none}
 /* Pull from itinerary button */
 .cost-pull-btn{width:100%;padding:10px;background:linear-gradient(135deg,rgba(45,212,191,0.15),rgba(139,92,246,0.15));border:1px dashed var(--accent);border-radius:var(--rad2);color:var(--accent);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:10px;font-family:inherit}
 .cost-pull-btn:hover{background:linear-gradient(135deg,rgba(45,212,191,0.25),rgba(139,92,246,0.25))}
+.cs-opt{cursor:pointer;font-size:18px;line-height:1;margin-right:9px;user-select:none;color:var(--accent);flex:0 0 auto}
+.cs-row.cs-opt-off{opacity:.5}
+.cs-row.cs-opt-off .am{text-decoration:line-through}
 
 /* Group title row */
 .cs-group-title-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;padding-left:2px}
@@ -602,7 +605,7 @@ var PLACES = [
   {n:'皇后鎮住宿 B',lat:-45.02,lng:168.7,type:'hotel',r:'south',d:'10/3–10/4',x:'皇后鎮 · 1晚 · 建議延訂同家'},
   {n:'Skyline Gondola',lat:-45.027,lng:168.655,type:'act',r:'south',d:'9/26',x:'Bob\'s Peak全景纜車 · NZD $80/人'},
   {n:'格林諾奇',lat:-44.86,lng:168.38,type:'act',r:'south',d:'9/30',x:'婚紗攝影全天 + Lighthorse騎馬'},
-  {n:'米佛峽灣 Milford Sound',lat:-44.674,lng:167.924,type:'act',r:'south',d:'9/27',x:'RealNZ Classic Cruise · NZD $145/人'},
+  {n:'米佛峽灣 Milford Sound',lat:-44.674,lng:167.924,type:'act',r:'south',d:'9/27',x:'RealNZ 大巴往返 + 君王號 cruise · NZD $330/人 ✅ 已訂'},
   {n:'Deer Park Heights',lat:-45.017,lng:168.717,type:'act',r:'south',d:'10/1 上午',x:'魔戒洛汗國取景地 · NZD $20/人'},
   {n:'Crown Range Summit',lat:-44.933,lng:168.923,type:'act',r:'south',d:'9/28 上午',x:'紐西蘭最高公路 1121m · 制高點'},
   {n:'Cardrona Hotel',lat:-44.867,lng:168.95,type:'act',r:'south',d:'9/28 上午',x:'1863年百年酒店 · 淘金時代遺跡'},
@@ -613,7 +616,7 @@ var PLACES = [
   {n:'Peter\'s Lookout (Pukaki)',lat:-44.1,lng:170.17,type:'act',r:'south',d:'10/2',x:'Pukaki 湖+庫克山經典全景'},
   {n:'庫克山 Mt Cook',lat:-43.735,lng:170.099,type:'act',r:'south',d:'10/2',x:'塔斯曼冰川直升機 · TWD $36,564（已訂）'},
   {n:'善牧教堂 Lake Tekapo',lat:-44.006,lng:170.475,type:'act',r:'south',d:'10/2–10/3',x:'黃昏拍照 + 湖邊自己看星空 (免費)'},
-  {n:'TSS Earnslaw 碼頭',lat:-45.035,lng:168.661,type:'act',r:'south',d:'9/29',x:'百年蒸汽船 + Walter Peak BBQ · NZD $199/人'},
+  {n:'TSS Earnslaw 碼頭',lat:-45.035,lng:168.661,type:'act',r:'south',d:'9/29',x:'TSS百年蒸汽船 + Walter Peak BBQ · NZD $219/人 ✅ 已訂'},
   {n:'Lake Hayes',lat:-45.033,lng:168.783,type:'act',r:'south',d:'10/3',x:'環湖步道 · 春季櫻花倒影'},
   {n:'箭鎮 Arrowtown',lat:-44.95,lng:168.817,type:'act',r:'south',d:'10/3',x:'歷史街區 · 春季櫻花大道'},
   {n:'Queen St 21樓公寓',lat:-36.849,lng:174.766,type:'hotel',r:'north',d:'10/4–10/7',x:'奧克蘭市中心 · 3晚'},
@@ -762,6 +765,7 @@ var FB_BOOK  = FB_NODE + '/bookings_v2';
 var FB_CG    = FB_NODE + '/cost_groups_v2';   // editable COST_GROUPS persistence
 var FB_FX    = FB_NODE + '/fx_v2';            // {nzd: 19.5}
 var FB_META  = FB_NODE + '/v2_meta';
+var FB_OPT   = FB_NODE + '/optsel_v2';        // optional cost rows (opt:true) → selected map
 
 // Bump DATA_VERSION whenever HTML's TRIP_DATA/BOOKING_DATA/COST_GROUPS structure changes.
 var DATA_VERSION = 7;
@@ -784,6 +788,7 @@ var state = {
   editMode: false,
   todoStates: {},     // todo id → done bool
   costActuals: {},    // cost key → actual amount (in row's currency)
+  optSel: {},         // optional cost row id → selected (true = count toward budget)
   costDirty: false,
   fxRate: DEFAULT_NZD_RATE,  // TWD per NZD; editable
   itinDirty: false,
@@ -1183,9 +1188,12 @@ function fmtMoneyWithCurr(amount, currency){
   var twd = toTWD(amount, currency);
   return currency + ' $' + amount.toLocaleString() + ' <span class="csub-inline">≈ ' + fmtMoney(twd) + '</span>';
 }
+// isOptOff: an optional (opt:true) row that is NOT selected → excluded from totals
+function isOptOff(row){ return !!(row && row.opt) && !state.optSel[row.id]; }
 // rowActualTWD: returns the TWD value of a row using actual if set, else budget
 function rowActualTWD(row){
   if(row.subtotal) return 0;
+  if(isOptOff(row)) return 0;
   var amt = (state.costActuals[row.id]!=null) ? state.costActuals[row.id] : (row.budget||0);
   return toTWD(amt, row.currency||'TWD');
 }
@@ -1220,6 +1228,7 @@ function renderCost(){
     for(var j=0;j<g.rows.length;j++){
       var r=g.rows[j];
       if(r.subtotal)continue;
+      if(isOptOff(r))continue;
       var bTWD = toTWD(r.budget||0, r.currency||'TWD');
       budget += bTWD;
       if(state.costActuals[r.id]!=null){
@@ -1286,7 +1295,7 @@ function renderCost(){
         div.appendChild(sr);
       } else {
         var rr=document.createElement('div');
-        rr.className='cs-row';
+        rr.className='cs-row'+(isOptOff(r)?' cs-opt-off':'');
         rr.setAttribute('data-gidx',gi);
         rr.setAttribute('data-ridx',ri);
         rr.setAttribute('data-rid',r.id);
@@ -1299,6 +1308,11 @@ function renderCost(){
         var dh='';
         if(state.editMode){
           dh='<span class="cs-drag-handle">⋮⋮</span>';
+        }
+        // Optional row checkbox (☑ counts toward budget / ☐ excluded)
+        var optBox='';
+        if(r.opt){
+          optBox='<span class="cs-opt" data-act="opt-toggle" data-rid="'+escHtml(r.id)+'" title="勾選才算進預算">'+(state.optSel[r.id]?'☑':'☐')+'</span>';
         }
         var delBtn='';
         if(state.editMode){
@@ -1315,6 +1329,7 @@ function renderCost(){
 
         rr.innerHTML=
           dh+
+          optBox+
           '<div class="cl">'+
             '<span class="cl-label" data-field="label" data-gidx="'+gi+'" data-ridx="'+ri+'">'+escHtml(r.label)+'</span>'+
             (r.sub?'<span class="csub" data-field="sub" data-gidx="'+gi+'" data-ridx="'+ri+'">'+escHtml(r.sub)+'</span>'
@@ -2127,6 +2142,16 @@ function bindGlobalClicks(){
   if(costList){
     costList.addEventListener('click',function(e){
       var t=e.target;
+      // Toggle optional row in/out of budget (works in normal mode too)
+      var optT=t.closest('[data-act="opt-toggle"]');
+      if(optT){
+        var rid=optT.getAttribute('data-rid');
+        var nv=!state.optSel[rid];
+        if(nv) state.optSel[rid]=true; else delete state.optSel[rid];
+        syncOpt(); renderCost();
+        toast(nv?'已加入預算':'已移出預算');
+        return;
+      }
       // A: delete row
       var delR=t.closest('[data-act="del-row"]');
       if(delR){
@@ -2510,6 +2535,11 @@ function syncCosts(){
   clearTimeout(syncCostsDeb);
   syncCostsDeb=setTimeout(function(){fbPut(FB_COSTS,state.costActuals);},400);
 }
+var syncOptDeb=null;
+function syncOpt(){
+  clearTimeout(syncOptDeb);
+  syncOptDeb=setTimeout(function(){fbPut(FB_OPT,state.optSel);},400);
+}
 var syncCGDeb=null;
 function syncCostGroups(){
   clearTimeout(syncCGDeb);
@@ -2544,11 +2574,12 @@ function pullInitial(){
   setSync('syncing');
   Promise.all([
     fbGet(FB_TODOS), fbGet(FB_COSTS), fbGet(FB_ITIN),
-    fbGet(FB_BOOK), fbGet(FB_CG), fbGet(FB_FX), fbGet(FB_META)
+    fbGet(FB_BOOK), fbGet(FB_CG), fbGet(FB_FX), fbGet(FB_META), fbGet(FB_OPT)
   ]).then(function(arr){
-    var todos=arr[0],costs=arr[1],itin=arr[2],book=arr[3],cg=arr[4],fx=arr[5],meta=arr[6];
+    var todos=arr[0],costs=arr[1],itin=arr[2],book=arr[3],cg=arr[4],fx=arr[5],meta=arr[6],opt=arr[7];
     if(todos)state.todoStates=todos;
     if(costs)state.costActuals=costs;
+    if(opt && typeof opt==='object') state.optSel=opt;
     if(fx && typeof fx==='object' && typeof fx.nzd==='number') state.fxRate=fx.nzd;
 
     var versionOK = meta && typeof meta==='object' && meta.version===DATA_VERSION;
