@@ -1582,6 +1582,14 @@ function bindDragHandlers(){
   container.addEventListener('dragend',function(e){
     cleanupDrag();
   });
+  // Enable native drag only when pressing the ⋮⋮ handle (so dragstart can fire)
+  container.addEventListener('mousedown',function(e){
+    if(!state.editMode)return;
+    var h=e.target.closest('.card-drag-handle');
+    if(!h)return;
+    var card=h.closest('.card');
+    if(card && !card.hasAttribute('data-hotel')) card.draggable=true;
+  });
 
   // Day tabs: drag tab to reorder day, OR drop card on tab to move item
   var tabsC=$id('day-tabs');
