@@ -125,6 +125,10 @@ a{color:var(--accent);text-decoration:none}
 .card-del{display:none;position:absolute;right:8px;top:8px;width:24px;height:24px;background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);border-radius:50%;color:var(--danger);font-size:14px;line-height:22px;text-align:center;cursor:pointer;transition:all 0.15s}
 .edit-mode .card-del{display:block}
 .card-del:hover{background:var(--danger);color:#fff}
+.card-move{display:none;position:absolute;right:8px;bottom:8px;gap:4px;z-index:3}
+.edit-mode .card .card-move{display:flex}
+.card-move button{width:32px;height:28px;background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.4);border-radius:8px;color:#93c5fd;font-size:13px;line-height:1;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
+.card-move button:active{background:rgba(96,165,250,0.45);color:#fff}
 
 /* Map container */
 .dp-map{display:none;border-radius:var(--rad);overflow:hidden;border:1px solid var(--glass2);height:60vh;min-height:400px;margin-top:8px;position:relative;background:var(--bg2)}
@@ -567,6 +571,12 @@ function makeCard(item,dayIdx,itemIdx){
   del.innerHTML='✕';
   del.setAttribute('data-act','del-item');
   card.appendChild(del);
+
+  // Move up/down buttons (touch-friendly reorder)
+  var mv=document.createElement('div');
+  mv.className='card-move';
+  mv.innerHTML='<button data-act="move-up" aria-label="上移">\u25B2</button><button data-act="move-down" aria-label="下移">\u25BC</button>';
+  card.appendChild(mv);
 
   // Content
   var ct=document.createElement('div');
@@ -1720,6 +1730,17 @@ function bindGlobalClicks(){
         }
         return;
       }
+      // move item up/down (works on touch)
+      var mvBtn=t.closest('[data-act="move-up"],[data-act="move-down"]');
+      if(mvBtn){
+        var mcard=t.closest('.card');
+        if(mcard){
+          var mdi=parseInt(mcard.getAttribute('data-day'),10);
+          var mii=parseInt(mcard.getAttribute('data-item'),10);
+          moveItem(mdi,mii,mvBtn.getAttribute('data-act')==='move-up'?-1:1);
+        }
+        return;
+      }
       // add-between
       if(t.closest('[data-act="add-between"]')){
         var ab=t.closest('[data-act="add-between"]');
@@ -2178,6 +2199,18 @@ function syncItin(){
     fbPut(FB_ITIN, TRIP_DATA);
     fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'itin'});
   },600);
+}
+function moveItem(dayIdx,itemIdx,dir){
+  var items=TRIP_DATA[dayIdx]&&TRIP_DATA[dayIdx].items;
+  if(!items)return;
+  var j=itemIdx+dir;
+  if(j<0||j>=items.length)return;
+  if(items[itemIdx]&&items[itemIdx].hotel)return;
+  if(items[j]&&items[j].hotel)return;
+  var tmp=items[itemIdx];items[itemIdx]=items[j];items[j]=tmp;
+  state.itinDirty=true;
+  syncItin();
+  renderPanel(state.curDay);
 }
 var syncBookDeb=null;
 function syncBooking(){
