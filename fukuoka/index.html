@@ -847,8 +847,8 @@ function renderCost(){
   fxRow.className='cost-fx';
   fxRow.innerHTML=
     '<span class="fx-label">💱 匯率</span>'+
-    '<span class="fx-pair">1 NZD =</span>'+
-    '<input type="number" id="fx-input" step="0.1" min="0" value="'+state.fxRate+'" style="width:60px">'+
+    '<span class="fx-pair">1 JPY =</span>'+
+    '<input type="number" id="fx-input" step="0.01" min="0" value="'+state.fxRate+'" style="width:60px">'+
     '<span class="fx-pair">TWD</span>'+
     '<span class="fx-hint" id="fx-hint"></span>';
   c.appendChild(fxRow);
@@ -957,7 +957,7 @@ function renderCost(){
         if(state.editMode){
           currPicker='<select class="cs-curr-picker" data-act="curr" data-gidx="'+gi+'" data-ridx="'+ri+'">'+
             '<option value="TWD"'+(curr==='TWD'?' selected':'')+'>TWD</option>'+
-            '<option value="NZD"'+(curr==='NZD'?' selected':'')+'>NZD</option>'+
+            '<option value="JPY"'+(curr==='JPY'?' selected':'')+'>JPY</option>'+
           '</select>';
         }
 
@@ -1129,11 +1129,11 @@ function addCostRow(gidx){
   if(!COST_GROUPS[gidx])return;
   var name=prompt('項目名稱（例：纜車票）');
   if(!name)return;
-  var sub=prompt('子說明（可空，例：NZD $80/人）','')||'';
+  var sub=prompt('子說明（可空，例：JPY $2000/人）','')||'';
   var bs=prompt('預算金額（純數字）','0');
   var b=parseInt(bs,10); if(isNaN(b))b=0;
-  var curr=(prompt('幣別 TWD 或 NZD','TWD')||'TWD').toUpperCase();
-  if(curr!=='TWD'&&curr!=='NZD')curr='TWD';
+  var curr=(prompt('幣別 TWD 或 JPY','TWD')||'TWD').toUpperCase();
+  if(curr!=='TWD'&&curr!=='JPY')curr='TWD';
   // Insert before first subtotal row, else at end
   var insertAt=COST_GROUPS[gidx].rows.length;
   for(var i=0;i<COST_GROUPS[gidx].rows.length;i++){
@@ -1264,7 +1264,7 @@ function cleanupCostDrag(){
 function scanItineraryAmounts(){
   // Find all items in TRIP_DATA with money mentions in name/desc
   var found=[];
-  var moneyRe=/(?:NZD|TWD|nt\$|\$)\s*([\d,]+(?:\.\d+)?)/gi;
+  var moneyRe=/(?:JPY|TWD|nt\$|\$)\s*([\d,]+(?:\.\d+)?)/gi;
   for(var di=0;di<TRIP_DATA.length;di++){
     var d=TRIP_DATA[di];
     for(var ii=0;ii<d.items.length;ii++){
@@ -1276,7 +1276,7 @@ function scanItineraryAmounts(){
       while((m=moneyRe.exec(text))!==null){
         // Detect currency from preceding token
         var pre=text.substring(Math.max(0,m.index-5),m.index).toUpperCase();
-        var currency = pre.indexOf('NZD')>=0 ? 'NZD' : (pre.indexOf('TWD')>=0||pre.indexOf('NT')>=0?'TWD':'TWD');
+        var currency = pre.indexOf('JPY')>=0 ? 'JPY' : (pre.indexOf('TWD')>=0||pre.indexOf('NT')>=0?'TWD':'TWD');
         var amt=parseInt(m[1].replace(/,/g,''),10);
         if(isNaN(amt)||amt<=0)continue;
         matches.push({amount:amt,currency:currency,raw:m[0]});
