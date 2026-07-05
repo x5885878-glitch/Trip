@@ -2,17 +2,14 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>🌊 Bali 2026 — Xi++</title>
+<title>Xi++ 2026/09 紐西蘭 v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-/* travel-app-v2 — styles.css
- * Midnight Explorer theme by default. Replace top CSS variables to
- * switch themes (see references/themes.md for swap-in values).
- * Generated from NZ 2026/09 trip live deployment (DATA_VERSION 5).
- */
-
 :root{
   --bg:#0a0e1a; --bg2:#141827; --bg3:#1e2235;
   --glass:rgba(255,255,255,0.06); --glass2:rgba(255,255,255,0.10); --glass3:rgba(255,255,255,0.15);
@@ -118,6 +115,10 @@ a{color:var(--accent);text-decoration:none}
 
 .card-drag-handle{display:none;position:absolute;left:6px;top:50%;transform:translateY(-50%);color:var(--txt3);font-size:12px;cursor:grab;user-select:none}
 .edit-mode .card .card-drag-handle{display:block}
+.card-move{display:none;position:absolute;right:8px;bottom:8px;gap:4px;z-index:3}
+.edit-mode .card .card-move{display:flex}
+.card-move button{width:32px;height:28px;background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.4);border-radius:8px;color:#93c5fd;font-size:13px;line-height:1;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
+.card-move button:active{background:rgba(96,165,250,0.45);color:#fff}
 .edit-mode .card{padding-left:28px}
 .card.dragging{opacity:0.4}
 .card.drag-over{box-shadow:0 0 0 2px var(--accent)}
@@ -211,6 +212,9 @@ a{color:var(--accent);text-decoration:none}
 /* Pull from itinerary button */
 .cost-pull-btn{width:100%;padding:10px;background:linear-gradient(135deg,rgba(45,212,191,0.15),rgba(139,92,246,0.15));border:1px dashed var(--accent);border-radius:var(--rad2);color:var(--accent);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:10px;font-family:inherit}
 .cost-pull-btn:hover{background:linear-gradient(135deg,rgba(45,212,191,0.25),rgba(139,92,246,0.25))}
+.cs-opt{cursor:pointer;font-size:18px;line-height:1;margin-right:9px;user-select:none;color:var(--accent);flex:0 0 auto}
+.cs-row.cs-opt-off{opacity:.5}
+.cs-row.cs-opt-off .am{text-decoration:line-through}
 
 /* Group title row */
 .cs-group-title-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;padding-left:2px}
@@ -295,25 +299,27 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
 /* TOAST */
 .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--bg3);color:var(--txt);padding:10px 18px;border-radius:999px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,0.4);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
 </style>
 </head>
 <body>
+
 <div class="sticky-header">
 <div class="edit-banner">✏️ 編輯模式 — 拖曳卡片重排 · 點擊文字修改 · 長按 day tab 刪整天</div>
 
 <header class="topbar">
   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
     <div>
-      <h1>🌊 Xi++ 2026/12 峇里島</h1>
-      <div class="sub">12/24–12/29 · 5晚 · 6人 · 聖誕海島</div>
+      <h1 id="trip-title">🧭 行程</h1>
+      <div class="sub" id="trip-sub"></div>
     </div>
     <div class="topright">
       <span class="sync-badge" id="sync-badge"><span id="sync-dot">○</span> <span id="sync-text">待同步</span></span>
       <button class="auth-badge unauthed" id="auth-badge" title="點擊登入以啟用編輯" onclick="state.idToken?signOut():showLoginModal()">🔒 未登入</button>
-      <div class="nz-clock" id="nz-clock" title="紐西蘭當地時間（自動處理夏令時間）"><span class="flag">🇮🇩</span> <span id="nz-clock-time">--:--</span></div>
+      <div class="nz-clock" id="nz-clock" title="紐西蘭當地時間（自動處理夏令時間）"><span class="flag">🇳🇿</span> <span id="nz-clock-time">--:--</span></div>
     </div>
   </div>
-  <div class="badges"><span class="badge">🔒 私隱</span><span class="badge">☀️ 旱季</span><span class="badge">🚗 包車</span></div>
+  <div class="badges" id="trip-badges"></div>
 </header>
 
 <div class="day-tabs-wrap">
@@ -374,170 +380,331 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
-<script>
-/* travel-app-v2 — features.js
- * Production code extracted from NZ 2026/09 live deployment.
- * Includes: Firebase REST sync + auth, edit mode, drag/drop, cost A-E
- * features, smart booking categorization, timezone clock, sticky offsets.
- *
- * Replace all {{...}} template placeholders before injecting into scaffold.html.
- */
 
+
+<script>
 var TRIP_DATA = [
   {
-    id: "day-1",
-    date: "12/24 四",
-    title: "🏖 抵達 → Villa → Mano 海灘夕陽 → 按摩",
-    items: [
-      {time:"09:10", icon:"✈️", name:"桃園 TPE 起飛", desc:"飛行約 5.5 小時，峇里島時間慢台灣 1 小時"},
-      {time:"14:40", icon:"🛬", name:"DPS 峇里島機場降落", desc:"入境 → 領行李 → 出關。⚠ 聖誕節塞車。今天走輕鬆版：不去海神廟，先回 Villa。"},
-      {time:"15:00", icon:"💱", name:"機場換匯（先換少量應急）", desc:"出關後先在機場換一小筆 IDR（約台幣 2000–3000）：付司機小費、買水/SIM 卡、應急用。機場匯率較差，<b>大筆等進城後</b>到正規換匯所（認明 PT Central Kuta 等連鎖，別找路邊「無手續費」攤，常有偷抽鈔票手法）。換鈔帶新、無摺痕的鈔票。也可用機場 ATM 領現（有手續費但匯率公道）。"},
-      {time:"15:45", icon:"🏠", name:"Check-in Villa Jerami & Spa", desc:"出機場直接回水明漾 Villa（約 30–45 分鐘）。放行李、沖個澡、稍作休息，洗去飛行疲憊。"},
-      {time:"17:00", icon:"🏖", name:"Mano Beach House（夕陽 + 晚餐）", desc:"Seminyak · Petitenget 海濱 beach club。有泳池、沙灘，夕陽絕佳（12 月約 18:25 日落）。海濱當代料理 + 調酒、bohemian 風，慢慢吃。11am–11pm。<br>⚠ 聖誕旺季建議先訂位（尤其夕陽時段）。低消：豆袋 IDR 200K／日床 IDR 500K。<br>備案（同區）：La Brisa／Santanera／Muda By Suka。", links:[{url:"https://www.manobali.com/",text:"→ 連結"}]},
-      {time:"20:00", icon:"💆", name:"Seminyak 按摩（飛行後放鬆）", desc:"Petitenget 區，離 Mano 很近。推薦 <b>SUNDARI Wellness</b> 4.9★（到 22:00）或 <b>Koya Spa</b> 4.7★（到 23:00）。60–90 分鐘、IDR 150–300K/人。6 人務必提前訂位。"},
-      {time:"21:30", icon:"😴", name:"回 Villa 休息", desc:"輕鬆充實的第一天 ✨ 明天睡到自然醒、在 Villa 吃漂浮早餐，11:30 才退房去烏布，不趕。"}
+    id:"day-1",date:"9/25 五",title:"台北出發",
+    items:[
+      {time:"18:35",icon:"✈️",name:"NZ0078 台北→奧克蘭",desc:"豪華商務艙 · 10h40m · 翌日 09:15 抵奧克蘭",tags:["✓ 已訂"]},
+      {time:"翌日",icon:"🔄",name:"奧克蘭轉機 → NZ0619 11:35 飛皇后鎮",desc:"09:15抵奧克蘭 · 候機2h20m · 13:30抵皇后鎮",tags:["✓ 已訂"]},
     ],
-    hotel: {
-      icon:"🌴",
-      name:"Villa Jerami & Spa",
-      desc:"水明漾 · 1晚 · 私人泳池 Villa",
-      price:"TWD $8,399 ✅ 已訂"
-    }
+    hotel:{desc:"台北→奧克蘭 NZ0078",icon:"✈️",name:"航班上（機上過夜）",price:""}
   },
   {
-    id: "day-2",
-    date: "12/25 五",
-    title: "🌴 移動烏布 · 皇宮市集 + 按摩",
-    items: [
-      {time:"09:00", icon:"🏊", name:"起床 · 漂浮早餐 + 泳池", desc:"在 Villa Jerami 慢慢起床，享受私人泳池與漂浮早餐。今天不趕路。"},
-      {time:"11:30", icon:"🚗", name:"退房 · 前往烏布", desc:"Check-out Villa Jerami。Seminyak → Ubud 約 1.5–2 小時（視聖誕節路況）。行李上車舒服移動。"},
-      {time:"14:00", icon:"🏠", name:"抵達 Villa Langon · Check-in", desc:"烏布南部 Lodtunduh 區，連住 2 晚。放行李、稍作休息。"},
-      {time:"14:30", icon:"🍽", name:"午餐 · L'Osteria Pizza e Cucina", desc:"Jl. Monkey Forest 街角。48 小時發酵拿坡里 pizza + 手工義大利麵。4.5★ 高人氣，12pm–11pm。", links:[{url:"https://www.instagram.com/losteriapizzaecucina/",text:"→ 連結"}]},
-      {time:"16:00", icon:"🏛", name:"烏布皇宮（Puri Saren）", desc:"市中心皇室宅邸，免費入內。範圍不大，拍照約 5–10 分鐘即可。"},
-      {time:"16:10", icon:"🛍", name:"烏布市集（Ubud Art Market）", desc:"皇宮對面。手工藝品、紀念品、衣物，記得殺價（可殺到 5 折）。10am–5pm。"},
-      {time:"17:30", icon:"💆", name:"按摩（2 選 1 · 待定）", desc:"Monkey Forest 路上兩家擇一：<b>① INKA Ubud Spa</b> 4.9★（8000+ 則）· 接大團更穩，6 人可同時開床；<b>② Lumiére Spa</b> 5.0★ · 較精緻。<br>聖誕旺季建議出發前先訂位。"},
-      {time:"19:00", icon:"🍽", name:"🍽 晚餐 · Kagemusha（日式家常）", desc:"Nyuh Kuning 巷內隱藏版日本家庭料理。天婦羅、炸豬排咖哩、烤鯖魚、雞翅都經典。4.6★ 平價。需訂位，10am–10pm。", links:[{url:"https://www.instagram.com/kagemusha_bali/",text:"→ 連結"}]},
-      {time:"21:00", icon:"😴", name:"洗澡 · 睡覺", desc:"慢活充實的一天。明天 02:30 出發看巴杜爾火山日出，早點休息。"}
+    id:"day-2",date:"9/26 六",title:"抵達皇后鎮 · Skyline纜車",
+    items:[
+      {time:"13:30",icon:"🛬",name:"NZ0619 抵達皇后鎮機場",desc:"查行李通關 ~30min"},
+      {time:"14:15",icon:"🚙",name:"Europcar 取車 · Honda ZR-V SPORT",desc:"5 座 自排 · 8 天 9/26-10/4 · NZD $1,415.42 / 預估 TWD $26,975 ✅ 已訂",tags:["✓ 已訂"],links:[{url:"https://www.europcar.com/",text:"Europcar 訂單"}]},
+      {time:"15:00",icon:"🏨",name:"抵達皇后鎮住宿 · check in",desc:"放行李、休息 30min"},
+      {time:"16:00",icon:"🚡",name:"Skyline Gondola + Luge",desc:"纜車上山 + Luge 滑車 2 趟 (NZD $80/人)",tags:["🟡 現場購票即可"],links:[{url:"https://www.skyline.co.nz/queenstown",text:"Skyline 官網"}]},
+      {time:"18:00",icon:"👰",name:"DNTimage 婚紗試穿",desc:"試穿 1.5hr · 婚紗工作室 · ⚠️ 請先確認可預約 18:00",tags:["🟡 需預約"],links:[{url:"https://maps.app.goo.gl/P1aCkG27buK3nk4w6",text:"DNTimage 位置"}]},
+      {time:"19:30",icon:"🍔",name:"晚餐 · Fergburger ⭐",desc:"走過去 5-10min 步行 · 不用趕時間 · Ferg Deluxe 經典款"},
+      {time:"20:30",icon:"🏠",name:"回飯店休息",desc:"時差 + 第一天累，早睡"},
     ],
-    hotel: {
-      icon:"🌾",
-      name:"Villa Langon Ubud（12/25–27 · 第 1 晚）",
-      desc:"烏布南部 Lodtunduh · 共 2 晚 · 大泳池稻田景觀",
-      price:"TWD $14,770 ✅ 已訂（2 晚總價）"
-    }
+    hotel:{desc:"三選一候選：美景酒店 / Whakatipu Bliss / 大漾閣別墅",icon:"🏡",name:"皇后鎮住宿（9/26–10/2 · 6晚）",price:"🔴 待選定"}
   },
   {
-    id: "day-3",
-    date: "12/26 六",
-    title: "🌋 火山日出 → Jaens Spa → 純休息",
-    items: [
-      {time:"02:30", icon:"🌙", name:"出發！烏布→巴杜爾山腳", desc:"車程約 1–1.5 小時。山頂 12–18°C，帶外套。"},
-      {time:"04:30", icon:"🚙", name:"巴杜爾火山吉普車日出 → 黑色熔岩", desc:"4WD 吉普車穿越熔岩地，日出 05:50–06:10。12月雲霧較多但景色壯觀。", links:[{url:"https://www.klook.com/zh-TW/activity/22005-mount-batur-sunrise-experience-4wd-jeep-bali/",text:"Klook 預訂"}]},
-      {time:"08:00", icon:"☕", name:"AKASA Cafe（火山景觀）→ 德哥拉朗梯田", desc:"Jl. Raya Penelokan，俯瞰巴杜爾火山湖的人氣咖啡館，5:30am 起營業可看火山晨景。咖啡 + 早餐輕食，接著前往德哥拉朗梯田。", links:[{url:"https://maps.app.goo.gl/akasakintamani",text:"📍 地圖"}]},
-      {time:"12:30", icon:"🍽", name:"午餐 · Tis Cafe（梯田旁咖啡廳）", desc:"Tis Cafe（Gianyar，烏布旁的梯田咖啡廳）。正餐 + 多層泳池 + 著名鞦韆網美照 + 梯田步道，可拍照、玩水、放鬆。4.8★。", links:[{url:"https://maps.app.goo.gl/MgkVcgBD1cDa4mQ36",text:"📍 地圖"}]},
-      {time:"14:00", icon:"💆", name:"Jaens Spa Center Ubud · 90 分鐘按摩", desc:"火山日出後身體爆累，按摩就是最好的休息。從金塔瑪尼直接過來，午餐後不繞回 Villa。IDR 280K+/人 · 4.9★。☎ +62 811-3990-5109", links:[{url:"https://jaensspa.com/",text:"→ 連結"}]},
-      {time:"15:30", icon:"🏠", name:"回 Villa Langon · 休息", desc:"火舞已在 Day 1 看完。可以游泳、放空、補眠到 17:00 再決定要不要出門逛逛（見下）。"},
-      {time:"19:00", icon:"🍽", name:"🍽 晚餐 · Bebek Tebasari Resto", desc:"招牌 Bebek Betutu 烤鴨 + 稻田水上涼亭，**就在 Lodtunduh，離 Villa Langon 走路可到的距離**。氣氛浪漫。10am–9:30pm。", links:[{url:"https://tebasari.com/bebek-tebasari/",text:"→ 連結"}]},
-      {time:"21:00", icon:"😴", name:"早睡 · 補回昨晚的睡眠債", desc:"明天可以慢起，9-10 點再出發都來得及"}
+    id:"day-3",date:"9/27 日",title:"⛴️ 米佛峽灣全天 (RealNZ Coach-Cruise-Fly)",
+    items:[
+      {time:"06:30",icon:"☕",name:"起床早餐 · 飯店退房 check 一下",desc:"帶水、防曬、保暖外套（船上 + 飛機機艙會冷）"},
+      {time:"06:55",icon:"🚌",name:"RealNZ Coach 飯店接送",desc:"NZD $830/人 (Coach 去 + 君王號 Cruise + Scenic Flight 回)",tags:["🟡 4–8週前訂"],links:[{url:"https://www.realnz.com/en/experiences/day-cruises/milford-sound-day-trip-from-queenstown/",text:"RealNZ 官網"}]},
+      {time:"07:00",icon:"🚗",name:"Queenstown 出發",desc:"走 Glenorchy → Te Anau → Milford Road 的世界級風景大道"},
+      {time:"09:30",icon:"☕",name:"Te Anau 短停 (~20min)",desc:"咖啡、廁所、加點心。Sandfly Cafe 或 Miles Better Pies"},
+      {time:"11:00",icon:"📸",name:"Mirror Lakes / Eglinton Valley 拍照停",desc:"巴士會停幾個經典景點"},
+      {time:"11:30",icon:"🛬",name:"抵達米佛峽灣 Visitor Terminal",desc:"check-in cruise (30 分鐘前)"},
+      {time:"12:30",icon:"🚢",name:"君王號 Milford Monarch/Sovereign · 1.5–2hr",desc:"看 Mitre Peak 1692m、Bowen Falls 162m 瀑布、海豹+企鵝 (野生)。船上有解說廣播"},
+      {time:"14:30",icon:"🚐",name:"接駁去米佛峽灣機場",desc:"cruise 結束後接駁直接送到機場"},
+      {time:"14:45",icon:"✈️",name:"Scenic Flight 回 Queenstown · 45min",desc:"飛 Southern Alps、glacier 上空。每個位置有窗 ⭐ 看天氣 (天氣不好飛機會取消)",tags:["⚠️ 看天氣"]},
+      {time:"15:30",icon:"🛬",name:"抵達 Queenstown Airport",desc:"若有預訂 RealNZ 接送可送回飯店"},
+      {time:"16:00",icon:"🏠",name:"回飯店休息",desc:"早睡 — 隔天 Wanaka 一日遊"},
+      {time:"19:00",icon:"🍽️",name:"晚餐：自由（可點 Uber Eats 或便利店）",desc:"今天累，不訂位"},
+      {time:"☁️",icon:"⚠️",name:"天氣應變方案",desc:"若 scenic flight 因天氣取消 → 改坐 RealNZ Coach 回 (5hr)，約 20:00 才到 Queenstown。RealNZ 會自動退飛機差價或安排隔日。記得 24hr 前能取消"},
     ],
-    hotel: {
-      icon:"🌾",
-      name:"Villa Langon Ubud（連住 · 第 2 晚）",
-      desc:"同 12/25 住宿 · 第 2 晚 / 共 2 晚",
-      price:"含於 2 晚總價 TWD $14,770"
-    }
+    hotel:{desc:"同 9/26 住宿 · 第 2 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
   },
   {
-    id: "day-4",
-    date: "12/27 日",
-    title: "🌿 烏布 ATV → 瀑布 → AYANA（提早入住）",
-    items: [
-      {time:"早上", icon:"😴", name:"睡到飽 · 吃漂浮早餐", desc:"昨天凌晨出發太累了，好好休息！Villa Langon 可詢問是否提供漂浮早餐。"},
-      {time:"10:00", icon:"🚗", name:"出發", desc:""},
-      {time:"11:00", icon:"🏍", name:"烏布 ATV 越野 → 特格嫩甘瀑布", desc:"ATV 穿越烏布田間（超刺激！），接著 Tegenungan Waterfall 戲水拍照，全程 11:00–15:30。", links:[{url:"https://www.klook.com/zh-TW/activity/6595-atv-quad-bike-adventure-bali/",text:"Klook 預訂"}]},
-      {time:"13:30", icon:"🍽", name:"🍽 午餐 · Kebun Bistro", desc:"Jl. Hanoman 44（烏布鎮中心）。地中海／義式 bistro，4.6★。洋蔥湯、牛排、pizza 都不錯，氣氛佳。週一 9am 起、平日 11am–11pm。", links:[{url:"https://maps.app.goo.gl/kebunbistroubud",text:"📍 地圖"}]},
-      {time:"15:30", icon:"🚗", name:"直接出發前往 AYANA Jimbaran", desc:"瀑布 → AYANA 約 1.5 小時。今天不繞回烏布，省時間。"},
-      {time:"17:00", icon:"🏨", name:"AYANA Resort · 提早 Check-in", desc:"3 房 6 大人，Sea View 海景房。Check-in 後立刻享受 Resort 設施。"},
-      {time:"17:30", icon:"🏊", name:"享受 AYANA Resort 設施", desc:"游泳、看日落、Luna Rooftop。慢慢梳洗準備晚餐。"},
-      {time:"20:00", icon:"🍽", name:"晚餐 · 金巴蘭海鮮沙灘燒烤 🦞", desc:"先去金巴蘭吃沙灘海鮮燒烤，現烤海鮮配星空+現場音樂。Rock Bar 留給明天慢慢享受。推薦 Menega Cafe / Lia Cafe。"}
+    id:"day-4",date:"9/28 一",title:"🤍 婚紗拍攝整日 (NTD $139,000)",
+    items:[
+      {time:"07:30",icon:"☕",name:"早餐 · 不要太飽",desc:"飯店輕食 + 咖啡 · 拍照要 hold 小腹"},
+      {time:"08:00",icon:"💄",name:"婚紗公司工作室造型 + 化妝",desc:"2 套婚紗 + 男西裝。整日 9 小時服務",tags:["✓ 婚紗公司安排"]},
+      {time:"09:30",icon:"📸",name:"Jacks Point 第一套",desc:"皇后鎮南方 20min · 高爾夫球場湖景 + Remarkables 山景"},
+      {time:"11:30",icon:"📸",name:"Kelvin Heights 第二套",desc:"皇后鎮對岸半島 · Lake Wakatipu lakefront + Cecil Peak 背景"},
+      {time:"13:00",icon:"🥪",name:"簡單午餐",desc:"婚紗公司安排 · 邊吃邊移動到 Wanaka"},
+      {time:"14:00",icon:"🚗",name:"出發 Wanaka",desc:"走 Crown Range · 1.5hr · 沿路風景",tags:["💡 路過可問攝影師能否停 Cardrona Hotel 拍"]},
+      {time:"15:30",icon:"📸",name:"Wanaka 湖畔第三套",desc:"#ThatWanakaTree 孤獨樹 backdrop"},
+      {time:"17:00",icon:"🥾",name:"Coromandel Peak 第四套",desc:"Wanaka 上方山 · 健行 45min 上山 + 拍 + 45min 下山 · 約 3hr 全程",tags:["⚠️ 看天氣"]},
+      {time:"20:00",icon:"🚗",name:"開回皇后鎮",desc:"晚上開車注意 · 1.5hr"},
+      {time:"21:30",icon:"🍜",name:"晚餐 · 簡單即可",desc:"長日 14hr 累壞了 · 飯店附近便利店或 Uber Eats 即可"},
     ],
-    hotel: {
-      icon:"🏝",
-      name:"AYANA Segara Bali · 海景房（12/27–29 · 第 1 晚）",
-      desc:"金巴蘭 · 3 房 · 6 成人 · Sea View",
-      price:"TWD $88,198 ✅ 已訂（3 房 2 晚總價）"
-    }
+    hotel:{desc:"同 9/26 住宿 · 第 3 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
   },
   {
-    id: "day-5",
-    date: "12/28 一",
-    title: "🏖 AYANA 耍廢日 · Jimbaran 海鮮",
-    items: [
-      {time:"早上", icon:"🏊", name:"AYANA 無邊際泳池 · AYANA Spa（可選）", desc:"享受 Resort 設施。可選擇做 AYANA Spa（豪華體驗，需預約），或單純泳池放鬆。"},
-      {time:"午餐", icon:"🍽", name:"午餐 · Padi / AYANA 內用餐", desc:"推薦 Padi Restaurant（海景）或泳池畔輕食"},
-      {time:"17:00", icon:"🍹", name:"Rock Bar 慢慢待（日落 + 晚餐）", desc:"⭐ 整個下午+晚上都待在 Rock Bar。17:00 入場，18:00–19:00 看日落，再用 Rock Bar 晚餐（菜單以海鮮、tapas、雞尾酒為主）。提前 3 天訂位。", links:[{url:"https://www.ayana.com/bali/ayana-resort/rock-bar",text:"→ 連結"}]},
-      {time:"21:00", icon:"🌌", name:"Rock Bar 繼續待 · 星空酒吧", desc:"日落後 Rock Bar 變成星空酒吧，有現場音樂。可以待到 24:00。如果不在 Rock Bar 吃晚餐，可以回 AYANA 內的 Kisik / Padi（海景）。"}
+    id:"day-5",date:"9/29 二",title:"🚢 TSS Earnslaw + Walter Peak 農場晚宴",
+    items:[
+      {time:"09:30",icon:"☕",name:"飯店早餐 · 慢慢來",desc:"今天傍晚才上船，整天輕鬆"},
+      {time:"11:00",icon:"🛍",name:"皇后鎮市區購物",desc:"Patagonia (Beach St)、Macpac、Icebreaker、Global Culture (Kiwiana merino) — 都集中在 Beach Street + The Mall pedestrian 區"},
+      {time:"12:30",icon:"🍔",name:"午餐 · Fergburger ⭐ (你想再吃一次)",desc:"中午排隊比晚上短很多。Ferg Deluxe 或 Big Al 經典款。隔壁 Mrs Ferg Gelateria 飯後甜點"},
+      {time:"13:30",icon:"🍫",name:"Patagonia Chocolates · 湖邊咖啡",desc:"Beach St 湖邊位置，巧克力 + 咖啡 + ice cream。坐外面看湖（如果不想吃 Fergburger 可改吃這個輕食）"},
+      {time:"14:30",icon:"☕",name:"繼續逛 Steamer Wharf shops + O'Connell's",desc:"紀念品、明信片，Cookie Time Queenstown 旗艦店"},
+      {time:"16:30",icon:"⛵",name:"抵達 Steamer Wharf check-in",desc:"TSS Earnslaw, Steamer Wharf Dock 前集合。17:00 出發前 30 分鐘到達"},
+      {time:"17:00",icon:"🚢",name:"TSS Earnslaw 出發 · 君王號 (Vintage Steamship)",desc:"45min 跨 Lake Wakatipu，看 Cecil Peak + Remarkables 山脈。船上有古老蒸汽機展示 + piano sing-along",tags:["🟡 2–3週前訂","✓ 選 Vintage Steamship"]},
+      {time:"17:45",icon:"🛬",name:"抵達 Walter Peak High Country Farm",desc:"Colonel's Homestead 用餐"},
+      {time:"18:00",icon:"🍖",name:"Gourmet BBQ Dinner · NZD $199/人",desc:"Buffet：NZ 羊肉、牛肉、烤雞 + antipasto + 自種蔬菜 + dessert + cheese board + 茶/咖啡。日落 19:03 — golden hour 正好"},
+      {time:"19:30",icon:"🐕",name:"牧羊犬秀 + 剪羊毛 demo",desc:"晚餐後的招牌節目，整個 farm 的精華"},
+      {time:"20:30",icon:"🚢",name:"回程 TSS Earnslaw",desc:"湖面晚霞 + 夜景 (天氣好的話)"},
+      {time:"21:15",icon:"🏠",name:"回 Queenstown 飯店",desc:""},
     ],
-    hotel: {
-      icon:"🏝",
-      name:"AYANA Segara Bali · 海景房（連住 · 第 2 晚）",
-      desc:"同 12/27 住宿 · 第 2 晚 / 共 2 晚",
-      price:"含於 3 房 2 晚總價 TWD $88,198"
-    }
+    hotel:{desc:"同 9/26 住宿 · 第 4 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
   },
   {
-    id: "day-6",
-    date: "12/29 二",
-    title: "✈️ 耍廢回家",
-    items: [
-      {time:"早上", icon:"🏊", name:"AYANA · 最後享受", desc:"行李前晚打包好，早上再去游個泳或吃個好早餐"},
-      {time:"11:30", icon:"🧳", name:"準備 Check-out", desc:"AYANA 12:00 退房。可詢問早退或行李寄放。"},
-      {time:"12:00", icon:"🚗", name:"出發前往 DPS 機場", desc:"AYANA→機場約 20–30 分鐘，年底旺季預留 45 分鐘。"},
-      {time:"12:45", icon:"🛫", name:"機場報到 · 國際線", desc:"年底旺季排隊長，2.5 小時前報到。13:15 前抵達最安全。"},
-      {time:"15:45", icon:"✈️", name:"DPS 起飛 → 台灣", desc:""},
-      {time:"21:05", icon:"🏠", name:"台灣落地", desc:"記得安排接送或叫車"}
+    id:"day-6",date:"9/30 三",title:"🪂 跳傘 + Shotover Jet + 洗衣日",
+    items:[
+      {time:"07:00",icon:"☕",name:"早餐 · 不要吃太多",desc:"空腹比較不會在跳傘時想吐"},
+      {time:"07:30",icon:"🪂",name:"NZONE Skydive Queenstown 報到",desc:"35 Shotover Street, Central Queenstown · 體重檢查 + 簽切結書",tags:["🔴 24hr 前可全額取消","💡 早上風較小"],links:[{url:"https://www.nzoneskydive.co.nz/",text:"NZONE 官網"}]},
+      {time:"08:00",icon:"✈️",name:"15,000ft 跳傘",desc:"NZD $439/人 × 2 = $878 · 60sec freefall 200kph + 5min 滑翔 · 可加購照片影片",tags:["🟡 主案，看天氣"]},
+      {time:"10:00",icon:"🏠",name:"結束 · 回市區",desc:"通常會給認證 + 合照"},
+      {time:"11:00",icon:"🍜",name:"午餐 · 自由",desc:"Patagonia Chocolates / Saigon Kingdom / 自炊都行"},
+      {time:"12:30",icon:"☕",name:"下午休息 · 留 buffer",desc:"萬一跳傘取消改去 Glenorchy 需要時間 · 不排太緊"},
+      {time:"14:30",icon:"🚐",name:"前往 Shotover Jet (Arthurs Point)",desc:"15min 車程 · 自駕或免費接駁"},
+      {time:"15:00",icon:"🚤",name:"Shotover Jet · 25min",desc:"NZD $170/人 × 2 = $340 · 15+ 個 360° 旋轉 · 留 buffer 給 Glenorchy 備案",tags:["🟡 1週前訂"],links:[{url:"https://www.shotoverjet.com/",text:"Shotover Jet 官網"}]},
+      {time:"16:30",icon:"🏠",name:"回飯店",desc:""},
+      {time:"19:00",icon:"🍝",name:"晚餐 · 自炊或外帶",desc:"今晚輕鬆 · 用 Pak'nSave 採購食材 · 義大利麵 / 簡單料理"},
+      {time:"20:00",icon:"🧺",name:"洗衣 + 烘衣",desc:"飯店或 Airbnb 洗衣機 · 邊看 Netflix 邊等"},
+      {time:"⚠️",icon:"⚠️",name:"備案：跳傘取消 → Glenorchy 一日遊",desc:"07:30 取消通知 → 08:00 出發 Glenorchy (45min)。 09:00-12:00 探索：Glenorchy Wharf 紅屋、Mrs Woolly's、Paradise drive。 12:00 Glenorchy Cafe 午餐。 13:00 開回 QT。 14:30 Shotover Jet 一樣 15:00 出發 (時間還夠)",tags:["🟢 備案"]},
     ],
-    hotel: {
-      icon:"✈️",
-      name:"航班上（機上返程）",
-      desc:"DPS 15:45 → 桃園 21:05",
-      price:"—"
-    }
-  }
+    hotel:{desc:"同 9/26 住宿 · 第 5 晚 / 共 6 晚",icon:"🏡",name:"皇后鎮住宿 A（連住）",price:""}
+  },
+  {
+    id:"day-7",date:"10/1 四",title:"🦌 Deer Park + Moke Lake → 庫克山 Hermitage",
+    items:[
+      {time:"08:30",icon:"☕",name:"飯店早餐 · 收拾 overnight bag",desc:"皇后鎮房間不退 · 只帶過夜行李去 Mt Cook"},
+      {time:"09:30",icon:"🦌",name:"Deer Park Heights · NZD $20/人",desc:"1.5hr · 餵鹿、駱馬、山羊 + LOTR 場景 (魔戒大軍場景就在這)",links:[{url:"https://www.deerparkheights.co.nz/",text:"Deer Park 官網"}]},
+      {time:"11:00",icon:"🏞️",name:"Moke Lake (免費)",desc:"1hr · 隱藏的湖、超寧靜、可野餐"},
+      {time:"12:30",icon:"🍔",name:"午餐 · 自由",desc:"回 QT 市區隨便吃 · Fergburger 第二次 / Madam Woo / Public Kitchen"},
+      {time:"14:00",icon:"🚗",name:"出發 → Mt Cook · 3.5hr 直走",desc:"走 SH6 → Cromwell → Tarras → SH8 → Twizel → SH80 Mt Cook"},
+      {time:"15:30",icon:"⛽",name:"Cromwell 加油 + 廁所",desc:"最後便宜的加油站 · Mt Cook 油費高"},
+      {time:"17:00",icon:"💙",name:"Peter's Lookout / Pukaki 湖景停",desc:"30min 拍照 · 黃昏前抵達綠松石冰川湖 + Mt Cook backdrop"},
+      {time:"17:30",icon:"🏔",name:"抵達 Hermitage Hotel Mt Cook",desc:"Check in NT$12,683 ✅ 已訂 · 飯店面對 Mt Cook 山景",tags:["✓ 已訂"]},
+      {time:"19:00",icon:"🍽️",name:"Hermitage 餐廳晚餐",desc:"Panorama Restaurant (玻璃帷幕看山景) 或 Alpine Restaurant (buffet) · 飯店內"},
+    ],
+    hotel:{icon:"🏔",name:"Hermitage Hotel Mt Cook（10/1 · 1 晚）",desc:"NT$12,683 ✅ 已訂 · Mountain view · 在 Mt Cook Village",price:"NT$12,683"}
+  },
+  {
+    id:"day-8",date:"10/2 五",title:"🚁 庫克山直升機 (Klook 12:30) → 蒂卡波",
+    items:[
+      {time:"08:30",icon:"☕",name:"Hermitage 早餐 · 慢慢來",desc:"看 Mt Cook 日照（晴天時粉紅色山頂）"},
+      {time:"09:30",icon:"🥾",name:"Hooker Valley Track (optional)",desc:"90min 來回的世界級冰川湖步道 · 平坦 · 看冰川崩落入湖 · 累的話可以睡晚一點直接 11:00 起床",tags:["🟢 Optional · 可跳過"]},
+      {time:"11:00",icon:"🏨",name:"回飯店退房",desc:""},
+      {time:"11:15",icon:"🚙",name:"開到 Mt Cook Airport (3min)",desc:"飯店出來右轉就到"},
+      {time:"11:30",icon:"⏰",name:"Klook check-in 截止",desc:"Klook 訂單 ZST783683 NTD $22,284 (2人) · 遲到不退費",tags:["✓ 已訂"]},
+      {time:"12:30",icon:"✈️",name:"滑雪飛機 + 直升機 · 45min",desc:"Tasman Glacier 冰川著陸 · Mt Cook 3724m + Hochstetter Icefall"},
+      {time:"13:30",icon:"🛬",name:"結束 · 拿認證照片",desc:""},
+      {time:"14:00",icon:"🚗",name:"開車 Mt Cook → Twizel · 30min",desc:"SH80 → SH8 南下"},
+      {time:"14:30",icon:"🐟",name:"午餐 · Mt Cook Alpine Salmon (Twizel)",desc:"紐西蘭最有名的高山鮭魚 · 直接從養殖場買新鮮鮭魚刺身 + 鮭魚薯餅 · 戶外用餐看 Lake Ruataniwha",tags:["⭐ 鮭魚體驗"],links:[{url:"https://maps.app.goo.gl/ziijXdMacGLkKUYq9",text:"Mt Cook Alpine Salmon"}]},
+      {time:"15:30",icon:"🚗",name:"Twizel → Tekapo · 30min",desc:""},
+      {time:"16:00",icon:"🏠",name:"抵達 Tekapo 入住",desc:""},
+      {time:"16:30",icon:"💒",name:"善牧教堂黃昏拍照",desc:"入內免費（不能拍照）· 教堂外湖邊石堆是經典角度 · 也有黃昏拍照"},
+      {time:"17:30",icon:"🐕",name:"牧羊犬銅像 + 湖邊散步",desc:""},
+      {time:"18:30",icon:"🍽️",name:"晚餐 · Kohan (日式)",desc:"蒂卡波當地名店 · 鮭魚壽司用 Mt Cook Alpine Salmon"},
+      {time:"20:00",icon:"⭐",name:"湖邊自己看星空 (免費)",desc:"蒂卡波是全球黃金級暗空保護區 · 教堂外湖邊就能看銀河 · 帶禦寒衣物"},
+      {time:"21:30",icon:"🏠",name:"回飯店睡覺",desc:""},
+    ],
+    hotel:{desc:"三選一候選：Lot 7 / 特卡波湖景酒店 / Lakes Edge Holiday Park",icon:"🌌",name:"蒂卡波住宿（10/2–10/3 · 1晚）",price:"🔴 待選定"}
+  },
+  {
+    id:"day-9",date:"10/3 六",title:"🌅 蒂卡波晨光 → 皇后鎮 → Lake Hayes + 箭鎮",
+    items:[
+      {time:"07:30",icon:"☀️",name:"蒂卡波晨光 · 善牧教堂",desc:""},
+      {time:"09:30",icon:"🚗",name:"退房 · 自駕返回皇后鎮 · 2.5hr",desc:"途中 Cromwell 停留 · 春季果園花海"},
+      {time:"12:30",icon:"🏨",name:"皇后鎮 check in 放行李",desc:"⚠️ 先回飯店卸行李再去景點，避免車上放行李"},
+      {time:"13:30",icon:"🌸",name:"Lake Hayes 環湖步道 · 免費 · 2hr",desc:"春季櫻花+雪山倒影"},
+      {time:"16:00",icon:"🏘️",name:"箭鎮歷史街區",desc:"Devon Street 春季櫻花大道"},
+      {time:"19:30",icon:"🍽️",name:"晚餐 · Rata / Jervois / Blue Kanu (擇一)",desc:"最後的皇后鎮夜晚 · 三家擇一訂位：Rata (Josh Emett 米其林星) / Jervois (NZ best steakhouse) / Blue Kanu (Polynesian fusion share plates)",tags:["🟡 1-2週前訂"],links:[{url:"https://www.ratadining.co.nz/",text:"Rata"},{url:"https://www.jervoissteakhouse.co.nz/",text:"Jervois"},{url:"https://www.bluekanu.co.nz/",text:"Blue Kanu"}]},
+      {time:"⏳",icon:"⏳",name:"Cardrona Hotel — 路線方案 B (PENDING)",desc:"若 9/28 婚紗公司無法停 Cardrona，可考慮 10/3 從 Tekapo 回 QT 時繞 Wanaka + Cardrona (走 Lindis → Wanaka → Crown Range，多 1hr)。當天會犧牲 Lake Hayes 或箭鎮時間",tags:["⏳ 待 9/28 婚紗結果決定"]},
+    ],
+    hotel:{desc:"建議：延訂同一間住宿連住",icon:"🏡",name:"皇后鎮住宿（10/3–10/4 · 1晚）",price:"🔴 待訂"}
+  },
+  {
+    id:"day-10",date:"10/4 日",title:"✈️ 南島退房 → 飛奧克蘭 → Mt Eden",
+    items:[
+      {time:"早上",icon:"☕",name:"悠閒早餐 · 退房 · 還南島租車",desc:""},
+      {time:"13:05",icon:"✈️",name:"NZ0620 皇后鎮→奧克蘭",desc:"14:55 抵達 · 1h50m",tags:["✓ 已訂"]},
+      {time:"15:30",icon:"🚕",name:"SkyBus 或 Uber → Queen St 公寓 check in",desc:""},
+      {time:"16:30",icon:"🌋",name:"Uber 到 Mt Eden 火山口 · 免費",desc:"360度奧克蘭全景 · 夕陽最美"},
+      {time:"19:00",icon:"🦞",name:"晚餐 · Depot",desc:"Federal St · 步行5min"},
+    ],
+    hotel:{desc:"市中心 · 免費停車 · 21樓景觀 · ⚠️ 需改訂日期",icon:"🏙️",name:"Queen St 21樓公寓（10/4–10/7 · 3晚）",price:"原 TWD $11,180（2晚）· 3晚約 $16,770"}
+  },
+  {
+    id:"day-11",date:"10/5 一",title:"🧙 Hobbiton + ✨ Waitomo 一日團",
+    items:[
+      {time:"06:30",icon:"☕",name:"早餐 + 步行到 SkyCity Bus Terminal",desc:"102 Hobson Street · 從 Queen St 步行5分鐘"},
+      {time:"07:15",icon:"🚌",name:"Hobbiton + Waitomo 一日團出發",desc:"Gray Line / Cheeky Kiwi Travel · NZD $450/人估",tags:["🔴 立即訂普通話場"],links:[{url:"https://www.hobbitontours.com/experiences/mandarin/",text:"Hobbiton 普通話"},{url:"https://www.cheekykiwitravel.com/",text:"Cheeky Kiwi"}]},
+      {time:"09:30",icon:"🧙",name:"Hobbiton Movie Set 哈比村導覽",desc:"2hr · Green Dragon Inn · 午餐"},
+      {time:"14:30",icon:"✨",name:"Waitomo 螢火蟲洞",desc:"45min · 室內洞穴 · 全年不受天氣影響"},
+      {time:"17:30",icon:"🏙️",name:"回到 SkyCity Terminal · 步行回住宿",desc:""},
+      {time:"19:30",icon:"🌿",name:"晚餐選項",desc:"· Ahi（紐西蘭在地食材）· Cassia（印度創新）· Queen's Rooftop"},
+    ],
+    hotel:{desc:"同 10/4 住宿 · 第 2 晚 / 共 3 晚",icon:"🏙️",name:"Queen St 21樓公寓（連住）",price:""}
+  },
+  {
+    id:"day-12",date:"10/6 二",title:"⛴️ Waiheke Island 一日遊 + French Café 告別晚餐",
+    items:[
+      {time:"08:30",icon:"🚶",name:"步行到 Downtown Ferry Terminal",desc:"99 Quay Street · 從 Queen St 步行10分鐘"},
+      {time:"08:45",icon:"🎫",name:"Fullers360 售票處換票",desc:"需出發前1小時換票"},
+      {time:"09:00",icon:"⛴️",name:"渡輪 → Waiheke（40min）· 含 Hop-On Hop-Off 巴士套票",desc:"NZD $85/人",tags:["⚡ 前一天訂"],links:[{url:"https://www.fullers.co.nz/",text:"Fullers360"}]},
+      {time:"10:00",icon:"🚌",name:"Hop-On Hop-Off 環島巴士（1.5hr 完整一圈先聽導覽）",desc:"16 站 · 含酒莊、海灘、Oneroa 鎮"},
+      {time:"12:30",icon:"🍽️",name:"午餐 · Mudbrick Vineyard",desc:"山頂俯瞰 Hauraki Gulf · 需訂位",links:[{url:"https://mudbrick.co.nz/",text:"訂位"}]},
+      {time:"14:30",icon:"🎨",name:"Oneroa Village 藝廊+購物",desc:""},
+      {time:"15:30",icon:"🏖️",name:"Onetangi Beach 最美沙灘",desc:""},
+      {time:"17:30",icon:"⛴️",name:"渡輪返回奧克蘭（18:10 抵達）",desc:""},
+      {time:"19:30",icon:"🥂",name:"告別晚餐 · The French Café",desc:"Symonds St · Uber 10min · 紐西蘭 Top 10 · 需訂位",links:[{url:"https://thefrenchcafe.co.nz/",text:"訂位"}]},
+    ],
+    hotel:{desc:"同 10/4 住宿 · 第 3 晚 / 共 3 晚",icon:"🏙️",name:"Queen St 21樓公寓（連住）",price:""}
+  },
+  {
+    id:"day-13",date:"10/7 三",title:"🚗 取車 → Rotorua 溫泉 + Mitai 毛利晚宴",
+    items:[
+      {time:"08:00",icon:"☕",name:"買外帶早餐 · 打包行李",desc:""},
+      {time:"08:30",icon:"🚗",name:"取北島租車 · Mitsubishi ASX · Auckland City",desc:"NZ$484 含 CDW 0 自付額 + relocation。行李放車上直到飯店寄放。出發 Rotorua · 約 3hr 車程",tags:["✓ 已訂 NZ$484"]},
+      {time:"11:30",icon:"🏨",name:"Millennium Hotel 寄放行李（未到 check-in 時間）",desc:"離 Polynesian Spa 開車 5 分鐘"},
+      {time:"12:00",icon:"♨️",name:"Polynesian Spa 溫泉",desc:"NZD $40+/人 · 3小時泡湯+午餐 · 湖景溫泉世界級",links:[{url:"https://www.polynesianspa.co.nz/",text:"官網"}]},
+      {time:"15:00",icon:"🏨",name:"回飯店 check in · 休息",desc:""},
+      {time:"17:30",icon:"🌿",name:"Mitai Māori Village · NZD $169/人",desc:"傳統晚宴+Haka舞+螢火蟲步道 · 20:30結束",tags:["⚡ 4–6週前訂"],links:[{url:"https://www.mitai.co.nz/",text:"官網直訂"}]},
+    ],
+    hotel:{desc:"市中心五星 · 免費停車 · ⚠️ 需改訂日期",icon:"🌋",name:"Millennium Hotel Rotorua（10/7–10/8 · 1晚）",price:"TWD $3,954 ✅ 已訂"}
+  },
+  {
+    id:"day-14",date:"10/8 四",title:"🌋 Wai-O-Tapu 香檳池 → 還車 → Pullman",
+    items:[
+      {time:"08:30",icon:"☕",name:"飯店早餐 · 退房",desc:""},
+      {time:"09:30",icon:"🌋",name:"Wai-O-Tapu Thermal Wonderland",desc:"NZD $40/人 · 每天08:30–17:00 · Lady Knox 間歇泉10:15",tags:["✓ 無需預約"],links:[{url:"https://www.waiotapu.co.nz/",text:"官網"}]},
+      {time:"12:30",icon:"🍽️",name:"Rotorua 午餐",desc:"· Atticus Finch · Eat Streat · Volcanic Hills Winery"},
+      {time:"14:00",icon:"🚗",name:"Rotorua → 奧克蘭機場 · 3hr",desc:"途中可停 Huka Falls 胡卡瀑布（加30min）"},
+      {time:"17:30",icon:"🔑",name:"Auckland Airport 還車",desc:"訂單最遲 18:00 還，留 30min buffer。還完直接進機場附近 Pullman"},
+      {time:"18:00",icon:"✈️",name:"Pullman Auckland Airport check in",desc:"步行3分到國際航廈"},
+      {time:"19:30",icon:"🍽️",name:"晚餐 · Pullman 飯店 Grain Store",desc:"飯店內 fine dining · 輕鬆收尾"},
+    ],
+    hotel:{desc:"機場內 · 步行3分到國際出境",icon:"✈️",name:"Pullman Auckland Airport（10/8–10/9 · 1晚）",price:"TWD $5,576 ✅ 已訂"}
+  },
+  {
+    id:"day-15",date:"10/9 五",title:"✈️ 回台灣",
+    items:[
+      {time:"07:30",icon:"🚶",name:"步行3分 → 國際出境 Check in",desc:""},
+      {time:"10:40",icon:"✈️",name:"NZ0077 奧克蘭→台北",desc:"豪華經濟艙 · 11h25m",tags:["✓ 已訂"]},
+      {time:"17:05",icon:"🏠",name:"抵達桃園 · 回家！",desc:""},
+    ],
+    hotel:{desc:"奧克蘭→台北 NZ0077",icon:"✈️",name:"航班上（機上返程）",price:"' + escHtml(hpVal) + '"}
+  },
 ];
-var PLACES = [
-  // Hotels
-  {n:"Villa Jerami & Spa",     lat:-8.6878, lng:115.1702, type:"hotel", d:"12/24",       x:"水明漾 · 1晚 · TWD $8,399"},
-  {n:"Villa Langon Ubud",      lat:-8.5550, lng:115.2575, type:"hotel", d:"12/25,12/26", x:"烏布 · 2晚 · TWD $14,770"},
-  {n:"AYANA Segara 海景房",     lat:-8.7875, lng:115.1404, type:"hotel", d:"12/27,12/28", x:"金巴蘭 · 3房 2晚 · TWD $88,198"},
-  // Day 1 (12/24)
-  {n:"DPS 機場",                lat:-8.7470, lng:115.1682, type:"act",   d:"12/24",       x:"14:40 抵達"},
-  {n:"按摩 SUNDARI/Koya",       lat:-8.6717, lng:115.1632, type:"act",   d:"12/24",       x:"20:00 · Petitenget · 飛行後放鬆 · 6人先訂"},
-  {n:"Mano Beach House",        lat:-8.6818, lng:115.1515, type:"act",   d:"12/24",       x:"17:00 夕陽+晚餐 · Petitenget 海灘 beach club"},
-  // Day 2 (12/25)
-  {n:"Kagemusha（日式）",       lat:-8.5279, lng:115.2563, type:"act",   d:"12/25",       x:"19:00 晚餐 · Nyuh Kuning · 日本家庭料理"},
-  {n:"烏布皇宮 Puri Saren",     lat:-8.5067, lng:115.2627, type:"act",   d:"12/25",       x:"16:00 皇室宅邸 · 免費 · 拍照"},
-  {n:"烏布市集 Art Market",     lat:-8.5064, lng:115.2616, type:"act",   d:"12/25",       x:"16:10 手工藝/紀念品 · 殺價"},
-  {n:"按摩 INKA / Lumiére",     lat:-8.5134, lng:115.2606, type:"act",   d:"12/25",       x:"17:30 · Monkey Forest 路 · 2選1 · 6人先訂"},
-  // Day 3 (12/26)
-  {n:"Mt Batur 巴杜爾火山",     lat:-8.2401, lng:115.3775, type:"act",   d:"12/26",       x:"04:30 集合 · 日出"},
-  {n:"AKASA Cafe（火山景觀）",   lat:-8.2796, lng:115.3576, type:"act",   d:"12/26",       x:"08:00 火山湖景咖啡 + 早餐"},
-  {n:"Tegallalang 梯田",        lat:-8.4317, lng:115.2793, type:"act",   d:"12/26",       x:"層層稻田"},
-  {n:"Jaens Spa Center Ubud",  lat:-8.5216, lng:115.2630, type:"act",   d:"12/26",       x:"14:00 · 90min · IDR 280K+"},
-  {n:"Bebek Tebasari Resto",   lat:-8.5530, lng:115.2580, type:"act",   d:"12/26",       x:"19:00 晚餐 · Lodtunduh · 烤鴨+稻田涼亭"},
-  // Day 4 (12/27)
-  {n:"L'Osteria（義式）",       lat:-8.5181, lng:115.2632, type:"act",   d:"12/25",       x:"14:30 午餐 · Monkey Forest 街角 · 拿坡里 pizza"},
-  {n:"Kebun Bistro",           lat:-8.5138, lng:115.2642, type:"act",   d:"12/27",       x:"13:30 午餐 · Jl. Hanoman · 地中海/義式"},
-  {n:"Tegenungan 瀑布",         lat:-8.5754, lng:115.2890, type:"act",   d:"12/27",       x:"ATV 後戲水拍照"},
-  // Day 5 (12/28)
-  {n:"Rock Bar @ AYANA",       lat:-8.7842, lng:115.1385, type:"act",   d:"12/27,12/28", x:"懸崖海景酒吧 · 日落"},
-  {n:"Jimbaran 海鮮燒烤",       lat:-8.7594, lng:115.1692, type:"act",   d:"12/28",       x:"沙灘海鮮燒烤"},
+var PLACES = [];
+var BOOKING_DATA = [
+  {section:"🏨 住宿",cat:"hotel",items:[
+    {id:"t1",text:"選定皇后鎮住宿（9/26–10/2 · 6晚）候選：美景酒店 / Whakatipu Bliss / 大漾閣別墅",done:false},
+    {id:"t2",text:"選定蒂卡波住宿（10/2–10/3 · 1晚）候選：Lot 7 / 特卡波湖景 / Lakes Edge",done:false},
+    {id:"t3",text:"皇后鎮住宿延訂（10/3–10/4 · 1晚）建議延訂同一家",done:false},
+    {id:"t4",text:"Queen St 21樓公寓改訂日期（10/4–10/7 · 3晚）原訂 10/7–10/9，需改成 10/4–10/7",done:false},
+    {id:"t5",text:"Millennium Hotel Rotorua 改訂日期（10/7–10/8 · 1晚）原訂 10/5–10/6 或 10/6–10/7，需改",done:false},
+    {id:"t6",text:"Pullman Auckland Airport（10/8–10/9 · 1晚）✅ 已改訂確認 · TWD $5,576",done:true},
+    {id:"t_hermitage",text:"Hermitage Hotel Mt Cook（10/1 · 1晚）NT$12,683 ✅ 已訂",done:true},
+  ]},
+  {section:"✈️ 交通",cat:"transport",items:[
+    {id:"t7",text:"NZ0078 台北→奧克蘭（9/25 18:35）豪華商務艙✅ 已訂",done:true},
+    {id:"t8",text:"NZ0619 奧克蘭→皇后鎮（9/26 11:35）✅ 已訂",done:true},
+    {id:"t9",text:"NZ0620 皇后鎮→奧克蘭（10/4 13:05）✅ 已訂",done:true},
+    {id:"t10",text:"NZ0077 奧克蘭→台北（10/9 10:40）豪華經濟艙✅ 已訂",done:true},
+    {id:"t11",text:"南島租車（9/26取・10/4還・8天）→ Omega Rental",done:false},
+    {id:"t12",text:"北島租車 Mitsubishi ASX（10/7 08:30 取 · 10/8 18:00 還 · 2天）Auckland City → Auckland Airport · NZ$484（CDW 0 自付額 + relocation）✅ 已訂",done:true},
+    {id:"t13",text:"機場→奧克蘭 CBD 交通（10/4）SkyBus NZD $17/人 或 Uber NZD $60",done:false},
+  ]},
+  {section:"🎡 活動",cat:"activity",items:[
+    {id:"t15",text:"Hobbiton + Waitomo 一日團 普通話（10/5）NZD $450/人估→ Hobbiton 普通話 / Cheeky Kiwi",done:false},
+    {id:"t16",text:"Waiheke Fullers360 渡輪+Hop-on套票（10/6）NZD $85/人→ Fullers360",done:false},
+    {id:"t17",text:"婚紗公司聯絡確認（9/28 全日 NTD $139,000）→ Jacks Point/Kelvin Heights/Wanaka/Coromandel Peak",done:false},
+    {id:"t19",text:"米佛峽灣 RealNZ Coach-Cruise-Fly（9/27 06:55）NZD $830/人（含 BUS+君王號 cruise+回程 scenic flight）→ RealNZ 官網",done:false},
+    {id:"t22",text:"TSS Earnslaw + Walter Peak BBQ（9/29 17:00）NZD $199/人 · 選 Vintage Steamship→ RealNZ 官網",done:false},
+    {id:"t23",text:"庫克山滑雪飛機+直升機（10/2 12:30）NTD $22,284（Klook ZST783683 · 11:30 報到，遲到不退）✅ 已訂",done:true},
+    {id:"t24",text:"Mitai Māori Village 毛利晚宴（10/7 17:30）NZD $169/人→ 官網直訂",done:false},
+    {id:"t25",text:"Skyline Gondola + Luge（9/26）NZD $80/人→ 官網",done:false},
+    {id:"t_shotover",text:"Shotover Jet（10/1 15:00）NZD $170/人 · 25min 360° 旋轉刺激體驗→ shotoverjet.com",done:false},
+    {id:"t_skydive",text:"NZONE Skydive Queenstown（9/30 07:30）15,000ft tandem · NZD $439/人 × 2 = $878 · 24hr 前可取消，建議早上場（風較小）",done:false},
+  ]},
+  {section:"🍜 美食",cat:"food",items:[
+    {id:"t_fergburger",text:"Fergburger 兩次（9/29 中午 + 10/1 中午）· 必嘗",done:false},
+    {id:"t_paknsave",text:"Pak'nSave Frankton 採購自炊食材（10/1 上午）：NZ 番茄/pasta/Parmesan/培根/Bluff oysters/Pinot Noir",done:false},
+    {id:"t_patagonia",text:"Patagonia Chocolates 湖邊咖啡（9/29 下午）巧克力+冰淇淋",done:false},
+    {id:"t_highsalmon",text:"High Country Salmon (10/2 順路) 蒂卡波 Twizel · 鮭魚刺身/薯餅",done:false},
+    {id:"t_kohan",text:"Kohan 日式餐廳（10/2 18:30）· 蒂卡波鮭魚壽司",done:false},
+    {id:"t_cookietime",text:"Cookie Time Queenstown 旗艦店（紀念品 cookie）",done:false},
+  ]},
+  {section:"🍽️ 餐廳訂位",cat:"restaurant",items:[
+    {id:"t26",text:"Rata（10/3 19:30 擇一）Josh Emett 米其林星 · 紐西蘭 Top 10→ 訂位",done:false},
+    {id:"t27",text:"Botswana Butchery（9/27 19:30）頂級牛排→ 訂位",done:false},
+    {id:"t28",text:"Jervois Steak House（10/3 19:30 擇一）NZ best steakhouse · 6-course $120/人→ 訂位",done:false},
+    {id:"t29",text:"Mudbrick Vineyard（10/6 12:30）Waiheke Island 山頂午餐→ 訂位",done:false},
+    {id:"t30",text:"The French Café（10/6 19:30）告別晚餐 · 紐西蘭 Top 10→ 訂位",done:false},
+    {id:"t_bluekanu",text:"Blue Kanu（10/3 19:30 擇一）Polynesian/Asian fusion share plates · 當地人最愛→ 訂位",done:false},
+    {id:"t_margos",text:"Margo's Queenstown (optional, 10/1 或 10/3) Mexican · $25-40/人",done:false},
+    {id:"t_publickitchen",text:"Public Kitchen & Bar (optional, 10/1 或 10/3) Steamer Wharf 湖邊 share plates · $30-50/人",done:false},
+    {id:"t_finz",text:"Finz Seafood (optional, 10/1 或 10/3) Steamer Wharf 海鮮 + NZ 羊排 · $40-60/人",done:false},
+  ]},
 ];
-var BOOKING_DATA = [{"section": "🏨 住宿", "cat": "hotel", "items": [{"id": "t_villa_jerami", "text": "Villa Jerami & Spa（12/24 · 1晚）TWD $8,399 ✅ 已訂", "done": true}, {"id": "t_villa_langon", "text": "Villa Langon Ubud（12/25–26 · 2晚）TWD $14,770 ✅ 已訂", "done": true}, {"id": "t_ayana", "text": "AYANA Segara 海景房（12/27–28 · 3房2晚）TWD $88,198 ✅ 已訂", "done": true}]}, {"section": "✈️ 交通", "cat": "transport", "items": [{"id": "t_flight", "text": "來回機票（6人）TWD $84,000", "done": false}, {"id": "t_driver", "text": "包車司機 6 天 TWD $18,000", "done": false}, {"id": "t_airport", "text": "機場接送 / 額外用車", "done": false}]}, {"section": "🎡 活動", "cat": "activity", "items": [{"id": "t_batur", "text": "巴杜爾火山吉普日出（12/26 · 含 AKASA+德哥拉朗）", "done": false}, {"id": "t_atv", "text": "烏布 ATV + 特格嫩甘瀑布（12/27）→ Klook", "done": false}, {"id": "t_jaens", "text": "💆 Jaens Spa 90分鐘按摩（12/26 · 火山後）", "done": false}, {"id": "t_spa", "text": "💆 按摩預約 · Day1 Seminyak（SUNDARI/Koya）+ Day2 Ubud（INKA/Lumiére）· 6人提前訂", "done": false}]}, {"section": "🍜 美食", "cat": "food", "items": [{"id": "t_food_kagemusha", "text": "Kagemusha 日式（雞翅必點 · 不需訂位）", "done": false}]}, {"section": "🍽️ 餐廳訂位", "cat": "restaurant", "items": [{"id": "t_mano", "text": "🏖 Mano Beach House（12/24 夕陽時段 · 6人建議訂位）", "done": false}, {"id": "t_locavore", "text": "Locavore / Bridges Ubud（如要去需提前訂位）", "done": false}]}];
-var COST_GROUPS = [{"id": "g1", "title": "✈️ 機票", "rows": [{"id": "c1", "label": "來回機票（6人）", "sub": "", "budget": 84000, "currency": "TWD"}, {"subtotal": true, "id": "sub-g1", "label": "機票小計"}]}, {"id": "g2", "title": "🏨 住宿", "rows": [{"id": "c2", "label": "Villa Jerami & Spa · 1晚", "sub": "", "budget": 8399, "currency": "TWD"}, {"id": "c3", "label": "Villa Langon Ubud · 2晚", "sub": "", "budget": 14770, "currency": "TWD"}, {"id": "c4", "label": "AYANA Segara · 3房×2晚", "sub": "", "budget": 88198, "currency": "TWD"}, {"subtotal": true, "id": "sub-g2", "label": "住宿小計"}]}, {"id": "g3", "title": "🚗 交通", "rows": [{"id": "c5", "label": "包車司機 6 天", "sub": "", "budget": 18000, "currency": "TWD"}, {"id": "c6", "label": "機場接送/額外用車", "sub": "", "budget": 2000, "currency": "TWD"}, {"id": "c7", "label": "過路費/油資/小費", "sub": "", "budget": 1000, "currency": "TWD"}, {"subtotal": true, "id": "sub-g3", "label": "交通小計"}]}, {"id": "g4", "title": "🎡 活動", "rows": [{"id": "c9", "label": "巴杜爾火山吉普", "sub": "", "budget": 13800, "currency": "TWD"}, {"id": "c10", "label": "烏布 ATV + 瀑布", "sub": "", "budget": 9800, "currency": "TWD"}, {"id": "c12", "label": "其他門票", "sub": "", "budget": 3000, "currency": "TWD"}, {"subtotal": true, "id": "sub-g4", "label": "活動小計"}]}, {"id": "g5", "title": "🍽️ 餐飲", "rows": [{"id": "c13", "label": "Day 1–2", "sub": "", "budget": 12000, "currency": "TWD"}, {"id": "c14", "label": "Day 3–4", "sub": "", "budget": 14000, "currency": "TWD"}, {"id": "c15", "label": "Day 5–6", "sub": "", "budget": 12000, "currency": "TWD"}, {"subtotal": true, "id": "sub-g5", "label": "餐飲小計"}]}, {"id": "g6", "title": "🧳 雜費", "rows": [{"id": "c17", "label": "💆 Jaens Spa（Day 3）", "sub": "", "budget": 4560, "currency": "TWD"}, {"id": "c18", "label": "💆 按摩 Day1 Seminyak + Day2 Ubud（6人）", "sub": "", "budget": 6500, "currency": "TWD"}, {"id": "c19", "label": "🎁 購物 / 紀念品", "sub": "", "budget": 6000, "currency": "TWD"}, {"subtotal": true, "id": "sub-g6", "label": "雜費小計"}]}];
-
-// ── separator ──
-
+var COST_GROUPS = [
+  {id:"g1",title:"✈️ 機票",rows:[
+    {id:"c1",label:"台北↔紐西蘭全程（2人，已重訂）",sub:"",budget:270000,currency:"TWD",display:"≈ TWD $270,000"},
+    {subtotal:true,id:"sub-ticket",label:"機票合計",display:"≈ TWD $270,000"},
+  ]},
+  {id:"g2",title:"🏨 住宿（13晚）",rows:[
+    {id:"c2",label:"皇后鎮住宿 A",sub:"9/26–10/2 · 6晚（大漾閣估）",budget:58058,currency:"TWD",display:"≈ TWD $58,058"},
+    {id:"c3",label:"蒂卡波住宿",sub:"10/2–10/3 · 1晚（湖景估）",budget:9939,currency:"TWD",display:"≈ TWD $9,939"},
+    {id:"c4",label:"皇后鎮住宿 B",sub:"10/3–10/4 · 1晚（延訂）",budget:9676,currency:"TWD",display:"≈ TWD $9,676"},
+    {id:"c34",label:"Sky tower just next DOOR FREE parking",sub:"",budget:0,currency:"TWD",display:""},
+    {id:"c6",label:"Millennium Rotorua",sub:"10/7–10/8 · 1晚",budget:3954,currency:"TWD",display:"TWD $3,954 ✅"},
+    {id:"c7",label:"Pullman Auckland Airport",sub:"10/8–10/9 · 1晚",budget:5576,currency:"TWD",display:"TWD $5,576 ✅"},
+    {id:"c37",label:"Hermitage Hotel Mt Cook (10/1 · 1 晚)",sub:"✅ 已訂 · Mountain view",budget:12683,currency:"TWD",display:""},
+    {subtotal:true,id:"sub-hotel",label:"住宿合計",display:"≈ TWD $103,973"},
+  ]},
+  {id:"g3",title:"🚗 交通（2人）",rows:[
+    {id:"c8",label:"南島租車 (Europcar Honda ZR-V SPORT)",sub:"8 天 9/26-10/4 · 含 RSA + Premium Protection ✅ 已訂",budget:1416,currency:"NZD",display:""},
+    {id:"c9",label:"南島油費",sub:"約1,800km",budget:9324,currency:"TWD",display:"≈ TWD $9,324"},
+    {id:"c10",label:"北島租車 (Mitsubishi ASX)",sub:"2天 10/7-10/8 · 含 CDW 0 自付額 + relocation $150 ✅ 已訂",budget:484,currency:"NZD",display:""},
+    {id:"c11",label:"北島油費",sub:"約600km",budget:3108,currency:"TWD",display:"≈ TWD $3,108"},
+    {id:"c12",label:"機場→CBD SkyBus/Uber",sub:"",budget:1200,currency:"TWD",display:"≈ TWD $1,200"},
+    {id:"c13",label:"Waiheke 渡輪+Hop-on套票",sub:"",budget:3145,currency:"TWD",display:"≈ TWD $3,145"},
+    {id:"c14",label:"零散 Uber（Mt Eden 來回等）",sub:"",budget:2000,currency:"TWD",display:"≈ TWD $2,000"},
+    {subtotal:true,id:"sub-trans",label:"交通合計",display:"≈ TWD $34,317"},
+  ]},
+  {id:"g4",title:"🎡 活動（2人合計）",rows:[
+    {id:"c15",label:"皇后鎮婚紗整日 (9/28 · 9hr · 4 拍攝地)",sub:"Jacks Point + Kelvin Heights + Wanaka + Coromandel Peak",budget:139000,currency:"TWD",display:"≈ TWD $33,300"},
+    {id:"c17",label:"米佛峽灣 RealNZ Coach-Cruise-Fly (2人)",sub:"NZD $830/人 含 BUS+Cruise+Flight",budget:1660,currency:"NZD",display:""},
+    {id:"c19",label:"庫克山滑雪飛機+直升機 (Klook ZST783683)",sub:"10/2 12:30 · 2人 · ✅ 已訂",budget:22284,currency:"TWD",display:"TWD $36,564 ✅"},
+    {id:"c21",label:"Skyline Gondola",sub:"",budget:2960,currency:"TWD",display:"≈ TWD $2,960"},
+    {id:"c23",label:"TSS Earnslaw + Walter Peak",sub:"",budget:7363,currency:"TWD",display:"≈ TWD $7,363"},
+    {id:"c24",label:"Hobbiton + Waitomo 一日團",sub:"",budget:16650,currency:"TWD",display:"≈ TWD $16,650"},
+    {id:"c25",label:"Polynesian Spa 溫泉",sub:"",budget:1480,currency:"TWD",display:"≈ TWD $1,480"},
+    {id:"c26",label:"Mitai 毛利晚宴",sub:"",budget:6253,currency:"TWD",display:"≈ TWD $6,253"},
+    {id:"c27",label:"Wai-O-Tapu",sub:"",budget:1480,currency:"TWD",display:"≈ TWD $1,480"},
+    {id:"c28",label:"Mt Eden（免費）",sub:"",budget:0,currency:"TWD",display:"免費"},
+    {id:"c35",label:"Shotover Jet (2人)",sub:"NZD $170/人 × 2 = $340",budget:340,currency:"NZD",display:""},
+    {id:"c36",label:"NZONE Skydive Queenstown (2人)",sub:"15,000ft · NZD $439/人 × 2 = $878",budget:878,currency:"NZD",display:""},
+    {subtotal:true,id:"sub-act",label:"活動合計",display:"≈ TWD $131,765"},
+  ]},
+  {id:"g5",title:"🍽️ 餐飲（不含早餐）",rows:[
+    {id:"c29",label:"午餐",sub:"15天 · TWD $700/人/天",budget:21000,currency:"TWD",display:"≈ TWD $21,000"},
+    {id:"c30",label:"一般晚餐×9",sub:"TWD $1,200/人/餐",budget:21600,currency:"TWD",display:"≈ TWD $21,600"},
+    {id:"c31",label:"特別晚餐×6",sub:"Rata/Botswana/Sherwood/Mudbrick/French Café/Pullman Grain Store",budget:30000,currency:"TWD",display:"≈ TWD $30,000"},
+    {subtotal:true,id:"sub-food",label:"餐飲合計",display:"≈ TWD $72,600"},
+  ]},
+  {id:"g6",title:"🧳 雜費",rows:[
+    {id:"c32",label:"旅遊保險",sub:"",budget:5000,currency:"TWD",display:"≈ TWD $5,000"},
+    {id:"c33",label:"購物・紀念品・小費",sub:"",budget:8000,currency:"TWD",display:"≈ TWD $8,000"},
+    {subtotal:true,id:"sub-misc",label:"雜費合計",display:"≈ TWD $13,000"},
+  ]},
+];
+</script>
+<script>
 /* ==========================================================================
    NZ V2 — Main App Logic
    ========================================================================== */
@@ -550,7 +717,7 @@ var FB_NODE = 'bali-2026';  // shared with v1
 // Firebase Auth — required because rules now check auth.uid (privacy)
 var FB_API_KEY = 'AIzaSyAsgaRCbPY--Z14Ai5u102VqU06SozU19w';
 var FB_APP_EMAIL = 'claude-bot@nz-trip-2026.local';
-var AUTH_STORAGE_KEY = 'baliv2_auth';  // localStorage key, prefix per project
+var AUTH_STORAGE_KEY = 'nzv2_auth';
 var FB_TODOS = FB_NODE + '/todos';
 var FB_COSTS = FB_NODE + '/costs';
 var FB_ITIN  = FB_NODE + '/itinerary_v2';
@@ -558,12 +725,29 @@ var FB_BOOK  = FB_NODE + '/bookings_v2';
 var FB_CG    = FB_NODE + '/cost_groups_v2';   // editable COST_GROUPS persistence
 var FB_FX    = FB_NODE + '/fx_v2';            // {nzd: 19.5}
 var FB_META  = FB_NODE + '/v2_meta';
+var FB_OPT   = FB_NODE + '/optsel_v2';        // optional cost rows (opt:true) → selected map
 
 // Bump DATA_VERSION whenever HTML's TRIP_DATA/BOOKING_DATA/COST_GROUPS structure changes.
-var DATA_VERSION = 7;
+var DATA_VERSION = 6;
 
 // Default FX rate (TWD per 1 NZD) — editable by user.
-var DEFAULT_NZD_RATE = 0.0021;  // TWD per 1 unit foreign currency
+var DEFAULT_NZD_RATE = 19.5;
+
+// PER-TRIP CONFIG (loaded from Firebase {node}/config; HTML holds only fallback)
+var FB_CONFIG = FB_NODE + '/config';
+var FB_PLACES = FB_NODE + '/places';
+var TRIP_CONFIG = { pax:2, tz:'Pacific/Auckland', tzLabel:'', flag:'🧭', ccy:'NZD', fxDefault:19.5, title:'', subtitle:'', badges:[] };
+function applyConfig(cfg){
+  if(cfg && typeof cfg==='object'){ for(var k in cfg){ if(cfg[k]!=null) TRIP_CONFIG[k]=cfg[k]; } }
+  var el;
+  el=document.getElementById('trip-title'); if(el&&TRIP_CONFIG.title)el.textContent=TRIP_CONFIG.title;
+  el=document.getElementById('trip-sub'); if(el&&TRIP_CONFIG.subtitle)el.textContent=TRIP_CONFIG.subtitle;
+  el=document.getElementById('trip-badges'); if(el&&TRIP_CONFIG.badges&&TRIP_CONFIG.badges.length){el.innerHTML=TRIP_CONFIG.badges.map(function(b){return '<span class="badge">'+escHtml(b)+'</span>';}).join('');}
+  el=document.querySelector('#nz-clock .flag'); if(el&&TRIP_CONFIG.flag)el.textContent=TRIP_CONFIG.flag;
+  el=document.getElementById('nz-clock'); if(el)el.title=(TRIP_CONFIG.tzLabel||'')+'當地時間';
+  if(TRIP_CONFIG.title)document.title=TRIP_CONFIG.title;
+  if(typeof updateNZClock==='function')updateNZClock();
+}
 
 // ─── UTILS ─────────────────────────────────────────────────────────────────
 function $id(id){return document.getElementById(id);}
@@ -580,6 +764,7 @@ var state = {
   editMode: false,
   todoStates: {},     // todo id → done bool
   costActuals: {},    // cost key → actual amount (in row's currency)
+  optSel: {},         // optional cost row id → selected (true = count toward budget)
   costDirty: false,
   fxRate: DEFAULT_NZD_RATE,  // TWD per NZD; editable
   itinDirty: false,
@@ -715,6 +900,11 @@ function makeCard(item,dayIdx,itemIdx){
   del.setAttribute('data-act','del-item');
   card.appendChild(del);
 
+  var mv=document.createElement('div');
+  mv.className='card-move';
+  mv.innerHTML='<button data-act="move-up" aria-label="上移">▲</button><button data-act="move-down" aria-label="下移">▼</button>';
+  card.appendChild(mv);
+
   // Content
   var ct=document.createElement('div');
   ct.className='ct';
@@ -730,7 +920,7 @@ function makeCard(item,dayIdx,itemIdx){
     desc.setAttribute('data-field','desc');
     desc.setAttribute('data-day',dayIdx);
     desc.setAttribute('data-item',itemIdx);
-    if(/<[a-z!/]/i.test(item.desc||'')){desc.innerHTML=item.desc;desc.removeAttribute('data-field');}else{desc.textContent=item.desc;}
+    desc.textContent=item.desc;
     card.appendChild(desc);
   } else if(state.editMode){
     var desc=document.createElement('div');
@@ -965,8 +1155,7 @@ function guessCategory(text){
 // FX conversion: returns TWD amount given (amount, currency)
 function toTWD(amount, currency){
   if(!currency || currency==='TWD') return amount;
-  if(currency==='NZD') return Math.round(amount * state.fxRate);
-  return amount;
+  return Math.round(amount * state.fxRate);
 }
 function fmtMoney(twdAmount){
   return 'TWD $' + Math.round(twdAmount).toLocaleString();
@@ -979,9 +1168,12 @@ function fmtMoneyWithCurr(amount, currency){
   var twd = toTWD(amount, currency);
   return currency + ' $' + amount.toLocaleString() + ' <span class="csub-inline">≈ ' + fmtMoney(twd) + '</span>';
 }
+// isOptOff: an optional (opt:true) row that is NOT selected → excluded from totals
+function isOptOff(row){ return !!(row && row.opt) && !state.optSel[row.id]; }
 // rowActualTWD: returns the TWD value of a row using actual if set, else budget
 function rowActualTWD(row){
   if(row.subtotal) return 0;
+  if(isOptOff(row)) return 0;
   var amt = (state.costActuals[row.id]!=null) ? state.costActuals[row.id] : (row.budget||0);
   return toTWD(amt, row.currency||'TWD');
 }
@@ -995,7 +1187,7 @@ function renderCost(){
   fxRow.className='cost-fx';
   fxRow.innerHTML=
     '<span class="fx-label">💱 匯率</span>'+
-    '<span class="fx-pair">1 NZD =</span>'+
+    '<span class="fx-pair">1 '+(TRIP_CONFIG.ccy||'')+' =</span>'+
     '<input type="number" id="fx-input" step="0.1" min="0" value="'+state.fxRate+'" style="width:60px">'+
     '<span class="fx-pair">TWD</span>'+
     '<span class="fx-hint" id="fx-hint"></span>';
@@ -1016,6 +1208,7 @@ function renderCost(){
     for(var j=0;j<g.rows.length;j++){
       var r=g.rows[j];
       if(r.subtotal)continue;
+      if(isOptOff(r))continue;
       var bTWD = toTWD(r.budget||0, r.currency||'TWD');
       budget += bTWD;
       if(state.costActuals[r.id]!=null){
@@ -1082,7 +1275,7 @@ function renderCost(){
         div.appendChild(sr);
       } else {
         var rr=document.createElement('div');
-        rr.className='cs-row';
+        rr.className='cs-row'+(isOptOff(r)?' cs-opt-off':'');
         rr.setAttribute('data-gidx',gi);
         rr.setAttribute('data-ridx',ri);
         rr.setAttribute('data-rid',r.id);
@@ -1096,6 +1289,11 @@ function renderCost(){
         if(state.editMode){
           dh='<span class="cs-drag-handle">⋮⋮</span>';
         }
+        // Optional row checkbox (☑ counts toward budget / ☐ excluded)
+        var optBox='';
+        if(r.opt){
+          optBox='<span class="cs-opt" data-act="opt-toggle" data-rid="'+escHtml(r.id)+'" title="勾選才算進預算">'+(state.optSel[r.id]?'☑':'☐')+'</span>';
+        }
         var delBtn='';
         if(state.editMode){
           delBtn='<button class="cs-del-row" data-act="del-row" data-gidx="'+gi+'" data-ridx="'+ri+'">✕</button>';
@@ -1105,12 +1303,13 @@ function renderCost(){
         if(state.editMode){
           currPicker='<select class="cs-curr-picker" data-act="curr" data-gidx="'+gi+'" data-ridx="'+ri+'">'+
             '<option value="TWD"'+(curr==='TWD'?' selected':'')+'>TWD</option>'+
-            '<option value="NZD"'+(curr==='NZD'?' selected':'')+'>NZD</option>'+
+            '<option value="'+(TRIP_CONFIG.ccy||'NZD')+'"'+(curr===(TRIP_CONFIG.ccy||'NZD')?' selected':'')+'>'+(TRIP_CONFIG.ccy||'NZD')+'</option>'+
           '</select>';
         }
 
         rr.innerHTML=
           dh+
+          optBox+
           '<div class="cl">'+
             '<span class="cl-label" data-field="label" data-gidx="'+gi+'" data-ridx="'+ri+'">'+escHtml(r.label)+'</span>'+
             (r.sub?'<span class="csub" data-field="sub" data-gidx="'+gi+'" data-ridx="'+ri+'">'+escHtml(r.sub)+'</span>'
@@ -1150,7 +1349,9 @@ function renderCost(){
   // ── Grand total ──
   var grand=document.createElement('div');
   grand.className='cs-grand';
-  grand.innerHTML='<span>2人合計（預算）</span><span class="am">'+fmtMoney(budget)+'</span>';
+  var grandBest=0;
+  for(var gg=0;gg<COST_GROUPS.length;gg++){var grows=COST_GROUPS[gg].rows||[];for(var gr=0;gr<grows.length;gr++){grandBest+=rowActualTWD(grows[gr]);}}
+  grand.innerHTML='<span>'+((TRIP_CONFIG&&TRIP_CONFIG.pax)||'')+'人合計（預算/實際）</span><span class="am">'+fmtMoney(grandBest)+'</span>';
   c.appendChild(grand);
 
   // ── Bind FX input ──
@@ -1280,8 +1481,8 @@ function addCostRow(gidx){
   var sub=prompt('子說明（可空，例：NZD $80/人）','')||'';
   var bs=prompt('預算金額（純數字）','0');
   var b=parseInt(bs,10); if(isNaN(b))b=0;
-  var curr=(prompt('幣別 TWD 或 NZD','TWD')||'TWD').toUpperCase();
-  if(curr!=='TWD'&&curr!=='NZD')curr='TWD';
+  var curr=(prompt('幣別 TWD 或 '+(TRIP_CONFIG.ccy||'NZD'),'TWD')||'TWD').toUpperCase();
+  if(curr!=='TWD'&&curr!==(TRIP_CONFIG.ccy||'NZD'))curr='TWD';
   // Insert before first subtotal row, else at end
   var insertAt=COST_GROUPS[gidx].rows.length;
   for(var i=0;i<COST_GROUPS[gidx].rows.length;i++){
@@ -1412,7 +1613,7 @@ function cleanupCostDrag(){
 function scanItineraryAmounts(){
   // Find all items in TRIP_DATA with money mentions in name/desc
   var found=[];
-  var moneyRe=/(?:NZD|TWD|nt\$|\$)\s*([\d,]+(?:\.\d+)?)/gi;
+  var moneyRe=new RegExp('(?:'+(TRIP_CONFIG.ccy||'NZD')+'|TWD|JPY|nt\\$|\u00a5|\\$)\\s*([\\d,]+(?:\\.\\d+)?)','gi');
   for(var di=0;di<TRIP_DATA.length;di++){
     var d=TRIP_DATA[di];
     for(var ii=0;ii<d.items.length;ii++){
@@ -1424,7 +1625,7 @@ function scanItineraryAmounts(){
       while((m=moneyRe.exec(text))!==null){
         // Detect currency from preceding token
         var pre=text.substring(Math.max(0,m.index-5),m.index).toUpperCase();
-        var currency = pre.indexOf('NZD')>=0 ? 'NZD' : (pre.indexOf('TWD')>=0||pre.indexOf('NT')>=0?'TWD':'TWD');
+        var currency = pre.indexOf(TRIP_CONFIG.ccy||'NZD')>=0 ? (TRIP_CONFIG.ccy||'NZD') : 'TWD';
         var amt=parseInt(m[1].replace(/,/g,''),10);
         if(isNaN(amt)||amt<=0)continue;
         matches.push({amount:amt,currency:currency,raw:m[0]});
@@ -1676,6 +1877,13 @@ function toggleEditMode(){
 }
 
 // ─── DRAG & DROP (cards + day tabs) ────────────────────────────────────────
+function moveItem(dayIdx,itemIdx,dir){
+  var items=TRIP_DATA[dayIdx]&&TRIP_DATA[dayIdx].items; if(!items)return;
+  var j=itemIdx+dir; if(j<0||j>=items.length)return;
+  if(items[itemIdx]&&items[itemIdx].hotel)return; if(items[j]&&items[j].hotel)return;
+  var tmp=items[itemIdx];items[itemIdx]=items[j];items[j]=tmp;
+  state.itinDirty=true; syncItin(); renderPanel(state.curDay);
+}
 function bindDragHandlers(){
   var container=$id('panels-container');
   if(!container)return;
@@ -1719,6 +1927,11 @@ function bindDragHandlers(){
   });
   container.addEventListener('dragend',function(e){
     cleanupDrag();
+  });
+  container.addEventListener('mousedown',function(e){
+    if(!state.editMode)return;
+    var h=e.target.closest('.card-drag-handle'); if(!h)return;
+    var card=h.closest('.card'); if(card && !card.hasAttribute('data-hotel')) card.draggable=true;
   });
 
   // Day tabs: drag tab to reorder day, OR drop card on tab to move item
@@ -1868,6 +2081,12 @@ function bindGlobalClicks(){
         }
         return;
       }
+      var mvBtn=t.closest('[data-act="move-up"],[data-act="move-down"]');
+      if(mvBtn){
+        var mcard=t.closest('.card');
+        if(mcard){ moveItem(parseInt(mcard.getAttribute('data-day'),10),parseInt(mcard.getAttribute('data-item'),10),mvBtn.getAttribute('data-act')==='move-up'?-1:1); }
+        return;
+      }
       // add-between
       if(t.closest('[data-act="add-between"]')){
         var ab=t.closest('[data-act="add-between"]');
@@ -1923,6 +2142,16 @@ function bindGlobalClicks(){
   if(costList){
     costList.addEventListener('click',function(e){
       var t=e.target;
+      // Toggle optional row in/out of budget (works in normal mode too)
+      var optT=t.closest('[data-act="opt-toggle"]');
+      if(optT){
+        var rid=optT.getAttribute('data-rid');
+        var nv=!state.optSel[rid];
+        if(nv) state.optSel[rid]=true; else delete state.optSel[rid];
+        syncOpt(); renderCost();
+        toast(nv?'已加入預算':'已移出預算');
+        return;
+      }
       // A: delete row
       var delR=t.closest('[data-act="del-row"]');
       if(delR){
@@ -2306,6 +2535,11 @@ function syncCosts(){
   clearTimeout(syncCostsDeb);
   syncCostsDeb=setTimeout(function(){fbPut(FB_COSTS,state.costActuals);},400);
 }
+var syncOptDeb=null;
+function syncOpt(){
+  clearTimeout(syncOptDeb);
+  syncOptDeb=setTimeout(function(){fbPut(FB_OPT,state.optSel);},400);
+}
 var syncCGDeb=null;
 function syncCostGroups(){
   clearTimeout(syncCGDeb);
@@ -2340,12 +2574,16 @@ function pullInitial(){
   setSync('syncing');
   Promise.all([
     fbGet(FB_TODOS), fbGet(FB_COSTS), fbGet(FB_ITIN),
-    fbGet(FB_BOOK), fbGet(FB_CG), fbGet(FB_FX), fbGet(FB_META)
+    fbGet(FB_BOOK), fbGet(FB_CG), fbGet(FB_FX), fbGet(FB_META), fbGet(FB_OPT), fbGet(FB_CONFIG), fbGet(FB_PLACES)
   ]).then(function(arr){
-    var todos=arr[0],costs=arr[1],itin=arr[2],book=arr[3],cg=arr[4],fx=arr[5],meta=arr[6];
+    var todos=arr[0],costs=arr[1],itin=arr[2],book=arr[3],cg=arr[4],fx=arr[5],meta=arr[6],opt=arr[7],cfg=arr[8],places=arr[9];
+    if(cfg) applyConfig(cfg);
+    if(places && Array.isArray(places)){ PLACES.length=0; for(var pi=0;pi<places.length;pi++)PLACES.push(places[pi]); }
     if(todos)state.todoStates=todos;
     if(costs)state.costActuals=costs;
+    if(opt && typeof opt==='object') state.optSel=opt;
     if(fx && typeof fx==='object' && typeof fx.nzd==='number') state.fxRate=fx.nzd;
+    else if(cfg && cfg.fxDefault!=null) state.fxRate=cfg.fxDefault;
 
     var versionOK = meta && typeof meta==='object' && meta.version===DATA_VERSION;
     if(versionOK){
@@ -2397,8 +2635,8 @@ function updateNZClock(){
   var el = document.getElementById('nz-clock-time');
   if(!el) return;
   try {
-    var fmt = new Intl.DateTimeFormat('id-ID', {
-      timeZone: 'Asia/Makassar',
+    var fmt = new Intl.DateTimeFormat('en-GB', {
+      timeZone: (TRIP_CONFIG&&TRIP_CONFIG.tz)||'Pacific/Auckland',
       hour: '2-digit', minute: '2-digit', hour12: false
     });
     var t = fmt.format(new Date());
@@ -2477,6 +2715,7 @@ if(document.readyState==='loading'){
 } else {
   init();
 }
+
 </script>
 </body>
 </html>

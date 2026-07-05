@@ -115,6 +115,10 @@ a{color:var(--accent);text-decoration:none}
 
 .card-drag-handle{display:none;position:absolute;left:6px;top:50%;transform:translateY(-50%);color:var(--txt3);font-size:12px;cursor:grab;user-select:none}
 .edit-mode .card .card-drag-handle{display:block}
+.card-move{display:none;position:absolute;right:8px;bottom:8px;gap:4px;z-index:3}
+.edit-mode .card .card-move{display:flex}
+.card-move button{width:32px;height:28px;background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.4);border-radius:8px;color:#93c5fd;font-size:13px;line-height:1;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
+.card-move button:active{background:rgba(96,165,250,0.45);color:#fff}
 .edit-mode .card{padding-left:28px}
 .card.dragging{opacity:0.4}
 .card.drag-over{box-shadow:0 0 0 2px var(--accent)}
@@ -306,8 +310,8 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
 <header class="topbar">
   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
     <div>
-      <h1>🌙 Xi++ 2026/09 紐西蘭</h1>
-      <div class="sub">9/25–10/9 · 南島7晚 + 北島5晚 · 2人</div>
+      <h1 id="trip-title">🧭 行程</h1>
+      <div class="sub" id="trip-sub"></div>
     </div>
     <div class="topright">
       <span class="sync-badge" id="sync-badge"><span id="sync-dot">○</span> <span id="sync-text">待同步</span></span>
@@ -315,11 +319,7 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
       <div class="nz-clock" id="nz-clock" title="紐西蘭當地時間（自動處理夏令時間）"><span class="flag">🇳🇿</span> <span id="nz-clock-time">--:--</span></div>
     </div>
   </div>
-  <div class="badges">
-    <span class="badge">🔒 私隱</span>
-    <span class="badge">👥 2名</span>
-    <span class="badge ok">✈️ NZ0078/77</span>
-  </div>
+  <div class="badges" id="trip-badges"></div>
 </header>
 
 <div class="day-tabs-wrap">
@@ -599,47 +599,7 @@ var TRIP_DATA = [
     hotel:{desc:"奧克蘭→台北 NZ0077",icon:"✈️",name:"航班上（機上返程）",price:"' + escHtml(hpVal) + '"}
   },
 ];
-var PLACES = [
-  {n:'皇后鎮住宿 A',lat:-45.031,lng:168.663,type:'hotel',r:'south',d:'9/26–10/2',x:'皇后鎮 · 6晚 · 3選1候選'},
-  {n:'蒂卡波住宿',lat:-44.004,lng:170.48,type:'hotel',r:'south',d:'10/2–10/3',x:'蒂卡波 · 1晚 · 3選1候選'},
-  {n:'皇后鎮住宿 B',lat:-45.02,lng:168.7,type:'hotel',r:'south',d:'10/3–10/4',x:'皇后鎮 · 1晚 · 建議延訂同家'},
-  {n:'Skyline Gondola',lat:-45.027,lng:168.655,type:'act',r:'south',d:'9/26',x:'Bob\'s Peak全景纜車 · NZD $80/人'},
-  {n:'格林諾奇',lat:-44.86,lng:168.38,type:'act',r:'south',d:'9/30',x:'婚紗攝影全天 + Lighthorse騎馬'},
-  {n:'米佛峽灣 Milford Sound',lat:-44.674,lng:167.924,type:'act',r:'south',d:'9/27',x:'RealNZ 大巴往返 + 君王號 cruise · NZD $330/人 ✅ 已訂'},
-  {n:'Deer Park Heights',lat:-45.017,lng:168.717,type:'act',r:'south',d:'10/1 上午',x:'魔戒洛汗國取景地 · NZD $20/人'},
-  {n:'Crown Range Summit',lat:-44.933,lng:168.923,type:'act',r:'south',d:'9/28 上午',x:'紐西蘭最高公路 1121m · 制高點'},
-  {n:'Cardrona Hotel',lat:-44.867,lng:168.95,type:'act',r:'south',d:'9/28 上午',x:'1863年百年酒店 · 淘金時代遺跡'},
-  {n:'#ThatWanakaTree',lat:-44.7,lng:169.131,type:'act',r:'south',d:'9/28 中午',x:'孤獨的樹 · 紐西蘭最有名的樹'},
-  {n:'Hook Wanaka 鮭魚養殖場',lat:-44.68,lng:169.18,type:'act',r:'south',d:'9/28 午餐',x:'Lake to Plate · 自釣自吃 · 11:00-19:00'},
-  {n:'Rippon Vineyard',lat:-44.7,lng:169.115,type:'act',r:'south',d:'9/28 下午',x:'免費湖景葡萄園 · 純拍照 · 30分鐘'},
-  {n:'Lake Hawea Lookout',lat:-44.63,lng:169.249,type:'act',r:'south',d:'9/28 下午',x:'比 Wanaka 更藍更原始的湖'},
-  {n:'Peter\'s Lookout (Pukaki)',lat:-44.1,lng:170.17,type:'act',r:'south',d:'10/2',x:'Pukaki 湖+庫克山經典全景'},
-  {n:'庫克山 Mt Cook',lat:-43.735,lng:170.099,type:'act',r:'south',d:'10/2',x:'塔斯曼冰川直升機 · TWD $36,564（已訂）'},
-  {n:'善牧教堂 Lake Tekapo',lat:-44.006,lng:170.475,type:'act',r:'south',d:'10/2–10/3',x:'黃昏拍照 + 湖邊自己看星空 (免費)'},
-  {n:'TSS Earnslaw 碼頭',lat:-45.035,lng:168.661,type:'act',r:'south',d:'9/29',x:'TSS百年蒸汽船 + Walter Peak BBQ · NZD $219/人 ✅ 已訂'},
-  {n:'Lake Hayes',lat:-45.033,lng:168.783,type:'act',r:'south',d:'10/3',x:'環湖步道 · 春季櫻花倒影'},
-  {n:'箭鎮 Arrowtown',lat:-44.95,lng:168.817,type:'act',r:'south',d:'10/3',x:'歷史街區 · 春季櫻花大道'},
-  {n:'Queen St 21樓公寓',lat:-36.849,lng:174.766,type:'hotel',r:'north',d:'10/4–10/7',x:'奧克蘭市中心 · 3晚'},
-  {n:'Millennium Rotorua',lat:-38.137,lng:176.25,type:'hotel',r:'north',d:'10/7–10/8',x:'Rotorua 市中心 · 1晚'},
-  {n:'Pullman Auckland Airport',lat:-37.008,lng:174.785,type:'hotel',r:'north',d:'10/8–10/9',x:'機場內 · 步行3分到國際出境'},
-  {n:'Mt Eden 伊甸山',lat:-36.878,lng:174.763,type:'act',r:'north',d:'10/4',x:'火山口全景 · 奧克蘭制高點'},
-  {n:'Hobbiton 哈比村',lat:-37.872,lng:175.684,type:'act',r:'north',d:'10/5',x:'一日團 · SkyCity 7:15 出發'},
-  {n:'Waitomo 螢火蟲洞',lat:-38.26,lng:175.106,type:'act',r:'north',d:'10/5',x:'一日團下午場 · 室內洞穴'},
-  {n:'Waiheke Island',lat:-36.797,lng:175.081,type:'act',r:'north',d:'10/6',x:'渡輪一日遊 · Mudbrick + Oneroa'},
-  {n:'Polynesian Spa',lat:-38.141,lng:176.258,type:'act',r:'north',d:'10/7',x:'Rotorua 湖畔溫泉'},
-  {n:'Mitai Māori Village',lat:-38.105,lng:176.232,type:'act',r:'north',d:'10/7',x:'毛利晚宴+Haka · NZD $169/人'},
-  {n:'Wai-O-Tapu',lat:-38.356,lng:176.366,type:'act',r:'north',d:'10/8',x:'香檳池+地熱奇觀 · NZD $40/人'},
-  {n:'Shotover Jet Beach',lat:-44.962,lng:168.762,type:'act',r:'south',d:'10/1 下午',x:'Arthurs Point · 25min 刺激 360° · NZD $170/人'},
-  {n:'Moke Lake',lat:-44.967,lng:168.602,type:'act',r:'south',d:'10/1 上午',x:'寧靜湖 · 露營熱點 · 走 Moke Lake Loop 1hr'},
-  {n:'Walter Peak High Country Farm',lat:-45.067,lng:168.555,type:'act',r:'south',d:'9/29 晚上',x:'TSS Earnslaw 終點 · BBQ Dinner + 牧羊犬秀'},
-  {n:'Glenorchy Wharf',lat:-44.852,lng:168.38,type:'act',r:'south',d:'9/30 中午',x:'婚紗第二套 · 紅屋小棚招牌 + Mt Earnslaw 雪景'},
-  {n:'Paradise (LOTR Lothlorien)',lat:-44.733,lng:168.367,type:'act',r:'south',d:'9/30 下午',x:'魔戒 Lothlorien 場景 · Glenorchy 內陸 20min'},
-  {n:'High Country Salmon (Twizel)',lat:-44.246,lng:170.106,type:'act',r:'south',d:'10/2 下午',x:'順路停 · 鮭魚刺身/薯餅 · 餵魚'},
-  {n:'Pak\'nSave Frankton',lat:-45.027,lng:168.738,type:'act',r:'south',d:'10/1 上午',x:'最便宜超市 · NZ 食材 + 葡萄酒'},
-  {n:'Mt Cook Airport',lat:-43.765,lng:170.133,type:'act',r:'south',d:'10/2 中午',x:'Klook 滑雪飛機+直升機 · 11:30 報到 · 12:30 起飛'},
-  {n:'Te Anau Coffee Stop',lat:-45.414,lng:167.717,type:'act',r:'south',d:'9/27 上午',x:'米佛路途中休息點 · 廁所+咖啡'},
-  {n:'Milford Sound Airport',lat:-44.673,lng:167.923,type:'act',r:'south',d:'9/27 下午',x:'scenic flight 起飛點 · 45min 回 Queenstown'},
-];
+var PLACES = [];
 var BOOKING_DATA = [
   {section:"🏨 住宿",cat:"hotel",items:[
     {id:"t1",text:"選定皇后鎮住宿（9/26–10/2 · 6晚）候選：美景酒店 / Whakatipu Bliss / 大漾閣別墅",done:false},
@@ -772,6 +732,22 @@ var DATA_VERSION = 7;
 
 // Default FX rate (TWD per 1 NZD) — editable by user.
 var DEFAULT_NZD_RATE = 19.5;
+
+// PER-TRIP CONFIG (loaded from Firebase {node}/config; HTML holds only fallback)
+var FB_CONFIG = FB_NODE + '/config';
+var FB_PLACES = FB_NODE + '/places';
+var TRIP_CONFIG = { pax:2, tz:'Pacific/Auckland', tzLabel:'', flag:'🧭', ccy:'NZD', fxDefault:19.5, title:'', subtitle:'', badges:[] };
+function applyConfig(cfg){
+  if(cfg && typeof cfg==='object'){ for(var k in cfg){ if(cfg[k]!=null) TRIP_CONFIG[k]=cfg[k]; } }
+  var el;
+  el=document.getElementById('trip-title'); if(el&&TRIP_CONFIG.title)el.textContent=TRIP_CONFIG.title;
+  el=document.getElementById('trip-sub'); if(el&&TRIP_CONFIG.subtitle)el.textContent=TRIP_CONFIG.subtitle;
+  el=document.getElementById('trip-badges'); if(el&&TRIP_CONFIG.badges&&TRIP_CONFIG.badges.length){el.innerHTML=TRIP_CONFIG.badges.map(function(b){return '<span class="badge">'+escHtml(b)+'</span>';}).join('');}
+  el=document.querySelector('#nz-clock .flag'); if(el&&TRIP_CONFIG.flag)el.textContent=TRIP_CONFIG.flag;
+  el=document.getElementById('nz-clock'); if(el)el.title=(TRIP_CONFIG.tzLabel||'')+'當地時間';
+  if(TRIP_CONFIG.title)document.title=TRIP_CONFIG.title;
+  if(typeof updateNZClock==='function')updateNZClock();
+}
 
 // ─── UTILS ─────────────────────────────────────────────────────────────────
 function $id(id){return document.getElementById(id);}
@@ -923,6 +899,11 @@ function makeCard(item,dayIdx,itemIdx){
   del.innerHTML='✕';
   del.setAttribute('data-act','del-item');
   card.appendChild(del);
+
+  var mv=document.createElement('div');
+  mv.className='card-move';
+  mv.innerHTML='<button data-act="move-up" aria-label="上移">▲</button><button data-act="move-down" aria-label="下移">▼</button>';
+  card.appendChild(mv);
 
   // Content
   var ct=document.createElement('div');
@@ -1174,8 +1155,7 @@ function guessCategory(text){
 // FX conversion: returns TWD amount given (amount, currency)
 function toTWD(amount, currency){
   if(!currency || currency==='TWD') return amount;
-  if(currency==='NZD') return Math.round(amount * state.fxRate);
-  return amount;
+  return Math.round(amount * state.fxRate);
 }
 function fmtMoney(twdAmount){
   return 'TWD $' + Math.round(twdAmount).toLocaleString();
@@ -1207,7 +1187,7 @@ function renderCost(){
   fxRow.className='cost-fx';
   fxRow.innerHTML=
     '<span class="fx-label">💱 匯率</span>'+
-    '<span class="fx-pair">1 NZD =</span>'+
+    '<span class="fx-pair">1 '+(TRIP_CONFIG.ccy||'')+' =</span>'+
     '<input type="number" id="fx-input" step="0.1" min="0" value="'+state.fxRate+'" style="width:60px">'+
     '<span class="fx-pair">TWD</span>'+
     '<span class="fx-hint" id="fx-hint"></span>';
@@ -1323,7 +1303,7 @@ function renderCost(){
         if(state.editMode){
           currPicker='<select class="cs-curr-picker" data-act="curr" data-gidx="'+gi+'" data-ridx="'+ri+'">'+
             '<option value="TWD"'+(curr==='TWD'?' selected':'')+'>TWD</option>'+
-            '<option value="NZD"'+(curr==='NZD'?' selected':'')+'>NZD</option>'+
+            '<option value="'+(TRIP_CONFIG.ccy||'NZD')+'"'+(curr===(TRIP_CONFIG.ccy||'NZD')?' selected':'')+'>'+(TRIP_CONFIG.ccy||'NZD')+'</option>'+
           '</select>';
         }
 
@@ -1369,7 +1349,9 @@ function renderCost(){
   // ── Grand total ──
   var grand=document.createElement('div');
   grand.className='cs-grand';
-  grand.innerHTML='<span>2人合計（預算）</span><span class="am">'+fmtMoney(budget)+'</span>';
+  var grandBest=0;
+  for(var gg=0;gg<COST_GROUPS.length;gg++){var grows=COST_GROUPS[gg].rows||[];for(var gr=0;gr<grows.length;gr++){grandBest+=rowActualTWD(grows[gr]);}}
+  grand.innerHTML='<span>'+((TRIP_CONFIG&&TRIP_CONFIG.pax)||'')+'人合計（預算/實際）</span><span class="am">'+fmtMoney(grandBest)+'</span>';
   c.appendChild(grand);
 
   // ── Bind FX input ──
@@ -1499,8 +1481,8 @@ function addCostRow(gidx){
   var sub=prompt('子說明（可空，例：NZD $80/人）','')||'';
   var bs=prompt('預算金額（純數字）','0');
   var b=parseInt(bs,10); if(isNaN(b))b=0;
-  var curr=(prompt('幣別 TWD 或 NZD','TWD')||'TWD').toUpperCase();
-  if(curr!=='TWD'&&curr!=='NZD')curr='TWD';
+  var curr=(prompt('幣別 TWD 或 '+(TRIP_CONFIG.ccy||'NZD'),'TWD')||'TWD').toUpperCase();
+  if(curr!=='TWD'&&curr!==(TRIP_CONFIG.ccy||'NZD'))curr='TWD';
   // Insert before first subtotal row, else at end
   var insertAt=COST_GROUPS[gidx].rows.length;
   for(var i=0;i<COST_GROUPS[gidx].rows.length;i++){
@@ -1631,7 +1613,7 @@ function cleanupCostDrag(){
 function scanItineraryAmounts(){
   // Find all items in TRIP_DATA with money mentions in name/desc
   var found=[];
-  var moneyRe=/(?:NZD|TWD|nt\$|\$)\s*([\d,]+(?:\.\d+)?)/gi;
+  var moneyRe=new RegExp('(?:'+(TRIP_CONFIG.ccy||'NZD')+'|TWD|JPY|nt\\$|\u00a5|\\$)\\s*([\\d,]+(?:\\.\\d+)?)','gi');
   for(var di=0;di<TRIP_DATA.length;di++){
     var d=TRIP_DATA[di];
     for(var ii=0;ii<d.items.length;ii++){
@@ -1643,7 +1625,7 @@ function scanItineraryAmounts(){
       while((m=moneyRe.exec(text))!==null){
         // Detect currency from preceding token
         var pre=text.substring(Math.max(0,m.index-5),m.index).toUpperCase();
-        var currency = pre.indexOf('NZD')>=0 ? 'NZD' : (pre.indexOf('TWD')>=0||pre.indexOf('NT')>=0?'TWD':'TWD');
+        var currency = pre.indexOf(TRIP_CONFIG.ccy||'NZD')>=0 ? (TRIP_CONFIG.ccy||'NZD') : 'TWD';
         var amt=parseInt(m[1].replace(/,/g,''),10);
         if(isNaN(amt)||amt<=0)continue;
         matches.push({amount:amt,currency:currency,raw:m[0]});
@@ -1895,6 +1877,13 @@ function toggleEditMode(){
 }
 
 // ─── DRAG & DROP (cards + day tabs) ────────────────────────────────────────
+function moveItem(dayIdx,itemIdx,dir){
+  var items=TRIP_DATA[dayIdx]&&TRIP_DATA[dayIdx].items; if(!items)return;
+  var j=itemIdx+dir; if(j<0||j>=items.length)return;
+  if(items[itemIdx]&&items[itemIdx].hotel)return; if(items[j]&&items[j].hotel)return;
+  var tmp=items[itemIdx];items[itemIdx]=items[j];items[j]=tmp;
+  state.itinDirty=true; syncItin(); renderPanel(state.curDay);
+}
 function bindDragHandlers(){
   var container=$id('panels-container');
   if(!container)return;
@@ -1938,6 +1927,11 @@ function bindDragHandlers(){
   });
   container.addEventListener('dragend',function(e){
     cleanupDrag();
+  });
+  container.addEventListener('mousedown',function(e){
+    if(!state.editMode)return;
+    var h=e.target.closest('.card-drag-handle'); if(!h)return;
+    var card=h.closest('.card'); if(card && !card.hasAttribute('data-hotel')) card.draggable=true;
   });
 
   // Day tabs: drag tab to reorder day, OR drop card on tab to move item
@@ -2085,6 +2079,12 @@ function bindGlobalClicks(){
           var ii=parseInt(card.getAttribute('data-item'),10);
           deleteItem(di,ii);
         }
+        return;
+      }
+      var mvBtn=t.closest('[data-act="move-up"],[data-act="move-down"]');
+      if(mvBtn){
+        var mcard=t.closest('.card');
+        if(mcard){ moveItem(parseInt(mcard.getAttribute('data-day'),10),parseInt(mcard.getAttribute('data-item'),10),mvBtn.getAttribute('data-act')==='move-up'?-1:1); }
         return;
       }
       // add-between
@@ -2574,13 +2574,16 @@ function pullInitial(){
   setSync('syncing');
   Promise.all([
     fbGet(FB_TODOS), fbGet(FB_COSTS), fbGet(FB_ITIN),
-    fbGet(FB_BOOK), fbGet(FB_CG), fbGet(FB_FX), fbGet(FB_META), fbGet(FB_OPT)
+    fbGet(FB_BOOK), fbGet(FB_CG), fbGet(FB_FX), fbGet(FB_META), fbGet(FB_OPT), fbGet(FB_CONFIG), fbGet(FB_PLACES)
   ]).then(function(arr){
-    var todos=arr[0],costs=arr[1],itin=arr[2],book=arr[3],cg=arr[4],fx=arr[5],meta=arr[6],opt=arr[7];
+    var todos=arr[0],costs=arr[1],itin=arr[2],book=arr[3],cg=arr[4],fx=arr[5],meta=arr[6],opt=arr[7],cfg=arr[8],places=arr[9];
+    if(cfg) applyConfig(cfg);
+    if(places && Array.isArray(places)){ PLACES.length=0; for(var pi=0;pi<places.length;pi++)PLACES.push(places[pi]); }
     if(todos)state.todoStates=todos;
     if(costs)state.costActuals=costs;
     if(opt && typeof opt==='object') state.optSel=opt;
     if(fx && typeof fx==='object' && typeof fx.nzd==='number') state.fxRate=fx.nzd;
+    else if(cfg && cfg.fxDefault!=null) state.fxRate=cfg.fxDefault;
 
     var versionOK = meta && typeof meta==='object' && meta.version===DATA_VERSION;
     if(versionOK){
@@ -2632,8 +2635,8 @@ function updateNZClock(){
   var el = document.getElementById('nz-clock-time');
   if(!el) return;
   try {
-    var fmt = new Intl.DateTimeFormat('en-NZ', {
-      timeZone: 'Pacific/Auckland',
+    var fmt = new Intl.DateTimeFormat('en-GB', {
+      timeZone: (TRIP_CONFIG&&TRIP_CONFIG.tz)||'Pacific/Auckland',
       hour: '2-digit', minute: '2-digit', hour12: false
     });
     var t = fmt.format(new Date());
