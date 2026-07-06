@@ -758,6 +758,7 @@ function toast(msg){var t=$id('toast');if(!t)return;t.textContent=msg;t.classLis
 
 // ─── STATE ─────────────────────────────────────────────────────────────────
 var state = {
+  contentLoaded: false,   // SAFEGUARD: true only after Firebase content loaded; gates all content writes
   curDay: 0,
   curView: 'itin',    // itin or map (per-day)
   curNav: 'itin',     // itin / book / cost
@@ -2338,18 +2339,9 @@ function saveAuth(idToken,refreshToken,expiresIn){
   }
 }
 function syncBaselineIfStale(){
-  if(!state.idToken)return;
-  fbGet(FB_META).then(function(meta){
-    var fbVer = (meta && meta.version) || 0;
-    if(fbVer < DATA_VERSION){
-      console.log('[v2] post-login baseline sync: Firebase v'+fbVer+' → HTML v'+DATA_VERSION);
-      fbPut(FB_ITIN, TRIP_DATA);
-      fbPut(FB_BOOK, BOOKING_DATA);
-      fbPut(FB_CG, COST_GROUPS);
-      fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'post-login-sync'});
-      toast('資料已同步到雲端 ('+fbVer+'→'+DATA_VERSION+')');
-    }
-  });
+  // SAFEGUARD: disabled. Never push HTML baseline to Firebase (would let a stale
+  // client overwrite cloud data). Content is Firebase-authoritative.
+  return;
 }
 function clearAuth(){
   state.idToken=null;state.refreshToken=null;state.idTokenExpiry=0;
@@ -2542,6 +2534,7 @@ function syncOpt(){
 }
 var syncCGDeb=null;
 function syncCostGroups(){
+  if(!state.contentLoaded)return;
   clearTimeout(syncCGDeb);
   syncCGDeb=setTimeout(function(){
     fbPut(FB_CG, COST_GROUPS);
@@ -2555,6 +2548,7 @@ function syncFX(){
 }
 var syncItinDeb=null;
 function syncItin(){
+  if(!state.contentLoaded)return;
   clearTimeout(syncItinDeb);
   syncItinDeb=setTimeout(function(){
     fbPut(FB_ITIN, TRIP_DATA);
@@ -2563,6 +2557,7 @@ function syncItin(){
 }
 var syncBookDeb=null;
 function syncBooking(){
+  if(!state.contentLoaded)return;
   clearTimeout(syncBookDeb);
   syncBookDeb=setTimeout(function(){
     fbPut(FB_BOOK, BOOKING_DATA);
@@ -2585,42 +2580,24 @@ function pullInitial(){
     if(fx && typeof fx==='object' && typeof fx.nzd==='number') state.fxRate=fx.nzd;
     else if(cfg && cfg.fxDefault!=null) state.fxRate=cfg.fxDefault;
 
-    var versionOK = meta && typeof meta==='object' && meta.version===DATA_VERSION;
-    if(versionOK){
-      if(itin && Array.isArray(itin) && itin.length>0){
-        TRIP_DATA.length=0;
-        for(var i=0;i<itin.length;i++)TRIP_DATA.push(itin[i]);
-      }
-      if(book && Array.isArray(book) && book.length>0){
-        BOOKING_DATA.length=0;
-        for(var i=0;i<book.length;i++)BOOKING_DATA.push(book[i]);
-      }
-      if(cg && Array.isArray(cg) && cg.length>0){
-        COST_GROUPS.length=0;
-        for(var i=0;i<cg.length;i++)COST_GROUPS.push(cg[i]);
-      }
-    } else {
-      // Schema/data version mismatch. Push HTML baseline to Firebase.
-      // BUT only if we have auth — otherwise writes 401 and triggers login modal
-      // immediately on page load (annoying UX). HTML data is already loaded
-      // locally; first edit (after login) will trigger writes that catch up.
-      if(state.idToken){
-        if(!meta || !meta.version){
-          fbPut(FB_ITIN, TRIP_DATA);
-          fbPut(FB_BOOK, BOOKING_DATA);
-          fbPut(FB_CG, COST_GROUPS);
-          fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'baseline'});
-        } else {
-          console.log('[v2] data version bump '+meta.version+' → '+DATA_VERSION+'; HTML data wins');
-          fbPut(FB_ITIN, TRIP_DATA);
-          fbPut(FB_BOOK, BOOKING_DATA);
-          fbPut(FB_CG, COST_GROUPS);
-          fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'upgrade'});
-          toast('資料已更新到新版本');
-        }
-      } else {
-        console.log('[v2] version mismatch ('+(meta&&meta.version)+' → '+DATA_VERSION+') but not logged in; HTML data used locally only');
-      }
+    // SAFEGUARD: always load Firebase content when present; NEVER push HTML baseline.
+    // Content is Firebase-authoritative. Prevents any client (incl. stale/old ones on
+    // this build) from overwriting cloud data with its built-in baseline.
+    if(itin && Array.isArray(itin) && itin.length>0){
+      TRIP_DATA.length=0;
+      for(var i=0;i<itin.length;i++)TRIP_DATA.push(itin[i]);
+    }
+    if(book && Array.isArray(book) && book.length>0){
+      BOOKING_DATA.length=0;
+      for(var i=0;i<book.length;i++)BOOKING_DATA.push(book[i]);
+    }
+    if(cg && Array.isArray(cg) && cg.length>0){
+      COST_GROUPS.length=0;
+      for(var i=0;i<cg.length;i++)COST_GROUPS.push(cg[i]);
+    }
+    state.contentLoaded = true;
+    if(!(meta && meta.version===DATA_VERSION)){
+      console.log('[v2] version differs (fb '+(meta&&meta.version)+' vs html '+DATA_VERSION+'); Firebase content used; baseline NOT pushed (safeguard)');
     }
     setSync('ok');
     renderTabs();
