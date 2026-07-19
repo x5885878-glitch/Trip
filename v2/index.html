@@ -277,6 +277,48 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
 .mp-row select{background:var(--bg);border:1px solid var(--glass2);border-radius:6px;color:var(--txt);font-size:11px;padding:4px 6px;font-family:inherit;cursor:pointer;flex-shrink:0;max-width:120px}
 .mp-empty{text-align:center;color:var(--txt3);font-size:12px;padding:24px}
 
+/* TICKET SHOTS (訂票紀錄) */
+.shots-toolbar{display:flex;align-items:center;gap:8px;padding:8px 18px;border-bottom:1px solid var(--glass);flex-shrink:0}
+.shots-filter{display:flex;gap:6px;overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.shots-filter::-webkit-scrollbar{display:none}
+.shots-chip{flex-shrink:0;font-size:12px;padding:5px 11px;border-radius:999px;background:var(--glass);color:var(--txt2);border:1px solid var(--glass2);cursor:pointer;white-space:nowrap;font-family:inherit}
+.shots-chip.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0e1a;border-color:transparent;font-weight:600}
+.shots-add-btn{flex-shrink:0;font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0e1a;border:none;cursor:pointer;font-family:inherit}
+.shots-add-btn:active{filter:brightness(0.9)}
+.shots-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:620px){.shots-grid{grid-template-columns:1fr 1fr}}
+.shot-card{background:var(--glass);border:1px solid var(--glass2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.shot-imgwrap{background:var(--bg);display:flex;justify-content:center;align-items:center;max-height:62vh;overflow:hidden;position:relative}
+.shot-imgwrap img{max-width:100%;max-height:62vh;width:auto;height:auto;object-fit:contain;display:block;cursor:zoom-in}
+.shot-zoomhint{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,0.55);color:#fff;font-size:10px;padding:3px 7px;border-radius:999px;pointer-events:none}
+.shot-meta{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.shot-toprow{display:flex;align-items:center;gap:8px}
+.shot-cat{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--glass2);color:var(--txt2);flex-shrink:0}
+.shot-title{font-size:14px;font-weight:600;color:var(--txt);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.shot-note{font-size:12px;color:var(--txt2);line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.shot-actions{display:flex;gap:6px;margin-left:auto;flex-shrink:0}
+.shot-act{background:var(--glass2);border:none;color:var(--txt2);font-size:13px;padding:4px 9px;border-radius:7px;cursor:pointer;font-family:inherit}
+.shot-act:hover{background:var(--glass3);color:var(--txt)}
+.shots-empty{text-align:center;color:var(--txt3);font-size:13px;padding:44px 20px;line-height:1.8}
+.se-field{margin-bottom:12px}
+.se-label{font-size:12px;color:var(--txt2);margin-bottom:5px;display:block}
+.se-input,.se-textarea{width:100%;background:var(--bg);border:1px solid var(--glass2);border-radius:8px;color:var(--txt);font-size:14px;padding:9px 11px;font-family:inherit;box-sizing:border-box}
+.se-textarea{min-height:64px;resize:vertical;line-height:1.5}
+.se-catrow{display:flex;flex-wrap:wrap;gap:6px}
+.se-catchip{font-size:12px;padding:6px 12px;border-radius:999px;background:var(--glass);color:var(--txt2);border:1px solid var(--glass2);cursor:pointer;font-family:inherit}
+.se-catchip.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0e1a;border-color:transparent;font-weight:600}
+.se-drop{border:1.5px dashed var(--glass3);border-radius:12px;padding:24px 12px;text-align:center;color:var(--txt3);font-size:13px;cursor:pointer;background:var(--glass);line-height:1.7}
+.se-drop:active{background:var(--glass2)}
+.se-preview{position:relative;border-radius:12px;overflow:hidden;background:var(--bg);display:flex;justify-content:center;max-height:46vh}
+.se-preview img{max-width:100%;max-height:46vh;object-fit:contain;display:block}
+.se-replace{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,0.6);color:#fff;border:none;font-size:12px;padding:6px 12px;border-radius:999px;cursor:pointer;font-family:inherit}
+.se-busy{font-size:12px;color:var(--accent);text-align:center;padding:16px}
+.shot-lightbox{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.94);justify-content:center;align-items:center;flex-direction:column}
+.shot-lightbox.show{display:flex;animation:fadeIn 0.15s ease}
+.shot-lightbox img{max-width:100%;max-height:86vh;object-fit:contain}
+.shot-lightbox-close{position:absolute;top:calc(12px + env(safe-area-inset-top));right:16px;color:#fff;font-size:24px;cursor:pointer;background:rgba(0,0,0,0.4);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2}
+.shot-lightbox-cap{color:#ddd;font-size:13px;margin-top:12px;padding:0 20px;text-align:center;max-width:90%;line-height:1.6}
+
 /* SYNC BADGE */
 .sync-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--txt3);margin-left:6px}
 .sync-badge.syncing{color:var(--warn)}
@@ -342,6 +384,10 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
     <span class="bnav-icon">🎫</span>
     <span class="bnav-label">訂票</span>
   </button>
+  <button class="bnav-btn" data-nav="shots">
+    <span class="bnav-icon">🎟</span>
+    <span class="bnav-label">票根</span>
+  </button>
   <button class="bnav-btn" data-nav="cost">
     <span class="bnav-icon">💰</span>
     <span class="bnav-label">費用</span>
@@ -363,6 +409,29 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
   <div class="sheet-body" id="book-list">
     <!-- booking sections render here -->
   </div>
+</div>
+
+<!-- TICKET SHOTS SHEET (訂票紀錄) -->
+<div class="sheet-overlay" id="ov-shots" data-close></div>
+<div class="sheet" id="sh-shots">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-title">📸 訂票紀錄 <span style="font-size:11px;color:var(--txt3);font-weight:400" id="shots-count">0</span></div>
+    <div class="sheet-close" data-close>✕</div>
+  </div>
+  <div class="shots-toolbar">
+    <div class="shots-filter" id="shots-filter"></div>
+    <button class="shots-add-btn" id="shots-add">＋ 新增</button>
+  </div>
+  <div class="sheet-body">
+    <div class="shots-grid" id="shots-list"></div>
+  </div>
+</div>
+<!-- fullscreen lightbox for viewing a ticket shot -->
+<div class="shot-lightbox" id="shot-lightbox">
+  <div class="shot-lightbox-close" data-shot-lightbox-close>✕</div>
+  <img id="shot-lightbox-img" alt="">
+  <div class="shot-lightbox-cap" id="shot-lightbox-cap"></div>
 </div>
 
 <!-- COST SHEET -->
@@ -736,6 +805,7 @@ var DEFAULT_NZD_RATE = 19.5;
 // PER-TRIP CONFIG (loaded from Firebase {node}/config; HTML holds only fallback)
 var FB_CONFIG = FB_NODE + '/config';
 var FB_PLACES = FB_NODE + '/places';
+var FB_TICKETS = FB_NODE + '/ticket_shots';   // 訂票截圖紀錄 (lazy-loaded)
 var TRIP_CONFIG = { pax:2, tz:'Pacific/Auckland', tzLabel:'', flag:'🧭', ccy:'NZD', fxDefault:19.5, title:'', subtitle:'', badges:[] };
 function applyConfig(cfg){
   if(cfg && typeof cfg==='object'){ for(var k in cfg){ if(cfg[k]!=null) TRIP_CONFIG[k]=cfg[k]; } }
@@ -779,6 +849,13 @@ var state = {
   idToken: null,
   refreshToken: null,
   idTokenExpiry: 0,
+  // Ticket shots (訂票紀錄)
+  tickets: {},            // id -> {title,cat,note,img,w,h,ts}
+  ticketsLoaded: false,
+  shotFilter: 'all',
+  shotEditId: null,
+  shotDraftImg: null,     // {dataUrl,w,h}
+  shotDraftCat: '機票',
 };
 
 // ─── PROGRESS BAR ──────────────────────────────────────────────────────────
@@ -1056,6 +1133,8 @@ function handleNav(nav){
   } else if(nav==='cost'){
     renderCost();
     openSheet('cost');
+  } else if(nav==='shots'){
+    openShots();
   }
 }
 
@@ -2516,6 +2595,206 @@ function fbGet(path){
   // Reads are public per current rules, no auth needed
   return fetch(FB_URL+'/'+path+'.json').then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
 }
+
+// ─── TICKET SHOTS (訂票紀錄) ────────────────────────────────────────────────
+var SHOT_CATS=[{k:'機票',e:'✈️'},{k:'住宿',e:'🏨'},{k:'交通',e:'🚆'},{k:'門票',e:'🎫'},{k:'餐廳',e:'🍽️'},{k:'其他',e:'📌'}];
+function catEmoji(k){for(var i=0;i<SHOT_CATS.length;i++)if(SHOT_CATS[i].k===k)return SHOT_CATS[i].e;return '📌';}
+
+function openShots(){
+  renderShotsFilter();
+  if(!state.ticketsLoaded){
+    var l=$id('shots-list'); if(l)l.innerHTML='<div class="shots-empty">載入中…</div>';
+    fbGet(FB_TICKETS).then(function(d){
+      state.tickets=(d&&typeof d==='object'&&!Array.isArray(d))?d:{};
+      // tolerate array-shaped legacy data
+      if(Array.isArray(d)){state.tickets={};for(var i=0;i<d.length;i++){if(d[i])state.tickets['t_legacy_'+i]=d[i];}}
+      state.ticketsLoaded=true;
+      renderShots();
+    });
+  } else {
+    renderShots();
+  }
+  openSheet('shots');
+}
+
+function renderShotsFilter(){
+  var f=$id('shots-filter'); if(!f)return;
+  var cats=[{k:'all',e:'🗂',l:'全部'}];
+  for(var i=0;i<SHOT_CATS.length;i++)cats.push({k:SHOT_CATS[i].k,e:SHOT_CATS[i].e,l:SHOT_CATS[i].k});
+  var html='';
+  for(var j=0;j<cats.length;j++){
+    var c=cats[j];
+    html+='<button class="shots-chip'+((state.shotFilter||'all')===c.k?' active':'')+'" data-shot-filter="'+c.k+'">'+c.e+' '+c.l+'</button>';
+  }
+  f.innerHTML=html;
+}
+
+function renderShots(){
+  var c=$id('shots-list'); if(!c)return;
+  var ids=Object.keys(state.tickets);
+  ids.sort(function(a,b){return (state.tickets[b].ts||0)-(state.tickets[a].ts||0);});
+  var cnt=$id('shots-count'); if(cnt)cnt.textContent=ids.length;
+  if(ids.length===0){
+    c.innerHTML='<div class="shots-empty">還沒有訂票紀錄<br>點右上角「＋ 新增」加入第一張截圖 📸<br><span style="font-size:11px">機票・住宿・門票・交通票券都可以，拍照或從相簿選擇</span></div>';
+    return;
+  }
+  var filt=state.shotFilter||'all';
+  var shown=ids.filter(function(id){return filt==='all'||state.tickets[id].cat===filt;});
+  if(shown.length===0){c.innerHTML='<div class="shots-empty">這個分類還沒有紀錄</div>';return;}
+  var html='';
+  for(var i=0;i<shown.length;i++){
+    var id=shown[i], t=state.tickets[id];
+    html+='<div class="shot-card">'+
+      '<div class="shot-imgwrap"><img src="'+t.img+'" data-shot-view="'+id+'" alt="'+escHtml(t.title||'訂票紀錄')+'"><span class="shot-zoomhint">點圖放大</span></div>'+
+      '<div class="shot-meta">'+
+        '<div class="shot-toprow">'+
+          '<span class="shot-cat">'+catEmoji(t.cat)+' '+escHtml(t.cat||'其他')+'</span>'+
+          '<span class="shot-title">'+escHtml(t.title||'（未命名）')+'</span>'+
+          '<span class="shot-actions">'+
+            '<button class="shot-act" data-shot-edit="'+id+'" title="編輯">✏️</button>'+
+            '<button class="shot-act" data-shot-del="'+id+'" title="刪除">🗑</button>'+
+          '</span>'+
+        '</div>'+
+        (t.note?'<div class="shot-note">'+escHtml(t.note)+'</div>':'')+
+      '</div>'+
+    '</div>';
+  }
+  c.innerHTML=html;
+}
+
+function compressImage(file){
+  return new Promise(function(resolve,reject){
+    if(!file||!/^image\//.test(file.type||'')){reject(new Error('not image'));return;}
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      var img=new Image();
+      img.onload=function(){
+        var MAX=1600,q=0.72;
+        var w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;
+        if(!w||!h){reject(new Error('no dim'));return;}
+        var scale=Math.min(1,MAX/Math.max(w,h));
+        var nw=Math.max(1,Math.round(w*scale)),nh=Math.max(1,Math.round(h*scale));
+        var cv=document.createElement('canvas');cv.width=nw;cv.height=nh;
+        var ctx=cv.getContext('2d');ctx.drawImage(img,0,0,nw,nh);
+        var url;
+        try{url=cv.toDataURL('image/jpeg',q);}catch(e){reject(e);return;}
+        resolve({dataUrl:url,w:w,h:h});
+      };
+      img.onerror=function(){reject(new Error('img load fail'));};
+      img.src=ev.target.result;
+    };
+    reader.onerror=function(){reject(new Error('read fail'));};
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderShotImgZone(){
+  var z=$id('se-imgzone'); if(!z)return;
+  if(state.shotDraftImg){
+    z.innerHTML='<div class="se-preview"><img src="'+state.shotDraftImg.dataUrl+'"><button type="button" class="se-replace" id="se-replace">更換圖片</button></div>';
+  } else {
+    z.innerHTML='<div class="se-drop" id="se-drop">📷 點此拍照，或從相簿選擇<br><span style="font-size:11px">支援任意長寬，會自動壓縮後同步給家人</span></div>';
+  }
+}
+
+function closeShotEditor(){var ov=$id('shot-editor');if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);}
+
+function openShotEditor(id){
+  if(!state.idToken){
+    showLoginModal({reason:(id?'編輯':'新增')+'訂票紀錄需要登入',retryAfterLogin:function(){openShotEditor(id);}});
+    return;
+  }
+  var existing=id?(state.tickets[id]||null):null;
+  state.shotEditId=id||null;
+  state.shotDraftImg=existing?{dataUrl:existing.img,w:existing.w,h:existing.h}:null;
+  state.shotDraftCat=existing?(existing.cat||'機票'):'機票';
+  var overlay=document.createElement('div');overlay.className='modal-overlay';overlay.id='shot-editor';
+  var box=document.createElement('div');box.className='modal-box';box.style.maxWidth='460px';
+  var catChips='';
+  for(var i=0;i<SHOT_CATS.length;i++){var cc=SHOT_CATS[i];catChips+='<button type="button" class="se-catchip'+(cc.k===state.shotDraftCat?' active':'')+'" data-cat="'+cc.k+'">'+cc.e+' '+cc.k+'</button>';}
+  box.innerHTML=
+    '<div class="modal-header">'+(id?'✏️ 編輯訂票紀錄':'📸 新增訂票紀錄')+'<button class="modal-close" id="se-close">✕</button></div>'+
+    '<div class="modal-body">'+
+      '<div class="se-field"><label class="se-label">截圖 / 照片</label><div id="se-imgzone"></div><input type="file" accept="image/*" id="se-file" style="display:none"></div>'+
+      '<div class="se-field"><label class="se-label">分類</label><div class="se-catrow" id="se-cats">'+catChips+'</div></div>'+
+      '<div class="se-field"><label class="se-label">標題</label><input class="se-input" id="se-title" placeholder="例:福岡→由布院 JR 指定席" value="'+escHtml(existing?existing.title:'')+'"></div>'+
+      '<div class="se-field"><label class="se-label">備註（日期、時間、座位、注意事項…）</label><textarea class="se-textarea" id="se-note" placeholder="例:8/6 09:24 博多發・2號車 12A/12B・改札後右轉">'+escHtml(existing?existing.note:'')+'</textarea></div>'+
+    '</div>'+
+    '<div class="modal-footer">'+
+      (id?'<button class="modal-btn" id="se-delete" style="margin-right:auto;color:var(--danger)">刪除</button>':'')+
+      '<button class="modal-btn" id="se-cancel">取消</button>'+
+      '<button class="modal-btn primary" id="se-save">儲存</button>'+
+    '</div>';
+  overlay.appendChild(box);document.body.appendChild(overlay);
+  renderShotImgZone();
+  var fileInput=$id('se-file');
+  function pick(){fileInput.value='';fileInput.click();}
+  function rebindZone(){var d=$id('se-drop');if(d)d.addEventListener('click',pick);var r=$id('se-replace');if(r)r.addEventListener('click',pick);}
+  rebindZone();
+  fileInput.addEventListener('change',function(){
+    var f=this.files&&this.files[0];if(!f)return;
+    var z=$id('se-imgzone');if(z)z.innerHTML='<div class="se-busy">壓縮中…</div>';
+    compressImage(f).then(function(res){state.shotDraftImg=res;renderShotImgZone();rebindZone();})
+      .catch(function(){toast('圖片處理失敗，請換一張');renderShotImgZone();rebindZone();});
+  });
+  $id('se-cats').addEventListener('click',function(e){
+    var b=e.target.closest('.se-catchip');if(!b)return;
+    state.shotDraftCat=b.getAttribute('data-cat');
+    $qa('.se-catchip',$id('se-cats')).forEach(function(x){x.classList.toggle('active',x===b);});
+  });
+  $id('se-close').addEventListener('click',closeShotEditor);
+  $id('se-cancel').addEventListener('click',closeShotEditor);
+  $id('se-save').addEventListener('click',saveShotFromEditor);
+  var del=$id('se-delete');if(del)del.addEventListener('click',function(){deleteShot(state.shotEditId);});
+  overlay.addEventListener('click',function(e){if(e.target===overlay)closeShotEditor();});
+}
+
+function saveShotFromEditor(){
+  if(!state.shotDraftImg){toast('請先加入一張截圖');return;}
+  var title=(($id('se-title')&&$id('se-title').value)||'').trim();
+  var note=(($id('se-note')&&$id('se-note').value)||'').trim();
+  var isNew=!state.shotEditId;
+  var id=state.shotEditId||('t_'+Date.now()+'_'+Math.random().toString(36).slice(2,7));
+  var prev=state.tickets[id]||{};
+  var rec={title:title,cat:state.shotDraftCat,note:note,img:state.shotDraftImg.dataUrl,w:state.shotDraftImg.w,h:state.shotDraftImg.h,ts:prev.ts||Date.now()};
+  state.tickets[id]=rec;
+  fbPut(FB_TICKETS+'/'+id,rec);
+  closeShotEditor();
+  renderShots();
+  toast(isNew?'已新增訂票紀錄':'已更新');
+}
+
+function deleteShot(id){
+  var t=state.tickets[id];if(!t)return;
+  if(!state.idToken){showLoginModal({reason:'刪除訂票紀錄需要登入',retryAfterLogin:function(){deleteShot(id);}});return;}
+  if(!confirm('確定刪除這張訂票紀錄？'+(t.title?'\n「'+t.title+'」':'')))return;
+  delete state.tickets[id];
+  fbPut(FB_TICKETS+'/'+id,null); // null → Firebase 刪除該 key
+  closeShotEditor();
+  renderShots();
+  toast('已刪除');
+}
+
+function openShotLightbox(id){
+  var t=state.tickets[id];if(!t)return;
+  var im=$id('shot-lightbox-img');if(im)im.src=t.img;
+  var cap=$id('shot-lightbox-cap');
+  if(cap){var s=catEmoji(t.cat)+' '+(t.title||'');if(t.note)s+=' — '+t.note;cap.textContent=s.trim();}
+  $id('shot-lightbox').classList.add('show');
+}
+function closeShotLightbox(){var lb=$id('shot-lightbox');if(lb)lb.classList.remove('show');var im=$id('shot-lightbox-img');if(im)im.src='';}
+
+// delegated clicks for ticket shots (bound once)
+document.addEventListener('click',function(e){
+  var t=e.target;if(!t.closest)return;
+  if(t.closest('#shots-add')){openShotEditor(null);return;}
+  var chip=t.closest('.shots-chip');
+  if(chip){state.shotFilter=chip.getAttribute('data-shot-filter');renderShotsFilter();renderShots();return;}
+  var ed=t.closest('[data-shot-edit]');if(ed){openShotEditor(ed.getAttribute('data-shot-edit'));return;}
+  var dl=t.closest('[data-shot-del]');if(dl){deleteShot(dl.getAttribute('data-shot-del'));return;}
+  var vw=t.closest('[data-shot-view]');if(vw){openShotLightbox(vw.getAttribute('data-shot-view'));return;}
+  if(t.closest('[data-shot-lightbox-close]')||t.id==='shot-lightbox'){closeShotLightbox();return;}
+},false);
 
 var syncTodosDeb=null;
 function syncTodos(){
