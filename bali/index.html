@@ -285,17 +285,31 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
 .shots-chip.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0e1a;border-color:transparent;font-weight:600}
 .shots-add-btn{flex-shrink:0;font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0e1a;border:none;cursor:pointer;font-family:inherit}
 .shots-add-btn:active{filter:brightness(0.9)}
+.shots-mini-btn{flex-shrink:0;font-size:12px;padding:6px 10px;border-radius:999px;background:var(--glass);color:var(--txt2);border:1px solid var(--glass2);cursor:pointer;font-family:inherit;white-space:nowrap}
+.crop-ov{display:none;position:fixed;inset:0;z-index:600;background:#000;flex-direction:column}
+.crop-ov.show{display:flex}
+.crop-stage{flex:1;position:relative;overflow:hidden;touch-action:none}
+#crop-img{position:absolute;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.crop-box{position:absolute;border:1.5px solid #fff;box-shadow:0 0 0 9999px rgba(0,0,0,0.58);box-sizing:border-box;cursor:move;touch-action:none}
+.crop-h{position:absolute;width:24px;height:24px;background:var(--accent,#2dd4bf);border:2px solid #fff;border-radius:50%;touch-action:none}
+.crop-h.nw{left:-12px;top:-12px}.crop-h.ne{right:-12px;top:-12px}.crop-h.sw{left:-12px;bottom:-12px}.crop-h.se{right:-12px;bottom:-12px}
+.crop-bar{display:flex;gap:8px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:#111;justify-content:flex-end;align-items:center}
+.crop-hint{color:#888;font-size:11px;margin-right:auto}
+.crop-btn{padding:9px 16px;border-radius:8px;background:#333;color:#fff;border:none;font-size:14px;font-family:inherit;cursor:pointer}
+.crop-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0e1a;font-weight:600}
 .shots-grid{display:grid;grid-template-columns:1fr;gap:14px}
 @media(min-width:620px){.shots-grid{grid-template-columns:1fr 1fr}}
 .shot-card{background:var(--glass);border:1px solid var(--glass2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
 .shot-imgwrap{background:var(--bg);display:flex;justify-content:center;align-items:center;max-height:62vh;overflow:hidden;position:relative}
 .shot-imgwrap img{max-width:100%;max-height:62vh;width:auto;height:auto;object-fit:contain;display:block;cursor:zoom-in}
 .shot-zoomhint{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,0.55);color:#fff;font-size:10px;padding:3px 7px;border-radius:999px;pointer-events:none}
-.shot-meta{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
-.shot-toprow{display:flex;align-items:center;gap:8px}
+.shot-head{display:flex;align-items:center;gap:8px;padding:11px 12px;cursor:pointer;user-select:none}
+.shot-chev{font-size:11px;color:var(--txt3);transition:transform 0.2s;flex-shrink:0}
+.shot-card.open .shot-chev{transform:rotate(90deg)}
+.shot-body{border-top:1px solid var(--glass)}
 .shot-cat{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--glass2);color:var(--txt2);flex-shrink:0}
 .shot-title{font-size:14px;font-weight:600;color:var(--txt);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.shot-note{font-size:12px;color:var(--txt2);line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.shot-note{font-size:12px;color:var(--txt2);line-height:1.55;white-space:pre-wrap;word-break:break-word;padding:10px 12px}
 .shot-actions{display:flex;gap:6px;margin-left:auto;flex-shrink:0}
 .shot-act{background:var(--glass2);border:none;color:var(--txt2);font-size:13px;padding:4px 9px;border-radius:7px;cursor:pointer;font-family:inherit}
 .shot-act:hover{background:var(--glass3);color:var(--txt)}
@@ -311,7 +325,8 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
 .se-drop:active{background:var(--glass2)}
 .se-preview{position:relative;border-radius:12px;overflow:hidden;background:var(--bg);display:flex;justify-content:center;max-height:46vh}
 .se-preview img{max-width:100%;max-height:46vh;object-fit:contain;display:block}
-.se-replace{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,0.6);color:#fff;border:none;font-size:12px;padding:6px 12px;border-radius:999px;cursor:pointer;font-family:inherit}
+.se-pv-actions{position:absolute;right:8px;bottom:8px;display:flex;gap:6px}
+.se-pv-btn{background:rgba(0,0,0,0.62);color:#fff;border:none;font-size:12px;padding:6px 12px;border-radius:999px;cursor:pointer;font-family:inherit}
 .se-busy{font-size:12px;color:var(--accent);text-align:center;padding:16px}
 .shot-lightbox{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.94);justify-content:center;align-items:center;flex-direction:column}
 .shot-lightbox.show{display:flex;animation:fadeIn 0.15s ease}
@@ -421,6 +436,7 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
   </div>
   <div class="shots-toolbar">
     <div class="shots-filter" id="shots-filter"></div>
+    <button class="shots-mini-btn" id="shots-expand">展開全部</button>
     <button class="shots-add-btn" id="shots-add">＋ 新增</button>
   </div>
   <div class="sheet-body">
@@ -432,6 +448,24 @@ body.edit-mode .cs-row{padding-left:8px;padding-right:8px}
   <div class="shot-lightbox-close" data-shot-lightbox-close>✕</div>
   <img id="shot-lightbox-img" alt="">
   <div class="shot-lightbox-cap" id="shot-lightbox-cap"></div>
+</div>
+<!-- ticket-shot cropper -->
+<div class="crop-ov" id="crop-ov">
+  <div class="crop-stage" id="crop-stage">
+    <img id="crop-img" alt="">
+    <div class="crop-box" id="crop-box">
+      <span class="crop-h nw" data-h="nw"></span>
+      <span class="crop-h ne" data-h="ne"></span>
+      <span class="crop-h sw" data-h="sw"></span>
+      <span class="crop-h se" data-h="se"></span>
+    </div>
+  </div>
+  <div class="crop-bar">
+    <span class="crop-hint">拖曳邊角調整裁切範圍</span>
+    <button class="crop-btn" id="crop-cancel">取消</button>
+    <button class="crop-btn" id="crop-reset">重設</button>
+    <button class="crop-btn primary" id="crop-apply">套用</button>
+  </div>
 </div>
 
 <!-- COST SHEET -->
@@ -856,6 +890,7 @@ var state = {
   shotEditId: null,
   shotDraftImg: null,     // {dataUrl,w,h}
   shotDraftCat: '機票',
+  shotOpen: {},           // id -> expanded (每次開票根重置，預設收合)
 };
 
 // ─── PROGRESS BAR ──────────────────────────────────────────────────────────
@@ -2602,6 +2637,7 @@ function catEmoji(k){for(var i=0;i<SHOT_CATS.length;i++)if(SHOT_CATS[i].k===k)re
 
 function openShots(){
   renderShotsFilter();
+  state.shotOpen={};
   if(!state.ticketsLoaded){
     var l=$id('shots-list'); if(l)l.innerHTML='<div class="shots-empty">載入中…</div>';
     fbGet(FB_TICKETS).then(function(d){
@@ -2634,6 +2670,7 @@ function renderShots(){
   var ids=Object.keys(state.tickets);
   ids.sort(function(a,b){return (state.tickets[b].ts||0)-(state.tickets[a].ts||0);});
   var cnt=$id('shots-count'); if(cnt)cnt.textContent=ids.length;
+  updateExpandBtn();
   if(ids.length===0){
     c.innerHTML='<div class="shots-empty">還沒有訂票紀錄<br>點右上角「＋ 新增」加入第一張截圖 📸<br><span style="font-size:11px">機票・住宿・門票・交通票券都可以，拍照或從相簿選擇</span></div>';
     return;
@@ -2643,43 +2680,62 @@ function renderShots(){
   if(shown.length===0){c.innerHTML='<div class="shots-empty">這個分類還沒有紀錄</div>';return;}
   var html='';
   for(var i=0;i<shown.length;i++){
-    var id=shown[i], t=state.tickets[id];
-    html+='<div class="shot-card">'+
-      '<div class="shot-imgwrap"><img src="'+t.img+'" data-shot-view="'+id+'" alt="'+escHtml(t.title||'訂票紀錄')+'"><span class="shot-zoomhint">點圖放大</span></div>'+
-      '<div class="shot-meta">'+
-        '<div class="shot-toprow">'+
-          '<span class="shot-cat">'+catEmoji(t.cat)+' '+escHtml(t.cat||'其他')+'</span>'+
-          '<span class="shot-title">'+escHtml(t.title||'（未命名）')+'</span>'+
-          '<span class="shot-actions">'+
-            '<button class="shot-act" data-shot-edit="'+id+'" title="編輯">✏️</button>'+
-            '<button class="shot-act" data-shot-del="'+id+'" title="刪除">🗑</button>'+
-          '</span>'+
-        '</div>'+
+    var id=shown[i], t=state.tickets[id], open=!!state.shotOpen[id];
+    html+='<div class="shot-card'+(open?' open':'')+'" data-id="'+id+'">'+
+      '<div class="shot-head" data-shot-toggle="'+id+'">'+
+        '<span class="shot-chev">▸</span>'+
+        '<span class="shot-cat">'+catEmoji(t.cat)+' '+escHtml(t.cat||'其他')+'</span>'+
+        '<span class="shot-title">'+escHtml(t.title||'（未命名）')+'</span>'+
+        '<span class="shot-actions">'+
+          '<button class="shot-act" data-shot-edit="'+id+'" title="編輯">✏️</button>'+
+          '<button class="shot-act" data-shot-del="'+id+'" title="刪除">🗑</button>'+
+        '</span>'+
+      '</div>'+
+      '<div class="shot-body" style="display:'+(open?'block':'none')+'">'+
+        '<div class="shot-imgwrap"><img'+(open?' src="'+t.img+'"':'')+' data-shot-view="'+id+'" alt="'+escHtml(t.title||'訂票紀錄')+'"><span class="shot-zoomhint">點圖放大</span></div>'+
         (t.note?'<div class="shot-note">'+escHtml(t.note)+'</div>':'')+
       '</div>'+
     '</div>';
   }
   c.innerHTML=html;
 }
+function toggleShot(id){
+  var open=!state.shotOpen[id]; state.shotOpen[id]=open;
+  var card=document.querySelector('.shot-card[data-id="'+id+'"]'); if(!card)return;
+  var body=card.querySelector('.shot-body');
+  if(open){var img=body.querySelector('img');if(img&&!img.getAttribute('src'))img.setAttribute('src',state.tickets[id].img);body.style.display='block';card.classList.add('open');}
+  else{body.style.display='none';card.classList.remove('open');}
+  updateExpandBtn();
+}
+function updateExpandBtn(){
+  var b=$id('shots-expand'); if(!b)return;
+  var ids=Object.keys(state.tickets);
+  b.style.display=ids.length?'':'none';
+  var anyClosed=ids.some(function(id){return !state.shotOpen[id];});
+  b.textContent=anyClosed?'展開全部':'收合全部';
+}
+function toggleAllShots(){
+  var ids=Object.keys(state.tickets);
+  var anyClosed=ids.some(function(id){return !state.shotOpen[id];});
+  ids.forEach(function(id){state.shotOpen[id]=anyClosed;});
+  renderShots();
+}
 
+function compressCanvas(srcEl,natW,natH){
+  var MAX=1600,q=0.72;
+  var scale=Math.min(1,MAX/Math.max(natW,natH));
+  var nw=Math.max(1,Math.round(natW*scale)),nh=Math.max(1,Math.round(natH*scale));
+  var cv=document.createElement('canvas');cv.width=nw;cv.height=nh;
+  cv.getContext('2d').drawImage(srcEl,0,0,nw,nh);
+  return {dataUrl:cv.toDataURL('image/jpeg',q),w:natW,h:natH};
+}
 function compressImage(file){
   return new Promise(function(resolve,reject){
     if(!file||!/^image\//.test(file.type||'')){reject(new Error('not image'));return;}
     var reader=new FileReader();
     reader.onload=function(ev){
       var img=new Image();
-      img.onload=function(){
-        var MAX=1600,q=0.72;
-        var w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;
-        if(!w||!h){reject(new Error('no dim'));return;}
-        var scale=Math.min(1,MAX/Math.max(w,h));
-        var nw=Math.max(1,Math.round(w*scale)),nh=Math.max(1,Math.round(h*scale));
-        var cv=document.createElement('canvas');cv.width=nw;cv.height=nh;
-        var ctx=cv.getContext('2d');ctx.drawImage(img,0,0,nw,nh);
-        var url;
-        try{url=cv.toDataURL('image/jpeg',q);}catch(e){reject(e);return;}
-        resolve({dataUrl:url,w:w,h:h});
-      };
+      img.onload=function(){var w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;if(!w||!h){reject(new Error('no dim'));return;}try{resolve(compressCanvas(img,w,h));}catch(e){reject(e);}};
       img.onerror=function(){reject(new Error('img load fail'));};
       img.src=ev.target.result;
     };
@@ -2691,7 +2747,7 @@ function compressImage(file){
 function renderShotImgZone(){
   var z=$id('se-imgzone'); if(!z)return;
   if(state.shotDraftImg){
-    z.innerHTML='<div class="se-preview"><img src="'+state.shotDraftImg.dataUrl+'"><button type="button" class="se-replace" id="se-replace">更換圖片</button></div>';
+    z.innerHTML='<div class="se-preview"><img src="'+state.shotDraftImg.dataUrl+'"><div class="se-pv-actions"><button type="button" class="se-pv-btn" id="se-crop">✂️ 裁剪</button><button type="button" class="se-pv-btn" id="se-replace">更換</button></div></div>';
   } else {
     z.innerHTML='<div class="se-drop" id="se-drop">📷 點此拍照，或從相簿選擇<br><span style="font-size:11px">支援任意長寬，會自動壓縮後同步給家人</span></div>';
   }
@@ -2729,7 +2785,7 @@ function openShotEditor(id){
   renderShotImgZone();
   var fileInput=$id('se-file');
   function pick(){fileInput.value='';fileInput.click();}
-  function rebindZone(){var d=$id('se-drop');if(d)d.addEventListener('click',pick);var r=$id('se-replace');if(r)r.addEventListener('click',pick);}
+  function rebindZone(){var d=$id('se-drop');if(d)d.addEventListener('click',pick);var r=$id('se-replace');if(r)r.addEventListener('click',pick);var cr=$id('se-crop');if(cr)cr.addEventListener('click',function(){if(!state.shotDraftImg)return;openCropper(state.shotDraftImg.dataUrl).then(function(res){if(res)state.shotDraftImg=res;renderShotImgZone();rebindZone();});});}
   rebindZone();
   fileInput.addEventListener('change',function(){
     var f=this.files&&this.files[0];if(!f)return;
@@ -2783,17 +2839,74 @@ function openShotLightbox(id){
   $id('shot-lightbox').classList.add('show');
 }
 function closeShotLightbox(){var lb=$id('shot-lightbox');if(lb)lb.classList.remove('show');var im=$id('shot-lightbox-img');if(im)im.src='';}
+function openCropper(src){
+  return new Promise(function(resolve){
+    var ov=$id('crop-ov'),stage=$id('crop-stage'),imgEl=$id('crop-img'),box=$id('crop-box');
+    if(!ov){resolve(null);return;}
+    var img=new Image();
+    img.onload=function(){
+      ov.classList.add('show');
+      requestAnimationFrame(function(){
+        var sw=stage.clientWidth,sh=stage.clientHeight;
+        var natW=img.naturalWidth,natH=img.naturalHeight;
+        var scale=Math.min(sw/natW,sh/natH);
+        var dispW=Math.round(natW*scale),dispH=Math.round(natH*scale);
+        var offX=Math.round((sw-dispW)/2),offY=Math.round((sh-dispH)/2);
+        imgEl.src=src;imgEl.style.width=dispW+'px';imgEl.style.height=dispH+'px';imgEl.style.left=offX+'px';imgEl.style.top=offY+'px';
+        var fr={offX:offX,offY:offY,dispW:dispW,dispH:dispH,scale:scale};
+        var bx={x:offX,y:offY,w:dispW,h:dispH};
+        function draw(){box.style.left=bx.x+'px';box.style.top=bx.y+'px';box.style.width=bx.w+'px';box.style.height=bx.h+'px';}
+        draw();
+        var drag=null;
+        function pt(e){var r=stage.getBoundingClientRect();var c=(e.touches&&e.touches[0])||e;return {x:c.clientX-r.left,y:c.clientY-r.top};}
+        function down(e){var tg=e.target,mode='move';if(tg.classList&&tg.classList.contains('crop-h'))mode=tg.getAttribute('data-h');var p=pt(e);drag={mode:mode,sx:p.x,sy:p.y,ox:bx.x,oy:bx.y,ow:bx.w,oh:bx.h};if(e.cancelable)e.preventDefault();}
+        function move(e){if(!drag)return;var p=pt(e),dx=p.x-drag.sx,dy=p.y-drag.sy;
+          if(drag.mode==='move'){bx.x=drag.ox+dx;bx.y=drag.oy+dy;}
+          else{var right=drag.ox+drag.ow,bottom=drag.oy+drag.oh;
+            if(drag.mode.indexOf('w')>-1){bx.x=drag.ox+dx;bx.w=right-bx.x;}
+            if(drag.mode.indexOf('e')>-1){bx.w=drag.ow+dx;}
+            if(drag.mode.indexOf('n')>-1){bx.y=drag.oy+dy;bx.h=bottom-bx.y;}
+            if(drag.mode.indexOf('s')>-1){bx.h=drag.oh+dy;}
+            if(bx.w<40){if(drag.mode.indexOf('w')>-1)bx.x=right-40;bx.w=40;}
+            if(bx.h<40){if(drag.mode.indexOf('n')>-1)bx.y=bottom-40;bx.h=40;}}
+          if(bx.x<fr.offX)bx.x=fr.offX;if(bx.y<fr.offY)bx.y=fr.offY;
+          if(bx.x+bx.w>fr.offX+fr.dispW)bx.w=fr.offX+fr.dispW-bx.x;
+          if(bx.y+bx.h>fr.offY+fr.dispH)bx.h=fr.offY+fr.dispH-bx.y;
+          draw();if(e.cancelable)e.preventDefault();}
+        function up(){drag=null;}
+        box.addEventListener('pointerdown',down);
+        window.addEventListener('pointermove',move);
+        window.addEventListener('pointerup',up);
+        function cleanup(){box.removeEventListener('pointerdown',down);window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);ov.classList.remove('show');$id('crop-reset').onclick=null;$id('crop-apply').onclick=null;$id('crop-cancel').onclick=null;}
+        $id('crop-reset').onclick=function(){bx={x:fr.offX,y:fr.offY,w:fr.dispW,h:fr.dispH};draw();};
+        $id('crop-cancel').onclick=function(){cleanup();resolve(null);};
+        $id('crop-apply').onclick=function(){
+          var sx=Math.round((bx.x-fr.offX)/fr.scale),sy=Math.round((bx.y-fr.offY)/fr.scale);
+          var scw=Math.max(1,Math.round(bx.w/fr.scale)),sch=Math.max(1,Math.round(bx.h/fr.scale));
+          var cv=document.createElement('canvas');cv.width=scw;cv.height=sch;
+          cv.getContext('2d').drawImage(img,sx,sy,scw,sch,0,0,scw,sch);
+          var out;try{out=compressCanvas(cv,scw,sch);}catch(err){out=null;}
+          cleanup();resolve(out);
+        };
+      });
+    };
+    img.onerror=function(){resolve(null);};
+    img.src=src;
+  });
+}
 
 // delegated clicks for ticket shots (bound once)
 document.addEventListener('click',function(e){
   var t=e.target;if(!t.closest)return;
   if(t.closest('#shots-add')){openShotEditor(null);return;}
+  if(t.closest('#shots-expand')){toggleAllShots();return;}
   var chip=t.closest('.shots-chip');
   if(chip){state.shotFilter=chip.getAttribute('data-shot-filter');renderShotsFilter();renderShots();return;}
   var ed=t.closest('[data-shot-edit]');if(ed){openShotEditor(ed.getAttribute('data-shot-edit'));return;}
   var dl=t.closest('[data-shot-del]');if(dl){deleteShot(dl.getAttribute('data-shot-del'));return;}
   var vw=t.closest('[data-shot-view]');if(vw){openShotLightbox(vw.getAttribute('data-shot-view'));return;}
   if(t.closest('[data-shot-lightbox-close]')||t.id==='shot-lightbox'){closeShotLightbox();return;}
+  var tg=t.closest('[data-shot-toggle]');if(tg){toggleShot(tg.getAttribute('data-shot-toggle'));return;}
 },false);
 
 var syncTodosDeb=null;
