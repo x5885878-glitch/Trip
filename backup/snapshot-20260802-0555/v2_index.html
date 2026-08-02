@@ -815,7 +815,7 @@ var COST_GROUPS = [
 
 // ─── CONFIG ────────────────────────────────────────────────────────────────
 var FB_URL = 'https://nz-trip-2026-dd942-default-rtdb.asia-southeast1.firebasedatabase.app';
-var FB_NODE = 'bali-2026';  // shared with v1
+var FB_NODE = 'nz26';  // shared with v1
 
 // Firebase Auth — required because rules now check auth.uid (privacy)
 var FB_API_KEY = 'AIzaSyAsgaRCbPY--Z14Ai5u102VqU06SozU19w';
@@ -831,7 +831,7 @@ var FB_META  = FB_NODE + '/v2_meta';
 var FB_OPT   = FB_NODE + '/optsel_v2';        // optional cost rows (opt:true) → selected map
 
 // Bump DATA_VERSION whenever HTML's TRIP_DATA/BOOKING_DATA/COST_GROUPS structure changes.
-var DATA_VERSION = 6;
+var DATA_VERSION = 7;
 
 // Default FX rate (TWD per 1 NZD) — editable by user.
 var DEFAULT_NZD_RATE = 19.5;
@@ -1289,7 +1289,8 @@ function isOptOff(row){ return !!(row && row.opt) && !state.optSel[row.id]; }
 function rowActualTWD(row){
   if(row.subtotal) return 0;
   if(isOptOff(row)) return 0;
-  return toTWD(row.budget||0, row.currency||'TWD');
+  var amt = (state.costActuals[row.id]!=null) ? state.costActuals[row.id] : (row.budget||0);
+  return toTWD(amt, row.currency||'TWD');
 }
 
 function renderCost(){
@@ -1312,24 +1313,29 @@ function renderCost(){
   hint.className='cost-hint';
   hint.innerHTML=state.editMode ?
     '✏️ 編輯模式：拖曳項目重排/搬家 · ✕ 刪除 · ＋ 新增 · 雙擊任意文字編輯' :
-    '💡 雙擊金額可修改數字/幣別 · 點右下「✏️ 編輯」進入完整編輯模式';
+    '💡 雙擊金額可輸入實際花費 · 點右下「✏️ 編輯」進入完整編輯模式';
   c.appendChild(hint);
 
-  // ── Live summary: single total, reads row.budget only ──
-  var total=0;
+  // ── Live summary (will be recalculated after FX changes) ──
+  var budget=0, actual=0;
   for(var i=0;i<COST_GROUPS.length;i++){
     var g=COST_GROUPS[i];
     for(var j=0;j<g.rows.length;j++){
       var r=g.rows[j];
       if(r.subtotal)continue;
       if(isOptOff(r))continue;
-      total += toTWD(r.budget||0, r.currency||'TWD');
+      var bTWD = toTWD(r.budget||0, r.currency||'TWD');
+      budget += bTWD;
+      if(state.costActuals[r.id]!=null){
+        actual += toTWD(state.costActuals[r.id], r.currency||'TWD');
+      }
     }
   }
   var summ=document.createElement('div');
   summ.className='cs-summary';
   summ.innerHTML=
-    '<div class="cs-summary-card"><div class="label">總計</div><div class="value">'+fmtMoney(total)+'</div></div>';
+    '<div class="cs-summary-card"><div class="label">預算合計</div><div class="value">'+fmtMoney(budget)+'</div></div>'+
+    '<div class="cs-summary-card"><div class="label">已知實際</div><div class="value" style="color:var(--ok)">'+fmtMoney(actual)+'</div></div>';
   c.appendChild(summ);
 
   // ── D feature: "Pull amounts from itinerary" button (edit mode only) ──
@@ -1390,7 +1396,8 @@ function renderCost(){
         rr.setAttribute('data-rid',r.id);
         rr.draggable=false;
 
-        var displayAmt=(r.budget||0);
+        var hasActual=state.costActuals[r.id]!=null;
+        var displayAmt=hasActual ? state.costActuals[r.id] : (r.budget||0);
         var curr=r.currency||'TWD';
 
         var dh='';
@@ -1424,7 +1431,7 @@ function renderCost(){
                   : (state.editMode?'<span class="csub csub-empty" data-field="sub" data-gidx="'+gi+'" data-ridx="'+ri+'">(點擊新增說明)</span>':''))+
           '</div>'+
           currPicker+
-          '<span class="am editable" data-key="'+escHtml(r.id)+'" data-gidx="'+gi+'" data-ridx="'+ri+'">'+
+          '<span class="am editable'+(hasActual?' has-actual':'')+'" data-key="'+escHtml(r.id)+'" data-gidx="'+gi+'" data-ridx="'+ri+'">'+
             fmtMoneyWithCurr(displayAmt, curr)+
           '</span>'+
           delBtn;
@@ -1489,33 +1496,18 @@ function startCostEdit(span){
   var row=COST_GROUPS[gidx] && COST_GROUPS[gidx].rows[ridx];
   if(!row)return;
   var curr=row.currency||'TWD';
-  var current=(row.budget!=null?row.budget:0);
+  var current=state.costActuals[key]!=null ? state.costActuals[key] : (row.budget||0);
   span.classList.add('editing');
   var orig=span.innerHTML;
   span.innerHTML='';
-  // currency toggle button (JPY <-> TWD, plus the trip's own ccy if different)
-  var ccyOpts=['TWD'];
-  var tripCcy=(TRIP_CONFIG&&TRIP_CONFIG.ccy)||'JPY';
-  if(ccyOpts.indexOf(tripCcy)<0)ccyOpts.push(tripCcy);
-  if(ccyOpts.indexOf('JPY')<0)ccyOpts.push('JPY');
-  var curCcy=curr;
-  var ccyBtn=document.createElement('button');
-  ccyBtn.type='button';
-  ccyBtn.textContent=curCcy;
-  ccyBtn.style.cssText='background:var(--accent,#c96);color:#fff;border:none;border-radius:4px;padding:1px 6px;margin-right:4px;font-size:inherit;cursor:pointer;font-weight:600';
-  ccyBtn.addEventListener('mousedown',function(e){e.preventDefault();});
-  ccyBtn.addEventListener('click',function(e){
-    e.preventDefault();e.stopPropagation();
-    var idx=ccyOpts.indexOf(curCcy);
-    curCcy=ccyOpts[(idx+1)%ccyOpts.length];
-    ccyBtn.textContent=curCcy;
-    inp.focus();
-  });
-  span.appendChild(ccyBtn);
   var inp=document.createElement('input');
   inp.type='number';
   inp.value=current;
   inp.style.cssText='width:90px;background:transparent;border:none;color:inherit;font-size:inherit;font-weight:inherit;text-align:right;font-variant-numeric:tabular-nums';
+  var prefix=document.createElement('span');
+  prefix.textContent=curr+' $';
+  prefix.style.cssText='color:inherit;margin-right:2px';
+  span.appendChild(prefix);
   span.appendChild(inp);
   inp.focus();
   inp.select();
@@ -1525,11 +1517,10 @@ function startCostEdit(span){
     var v=parseInt(inp.value,10);
     span.classList.remove('editing');
     if(isNaN(v)){span.innerHTML=orig;return;}
-    row.budget=v;
-    row.currency=curCcy;
-    syncCostGroups();
+    state.costActuals[key]=v;
+    syncCosts();
     renderCost();
-    toast('已更新金額');
+    toast('已記錄實際花費');
   }
   function cancel(){
     if(done)return; done=true;
@@ -1624,9 +1615,11 @@ function delCostRow(gidx,ridx){
   if(!COST_GROUPS[gidx]||!COST_GROUPS[gidx].rows[ridx])return;
   var row=COST_GROUPS[gidx].rows[ridx];
   if(!confirm('確定刪除「'+row.label+'」？'))return;
+  if(state.costActuals[row.id]!=null)delete state.costActuals[row.id];
   COST_GROUPS[gidx].rows.splice(ridx,1);
   state.costDirty=true;
   syncCostGroups();
+  syncCosts();
   renderCost();
 }
 
@@ -1642,9 +1635,14 @@ function addCostGroup(){
 function delCostGroup(gidx){
   if(!COST_GROUPS[gidx])return;
   if(!confirm('刪除整組「'+COST_GROUPS[gidx].title+'」？所有項目都會一併刪除'))return;
+  // Clean actuals for rows in this group
+  COST_GROUPS[gidx].rows.forEach(function(r){
+    if(r.id && state.costActuals[r.id]!=null)delete state.costActuals[r.id];
+  });
   COST_GROUPS.splice(gidx,1);
   state.costDirty=true;
   syncCostGroups();
+  syncCosts();
   renderCost();
 }
 
@@ -2918,9 +2916,6 @@ function syncTodos(){
 }
 var syncCostsDeb=null;
 function syncCosts(){
-  // Deprecated: amounts now live solely in cost_groups_v2 (row.budget + row.currency).
-  // The separate costs overlay is no longer written. Kept as no-op for any legacy callers.
-  return;
   clearTimeout(syncCostsDeb);
   syncCostsDeb=setTimeout(function(){fbPut(FB_COSTS,state.costActuals);},400);
 }
@@ -2941,9 +2936,7 @@ function syncCostGroups(){
 var syncFXDeb=null;
 function syncFX(){
   clearTimeout(syncFXDeb);
-  // Write generic 'rate' key (currency-agnostic). Keep 'nzd' mirror for backward
-  // compatibility with any older client build still reading fx_v2.nzd.
-  syncFXDeb=setTimeout(function(){fbPut(FB_FX,{rate:state.fxRate, nzd:state.fxRate});},400);
+  syncFXDeb=setTimeout(function(){fbPut(FB_FX,{nzd:state.fxRate});},400);
 }
 var syncItinDeb=null;
 function syncItin(){
@@ -2976,10 +2969,7 @@ function pullInitial(){
     if(todos)state.todoStates=todos;
     if(costs)state.costActuals=costs;
     if(opt && typeof opt==='object') state.optSel=opt;
-    // FX: currency-agnostic. Prefer fx_v2.rate (new generic key), fall back to
-    // legacy fx_v2.nzd, then config.fxDefault. Rate = TWD per 1 unit of trip ccy.
-    if(fx && typeof fx==='object' && typeof fx.rate==='number') state.fxRate=fx.rate;
-    else if(fx && typeof fx==='object' && typeof fx.nzd==='number') state.fxRate=fx.nzd;
+    if(fx && typeof fx==='object' && typeof fx.nzd==='number') state.fxRate=fx.nzd;
     else if(cfg && cfg.fxDefault!=null) state.fxRate=cfg.fxDefault;
 
     // SAFEGUARD: always load Firebase content when present; NEVER push HTML baseline.
