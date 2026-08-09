@@ -1540,7 +1540,9 @@ function startCostEdit(span){
     if(isNaN(v)){span.innerHTML=orig;return;}
     row.budget=v;
     row.currency=curCcy;
-    syncCostGroups();
+    row.display='';
+    state.costDirty=true;
+    syncCostRow(gidx,ridx);
     renderCost();
     toast('已更新金額');
   }
@@ -1578,12 +1580,16 @@ function startCostTextEdit(el){
     var v=w.value.trim();
     el.classList.remove('editing','csub-empty');
     if(field==='group-title'){
-      if(COST_GROUPS[gidx]){COST_GROUPS[gidx].title = v || COST_GROUPS[gidx].title;}
+      if(COST_GROUPS[gidx]){
+        COST_GROUPS[gidx].title = v || COST_GROUPS[gidx].title;
+        state.costDirty=true;
+        syncCostGroupTitle(gidx);
+      }
     } else if(COST_GROUPS[gidx] && COST_GROUPS[gidx].rows[ridx]){
       COST_GROUPS[gidx].rows[ridx][field] = v;
+      state.costDirty=true;
+      syncCostRow(gidx,ridx);
     }
-    state.costDirty=true;
-    syncCostGroups();
     renderCost();
   }
   function cancel(){
@@ -1664,8 +1670,9 @@ function delCostGroup(gidx){
 function setRowCurrency(gidx,ridx,curr){
   if(!COST_GROUPS[gidx]||!COST_GROUPS[gidx].rows[ridx])return;
   COST_GROUPS[gidx].rows[ridx].currency=curr;
+  COST_GROUPS[gidx].rows[ridx].display='';
   state.costDirty=true;
-  syncCostGroups();
+  syncCostRow(gidx,ridx);
   renderCost();
 }
 
@@ -2272,6 +2279,15 @@ function bindGlobalClicks(){
   if(costList){
     costList.addEventListener('click',function(e){
       var t=e.target;
+      // Single-tap editing in edit mode. dblclick is unreliable on iOS (double-tap
+      // is eaten by zoom), so a plain tap opens the editor while 編輯模式 is on.
+      if(state.editMode && !t.closest('[data-act]') && !t.closest('.cs-drag-handle')
+         && !t.closest('input') && !t.closest('select') && !t.closest('button')){
+        var amTap=t.closest('.am.editable');
+        if(amTap){startCostEdit(amTap);return;}
+        var tfTap=t.closest('[data-field="label"],[data-field="sub"],[data-field="group-title"]');
+        if(tfTap){startCostTextEdit(tfTap);return;}
+      }
       // Toggle optional row in/out of budget (works in normal mode too)
       var optT=t.closest('[data-act="opt-toggle"]');
       if(optT){
@@ -2951,6 +2967,95 @@ function syncCostGroups(){
     fbPut(FB_META, {version:DATA_VERSION, ts:Date.now(), kind:'cg'});
   },600);
 }
+// ── PRECISE PER-ROW SYNC ───────────────────────────────────────────────────
+// Writing the whole COST_GROUPS array on every edit lets a stale client (e.g. an
+// iPhone PWA that has been resident for days) clobber everyone else's changes.
+// Value edits now PUT only the single row path, guarded by an id check.
+var syncRowDebs={};
+function syncCostRow(gidx,ridx){
+  if(!state.contentLoaded)return;
+  var g=COST_GROUPS[gidx]; if(!g||!g.rows)return;
+  var row=g.rows[ridx]; if(!row)return;
+  var key=gidx+':'+ridx;
+  clearTimeout(syncRowDebs[key]);
+  syncRowDebs[key]=setTimeout(function(){
+    var cur=COST_GROUPS[gidx]&&COST_GROUPS[gidx].rows&&COST_GROUPS[gidx].rows[ridx];
+    if(!cur||cur.id!==row.id){syncCostGroups();return;}
+    var p=FB_CG+'/'+gidx+'/rows/'+ridx;
+    fbGet(p+'/id').then(function(remoteId){
+      if(remoteId!=null && remoteId!==row.id){
+        // Cloud ordering drifted underneath us — reload rather than overwrite.
+        toast('雲端資料已變動，重新載入中…');
+        refreshFromCloud(true);
+        return;
+      }
+      fbPut(p,row);
+      fbPut(FB_META,{version:DATA_VERSION,ts:Date.now(),kind:'cg-row'});
+    });
+  },400);
+}
+var syncGTDebs={};
+function syncCostGroupTitle(gidx){
+  if(!state.contentLoaded)return;
+  var g=COST_GROUPS[gidx]; if(!g)return;
+  clearTimeout(syncGTDebs[gidx]);
+  syncGTDebs[gidx]=setTimeout(function(){
+    fbPut(FB_CG+'/'+gidx+'/title',g.title);
+    fbPut(FB_META,{version:DATA_VERSION,ts:Date.now(),kind:'cg-title'});
+  },400);
+}
+
+// ── REFRESH ON RESUME ──────────────────────────────────────────────────────
+// There is no realtime listener; without this a backgrounded tab/PWA keeps a
+// stale in-memory snapshot and pushes it back on the next edit.
+var lastCloudRefresh=0;
+function refreshFromCloud(force){
+  if(!state.contentLoaded)return;
+  if(document.querySelector('.editing'))return;              // 正在輸入中
+  var ae=document.activeElement;
+  if(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))return;
+  var now=Date.now();
+  if(!force && now-lastCloudRefresh<15000)return;
+  lastCloudRefresh=now;
+  setSync('syncing');
+  Promise.all([fbGet(FB_ITIN),fbGet(FB_BOOK),fbGet(FB_CG),fbGet(FB_FX),
+               fbGet(FB_TODOS),fbGet(FB_OPT),fbGet(FB_PLACES)]).then(function(a){
+    var itin=a[0],book=a[1],cg=a[2],fx=a[3],todos=a[4],opt=a[5],places=a[6];
+    if(itin&&Array.isArray(itin)&&itin.length>0){TRIP_DATA.length=0;for(var i=0;i<itin.length;i++)TRIP_DATA.push(itin[i]);}
+    if(book&&Array.isArray(book)&&book.length>0){BOOKING_DATA.length=0;for(var j=0;j<book.length;j++)BOOKING_DATA.push(book[j]);}
+    if(cg&&Array.isArray(cg)&&cg.length>0){COST_GROUPS.length=0;for(var k=0;k<cg.length;k++)COST_GROUPS.push(cg[k]);}
+    if(places&&Array.isArray(places)){PLACES.length=0;for(var q=0;q<places.length;q++)PLACES.push(places[q]);}
+    if(fx&&typeof fx==='object'){
+      if(typeof fx.rate==='number')state.fxRate=fx.rate;
+      else if(typeof fx.nzd==='number')state.fxRate=fx.nzd;
+    }
+    if(todos)state.todoStates=todos;
+    if(opt&&typeof opt==='object')state.optSel=opt;
+    setSync('ok');
+    var cs=$id('cost-list');
+    var keepTop=cs?cs.scrollTop:0;
+    renderTabs();
+    renderPanel(state.curDay);
+    bindTabEvents();
+    updateProgress();
+    var sheet=$id('sh-cost');
+    if(sheet&&sheet.classList.contains('show')){
+      renderCost();
+      var cs2=$id('cost-list');
+      if(cs2)cs2.scrollTop=keepTop;
+    }
+    var bsheet=$id('sh-book');
+    if(bsheet&&bsheet.classList.contains('show')&&typeof renderBooking==='function')renderBooking();
+  }).catch(function(){setSync('err');});
+}
+function bindCloudResume(){
+  document.addEventListener('visibilitychange',function(){
+    if(!document.hidden)refreshFromCloud(false);
+  });
+  window.addEventListener('focus',function(){refreshFromCloud(false);});
+  window.addEventListener('pageshow',function(e){if(e.persisted)refreshFromCloud(true);});
+}
+
 var syncFXDeb=null;
 function syncFX(){
   clearTimeout(syncFXDeb);
@@ -3106,6 +3211,7 @@ function init(){
   bindSwipe();
   updateProgress();
   pullInitial();
+  bindCloudResume();
   // Cost drag handlers bind once; cost-list is created lazily but the handler is on parent
   setTimeout(function(){
     if($id('cost-list'))bindCostDragHandlers();
