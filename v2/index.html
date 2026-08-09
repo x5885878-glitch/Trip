@@ -882,6 +882,7 @@ var state = {
   editMode: false,
   todoStates: {},     // todo id → done bool
   costActuals: {},    // cost key → actual amount (in row's currency)
+  fxRates: {},        // currency code → TWD per 1 unit (multi-currency)
   optSel: {},         // optional cost row id → selected (true = count toward budget)
   costDirty: false,
   fxRate: DEFAULT_NZD_RATE,  // TWD per NZD; editable
@@ -1281,9 +1282,51 @@ function guessCategory(text){
 
 // ─── COST ──────────────────────────────────────────────────────────────────
 // FX conversion: returns TWD amount given (amount, currency)
+// ── MULTI-CURRENCY ENGINE ──────────────────────────────────────────────────
+// Rows may each carry their own currency (some orders are billed in TWD, some in
+// the local currency). Every rate lives in state.fxRates[ccy] = TWD per 1 unit.
+// A missing rate is NEVER silently guessed — it is surfaced in the UI instead.
+function usedCurrencies(){
+  var seen={}, out=[];
+  for(var i=0;i<COST_GROUPS.length;i++){
+    var rows=(COST_GROUPS[i]&&COST_GROUPS[i].rows)||[];
+    for(var j=0;j<rows.length;j++){
+      if(rows[j].subtotal)continue;
+      var c=rows[j].currency||'TWD';
+      if(c!=='TWD'&&!seen[c]){seen[c]=1;out.push(c);}
+    }
+  }
+  var tc=(TRIP_CONFIG&&TRIP_CONFIG.ccy)||'';
+  if(tc&&tc!=='TWD'&&!seen[tc]){seen[tc]=1;out.push(tc);}
+  out.sort();
+  return out;
+}
+function fxRateFor(currency){
+  if(!currency||currency==='TWD')return 1;
+  var r=state.fxRates[currency];
+  if(typeof r==='number'&&r>0)return r;
+  // Legacy single-rate field only ever described the trip's own currency.
+  if(currency===((TRIP_CONFIG&&TRIP_CONFIG.ccy)||'')&&state.fxRate>0)return state.fxRate;
+  return null;   // unknown — caller must handle
+}
 function toTWD(amount, currency){
-  if(!currency || currency==='TWD') return amount;
-  return Math.round(amount * state.fxRate);
+  var r=fxRateFor(currency);
+  if(r===null)return 0;
+  return Math.round(amount*r);
+}
+// Rows whose currency has no rate yet — excluded from totals, reported to user.
+function unratedRows(){
+  var out=[];
+  for(var i=0;i<COST_GROUPS.length;i++){
+    var rows=(COST_GROUPS[i]&&COST_GROUPS[i].rows)||[];
+    for(var j=0;j<rows.length;j++){
+      var r=rows[j];
+      if(r.subtotal||isOptOff(r))continue;
+      var c=r.currency||'TWD';
+      if(c!=='TWD'&&fxRateFor(c)===null)out.push({ccy:c,label:r.label});
+    }
+  }
+  return out;
 }
 function fmtMoney(twdAmount){
   return 'TWD $' + Math.round(twdAmount).toLocaleString();
@@ -1292,6 +1335,10 @@ function fmtMoneyWithCurr(amount, currency){
   // Display "NZD $123 (≈ TWD $2,400)" if currency is not TWD; else just "TWD $X"
   if(!currency || currency==='TWD'){
     return 'TWD $' + amount.toLocaleString();
+  }
+  if(fxRateFor(currency)===null){
+    return currency + ' $' + amount.toLocaleString() +
+      ' <span class="csub-inline" style="color:#e8a33d">⚠️ 未設匯率</span>';
   }
   var twd = toTWD(amount, currency);
   return currency + ' $' + amount.toLocaleString() + ' <span class="csub-inline">≈ ' + fmtMoney(twd) + '</span>';
@@ -1310,21 +1357,32 @@ function renderCost(){
   c.innerHTML='';
 
   // ── FX setting row ──
+  var fxCcys=usedCurrencies();
   var fxRow=document.createElement('div');
   fxRow.className='cost-fx';
-  fxRow.innerHTML=
-    '<span class="fx-label">💱 匯率</span>'+
-    '<span class="fx-pair">1 '+(TRIP_CONFIG.ccy||'')+' =</span>'+
-    '<input type="number" id="fx-input" step="0.1" min="0" value="'+state.fxRate+'" style="width:60px">'+
-    '<span class="fx-pair">TWD</span>'+
-    '<span class="fx-hint" id="fx-hint"></span>';
+  var fxHtml='<span class="fx-label">💱 匯率</span>';
+  if(fxCcys.length===0){
+    fxHtml+='<span class="fx-pair">全部項目皆為 TWD，免換算</span>';
+  } else {
+    for(var fi=0;fi<fxCcys.length;fi++){
+      var fc=fxCcys[fi];
+      var fr=fxRateFor(fc);
+      fxHtml+='<span class="fx-pair" style="margin-left:'+(fi?'10px':'0')+'">1 '+fc+' =</span>'+
+        '<input type="number" class="fx-input" data-ccy="'+fc+'" step="0.01" min="0" '+
+        'value="'+(fr===null?'':fr)+'" placeholder="?" style="width:64px'+
+        (fr===null?';border-color:#e8a33d':'')+'">'+
+        '<span class="fx-pair">TWD</span>';
+    }
+  }
+  fxHtml+='<span class="fx-hint" id="fx-hint"></span>';
+  fxRow.innerHTML=fxHtml;
   c.appendChild(fxRow);
 
   // ── Hint ──
   var hint=document.createElement('div');
   hint.className='cost-hint';
   hint.innerHTML=state.editMode ?
-    '✏️ 編輯模式：拖曳項目重排/搬家 · ✕ 刪除 · ＋ 新增 · 雙擊任意文字編輯' :
+    '✏️ 編輯模式：拖曳重排/搬家 · ✕ 刪除 · ＋ 新增 · 點一下金額或文字即可編輯' :
     '💡 雙擊金額可修改數字/幣別 · 點右下「✏️ 編輯」進入完整編輯模式';
   c.appendChild(hint);
 
@@ -1341,8 +1399,20 @@ function renderCost(){
   }
   var summ=document.createElement('div');
   summ.className='cs-summary';
+  var unrated=unratedRows();
+  var warnHtml='';
+  if(unrated.length){
+    var wc={};
+    for(var ui=0;ui<unrated.length;ui++)wc[unrated[ui].ccy]=(wc[unrated[ui].ccy]||0)+1;
+    var wl=[];
+    for(var wk in wc)wl.push(wk+' × '+wc[wk]+' 筆');
+    warnHtml='<div style="margin-top:6px;padding:6px 8px;border-radius:8px;'+
+      'background:rgba(232,163,61,.14);color:#e8a33d;font-size:calc(11px * var(--fs))">'+
+      '⚠️ '+wl.join('、')+' 尚未設定匯率，未列入總計</div>';
+  }
   summ.innerHTML=
-    '<div class="cs-summary-card"><div class="label">總計</div><div class="value">'+fmtMoney(total)+'</div></div>';
+    '<div class="cs-summary-card"><div class="label">總計</div><div class="value">'+fmtMoney(total)+'</div></div>'+
+    warnHtml;
   c.appendChild(summ);
 
   // ── D feature: "Pull amounts from itinerary" button (edit mode only) ──
@@ -1422,10 +1492,17 @@ function renderCost(){
         // Currency picker (edit-mode only)
         var currPicker='';
         if(state.editMode){
-          currPicker='<select class="cs-curr-picker" data-act="curr" data-gidx="'+gi+'" data-ridx="'+ri+'">'+
-            '<option value="TWD"'+(curr==='TWD'?' selected':'')+'>TWD</option>'+
-            '<option value="'+(TRIP_CONFIG.ccy||'NZD')+'"'+(curr===(TRIP_CONFIG.ccy||'NZD')?' selected':'')+'>'+(TRIP_CONFIG.ccy||'NZD')+'</option>'+
-          '</select>';
+          var pickOpts=['TWD'];
+          var pTrip=(TRIP_CONFIG&&TRIP_CONFIG.ccy)||'';
+          if(pTrip&&pickOpts.indexOf(pTrip)<0)pickOpts.push(pTrip);
+          var pUse=usedCurrencies();
+          for(var pi=0;pi<pUse.length;pi++){if(pickOpts.indexOf(pUse[pi])<0)pickOpts.push(pUse[pi]);}
+          if(pickOpts.indexOf(curr)<0)pickOpts.push(curr);
+          currPicker='<select class="cs-curr-picker" data-act="curr" data-gidx="'+gi+'" data-ridx="'+ri+'">';
+          for(var po=0;po<pickOpts.length;po++){
+            currPicker+='<option value="'+pickOpts[po]+'"'+(curr===pickOpts[po]?' selected':'')+'>'+pickOpts[po]+'</option>';
+          }
+          currPicker+='</select>';
         }
 
         rr.innerHTML=
@@ -1476,16 +1553,24 @@ function renderCost(){
   c.appendChild(grand);
 
   // ── Bind FX input ──
-  var fxInp=$id('fx-input');
-  if(fxInp){
-    fxInp.addEventListener('change',function(){
-      var v=parseFloat(fxInp.value);
-      if(isNaN(v)||v<=0){fxInp.value=state.fxRate;return;}
-      state.fxRate=v;
-      syncFX();
-      renderCost();
-      toast('匯率已更新');
-    });
+  var fxInps=c.querySelectorAll('.fx-input');
+  for(var fx2=0;fx2<fxInps.length;fx2++){
+    (function(el){
+      el.addEventListener('change',function(){
+        var ccy=el.getAttribute('data-ccy');
+        var v=parseFloat(el.value);
+        if(isNaN(v)||v<=0){
+          var back=fxRateFor(ccy);
+          el.value=(back===null?'':back);
+          return;
+        }
+        state.fxRates[ccy]=v;
+        if(ccy===((TRIP_CONFIG&&TRIP_CONFIG.ccy)||''))state.fxRate=v;
+        syncFX();
+        renderCost();
+        toast('1 '+ccy+' = '+v+' TWD');
+      });
+    })(fxInps[fx2]);
   }
   // Bind D button
   var pullEl=$id('cost-pull-btn');
@@ -1506,11 +1591,17 @@ function startCostEdit(span){
   span.classList.add('editing');
   var orig=span.innerHTML;
   span.innerHTML='';
-  // currency toggle button (JPY <-> TWD, plus the trip's own ccy if different)
+  // Currency toggle: TWD + the trip's own currency + anything already in use.
+  // (A hardcoded JPY option used to leak onto every trip and would then be
+  //  converted at the trip's own rate — silently wrong totals.)
   var ccyOpts=['TWD'];
-  var tripCcy=(TRIP_CONFIG&&TRIP_CONFIG.ccy)||'JPY';
-  if(ccyOpts.indexOf(tripCcy)<0)ccyOpts.push(tripCcy);
-  if(ccyOpts.indexOf('JPY')<0)ccyOpts.push('JPY');
+  var tripCcy=(TRIP_CONFIG&&TRIP_CONFIG.ccy)||'';
+  if(tripCcy&&ccyOpts.indexOf(tripCcy)<0)ccyOpts.push(tripCcy);
+  var inUse=usedCurrencies();
+  for(var ci=0;ci<inUse.length;ci++){
+    if(ccyOpts.indexOf(inUse[ci])<0)ccyOpts.push(inUse[ci]);
+  }
+  if(ccyOpts.indexOf(curr)<0)ccyOpts.push(curr);
   var curCcy=curr;
   var ccyBtn=document.createElement('button');
   ccyBtn.type='button';
@@ -3025,10 +3116,7 @@ function refreshFromCloud(force){
     if(book&&Array.isArray(book)&&book.length>0){BOOKING_DATA.length=0;for(var j=0;j<book.length;j++)BOOKING_DATA.push(book[j]);}
     if(cg&&Array.isArray(cg)&&cg.length>0){COST_GROUPS.length=0;for(var k=0;k<cg.length;k++)COST_GROUPS.push(cg[k]);}
     if(places&&Array.isArray(places)){PLACES.length=0;for(var q=0;q<places.length;q++)PLACES.push(places[q]);}
-    if(fx&&typeof fx==='object'){
-      if(typeof fx.rate==='number')state.fxRate=fx.rate;
-      else if(typeof fx.nzd==='number')state.fxRate=fx.nzd;
-    }
+    applyFx(fx,null);
     if(todos)state.todoStates=todos;
     if(opt&&typeof opt==='object')state.optSel=opt;
     setSync('ok');
@@ -3056,12 +3144,37 @@ function bindCloudResume(){
   window.addEventListener('pageshow',function(e){if(e.persisted)refreshFromCloud(true);});
 }
 
+// applyFx: merge cloud fx_v2 into state. Accepts the new multi-currency
+// {rates:{NZD:19.5,JPY:0.21}} shape and the legacy {rate:N}/{nzd:N} single-rate
+// shape, which only ever described the trip's own currency.
+function applyFx(fx,cfg){
+  if(fx&&typeof fx==='object'&&fx.rates&&typeof fx.rates==='object'){
+    for(var k in fx.rates){
+      if(typeof fx.rates[k]==='number'&&fx.rates[k]>0)state.fxRates[k]=fx.rates[k];
+    }
+  }
+  var tc=(TRIP_CONFIG&&TRIP_CONFIG.ccy)||'';
+  var legacy=null;
+  if(fx&&typeof fx==='object'){
+    if(typeof fx.rate==='number'&&fx.rate>0)legacy=fx.rate;
+    else if(typeof fx.nzd==='number'&&fx.nzd>0)legacy=fx.nzd;
+  }
+  if(legacy===null&&cfg&&cfg.fxDefault!=null&&cfg.fxDefault>0)legacy=cfg.fxDefault;
+  if(legacy!==null){
+    state.fxRate=legacy;
+    if(tc&&tc!=='TWD'&&!(state.fxRates[tc]>0))state.fxRates[tc]=legacy;
+  }
+  if(tc&&tc!=='TWD'&&state.fxRates[tc]>0)state.fxRate=state.fxRates[tc];
+}
+
 var syncFXDeb=null;
 function syncFX(){
   clearTimeout(syncFXDeb);
   // Write generic 'rate' key (currency-agnostic). Keep 'nzd' mirror for backward
   // compatibility with any older client build still reading fx_v2.nzd.
-  syncFXDeb=setTimeout(function(){fbPut(FB_FX,{rate:state.fxRate, nzd:state.fxRate});},400);
+  syncFXDeb=setTimeout(function(){
+    fbPut(FB_FX,{rates:state.fxRates, rate:state.fxRate, nzd:state.fxRate});
+  },400);
 }
 var syncItinDeb=null;
 function syncItin(){
@@ -3096,9 +3209,7 @@ function pullInitial(){
     if(opt && typeof opt==='object') state.optSel=opt;
     // FX: currency-agnostic. Prefer fx_v2.rate (new generic key), fall back to
     // legacy fx_v2.nzd, then config.fxDefault. Rate = TWD per 1 unit of trip ccy.
-    if(fx && typeof fx==='object' && typeof fx.rate==='number') state.fxRate=fx.rate;
-    else if(fx && typeof fx==='object' && typeof fx.nzd==='number') state.fxRate=fx.nzd;
-    else if(cfg && cfg.fxDefault!=null) state.fxRate=cfg.fxDefault;
+    applyFx(fx,cfg);
 
     // SAFEGUARD: always load Firebase content when present; NEVER push HTML baseline.
     // Content is Firebase-authoritative. Prevents any client (incl. stale/old ones on
